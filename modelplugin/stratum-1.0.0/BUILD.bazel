@@ -1,0 +1,84 @@
+"""
+ Copyright 2020-present Open Networking Foundation
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+"""
+
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
+filegroup(
+    name = "yangs",
+    srcs = glob(["yang/**"]),
+)
+
+genrule(
+    name = "ygot_generate",
+    srcs = [
+        "@com_github_openconfig_ygot//generator",
+        ":yangs",
+    ],
+    outs = [
+        "generated.go",
+    ],
+    cmd = "ROOT=`pwd` && " +
+          "GENERATOR=$$ROOT/$(location @com_github_openconfig_ygot//generator) && " +
+          "$$GENERATOR " +
+          "-path modelplugin/stratum-1.0.0/yang " +
+          "-package_name stratum_1_0_0 " +
+          "-generate_fakeroot " +
+          "-output_file $@ " +
+          "openconfig-interfaces@2018-11-21.yang " +
+          "openconfig-if-ip@2018-11-21.yang " +
+          "openconfig-lacp@2018-11-21.yang " +
+          "openconfig-platform@2019-04-16.yang " +
+          "openconfig-platform-linecard@2018-11-21.yang " +
+          "openconfig-platform-port@2018-11-21.yang " +
+          "openconfig-platform-transceiver@2018-11-25.yang " +
+          "openconfig-vlan@2018-11-21.yang " +
+          "openconfig-system@2019-01-29.yang " +
+          "openconfig-hercules-platform-linecard@2018-06-01.yang " +
+          "openconfig-hercules-qos@2018-06-01.yang " +
+          "openconfig-hercules-platform@2018-06-01.yang " +
+          "openconfig-hercules-platform-chassis@2018-06-01.yang " +
+          "openconfig-hercules-platform-port@2018-06-01.yang " +
+          "openconfig-hercules@2018-06-01.yang " +
+          "openconfig-hercules-interfaces@2018-06-01.yang " +
+          "openconfig-hercules-platform-node@2018-06-01.yang ",
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "modelmain.go",
+        ":generated.go",
+    ],
+    importpath = "stratum_1_0_0",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_github_openconfig_gnmi//proto/gnmi:go_default_library",
+        "@com_github_openconfig_goyang//pkg/yang:go_default_library",
+        "@com_github_openconfig_ygot//ygot:go_default_library",
+        "@com_github_openconfig_ygot//ytypes:go_default_library",
+    ],
+)
+
+go_image(
+    name = "stratum-1.0.0",
+    out = "stratum.so.1.0.0",
+    embed = [
+        ":go_default_library",
+    ],
+    linkmode = "plugin",
+    visibility = ["//visibility:public"],
+)
