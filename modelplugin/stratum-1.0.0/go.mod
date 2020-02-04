@@ -1,4 +1,4 @@
-module github.com/onosproject/config-models
+module github.com/onosproject/config-models/modelplugin/stratum-1.0.0
 
 go 1.13
 

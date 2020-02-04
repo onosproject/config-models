@@ -13,14 +13,20 @@
 // limitations under the License.
 
 // A plugin for the YGOT model of Stratum-1.0.0.
-package stratum_1_0_0
+package main
 
 import (
 	"fmt"
+	"github.com/onosproject/config-models/modelplugin/stratum-1.0.0/stratum_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
+	_ "github.com/openconfig/ygot/genutil"
+	_ "github.com/openconfig/ygot/ygen"
 	"github.com/openconfig/ygot/ygot"
+	_ "github.com/openconfig/ygot/ytypes"
 )
+
+//go:generate go run $GOPATH/src/github.com/openconfig/ygot/generator/generator.go -path=yang -output_file=stratum_1_0_0/generated.go -package_name=stratum_1_0_0 -generate_fakeroot openconfig-interfaces@2018-11-21.yang openconfig-if-ip@2018-11-21.yang openconfig-lacp@2018-11-21.yang openconfig-platform@2019-04-16.yang openconfig-platform-linecard@2018-11-21.yang openconfig-platform-port@2018-11-21.yang openconfig-platform-transceiver@2018-11-25.yang openconfig-vlan@2018-11-21.yang openconfig-system@2019-01-29.yang openconfig-hercules-platform-linecard@2018-06-01.yang openconfig-hercules-qos@2018-06-01.yang openconfig-hercules-platform@2018-06-01.yang openconfig-hercules-platform-chassis@2018-06-01.yang openconfig-hercules-platform-port@2018-06-01.yang openconfig-hercules@2018-06-01.yang openconfig-hercules-interfaces@2018-06-01.yang openconfig-hercules-platform-node@2018-06-01.yang
 
 type modelplugin string
 
@@ -59,10 +65,10 @@ func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
 
 // UnmarshallConfigValues allows Device to implement the Unmarshaller interface
 func (m modelplugin) UnmarshalConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
-	device := &Device{}
+	device := &stratum_1_0_0.Device{}
 	vgs := ygot.ValidatedGoStruct(device)
 
-	if err := Unmarshal([]byte(jsonTree), device); err != nil {
+	if err := stratum_1_0_0.Unmarshal([]byte(jsonTree), device); err != nil {
 		return nil, err
 	}
 
@@ -71,7 +77,7 @@ func (m modelplugin) UnmarshalConfigValues(jsonTree []byte) (*ygot.ValidatedGoSt
 
 func (m modelplugin) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.ValidationOption) error {
 	deviceDeref := *ygotModel
-	device, ok := deviceDeref.(*Device)
+	device, ok := deviceDeref.(*stratum_1_0_0.Device)
 	if !ok {
 		return fmt.Errorf("unable to convert model in to stratum_1_0_0")
 	}
@@ -79,7 +85,7 @@ func (m modelplugin) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.Va
 }
 
 func (m modelplugin) Schema() (map[string]*yang.Entry, error) {
-	return UnzipSchema()
+	return stratum_1_0_0.UnzipSchema()
 }
 
 // GetStateMode returns an int - we do not use the enum because we do not want a
