@@ -1,1 +1,1 @@
-package devicesim_1_0_0
+package testdevice_1_0_0
