@@ -1,1 +1,1 @@
-package devicesim_1_0_0
+package stratum_1_0_0
