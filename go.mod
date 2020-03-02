@@ -3,16 +3,14 @@ module github.com/onosproject/config-models
 go 1.13
 
 require (
-	github.com/golang/protobuf v1.3.2
-	github.com/google/go-cmp v0.4.0 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
-	github.com/openconfig/gnmi v0.0.0-20190823184014-89b2bf29312c
-	github.com/openconfig/goyang v0.0.0-20190924211109-064f9690516f
+	github.com/golang/protobuf v1.3.3
+	github.com/onosproject/config-models/modelplugin/devicesim-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
+	github.com/onosproject/config-models/modelplugin/stratum-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
+	github.com/onosproject/config-models/modelplugin/testdevice-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
+	github.com/onosproject/config-models/modelplugin/testdevice-2.0.0 v0.0.0-20200214135352-e7b5a6a6c992
+	github.com/openconfig/goyang v0.0.0-20200115183954-d0a48929f0ea
 	github.com/openconfig/ygot v0.6.1-0.20200103195725-e3c44fa43926
-	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
-	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
-	golang.org/x/text v0.3.2 // indirect
-	google.golang.org/genproto v0.0.0-20200128133413-58ce757ed39b // indirect
-	google.golang.org/grpc v1.25.0 // indirect
+	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+	golang.org/x/sys v0.0.0-20200212091648-12a6c2dcc1e4
+	google.golang.org/grpc v1.27.1
 )
