@@ -20,7 +20,6 @@ import (
 	"github.com/onosproject/config-models/cmd/empty"
 	_ "github.com/onosproject/config-models/cmd/empty"
 	_ "github.com/onosproject/config-models/modelplugin/devicesim-1.0.0/devicesim_1_0_0"
-	_ "github.com/onosproject/config-models/modelplugin/stratum-1.0.0/stratum_1_0_0"
 	_ "github.com/onosproject/config-models/modelplugin/testdevice-1.0.0/testdevice_1_0_0"
 	_ "github.com/onosproject/config-models/modelplugin/testdevice-2.0.0/testdevice_2_0_0"
 	_ "github.com/openconfig/goyang/pkg/yang"

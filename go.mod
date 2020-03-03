@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/golang/protobuf v1.3.3
 	github.com/onosproject/config-models/modelplugin/devicesim-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
-	github.com/onosproject/config-models/modelplugin/stratum-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
+	github.com/onosproject/config-models/modelplugin/stratum-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992 // indirect
 	github.com/onosproject/config-models/modelplugin/testdevice-1.0.0 v0.0.0-20200214135352-e7b5a6a6c992
 	github.com/onosproject/config-models/modelplugin/testdevice-2.0.0 v0.0.0-20200214135352-e7b5a6a6c992
 	github.com/openconfig/goyang v0.0.0-20200115183954-d0a48929f0ea
