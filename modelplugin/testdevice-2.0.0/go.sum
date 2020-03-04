@@ -18,6 +18,7 @@ github.com/openconfig/gnmi v0.0.0-20190823184014-89b2bf29312c h1:a380JP+B7xlMbEQ
 github.com/openconfig/gnmi v0.0.0-20190823184014-89b2bf29312c/go.mod h1:t+O9It+LKzfOAhKTT5O0ehDix+MTqbtT0T9t+7zzOvc=
 github.com/openconfig/goyang v0.0.0-20190924211109-064f9690516f h1:BaekRUaWpfaRBP3mShDZaNi4+EHbdli7D6YXc/TP3lo=
 github.com/openconfig/goyang v0.0.0-20190924211109-064f9690516f/go.mod h1:dhXaV0JgHJzdrHi2l+w0fZrwArtXL7jEFoiqLEdmkvU=
+github.com/openconfig/ygot v0.6.0 h1:kJJFPBrczC6TDnz/HMlFTJEdW2CuyUftV13XveIukg0=
 github.com/openconfig/ygot v0.6.1-0.20200103195725-e3c44fa43926 h1:58WpM0gs8tt1CbZorr4zyDsbjjbQ2Ua+Yr12ufyGHlc=
 github.com/openconfig/ygot v0.6.1-0.20200103195725-e3c44fa43926/go.mod h1:o30svNf7O0xK+R35tlx95odkDmZWS9JyWWQSmIhqwAs=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

@@ -26,7 +26,7 @@ import (
 	"github.com/openconfig/ygot/ygot"
 	_ "github.com/openconfig/ygot/ytypes"
 )
-//go:generate go run $GOPATH/src/github.com/openconfig/ygot/generator/generator.go -path=yang -output_file=testdevice_1_0_0/generated.go -package_name=testdevice_1_0_0 -generate_fakeroot test1@2018-02-20.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=testdevice_1_0_0/generated.go -package_name=testdevice_1_0_0 -generate_fakeroot test1@2018-02-20.yang
 
 type modelplugin string
 

@@ -27,7 +27,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run $GOPATH/src/github.com/openconfig/ygot/generator/generator.go -path=yang -output_file=testdevice_2_0_0/generated.go -package_name=testdevice_2_0_0 -generate_fakeroot test1@2019-06-10.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=testdevice_2_0_0/generated.go -package_name=testdevice_2_0_0 -generate_fakeroot test1@2019-06-10.yang test1-augmented@2020-02-29.yang
 
 type modelplugin string
 
@@ -36,7 +36,8 @@ const modelversion = "2.0.0"
 const modulename = "testdevice.so.2.0.0"
 
 var modelData = []*gnmi.ModelData{
-      {Name: "test1",Organization: "Open Networking Foundation",Version: "2019-06-10"},	
+      {Name: "test1",Organization: "Open Networking Foundation",Version: "2019-06-10"},
+      {Name: "test1-augmented",Organization: "Open Networking Foundation",Version: "2020-02-29"},
 }
 
 func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
