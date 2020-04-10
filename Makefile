@@ -31,7 +31,7 @@ config-plugin-docker-testdevice-1.0.0: # @HELP build testdevice 1.0.0 plugin Doc
 	docker build . -f build/plugins/Dockerfile \
 		--build-arg PLUGIN_MAKE_TARGET=testdevice \
 		--build-arg PLUGIN_MAKE_VERSION=1.0.0 \
-		--build-arg PLUGIN_BUILD_VERSION=${ONOS_CONFIG_VERSION} \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
 		-t onosproject/config-model-testdevice-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
@@ -41,7 +41,7 @@ config-plugin-docker-testdevice-2.0.0: # @HELP build testdevice 2.0.0 plugin Doc
 	docker build . -f build/plugins/Dockerfile \
 		--build-arg PLUGIN_MAKE_TARGET=testdevice \
 		--build-arg PLUGIN_MAKE_VERSION=2.0.0 \
-		--build-arg PLUGIN_BUILD_VERSION=${ONOS_CONFIG_VERSION} \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
 		-t onosproject/config-model-testdevice-2.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
@@ -51,7 +51,7 @@ config-plugin-docker-devicesim-1.0.0: # @HELP build devicesim 1.0.0 plugin Docke
 	docker build . -f build/plugins/Dockerfile \
 		--build-arg PLUGIN_MAKE_TARGET=devicesim \
 		--build-arg PLUGIN_MAKE_VERSION=1.0.0 \
-		--build-arg PLUGIN_BUILD_VERSION=${ONOS_CONFIG_VERSION} \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
 		-t onosproject/config-model-devicesim-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
@@ -61,7 +61,7 @@ config-plugin-docker-stratum-1.0.0: # @HELP build stratum 1.0.0 plugin Docker im
 	docker build . -f build/plugins/Dockerfile \
 		--build-arg PLUGIN_MAKE_TARGET=stratum \
 		--build-arg PLUGIN_MAKE_VERSION=1.0.0 \
-		--build-arg PLUGIN_BUILD_VERSION=${ONOS_CONFIG_VERSION} \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
 		-t onosproject/config-model-stratum-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 

@@ -24,6 +24,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 	_ "golang.org/x/net/http2"
 	_ "golang.org/x/sys/unix"
+	_ "golang.org/x/tools/blog"
 	_ "google.golang.org/grpc/serviceconfig"
 )
 
