@@ -10,9 +10,10 @@ require (
 	github.com/openconfig/goyang v0.0.0-20200115183954-d0a48929f0ea
 	github.com/openconfig/ygot v0.6.1-0.20200103195725-e3c44fa43926
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
 	golang.org/x/sys v0.0.0-20200212091648-12a6c2dcc1e4
 	golang.org/x/text v0.3.2 // indirect
+	golang.org/x/tools v0.0.0-20200113040837-eac381796e91
 	google.golang.org/genproto v0.0.0-20200128133413-58ce757ed39b // indirect
 	google.golang.org/grpc v1.27.1
 )
