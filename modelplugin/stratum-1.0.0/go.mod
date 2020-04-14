@@ -1,6 +1,6 @@
 module github.com/onosproject/config-models/modelplugin/stratum-1.0.0
 
-go 1.13
+go 1.14
 
 require (
 	github.com/golang/protobuf v1.3.2
