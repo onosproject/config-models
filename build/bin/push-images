@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+make images
+docker push onosproject/config-model-testdevice-1.0.0
+docker push onosproject/config-model-testdevice-2.0.0
+docker push onosproject/config-model-devicesim-1.0.0
+docker push onosproject/config-model-stratum-1.0.0
+
