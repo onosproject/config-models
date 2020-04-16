@@ -4,7 +4,7 @@ export GO111MODULE=on
 .PHONY: build
 
 ONOS_CONFIG_VERSION := latest
-ONOS_BUILD_VERSION := v0.5.0
+ONOS_BUILD_VERSION := v0.6.0
 
 build/_output/copylibandstay: # @HELP build the copylibandstay utility
 	CGO_ENABLED=1 go build -o build/_output/copylibandstay github.com/onosproject/config-models/cmd
