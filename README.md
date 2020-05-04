@@ -1,4 +1,4 @@
-# config-models
+# config-models 
 Model Plugins for `onos-config` YANG Files compiled with YGOT loadable as Shared Object Libraries
 
 ## Building the modules
