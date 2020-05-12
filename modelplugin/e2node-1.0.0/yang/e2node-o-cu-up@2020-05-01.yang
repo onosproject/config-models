@@ -1,4 +1,5 @@
-submodule e2-o-cu-up {
+submodule e2node-o-cu-up {
+  yang-version 1.1;
   belongs-to e2node {
     prefix up;
   }

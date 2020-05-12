@@ -1,4 +1,5 @@
-submodule e2-o-cu-cp {
+submodule e2node-o-cu-cp {
+  yang-version 1.1;
   belongs-to e2node {
     prefix cp;
   }
@@ -16,6 +17,12 @@ submodule e2-o-cu-cp {
     presence "CU-CP is present";
     description "Configuration related to CU-CP";
 
-
+    leaf handover-5g {
+        if-feature handover;
+        config false;
+        type boolean;
+        description "An example of a handover only attribute non-settable. It's
+        related only to the CU-UP, so is in this submodule";
+    }
   }
 }

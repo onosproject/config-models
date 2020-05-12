@@ -1,4 +1,5 @@
-submodule e2-o-du {
+submodule e2node-o-du {
+  yang-version 1.1;
   belongs-to e2node {
     prefix du;
   }

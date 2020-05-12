@@ -1,6 +1,11 @@
 module e2node {
+  yang-version 1.1;
   namespace "http://opennetworking.org/oran/e2node";
   prefix e2;
+
+  include e2node-o-cu-cp;
+  include e2node-o-cu-up;
+  include e2node-o-du;
 
   organization "Open Networking Foundation.";
   contact "Sean Condon";
@@ -11,6 +16,14 @@ module e2node {
   revision "2020-05-01" {
     description "Initial Version";
     reference "ORAN-WG3.E2GAP-V01.00";
+  }
+
+  feature handover {
+    description "The E2Node supports the handover feature";
+  }
+
+  feature load-balancing {
+    description "The E2Node supports the load-balancing feature";
   }
 
   container e2node {
@@ -54,6 +67,29 @@ module e2node {
             default 10;
         }
    
+    }
+
+    container example-container {
+        description "A YANG container for demo purposes.";
+
+        leaf max-handover-rate {
+            if-feature handover;
+            config false;
+            type uint32;
+            units ho/sec;
+            description "If the handover feature is present this is the number
+            of handovers/sec that the E2Node says it can support. It is not
+            settable as it given as an example of a limitation of the hardware";
+        }
+
+        leaf max-ues {
+          if-feature load-balancing;
+          type uint32;
+          description "If the load-balancing feature is present, this is the
+          maximum number of UEs that the E2 node will accept. It is settable, and
+          so can be changed at runtime.";
+        }
+
     }
 
   }

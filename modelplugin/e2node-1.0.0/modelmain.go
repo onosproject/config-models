@@ -26,7 +26,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=e2node_1_0_0/generated.go -package_name=e2node_1_0_0 -generate_fakeroot e2node@2020-05-01.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=e2node_1_0_0/generated.go -package_name=e2node_1_0_0 -generate_fakeroot e2node@2020-05-01.yang ietf-yang-library@2019-01-04.yang
 
 type modelplugin string
 
@@ -36,6 +36,7 @@ const modulename = "e2node.so.1.0.0"
 
 var modelData = []*gnmi.ModelData{
 	{Name: "e2node", Organization: "Open Networking Foundation", Version: "2020-05-01"},
+	{Name: "ietf-yang-library", Organization: "IETF NETCONF (Network Configuration) Working Group", Version: "2019-01-04"},
 	// TODO add in the submodules for CU, CP and DU when they have some content
 }
 

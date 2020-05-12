@@ -1,4 +1,4 @@
-$pyang -f tree *.yang
+pyang -f tree -p yang yang/e2node@2020-05-01.yang yang/ietf-yang-library@2019-01-04.yang yang/e2node-o-cu-cp@2020-05-01.yang yang/e2node-o-cu-up@2020-05-01.yang yang/e2node-o-du@2020-05-01.yang
 module: e2node
   +--rw e2node
      +--rw intervals
@@ -7,9 +7,43 @@ module: e2node
         +--rw SchedMeasReportPerUe?     uint32
         +--rw SchedMeasReportPerCell?   uint32
         +--rw PdcpMeasReportPerUe?      uint32
-submodule: e2-o-cu-cp (belongs-to e2node)
+     +--rw example-container
+        +--ro max-handover-rate?   uint32 {handover}?
+        +--rw max-ues?             uint32 {load-balancing}?
+module: ietf-yang-library
+  +--ro yang-library
+     +--ro module-set* [name]
+     |  +--ro name                  string
+     |  +--ro module* [name]
+     |  |  +--ro name         yang:yang-identifier
+     |  |  +--ro revision?    revision-identifier
+     |  |  +--ro namespace    inet:uri
+     |  |  +--ro location*    inet:uri
+     |  |  +--ro submodule* [name]
+     |  |  |  +--ro name        yang:yang-identifier
+     |  |  |  +--ro revision?   revision-identifier
+     |  |  |  +--ro location*   inet:uri
+     |  |  +--ro feature*     yang:yang-identifier
+     |  |  +--ro deviation*   -> ../../module/name
+     |  +--ro import-only-module* [name revision]
+     |     +--ro name         yang:yang-identifier
+     |     +--ro revision     union
+     |     +--ro namespace    inet:uri
+     |     +--ro location*    inet:uri
+     |     +--ro submodule* [name]
+     |        +--ro name        yang:yang-identifier
+     |        +--ro revision?   revision-identifier
+     |        +--ro location*   inet:uri
+     +--ro schema* [name]
+     |  +--ro name          string
+     |  +--ro module-set*   -> ../../module-set/name
+     +--ro datastore* [name]
+     |  +--ro name      ds:datastore-ref
+     |  +--ro schema    -> ../../schema/name
+     +--ro content-id    string
+submodule: e2node-o-cu-cp (belongs-to e2node)
   +--rw e2-cp!
-submodule: e2-o-cu-up (belongs-to e2node)
+submodule: e2node-o-cu-up (belongs-to e2node)
   +--rw e2-up!
-submodule: e2-o-du (belongs-to e2node)
+submodule: e2node-o-du (belongs-to e2node)
   +--rw e2-du!
