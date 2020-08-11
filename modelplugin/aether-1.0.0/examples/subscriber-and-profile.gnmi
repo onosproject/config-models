@@ -1,0 +1,58 @@
+prefix: <
+    target: 'spgw-1'
+>
+update: <
+    path: <
+        elem: <
+            name: 'subscriber'
+        >
+        elem: <
+            name: 'ue'
+            key:<
+                key:'ueid'
+                value:'150109999124'
+             >
+         >
+        elem: <
+            name: 'enabled'
+        >
+    >
+    val: <
+        bool_val: true
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'profile'
+        >
+        elem: <
+            name: 'profile'
+            key:<
+                key:'uuid'
+                value:'69a52c7ecd0a11ea87d00242ac130003'
+             >
+         >
+        elem: <
+            name: 'contents'
+        >
+        elem: <
+            name: 'bandwidth'
+        >
+    >
+    val: <
+        int_val: 3000000
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>
