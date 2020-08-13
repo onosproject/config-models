@@ -1,0 +1,53 @@
+prefix: <
+    target: 'internal'
+    elem: <
+        name: 'rbac'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'role-binding'
+            key:<
+                key:'role'
+                value:'aether-admin'
+            >
+            key:<
+                key:'group'
+                value:'administrators'
+            >
+        >
+        elem: <
+            name: 'noun'
+            key:<
+                key:'noun'
+                value:'/internal/a/b/c'
+             >
+        >
+        elem: <
+            name: 'verb'
+            key:<
+                key:'verb'
+                value:'READ'
+             >
+        >
+        elem: <
+            name: 'comment'
+        >
+    >
+    val: <
+        string_val: 'Aether Administrators Role for Administrators Group READ RBAC'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Rbac'
+    >
+>

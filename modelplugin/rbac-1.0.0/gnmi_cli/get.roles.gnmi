@@ -1,0 +1,16 @@
+path: <
+  target: 'internal',
+  elem: <
+    name: 'rbac'
+  >
+  elem: <
+    name: 'role'
+    key: <
+      key: 'roleid'
+      value: 'menlo-ops'
+    >
+  >
+  elem: <
+    name: 'description'
+  >
+>

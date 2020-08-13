@@ -1,0 +1,17 @@
+module: rbac
+  +--rw rbac
+     +--rw role* [roleid]
+     |  +--rw roleid         yang:yang-identifier
+     |  +--rw description?   string
+     +--rw group* [groupid]
+     |  +--rw groupid        yang:yang-identifier
+     |  +--rw description?   string
+     +--rw role-binding* [role group]
+        +--rw role           -> ../../role/roleid
+        +--rw group          -> ../../group/groupid
+        +--rw description?   string
+        +--rw noun* [noun]
+           +--rw noun    string
+           +--rw verb* [verb]
+              +--rw verb       identityref
+              +--rw comment?   string
