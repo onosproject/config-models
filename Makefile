@@ -29,8 +29,7 @@ build/_output/rbac.so.1.0.0: # @HELP build rbac.so.1.0.0
 
 PHONY:build
 build: # @HELP build all libraries
-build: build/_output/copylibandstay build/_output/testdevice.so.1.0.0 build/_output/testdevice.so.2.0.0 build/_output/devicesim.so.1.0.0 build/_output/stratum.so.1.0.0
-# build/_output/rbac.so.1.0.0
+build: build/_output/copylibandstay build/_output/testdevice.so.1.0.0 build/_output/testdevice.so.2.0.0 build/_output/devicesim.so.1.0.0 build/_output/stratum.so.1.0.0 build/_output/e2node.so.1.0.0 build/_output/rbac.so.1.0.0
 
 PHONY: config-plugin-docker-testdevice-1.0.0
 config-plugin-docker-testdevice-1.0.0: # @HELP build testdevice 1.0.0 plugin Docker image
