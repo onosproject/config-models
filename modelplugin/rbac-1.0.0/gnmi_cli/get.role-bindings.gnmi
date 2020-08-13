@@ -1,0 +1,9 @@
+path: <
+  target: 'internal',
+  elem: <
+    name: 'rbac'
+  >
+  elem: <
+    name: 'role-binding'
+  >
+>

@@ -24,9 +24,13 @@ build/_output/stratum.so.1.0.0: # @HELP build stratum.so.1.0.0
 build/_output/e2node.so.1.0.0: # @HELP build e2node.so.1.0.0
 	CGO_ENABLED=1 go build -o build/_output/e2node.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/e2node-1.0.0
 
+build/_output/rbac.so.1.0.0: # @HELP build rbac.so.1.0.0
+	CGO_ENABLED=1 go build -o build/_output/rbac.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/rbac-1.0.0
+
 PHONY:build
 build: # @HELP build all libraries
 build: build/_output/copylibandstay build/_output/testdevice.so.1.0.0 build/_output/testdevice.so.2.0.0 build/_output/devicesim.so.1.0.0 build/_output/stratum.so.1.0.0
+# build/_output/rbac.so.1.0.0
 
 PHONY: config-plugin-docker-testdevice-1.0.0
 config-plugin-docker-testdevice-1.0.0: # @HELP build testdevice 1.0.0 plugin Docker image
@@ -78,8 +82,18 @@ config-plugin-docker-e2node-1.0.0: # @HELP build e2node 1.0.0 plugin Docker imag
 		-t onosproject/config-model-e2node-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
+PHONY: config-plugin-docker-rbac-1.0.0
+config-plugin-docker-rbac-1.0.0: # @HELP build rbac 1.0.0 plugin Docker image
+	@go mod vendor
+	docker build . -f build/plugins/Dockerfile \
+		--build-arg PLUGIN_MAKE_TARGET=rbac \
+		--build-arg PLUGIN_MAKE_VERSION=1.0.0 \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
+		-t onosproject/config-model-rbac-1.0.0:${ONOS_CONFIG_VERSION}
+	@rm -rf vendor
+
 PHONY: images
-images: config-plugin-docker-testdevice-1.0.0 config-plugin-docker-testdevice-2.0.0 config-plugin-docker-devicesim-1.0.0 config-plugin-docker-stratum-1.0.0 config-plugin-docker-e2node-1.0.0
+images: config-plugin-docker-testdevice-1.0.0 config-plugin-docker-testdevice-2.0.0 config-plugin-docker-devicesim-1.0.0 config-plugin-docker-stratum-1.0.0 config-plugin-docker-e2node-1.0.0 config-plugin-docker-rbac-1.0.0
 
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images
@@ -89,6 +103,7 @@ kind: images
 	kind load docker-image onosproject/config-model-devicesim-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image onosproject/config-model-stratum-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image onosproject/config-model-e2node-1.0.0:${ONOS_CONFIG_VERSION}
+	kind load docker-image onosproject/config-model-rbac-1.0.0:${ONOS_CONFIG_VERSION}
 
 all: # @HELP build all libraries and all docker images
 all: build images
@@ -99,7 +114,8 @@ publish: # @HELP publish version on github and dockerhub
 		onosproject/config-model-testdevice-2.0.0 \
 		onosproject/config-model-devicesim-1.0.0 \
 		onosproject/config-model-stratum-1.0.0 \
-		onosproject/config-model-e2node-1.0.0
+		onosproject/config-model-e2node-1.0.0 \
+		onosproject/config-model-rbac-1.0.0
 
 clean: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor

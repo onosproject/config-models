@@ -1,0 +1,69 @@
+prefix: <
+    target: 'internal'
+    elem: <
+        name: 'rbac'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'role'
+            key:<
+                key:'roleid'
+                value:'aether-admin'
+             >
+         >
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'Aether Admin'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'role'
+            key:<
+                key:'roleid'
+                value:'menlo-ops'
+             >
+        >
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'Menlo Ops'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'role'
+            key:<
+                key:'roleid'
+                value:'tucson-ops'
+             >
+         >
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'Tucson Ops'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Rbac'
+    >
+>
