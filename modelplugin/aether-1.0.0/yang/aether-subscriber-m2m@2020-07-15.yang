@@ -1,0 +1,45 @@
+module aether-subscriber-m2m {
+  namespace "http://opennetworking.org/aether/subscriber-m2m";
+  prefix subm2m;
+
+  import aether-subscriber{ prefix sub; }
+  import aether-connectivity-profile{ prefix pro; }
+
+  organization "Open Networking Foundation.";
+  contact "Scott Baker";
+  description "To generate JSON from this use command
+    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+    Copied from YangUIComponents project";
+
+  revision "2020-07-15" {
+    description "An Aether Subscriber";
+    reference "RFC 6087";
+  }
+
+  container subscriber-connectivity-profile-m2m {
+    description "The top level container";
+
+    list relations {
+      key "subscriber-ueid connectivity-profile-uuid";
+      description
+        "List of relations between subscribers and profiles";
+
+      leaf subscriber-ueid {
+        type sub:ueid;
+        description "Subscriber ueid for this relation";
+      }
+
+      leaf connectivity-profile-uuid {
+        type pro:proid;
+        description "Profile UUID for this relation";
+      }
+
+      leaf enabled {
+        type boolean;
+        default false;
+        description
+          "Enable or disable this m2m";
+      }
+    }
+  } 
+}
