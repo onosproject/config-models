@@ -3,6 +3,7 @@ module rbac {
   prefix rbac;
 
   import ietf-yang-types { prefix yang; }
+  import rbac-identities { prefix rbid; }
 
   organization "Open Networking Foundation.";
   contact "Sean Condon";
@@ -13,30 +14,6 @@ module rbac {
   revision "2020-08-10" {
     description "Initial Version";
     reference "AETHER-308";
-  }
-
-  identity VERB {
-    description "A verb identity";
-  }
-
-  identity CREATE {
-    base VERB;
-    description "Create verb";
-  }
-
-  identity READ {
-    base VERB;
-    description "Read verb";
-  }
-
-  identity UPDATE {
-    base VERB;
-    description "update verb";
-  }
-
-  identity DELETE {
-    base VERB;
-    description "Delete verb";
   }
 
   container rbac {
@@ -100,17 +77,25 @@ module rbac {
       }
 
       list noun {
-        key "noun";
-        description "A known verb e.g. CREATE, READ, UPDATE, DELETE";
+        key "name";
+        description "A known verb e.g. CREATE, READ, UPDATE, DELETE, RUN";
 
-        leaf noun {
+        leaf name {
             type string {
               length 1..200;
               pattern '/[a-zA-Z0-9\-/_.]*';
             }
-            description "The noun - in path format (must start with /)
+            description "The noun name - in path format (must start with /)
             Can include wildcards.
             Wilder entries will eclipse a narrower entry";
+        }
+
+        leaf type {
+            type identityref {
+                base rbid:NOUNTYPE;
+            }
+            description "Noun type";
+            default rbid:CONFIG;
         }
 
         list verb {
@@ -118,7 +103,7 @@ module rbac {
           description "an action allowed on this noun for this role and group";
           leaf verb {
             type identityref {
-              base VERB;
+              base rbid:VERB;
             }
             description "The verb identity";
           }

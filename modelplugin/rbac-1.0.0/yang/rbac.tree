@@ -10,8 +10,9 @@ module: rbac
         +--rw role           -> ../../role/roleid
         +--rw group          -> ../../group/groupid
         +--rw description?   string
-        +--rw noun* [noun]
-           +--rw noun    string
+        +--rw noun* [name]
+           +--rw name    string
+           +--rw type?   identityref
            +--rw verb* [verb]
               +--rw verb       identityref
               +--rw comment?   string
