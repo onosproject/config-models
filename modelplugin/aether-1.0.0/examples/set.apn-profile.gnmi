@@ -1,0 +1,75 @@
+prefix: <
+    target: 'spgw-1'
+    elem: <
+        name: 'apn-profile'
+    >
+    elem: <
+        name: 'apn-profile'
+        key:<
+            key:'id'
+            value:'_default_profile_'
+        >
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'apn-name'
+        >
+    >
+    val: <
+        string_val: 'internet'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'dns-primary'
+        >
+    >
+    val: <
+        string_val: '8.8.8.4'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'dns-secondary'
+        >
+    >
+    val: <
+        string_val: '8.8.8.8'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'mtu'
+        >
+    >
+    val: <
+        int_val: 1460
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'gx-enabled'
+        >
+    >
+    val: <
+        bool_val: true
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>

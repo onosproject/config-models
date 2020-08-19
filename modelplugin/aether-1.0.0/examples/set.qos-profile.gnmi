@@ -1,0 +1,48 @@
+prefix: <
+    target: 'spgw-1'
+    elem: <
+        name: 'qos-profile'
+    >
+    elem: <
+        name: 'qos-profile'
+        key:<
+            key:'id'
+            value:'low-bw-iot'
+        >
+    >
+    elem: <
+        name: 'apn-ambr'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'uplink'
+        >
+    >
+    val: <
+        int_val: 4096
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'downlink'
+        >
+    >
+    val: <
+        int_val: 4096
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>

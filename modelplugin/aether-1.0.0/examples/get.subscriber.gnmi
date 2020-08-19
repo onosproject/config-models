@@ -1,0 +1,9 @@
+path: <
+    target: 'spgw-1'
+    elem: <
+        name: 'subscriber'
+    >
+    elem: <
+        name: 'ue'
+    >
+>

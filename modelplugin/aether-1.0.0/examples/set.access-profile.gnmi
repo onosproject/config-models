@@ -1,0 +1,45 @@
+prefix: <
+    target: 'spgw-1'
+    elem: <
+        name: 'access-profile'
+    >
+    elem: <
+        name: 'access-profile'
+        key:<
+            key:'id'
+            value:'internet-only'
+        >
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'type'
+        >
+    >
+    val: <
+        string_val: 'internet-only'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'filter'
+        >
+    >
+    val: <
+        string_val: 'allow-app-name'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>
