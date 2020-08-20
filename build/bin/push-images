@@ -5,4 +5,6 @@ docker push onosproject/config-model-testdevice-1.0.0
 docker push onosproject/config-model-testdevice-2.0.0
 docker push onosproject/config-model-devicesim-1.0.0
 docker push onosproject/config-model-stratum-1.0.0
+docker push onosproject/config-model-e2node-1.0.0
+docker push onosproject/config-model-rbac-1.0.0
 
