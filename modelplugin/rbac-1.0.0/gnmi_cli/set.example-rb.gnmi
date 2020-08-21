@@ -3,26 +3,53 @@ prefix: <
     elem: <
         name: 'rbac'
     >
+    elem: <
+        name: 'role-binding'
+        key:<
+            key:'role'
+            value:'aether-admin'
+        >
+        key:<
+            key:'group'
+            value:'administrators'
+        >
+    >
 >
 update: <
     path: <
         elem: <
-            name: 'role-binding'
-            key:<
-                key:'role'
-                value:'aether-admin'
-            >
-            key:<
-                key:'group'
-                value:'administrators'
-            >
+            name: 'description'
         >
+    >
+    val: <
+        string_val: 'Aether Administrators Role for Administrators Group READ RBAC'
+    >
+>
+update: <
+    path: <
         elem: <
             name: 'noun'
             key:<
-                key:'noun'
-                value:'/internal/a/b/c'
-             >
+                key:'name'
+                value: '/internal/a/b/c'
+            >
+        >
+        elem: <
+            name: 'type'
+        >
+    >
+    val: <
+        string_val: 'CONFIG'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'noun'
+            key:<
+                key:'name'
+                value: '/internal/a/b/c'
+            >
         >
         elem: <
             name: 'verb'
@@ -36,7 +63,31 @@ update: <
         >
     >
     val: <
-        string_val: 'Aether Administrators Role for Administrators Group READ RBAC'
+        string_val: 'Permission to read'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'noun'
+            key:<
+                key:'name'
+                value: '/internal/a/b/c'
+            >
+        >
+        elem: <
+            name: 'verb'
+            key:<
+                key:'verb'
+                value:'CREATE'
+             >
+        >
+        elem: <
+            name: 'comment'
+        >
+    >
+    val: <
+        string_val: 'Permission to create'
     >
 >
 extension: <
