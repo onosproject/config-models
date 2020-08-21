@@ -141,7 +141,7 @@ publish: # @HELP publish version on github and dockerhub
 		onosproject/config-model-devicesim-1.0.0 \
 		onosproject/config-model-stratum-1.0.0 \
 		onosproject/config-model-e2node-1.0.0 \
-		onosproject/config-model-rbac-1.0.0
+		onosproject/config-model-rbac-1.0.0 \
 		onosproject/config-model-aether-1.0.0
 
 clean: # @HELP remove all the build artifacts
