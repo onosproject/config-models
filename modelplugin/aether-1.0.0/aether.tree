@@ -1,0 +1,46 @@
+module: access-profile
+  +--rw access-profile
+     +--rw access-profile* [id]
+        +--rw id        access-profile-id
+        +--rw type?     string
+        +--rw filter?   string
+module: aether-subscriber
+  +--rw subscriber
+     +--rw ue* [ueid]
+        +--rw ueid             ueid
+        +--rw serving-plmn
+        |  +--rw mcc?   mcc
+        |  +--rw mnc?   mnc
+        |  +--rw tac?   tac
+        +--rw requested-apn?   string
+        +--rw priority?        uint32
+        +--rw enabled?         boolean
+        +--rw profiles
+           +--rw apn-profile?      apn:apn-profile-id
+           +--rw up-profile?       up:up-profile-id
+           +--rw qos-profile?      qos:qos-profile-id
+           +--rw access-profile* [access-profile]
+              +--rw access-profile    ap:access-profile-id
+              +--rw allowed?          boolean
+module: apn-profile
+  +--rw apn-profile
+     +--rw apn-profile* [id]
+        +--rw id               apn-profile-id
+        +--rw apn-name?        string
+        +--rw dns-primary?     inet:ip-address
+        +--rw dns-secondary?   inet:ip-address
+        +--rw mtu?             uint32
+        +--rw gx-enabled?      boolean
+module: qos-profile
+  +--rw qos-profile
+     +--rw qos-profile* [id]
+        +--rw id          qos-profile-id
+        +--rw apn-ambr
+           +--rw uplink?     uint32
+           +--rw downlink?   uint32
+module: up-profile
+  +--rw up-profile
+     +--rw up-profile* [id]
+        +--rw id                up-profile-id
+        +--rw user-plane?       string
+        +--rw access-control?   string

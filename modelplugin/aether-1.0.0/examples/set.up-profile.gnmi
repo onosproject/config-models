@@ -1,0 +1,45 @@
+prefix: <
+    target: 'spgw-1'
+    elem: <
+        name: 'up-profile'
+    >
+    elem: <
+        name: 'up-profile'
+        key:<
+            key:'id'
+            value:'Policy1'
+        >
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'user-plane'
+        >
+    >
+    val: <
+        string_val: 'spgwu1.headless'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'access-control'
+        >
+    >
+    val: <
+        string_val: 'all'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>
