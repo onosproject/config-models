@@ -4,6 +4,9 @@ path: <
     name: 'rbac'
   >
   elem: <
-    name: 'role-binding'
+    name: 'group'
+  >
+  elem: <
+    name: 'description'
   >
 >

@@ -13,33 +13,23 @@ module rbac-identities {
         reference "AETHER-308";
     }
 
-    identity VERB {
-      description "A verb identity";
+    identity PERMISSION {
+      description "A permission identity";
     }
 
     identity CREATE {
-      base VERB;
-      description "Create verb";
+      base PERMISSION;
+      description "Create permission";
     }
 
     identity READ {
-      base VERB;
-      description "Read verb";
+      base PERMISSION;
+      description "Read permission";
     }
 
-    identity UPDATE {
-      base VERB;
-      description "update verb";
-    }
-
-    identity DELETE {
-      base VERB;
-      description "Delete verb";
-    }
-
-    identity RUN {
-      base VERB;
-      description "Run verb, for gRPC nouns";
+    identity ALL {
+      base PERMISSION;
+      description "all permissions";
     }
 
 

@@ -3,22 +3,22 @@ prefix: <
     elem: <
         name: 'rbac'
     >
->
-update: <
-    path: <
-        elem: <
-            name: 'role'
-            key:<
-                key:'roleid'
-                value:'aether-admin'
-             >
+    elem: <
+        name: 'group'
+        key:<
+            key:'groupid'
+            value:'menlo-admins'
          >
+     >
+>
+update: <
+    path: <
         elem: <
             name: 'description'
         >
     >
     val: <
-        string_val: 'Aether Admin'
+        string_val: 'Menlo Administrators group'
     >
 >
 update: <
@@ -27,15 +27,15 @@ update: <
             name: 'role'
             key:<
                 key:'roleid'
-                value:'menlo-ops'
-             >
+                value:'aether-admins'
+            >
         >
         elem: <
             name: 'description'
         >
     >
     val: <
-        string_val: 'Menlo Ops'
+        string_val: 'As role Aether Admins'
     >
 >
 update: <
@@ -44,15 +44,15 @@ update: <
             name: 'role'
             key:<
                 key:'roleid'
-                value:'tucson-ops'
-             >
-         >
+                value:'aether-ops'
+            >
+        >
         elem: <
             name: 'description'
         >
     >
     val: <
-        string_val: 'Tucson Ops'
+        string_val: 'As role Aether Ops'
     >
 >
 extension: <
