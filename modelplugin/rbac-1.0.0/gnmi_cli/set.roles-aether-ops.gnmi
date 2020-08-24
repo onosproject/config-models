@@ -1,0 +1,81 @@
+prefix: <
+    target: 'internal'
+    elem: <
+        name: 'rbac'
+    >
+    elem: <
+        name: 'role'
+        key:<
+            key:'roleid'
+            value:'aether-ops'
+         >
+     >
+>
+update: <
+    path: <
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'Aether Operations'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'permission'
+        >
+        elem: <
+            name: 'operation'
+        >
+    >
+    val: <
+        string_val: 'READ'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'permission'
+        >
+        elem: <
+            name: 'type'
+        >
+    >
+    val: <
+        string_val: 'CONFIG'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'permission'
+        >
+        elem: <
+            name: 'noun'
+        >
+    >
+    val: <
+        leaflist_val: <
+          element: <
+            string_val: '/internal/aether/*'
+          >
+          element: <
+            string_val: '/internal/rbac/*'
+          >
+        >
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'1.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Rbac'
+    >
+>

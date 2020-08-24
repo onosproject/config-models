@@ -7,10 +7,7 @@ path: <
     name: 'role'
     key: <
       key: 'roleid'
-      value: 'menlo-ops'
+      value: 'aether-admin'
     >
-  >
-  elem: <
-    name: 'description'
   >
 >

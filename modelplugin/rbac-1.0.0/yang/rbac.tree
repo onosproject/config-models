@@ -3,16 +3,13 @@ module: rbac
      +--rw role* [roleid]
      |  +--rw roleid         yang:yang-identifier
      |  +--rw description?   string
+     |  +--rw permission
+     |     +--rw operation?   identityref
+     |     +--rw type?        identityref
+     |     +--rw noun*        string
      +--rw group* [groupid]
-     |  +--rw groupid        yang:yang-identifier
-     |  +--rw description?   string
-     +--rw role-binding* [role group]
-        +--rw role           -> ../../role/roleid
-        +--rw group          -> ../../group/groupid
+        +--rw groupid        yang:yang-identifier
         +--rw description?   string
-        +--rw noun* [name]
-           +--rw name    string
-           +--rw type?   identityref
-           +--rw verb* [verb]
-              +--rw verb       identityref
-              +--rw comment?   string
+        +--rw role* [roleid]
+           +--rw roleid         -> /rbac/role/roleid
+           +--rw description?   string

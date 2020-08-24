@@ -8,8 +8,8 @@ module rbac {
   organization "Open Networking Foundation.";
   contact "Sean Condon";
   description "Configuration of Role Based Access Control
-    To generate JSON from this use command
-    pyang -f jtoxx rbac.yang | python3 -m json.tool > test1.json";
+    To generate tree view from this use command
+    pyang -f tree yang/rbac@2020-08-10.yang -p yang";
 
   revision "2020-08-10" {
     description "Initial Version";
@@ -34,6 +34,31 @@ module rbac {
         }
         description "A role description";
       }
+
+      container permission {
+        leaf operation {
+          type identityref {
+            base rbid:PERMISSION;
+          }
+        }
+
+        leaf type {
+          type identityref {
+            base rbid:NOUNTYPE;
+          }
+          description "the type of permission GRPC or CONFIG";
+        }
+
+        leaf-list noun {
+          type string {
+            length 1..200;
+            pattern '/[a-zA-Z0-9\-/_.]*';
+          }
+          description "The noun name - in path format (must start with /)
+            Can include wildcards.
+            Wilder entries will eclipse a narrower entry";
+        }
+      }
     }
 
     list group {
@@ -51,71 +76,21 @@ module rbac {
         }
         description "A group description";
       }
-    }
 
-    list role-binding {
-      key "role group";
-      description "Binding of roles to groups";
-
-      leaf role {
-        type leafref {
-          path "../../role/roleid";
+      list role {
+        key roleid;
+        description "The list of role IDs that the group is mapped to";
+        leaf roleid {
+          type leafref {
+            path "/rbac/role/roleid";
+          }
         }
-      }
-
-      leaf group {
-        type leafref {
-          path "../../group/groupid";
-        }
-      }
-
-      leaf description {
-        type string {
+        leaf description {
+          type string {
             length 1..100;
-        }
-        description "A role binding description";
-      }
-
-      list noun {
-        key "name";
-        description "A known verb e.g. CREATE, READ, UPDATE, DELETE, RUN";
-
-        leaf name {
-            type string {
-              length 1..200;
-              pattern '/[a-zA-Z0-9\-/_.]*';
-            }
-            description "The noun name - in path format (must start with /)
-            Can include wildcards.
-            Wilder entries will eclipse a narrower entry";
-        }
-
-        leaf type {
-            type identityref {
-                base rbid:NOUNTYPE;
-            }
-            description "Noun type";
-            default rbid:CONFIG;
-        }
-
-        list verb {
-          key verb;
-          description "an action allowed on this noun for this role and group";
-          leaf verb {
-            type identityref {
-              base rbid:VERB;
-            }
-            description "The verb identity";
-          }
-
-          leaf comment {
-            type string {
-              length 0..100;
-            }
           }
         }
       }
     }
-    
   }
 }
