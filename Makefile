@@ -30,16 +30,27 @@ build/_output/rbac.so.1.0.0: # @HELP build rbac.so.1.0.0
 build/_output/aether.so.1.0.0: # @HELP build aether.so.1.0.0
 	CGO_ENABLED=1 go build -o build/_output/aether.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/aether-1.0.0
 
+linters: # @HELP examines Go source code and reports coding problems
+	golangci-lint run --timeout 30m
+
+license_check: # @HELP examine and ensure license headers exist
+	@if [ ! -d "../build-tools" ]; then cd .. && git clone https://github.com/onosproject/build-tools.git; fi
+	./../build-tools/licensing/boilerplate.py -v --rootdir=${CURDIR}
+
+gofmt: # @HELP run the Go format validation
+	bash -c "diff -u <(echo -n) <(gofmt -d pkg/)"
+
 PHONY:build
 build: # @HELP build all libraries
-build: build/_output/copylibandstay \
-        build/_output/testdevice.so.1.0.0 \
-        build/_output/testdevice.so.2.0.0 \
-        build/_output/devicesim.so.1.0.0 \
-        build/_output/stratum.so.1.0.0 \
-        build/_output/e2node.so.1.0.0 \
-        build/_output/rbac.so.1.0.0 \
-        build/_output/aether.so.1.0.0
+build: linters license_check gofmt \
+    build/_output/copylibandstay \
+    build/_output/testdevice.so.1.0.0 \
+    build/_output/testdevice.so.2.0.0 \
+    build/_output/devicesim.so.1.0.0 \
+    build/_output/stratum.so.1.0.0 \
+    build/_output/e2node.so.1.0.0 \
+    build/_output/rbac.so.1.0.0 \
+    build/_output/aether.so.1.0.0
 
 PHONY: config-plugin-docker-testdevice-1.0.0
 config-plugin-docker-testdevice-1.0.0: # @HELP build testdevice 1.0.0 plugin Docker image
