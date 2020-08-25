@@ -53,7 +53,14 @@ module qos-profile {
           units bps;
           description
             "Downstream aggregate maximum bit rate";
+        }        
+      }
+      
+      leaf description {
+        type string {
+          length 1..100;
         }
+        description "description of this profile";
       }
     }
   } 

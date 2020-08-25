@@ -48,6 +48,13 @@ module access-profile {
         }
         description "filter";
       }
+
+      leaf description {
+        type string {
+          length 1..100;
+        }
+        description "description of this profile";
+      }
     }
   } 
 }

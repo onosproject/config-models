@@ -68,6 +68,13 @@ module apn-profile {
         default false;
         description "enable gx interface";
       }
+
+      leaf description {
+        type string {
+          length 1..100;
+        }
+        description "description of this profile";
+      }      
     }
   } 
 }
