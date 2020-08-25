@@ -50,6 +50,11 @@ func BuildOpenapi(yangSchema *ytypes.Schema) (*openapi3.Swagger, error) {
 		return nil, err
 	}
 
+	swaggerLdr := openapi3.NewSwaggerLoader()
+	if err = swaggerLdr.ResolveRefsIn(&swagger, nil); err != nil {
+		return nil, fmt.Errorf("error on Resolving Refs %v", err)
+	}
+
 	return &swagger, nil
 }
 
@@ -72,8 +77,20 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			schemaVal.Title = dirEntry.Name
 
-			openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
-				Value: schemaVal,
+			if dirEntry.IsLeaf() {
+				openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
+					Value: schemaVal,
+				}
+			} else { // Leaflist
+				arr := openapi3.NewSchema()
+				arr.Type = "leaf-list"
+				arr.Items = &openapi3.SchemaRef{
+					Value: schemaVal,
+				}
+				arr.Title = fmt.Sprintf("leaf-list-%s", dirEntry.Name)
+				openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
+					Value: arr,
+				}
 			}
 		} else if dirEntry.IsContainer() {
 			newPath := newPathItem(dirEntry, itemPath, parentPath)
@@ -97,7 +114,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Ref:   toCamelCase(itemPath),
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
 				Value: asRef.Value,
 			})
 			newPath.Get.AddResponse(200, respGet200)
@@ -116,6 +133,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of container
 					openapiComponents.Schemas[k] = v
+				case "string": // leaf (string) as a child of list
+					schemaVal.Properties[v.Value.Title] = v
+				case "leaf-list":
+					v.Value.Type = "array"
+					schemaVal.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("undhanled in container %s: %s", k, v.Value.Type)
 				}
@@ -145,6 +167,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
 				Value: arr,
 			}
+
+			respGet200 := openapi3.NewResponse()
+			respGet200.Description = &respGet200Desc
+			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+				Value: openapiComponents.Schemas[toCamelCase(itemPath)].Value,
+			})
+			openapiPaths[listItemPath].Get.AddResponse(200, respGet200)
+
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
@@ -159,13 +190,20 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of list
-					arr.Items.Value.Properties[k] = v
+
+					arr.Items.Value.Properties[k] = &openapi3.SchemaRef{
+						Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
+						Value: v.Value,
+					}
+					openapiComponents.Schemas[k] = v
 				case "string": // leaf (string) as a child of list
 					arr.Items.Value.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 				}
 			}
+		} else {
+			return nil, nil, fmt.Errorf("unhandled dirEntry.Type %v", dirEntry.Type)
 		}
 	}
 	return openapiPaths, &openapiComponents, nil

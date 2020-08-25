@@ -3,6 +3,7 @@ module github.com/onosproject/config-models/modelplugin/rbac-1.0.0
 go 1.14
 
 require (
+	github.com/ghodss/yaml v1.0.0
 	github.com/golang/protobuf v1.3.3
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
