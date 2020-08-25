@@ -61,6 +61,16 @@ update: <
         bool_val: true
     >
 >
+update: <
+    path: <
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'the default APN profile'
+    >
+>
 extension: <
     registered_ext: <
         id: 101,

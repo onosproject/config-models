@@ -10,12 +10,12 @@ prefix: <
             value:'low-bw-iot'
         >
     >
-    elem: <
-        name: 'apn-ambr'
-    >
 >
 update: <
     path: <
+        elem: <
+            name: 'apn-ambr'
+        >
         elem: <
             name: 'uplink'
         >
@@ -27,11 +27,24 @@ update: <
 update: <
     path: <
         elem: <
+            name: 'apn-ambr'
+        >
+        elem: <
             name: 'downlink'
         >
     >
     val: <
         int_val: 4096
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'low bitrate internet service'
     >
 >
 extension: <

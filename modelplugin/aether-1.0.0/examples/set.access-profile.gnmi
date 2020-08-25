@@ -31,6 +31,16 @@ update: <
         string_val: 'allow-app-name'
     >
 >
+update: <
+    path: <
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'access profile that allows internet only'
+    >
+>
 extension: <
     registered_ext: <
         id: 101,

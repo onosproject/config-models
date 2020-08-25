@@ -19,7 +19,7 @@ module aether-subscriber {
   }
 
   // User Equipment ID (UEID), Basically an IMSI range
-  // syntax:
+  // examples:
   //    123456789???????  ... wildcard at the end
   //    123456???0123455  ... wildcard in the middle
   //    1234567890000000-123456789000005 ... range
@@ -100,24 +100,33 @@ module aether-subscriber {
 
       container profiles {
         leaf apn-profile {
-          type apn:apn-profile-id;
+          type leafref {
+            path "/apn:apn-profile/apn:apn-profile/apn:id";
+          }
           description
             "Link to apn profile";
         }
         leaf up-profile {
-          type up:up-profile-id;
+          type leafref {
+            path "/up:up-profile/up:up-profile/up:id";
+          }          
           description
             "Link to user plane profile";
         }
         leaf qos-profile {
-          type qos:qos-profile-id;
+          type leafref {
+            path "/qos:qos-profile/qos:qos-profile/qos:id";
+          }              
           description
             "Link to qos profile";
         }
         list access-profile {
           key "access-profile";
           leaf access-profile {
-            type ap:access-profile-id;
+            type leafref {
+              path "/ap:access-profile/ap:access-profile/ap:id";
+            }            
+//            type ap:access-profile-id;
             description
                 "Link to access profile";
           }
