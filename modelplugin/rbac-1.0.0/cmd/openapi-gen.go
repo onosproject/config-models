@@ -54,6 +54,6 @@ func main() {
 			os.Exit(-1)
 		}
 	} else {
-		fmt.Println(yaml)
+		fmt.Println(string(yaml))
 	}
 }
