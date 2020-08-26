@@ -15,13 +15,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"github.com/ghodss/yaml"
 	"github.com/onosproject/config-models/modelplugin/rbac-1.0.0/rbac_1_0_0"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
+	"io/ioutil"
 	"os"
 )
 
 func main() {
+	var outputFile string
+	flag.StringVar(&outputFile, "o", "", "Where to output generated code, stdout is default")
+	flag.Parse()
+
 	schemaMap, err := rbac_1_0_0.Schema()
 	if err != nil {
 		fmt.Println(err)
@@ -34,11 +41,19 @@ func main() {
 		os.Exit(-1)
 	}
 
-	json, err := schema.MarshalJSON()
+	yaml, err := yaml.Marshal(schema)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
-	fmt.Println(string(json))
 
+	if outputFile != "" {
+		err = ioutil.WriteFile(outputFile, yaml, 0644)
+		if err != nil {
+			fmt.Printf("error writing generated code to file: %s\n", err)
+			os.Exit(-1)
+		}
+	} else {
+		fmt.Println(string(yaml))
+	}
 }
