@@ -2,6 +2,8 @@ module test1 {
   namespace "http://opennetworking.org/devicesim/test1";
   prefix t1;
 
+  import test1-identities { prefix t1id; }
+
   organization "Open Networking Foundation.";
   contact "Sean Condon";
   description "To generate JSON from this use command
@@ -123,13 +125,18 @@ module test1 {
     description "A second top level container - this one for state attributes. Edit symbol should not be visible";
 
     list list2b {
-      key index;
+      key "index1 index2";
       config false;
-      description "A simple list of state items";
+      description "A simple list of state items, with a double key";
 
-      leaf index {
+      leaf index1 {
         type uint8;
         description "The list index";
+      }
+
+      leaf index2 {
+          type uint8;
+          description "The list index";
       }
 
       leaf leaf3c {
@@ -138,6 +145,13 @@ module test1 {
           length 1..20;
         }
         description "A string attribute in the list";
+      }
+
+      leaf leaf3d {
+        type identityref {
+            base t1id:MYBASE;
+        }
+        description "An identityref attribute in the list";
       }
     }
 
