@@ -52,10 +52,10 @@ module rbac {
         leaf-list noun {
           type string {
             length 1..200;
-            pattern '/[a-zA-Z0-9\-/_.]*';
+            pattern '/[a-zA-Z0-9\-/_.*?]*';
           }
           description "The noun name - in path format (must start with /)
-            Can include wildcards.
+            Can include wildcards (*, ?).
             Wilder entries will eclipse a narrower entry";
         }
       }
