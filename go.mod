@@ -5,7 +5,6 @@ go 1.14
 require (
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/golang/protobuf v1.3.3
-	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/iancoleman/strcase v0.1.0
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/openconfig/gnmi v0.0.0-20190823184014-89b2bf29312c // indirect
@@ -16,5 +15,5 @@ require (
 	golang.org/x/text v0.3.2 // indirect
 	golang.org/x/tools v0.0.0-20200113040837-eac381796e91
 	google.golang.org/genproto v0.0.0-20200128133413-58ce757ed39b // indirect
-	google.golang.org/grpc v1.27.1
+	google.golang.org/grpc v1.31.1
 )
