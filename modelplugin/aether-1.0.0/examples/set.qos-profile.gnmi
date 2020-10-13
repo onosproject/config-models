@@ -7,7 +7,7 @@ prefix: <
         name: 'qos-profile'
         key:<
             key:'id'
-            value:'low-bw-iot'
+            value:'profile-qos-demo-1'
         >
     >
 >
@@ -21,7 +21,7 @@ update: <
         >
     >
     val: <
-        int_val: 4096
+        int_val: 12345678
     >
 >
 update: <
@@ -34,7 +34,7 @@ update: <
         >
     >
     val: <
-        int_val: 4096
+        int_val: 12345678
     >
 >
 update: <

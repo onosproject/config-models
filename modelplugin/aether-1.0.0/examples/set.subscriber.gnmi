@@ -7,9 +7,19 @@ prefix: <
         name: 'ue'
         key:<
             key:'ueid'
-            value:'e150109999125'
+            value:'200000000000000-299999999999999'
             >
         >
+>
+update: <
+    path: <
+        elem: <
+            name: 'priority'
+        >
+    >
+    val: <
+        int_val: 5
+    >
 >
 update: <
     path: <
@@ -63,16 +73,6 @@ update: <
 update: <
     path: <
         elem: <
-            name: 'requested-apn'
-        >
-    >
-    val: <
-        string_val: 'mme-selected-apn'
-    >
->
-update: <
-    path: <
-        elem: <
             name: 'profiles'
         >
         elem: <
@@ -80,7 +80,7 @@ update: <
         >
     >
     val: <
-        string_val: '_default_profile_'
+        string_val: 'profile-apn-demo-1'
     >
 >
 update: <
@@ -93,7 +93,7 @@ update: <
         >
     >
     val: <
-        string_val: 'low-bw-iot'
+        string_val: 'profile-qos-demo-1'
     >
 >
 update: <
@@ -106,7 +106,7 @@ update: <
         >
     >
     val: <
-        string_val: 'Policy1'
+        string_val: 'profile-up-demo-1'
     >
 >
 update: <
@@ -118,7 +118,7 @@ update: <
             name: 'access-profile'
             key:<
                 key:'access-profile'
-                value:'internet-only'
+                value:'profile-access-demo-1'
             >
         >
         elem: <

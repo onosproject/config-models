@@ -7,7 +7,7 @@ prefix: <
         name: 'up-profile'
         key:<
             key:'id'
-            value:'Policy1'
+            value:'profile-up-demo-1'
         >
     >
 >
@@ -18,17 +18,7 @@ update: <
         >
     >
     val: <
-        string_val: 'spgwu1.headless'
-    >
->
-update: <
-    path: <
-        elem: <
-            name: 'access-control'
-        >
-    >
-    val: <
-        string_val: 'all'
+        string_val: 'upf-headless'
     >
 >
 update: <
