@@ -7,7 +7,7 @@ prefix: <
         name: 'access-profile'
         key:<
             key:'id'
-            value:'internet-only'
+            value:'profile-access-demo-1'
         >
     >
 >
@@ -18,17 +18,7 @@ update: <
         >
     >
     val: <
-        string_val: 'internet-only'
-    >
->
-update: <
-    path: <
-        elem: <
-            name: 'filter'
-        >
-    >
-    val: <
-        string_val: 'allow-app-name'
+        string_val: 'allow-all'
     >
 >
 update: <
