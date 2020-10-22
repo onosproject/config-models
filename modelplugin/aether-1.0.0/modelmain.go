@@ -27,7 +27,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-08-18.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-10-22.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
 
 type modelplugin string
 
@@ -36,7 +36,7 @@ const modelversion = "1.0.0"
 const modulename = "aether.so.1.0.0"
 
 var modelData = []*gnmi.ModelData{
-	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-08-18"},
+	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
 	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
 	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
