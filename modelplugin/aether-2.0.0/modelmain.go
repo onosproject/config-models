@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A plugin for the YGOT model of aether-1.0.0.
+// A plugin for the YGOT model of aether-2.0.0.
 package main
 
 import (
 	"fmt"
 	_ "github.com/golang/protobuf/proto"
-	"github.com/onosproject/config-models/modelplugin/aether-1.0.0/aether_1_0_0"
+	"github.com/onosproject/config-models/modelplugin/aether-2.0.0/aether_2_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
 	_ "github.com/openconfig/ygot/genutil"
@@ -27,16 +27,16 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-08-18.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_2_0_0/generated.go -package_name=aether_2_0_0 -generate_fakeroot aether-subscriber@2020-10-22.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
 
 type modelplugin string
 
 const modeltype = "Aether"
-const modelversion = "1.0.0"
-const modulename = "aether.so.1.0.0"
+const modelversion = "2.0.0"
+const modulename = "aether.so.2.0.0"
 
 var modelData = []*gnmi.ModelData{
-	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-08-18"},
+	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
 	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
 	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
@@ -49,10 +49,10 @@ func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
 
 // UnmarshallConfigValues allows Device to implement the Unmarshaller interface
 func (m modelplugin) UnmarshalConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
-	device := &aether_1_0_0.Device{}
+	device := &aether_2_0_0.Device{}
 	vgs := ygot.ValidatedGoStruct(device)
 
-	if err := aether_1_0_0.Unmarshal([]byte(jsonTree), device); err != nil {
+	if err := aether_2_0_0.Unmarshal([]byte(jsonTree), device); err != nil {
 		return nil, err
 	}
 
@@ -61,15 +61,15 @@ func (m modelplugin) UnmarshalConfigValues(jsonTree []byte) (*ygot.ValidatedGoSt
 
 func (m modelplugin) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.ValidationOption) error {
 	deviceDeref := *ygotModel
-	device, ok := deviceDeref.(*aether_1_0_0.Device)
+	device, ok := deviceDeref.(*aether_2_0_0.Device)
 	if !ok {
-		return fmt.Errorf("unable to convert model in to aether_1_0_0")
+		return fmt.Errorf("unable to convert model in to aether_2_0_0")
 	}
 	return device.Validate()
 }
 
 func (m modelplugin) Schema() (map[string]*yang.Entry, error) {
-	return aether_1_0_0.UnzipSchema()
+	return aether_2_0_0.UnzipSchema()
 }
 
 // GetStateMode returns an int - we do not use the enum because we do not want a

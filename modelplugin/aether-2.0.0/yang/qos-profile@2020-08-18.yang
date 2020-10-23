@@ -35,6 +35,13 @@ module qos-profile {
         description "ID for this qos profile.";
       }
 
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }     
+
       container apn-ambr {
         leaf uplink {
           type uint32 {
