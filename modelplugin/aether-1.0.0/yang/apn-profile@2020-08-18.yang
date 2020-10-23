@@ -37,6 +37,13 @@ module apn-profile {
         description "ID for this apn profile.";
       }
 
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }     
+
       leaf apn-name {
         type string {
           length 1..32;

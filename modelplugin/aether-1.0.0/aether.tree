@@ -1,14 +1,16 @@
 module: access-profile
   +--rw access-profile
      +--rw access-profile* [id]
-        +--rw id             access-profile-id
-        +--rw type?          string
-        +--rw filter?        string
-        +--rw description?   string
+        +--rw id              access-profile-id
+        +--rw display-name?   string
+        +--rw type?           string
+        +--rw filter?         string
+        +--rw description?    string
 module: apn-profile
   +--rw apn-profile
      +--rw apn-profile* [id]
         +--rw id               apn-profile-id
+        +--rw display-name?    string
         +--rw apn-name?        string
         +--rw dns-primary?     inet:ip-address
         +--rw dns-secondary?   inet:ip-address
@@ -18,15 +20,17 @@ module: apn-profile
 module: qos-profile
   +--rw qos-profile
      +--rw qos-profile* [id]
-        +--rw id             qos-profile-id
+        +--rw id              qos-profile-id
+        +--rw display-name?   string
         +--rw apn-ambr
         |  +--rw uplink?     uint32
         |  +--rw downlink?   uint32
-        +--rw description?   string
+        +--rw description?    string
 module: up-profile
   +--rw up-profile
      +--rw up-profile* [id]
         +--rw id                up-profile-id
+        +--rw display-name?     string
         +--rw user-plane?       string
         +--rw access-control?   string
         +--rw description?      string
