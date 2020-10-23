@@ -27,7 +27,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_2_0_0/generated.go -package_name=aether_2_0_0 -generate_fakeroot aether-subscriber@2020-10-22.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_2_0_0/generated.go -package_name=aether_2_0_0 -generate_fakeroot aether-subscriber@2020-10-22.yang apn-profile@2020-10-22.yang up-profile@2020-10-22.yang qos-profile@2020-10-22.yang access-profile@2020-10-22.yang
 
 type modelplugin string
 
@@ -37,10 +37,10 @@ const modulename = "aether.so.2.0.0"
 
 var modelData = []*gnmi.ModelData{
 	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
-	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
-	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
-	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-08-18"},
+	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 }
 
 func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {

@@ -1,5 +1,5 @@
-module up-profile {
-  namespace "http://opennetworking.org/aether/user-plane-profile";
+module qos-profile {
+  namespace "http://opennetworking.org/aether/qos-profile";
   prefix pro;
 
   organization "Open Networking Foundation.";
@@ -8,31 +8,31 @@ module up-profile {
     pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
     Copied from YangUIComponents project";
 
-  revision "2020-08-18" {
-    description "An Aether user plane Profile";
+  revision "2020-10-22" {
+    description "An Aether qos Profile";
     reference "RFC 6087";
   }
 
   // TODO: Think more on whether this should be a UUID or
   // simply a unique name. If it's a UUID, could fix the 
   // string length.
-  typedef up-profile-id {
+  typedef qos-profile-id {
         type string {
             length 1..32;
         }
   }
 
-  container up-profile {
+  container qos-profile {
     description "The top level container";
 
-    list up-profile {
+    list qos-profile {
       key "id";
       description
-        "List of user plane profiles";
+        "List of qos profiles";
 
       leaf id {
-        type up-profile-id;
-        description "ID for this user plane profile.";
+        type qos-profile-id;
+        description "ID for this qos profile.";
       }
 
       leaf display-name {
@@ -42,26 +42,33 @@ module up-profile {
         description "display name to use in GUI or CLI";
       }     
 
-      leaf user-plane {
-        type string {
-          length 1..255;
+      container apn-ambr {
+        leaf uplink {
+          type uint32 {
+            range 0..4294967295;
+          }
+          default 0;
+          units bps;
+          description
+            "Upstream aggregate maximum bit rate";
         }
-        description "user plane name";
+        leaf downlink {
+          type uint32 {
+            range 0..4294967295;
+          }
+          default 0;
+          units bps;
+          description
+            "Downstream aggregate maximum bit rate";
+        }        
       }
-
-      leaf access-control {
-        type string {
-          length 1..32;
-        }
-        description "access control policy";
-      }
-
+      
       leaf description {
         type string {
           length 1..100;
         }
         description "description of this profile";
-      }      
+      }
     }
   } 
 }

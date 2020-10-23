@@ -1,5 +1,5 @@
-module access-profile {
-  namespace "http://opennetworking.org/aether/access-profile";
+module up-profile {
+  namespace "http://opennetworking.org/aether/user-plane-profile";
   prefix pro;
 
   organization "Open Networking Foundation.";
@@ -8,31 +8,31 @@ module access-profile {
     pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
     Copied from YangUIComponents project";
 
-  revision "2020-08-18" {
-    description "An Aether access Profile";
+  revision "2020-10-22" {
+    description "An Aether user plane Profile";
     reference "RFC 6087";
   }
 
   // TODO: Think more on whether this should be a UUID or
   // simply a unique name. If it's a UUID, could fix the 
   // string length.
-  typedef access-profile-id {
+  typedef up-profile-id {
         type string {
             length 1..32;
         }
   }
 
-  container access-profile {
+  container up-profile {
     description "The top level container";
 
-    list access-profile {
+    list up-profile {
       key "id";
       description
-        "List of access profiles";
+        "List of user plane profiles";
 
       leaf id {
-        type access-profile-id;
-        description "ID for this access profile.";
+        type up-profile-id;
+        description "ID for this user plane profile.";
       }
 
       leaf display-name {
@@ -42,18 +42,18 @@ module access-profile {
         description "display name to use in GUI or CLI";
       }     
 
-      leaf type {
+      leaf user-plane {
+        type string {
+          length 1..255;
+        }
+        description "user plane name";
+      }
+
+      leaf access-control {
         type string {
           length 1..32;
         }
-        description "type of profile";
-      }
-  
-      leaf filter {
-        type string {
-          length 0..32;
-        }
-        description "filter";
+        description "access control policy";
       }
 
       leaf description {
@@ -61,7 +61,7 @@ module access-profile {
           length 1..100;
         }
         description "description of this profile";
-      }
+      }      
     }
   } 
 }
