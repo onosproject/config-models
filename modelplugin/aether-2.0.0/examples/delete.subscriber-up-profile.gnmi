@@ -1,0 +1,33 @@
+prefix: <
+    target: 'spgw-1'
+    elem: <
+        name: 'subscriber'
+    >
+    elem: <
+        name: 'ue'
+        key:<
+            key:'id'
+            value:'32783ee8-1491-11eb-adc1-0242ac120002'
+            >
+        >
+>
+delete: <
+    elem: <
+        name: 'profiles'
+    >
+    elem: <
+        name: 'up-profile'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'2.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>

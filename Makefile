@@ -32,6 +32,9 @@ build/_output/rbac.so.1.0.0: # @HELP build rbac.so.1.0.0
 build/_output/aether.so.1.0.0: # @HELP build aether.so.1.0.0
 	CGO_ENABLED=1 go build -o build/_output/aether.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/aether-1.0.0
 
+build/_output/aether.so.2.0.0: # @HELP build aether.so.2.0.0
+	CGO_ENABLED=1 go build -o build/_output/aether.so.2.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/aether-2.0.0	
+
 linters: # @HELP examines Go source code and reports coding problems
 	golangci-lint run --timeout 30m
 
@@ -124,6 +127,16 @@ config-plugin-docker-aether-1.0.0: # @HELP build aether 1.0.0 plugin Docker imag
 		-t ${DOCKER_REPOSITORY}config-model-aether-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
+PHONY: config-plugin-docker-aether-2.0.0
+config-plugin-docker-aether-2.0.0: # @HELP build aether 1.0.0 plugin Docker image
+	@go mod vendor
+	docker build . -f build/plugins/Dockerfile \
+		--build-arg PLUGIN_MAKE_TARGET=aether \
+		--build-arg PLUGIN_MAKE_VERSION=2.0.0 \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
+		-t ${DOCKER_REPOSITORY}config-model-aether-2.0.0:${ONOS_CONFIG_VERSION}
+	@rm -rf vendor	
+
 PHONY: images
 images: config-plugin-docker-testdevice-1.0.0 \
         config-plugin-docker-testdevice-2.0.0 \
@@ -131,7 +144,8 @@ images: config-plugin-docker-testdevice-1.0.0 \
         config-plugin-docker-stratum-1.0.0 \
         config-plugin-docker-e2node-1.0.0 \
         config-plugin-docker-rbac-1.0.0 \
-        config-plugin-docker-aether-1.0.0
+        config-plugin-docker-aether-1.0.0 \
+		config-plugin-docker-aether-2.0.0
 
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images kind-only
@@ -145,6 +159,7 @@ kind-only:
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-e2node-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-rbac-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-1.0.0:${ONOS_CONFIG_VERSION}
+	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-2.0.0:${ONOS_CONFIG_VERSION}
 
 all: # @HELP build all libraries and all docker images
 all: build images
@@ -157,7 +172,8 @@ publish: # @HELP publish version on github and dockerhub
 		${DOCKER_REPOSITORY}config-model-stratum-1.0.0 \
 		${DOCKER_REPOSITORY}config-model-e2node-1.0.0 \
 		${DOCKER_REPOSITORY}config-model-rbac-1.0.0 \
-		${DOCKER_REPOSITORY}config-model-aether-1.0.0
+		${DOCKER_REPOSITORY}config-model-aether-1.0.0 \
+		${DOCKER_REPOSITORY}config-model-aether-2.0.0
 
 clean: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor
