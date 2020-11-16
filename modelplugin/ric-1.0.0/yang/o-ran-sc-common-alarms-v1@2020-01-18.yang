@@ -1,0 +1,56 @@
+module o-ran-sc-common-alarms-v1 {
+  yang-version 1.1;
+  namespace "urn:o-ran-sc:alarms:1.0";
+  prefix osc-al;
+
+  import ietf-alarms {
+    prefix al;
+  }
+
+  organization
+    "O-RAN Software Community";
+  contact
+    "www.o-ran-sc.org";
+  description
+    "This module defines the alarm identities for the O-RAN-SC Components.
+
+     Copyright 2020 the O-RAN Software Community.
+
+     Licensed under the Apache License, Version 2.0 (the 'License');
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an 'AS IS' BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.";
+
+  revision 2020-01-18 {
+    description
+      "initial revision";
+    reference
+      "O-RAN-OAM-Interface-Specification (O1)";
+  }
+
+  identity alarm-type-id {
+    base al:alarm-type-id;
+    description
+      "An abstract alarm type use for all O-RAN-SC alarm types which are
+       common across the O-RAN managed functions.";
+  }
+
+  identity smo-o1-ves-collector-not-reachable {
+    base alarm-type-id;
+    description
+      "The configured VES end-point for asynchron messages is not reachable.
+       Instructions:
+         1) Verify the VES configuration on the O-RAN component.
+         2) Verify the connectivity between the O-RAN component and the
+            SMO in terms of routing and firewall settings along the path.
+         3) Check the credentials of the O-RAN component (user, password,
+            certificate). Did changes happen on SMO level recently?";
+  }
+}

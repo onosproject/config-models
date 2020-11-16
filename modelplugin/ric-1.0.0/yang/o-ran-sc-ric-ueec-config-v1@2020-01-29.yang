@@ -1,0 +1,106 @@
+module o-ran-sc-ric-ueec-config-v1 {
+    yang-version 1.1;
+    namespace "urn:o-ran:ric:ueec-config:1.0";
+    prefix ruc;
+
+    import o-ran-sc-ric-xapp-desc-v1 {
+        prefix rxad;
+    }
+    import o-ran-sc-root-v1 {
+        prefix root;
+    }
+    import o-ran-sc-types-v1 {
+        prefix ot;
+    }
+
+    organization
+      "O-RAN Software Community";
+    contact
+      "www.o-ran.org";
+    description
+      "This module defines configuration parameters of UEEC xApp
+       
+       Copyright 2020 the O-RAN Alliance.
+       
+       Licensed under the Apache License, Version 2.0 (the 'License');
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+       
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an 'AS IS' BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.";
+
+    revision 2020-02-25 {
+        description
+          "Dependency to a common and abstract root module added.";
+        reference
+          "O-RAN-OAM-architecture-Specification (O1)";
+    }
+    revision 2020-01-29 {
+        description
+          "initial revision";
+        reference
+          "O-RAN-OAM-Interface-Specification (O1)";
+    }
+
+    grouping subscription {
+        leaf active {
+            type boolean;
+            description
+              "Subscription status: active or deactive
+               TODO: please see other subscription modules.";
+        }
+        container interfaceId {
+            container globalENBId {
+                leaf plmnId {
+                    type ot:sized-printable-string;
+                    description
+                      "PLMN ID";
+                }
+                leaf eNBId {
+                    type uint64;
+                    description
+                      "eNB ID";
+                }
+                description
+                  "Global ID";
+            }
+            description
+              "gNB interface ID - TODO: is this container needed?";
+        }
+        description
+          "Subscription related parameters";
+    }
+
+    grouping ric-specific-grp {
+        container config {
+            uses root:control-base-grp;
+            leaf namespace {
+                type string;
+                description
+                  "The namespace";
+            }
+            container control {
+                uses subscription;
+                description
+                  "The control object";
+            }
+            description
+              "The container for configuration data";
+        }
+        description
+          "Root object for gNB status";
+    }
+
+    // Inherit from controlled-function
+    augment "/root:controlled-element/root:controlled-function" {
+        when "derived-from-or-self(./root:function-type, 'rxad:near-realtime-ran-intelligent-controller')";
+        uses ric-specific-grp;
+        description
+          "Inheritance from root object class.";
+    }
+}

@@ -1,0 +1,60 @@
+module o-ran-sc-interfaces-v1 {
+  yang-version 1.1;
+  namespace "urn:o-ran:sc:interfaces:1.0";
+  prefix oif;
+
+  import o-ran-sc-root-v1 {
+    prefix root;
+  }
+  import ietf-interfaces {
+    prefix if;
+    reference
+      "RFC 8343: A YANG Data Model for Interface Management";
+  }
+
+  organization
+    "O-RAN Software Community";
+  contact
+    "www.o-ran-sc.org";
+  description
+    "This module augements the o-ran-sc-controlled-function object by adding
+     ietf-interfaces.
+
+     Copyright 2020 the O-RAN Alliance.
+
+     Licensed under the Apache License, Version 2.0 (the 'License');
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an 'AS IS' BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.";
+
+  revision 2020-03-09 {
+    description
+      "initial revision";
+    reference
+      "O-RAN-OAM-Interface-Specification (O1)";
+  }
+
+  grouping interfaces-grp {
+    leaf-list interface-reference  {
+      type if:interface-ref;
+      config false;
+      description 
+        "A list of ietf-interfaces references using the interface name as key.";
+    }
+    description 
+      "A group adding ietf-interface references.";
+  }
+  augment "/root:controlled-element/root:controlled-function" {
+    uses interfaces-grp;
+    description
+      "An augmentation, which adds ietf-interfaces 
+       to root:controlled-function.";
+  }
+}

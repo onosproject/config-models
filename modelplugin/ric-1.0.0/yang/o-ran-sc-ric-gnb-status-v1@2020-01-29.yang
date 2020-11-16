@@ -1,0 +1,122 @@
+module o-ran-sc-ric-gnb-status-v1 {
+    yang-version 1.1;
+    namespace "urn:o-ran:ric:gnb-status:1.0";
+    prefix rgnb;
+
+    import o-ran-sc-ric-xapp-desc-v1 {
+        prefix rxad;
+    }
+    import o-ran-sc-root-v1 {
+        prefix root;
+    }
+    import o-ran-sc-types-v1 {
+        prefix ot;
+    }
+    import ietf-inet-types {
+        prefix inet;
+        reference
+          "RFC 6991: Common YANG Data Types";
+    }
+
+    organization
+      "O-RAN Software Community";
+    contact
+      "www.o-ran.org";
+    description
+      "This module defines the gNB status and other information visible to operators
+       
+       Copyright 2020 the O-RAN Alliance.
+       
+       Licensed under the Apache License, Version 2.0 (the 'License');
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+       
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an 'AS IS' BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.";
+
+    revision 2020-02-25 {
+        description
+          "Dependency to a common and abstract root module added.";
+        reference
+          "O-RAN-OAM-architecture-Specification (O1)";
+    }
+    revision 2020-01-29 {
+        description
+          "initial revision";
+        reference
+          "O-RAN-OAM-Interface-Specification (O1)";
+    }
+
+    grouping nodeb-info {
+        uses root:control-base-grp;
+
+        leaf ip {
+            type inet:ip-address;
+            description
+              "The IP address of the node";
+        }
+        leaf port {
+            type inet:port-number;
+            description
+              "The port of the node";
+        }
+        leaf e2ap-protocol {
+            type ot:e2ap-protocol-type;
+            description
+              "Specifies the protocol type of the connection";
+        }
+        leaf connection-status {
+            type ot:connection-status-type;
+            description
+              "Specifies the connection type of the node";
+        }
+        leaf plmn-id {
+            type ot:sized-printable-string;
+            description
+              "PLMN id TODO: who is responsable for thiis identifier?";
+        }
+        leaf nb-id {
+            type ot:sized-printable-string;
+            description
+              "eNB id TODO: who is responsibale for this identifier?";
+        }
+        leaf node {
+            type identityref {
+                base ot:control-element-type;
+            }
+            description
+              "The type of the node: eNB or gNB";
+        }
+        description
+          "Node information";
+    }
+
+    grouping ric-specific-grp {
+        container nodes {
+            config false;
+            list node {
+                key identifier;
+                uses nodeb-info;
+                description
+                  "The list of the gNBs currently discovered by RIC";
+            }
+            description
+              "State data container of the nodes";
+        }
+        description
+          "Root object for gNB status";
+    }
+
+    // Inherit from controlled-function
+    augment "/root:controlled-element/root:controlled-function" {
+        when "derived-from-or-self(./root:function-type, 'rxad:near-realtime-ran-intelligent-controller')";
+        uses ric-specific-grp;
+        description
+          "Inheritance from root object class.";
+    }
+}

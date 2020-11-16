@@ -1,0 +1,286 @@
+module o-ran-sc-types-v1 {
+    yang-version 1.1;
+    namespace "urn:o-ran:sc:types:1.0";
+    prefix ot;
+
+    organization
+      "O-RAN Software Community";
+    contact
+      "www.o-ran-sc.org";
+    description
+      "This module defines common type definitions related to O-RAN.
+       
+       Copyright 2020 the O-RAN Alliance.
+       
+       Licensed under the Apache License, Version 2.0 (the 'License');
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+       
+       http://www.apache.org/licenses/LICENSE-2.0
+       
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an 'AS IS' BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.";
+
+    revision 2020-02-20 {
+        description
+          "initial revision";
+        reference
+          "O-RAN-OAM-Interface-Specification (O1)";
+    }
+
+    // Identity
+    identity control-element-type {
+        description
+          "Base identity for the different and upcoming control-element types.";
+    }
+
+    identity e-node-b {
+        base control-element-type;
+        description
+          "Indicates a control element representing an eNodeB.";
+        reference
+          "O-RAN OAM Architecture Specification";
+    }
+
+    identity g-node-b {
+        base control-element-type;
+        description
+          "Indicates a managed element representing an gNodeB.";
+        reference
+          "O-RAN OAM Architecture Specification";
+    }
+
+    identity control-function-type {
+        description
+          "Base identity for the different and upcoming control-function types.";
+    }
+
+    // administrative-state
+    identity administrative-state {
+        description
+          "The administrative state is used to show whether use of a resource
+           is allowed or prohibited.
+           The administrative state can be observed and directly controlled by
+           certain operational roles.
+           Typically, only a user in the provider context with administrative
+           privileges is allowed to write the administrative state,
+           any other users are restricted to read only.";
+        reference
+          "ftp://www.3gpp.org/tsg_ran/WG3_Iu/TSGR3_07/Docs/Pdfs/R3-99b77.PDF";
+    }
+
+    identity administrative-state-locked {
+        base administrative-state;
+        description
+          "Users are administratively prohibited from making use of the
+           resource.";
+    }
+
+    identity administrative-state-unlocked {
+        base administrative-state;
+        description
+          "Users are allowed to use the resource.";
+    }
+
+    identity administrative-state-shutting-down {
+        base administrative-state;
+        description
+          "The entity is administratively restricted to existing instances of
+           use only. There may be specific actions to remove existing uses.
+           No new instances of use can be enabled.
+           The resource automatically transitions to “locked” when the last
+           user quits.
+           The administrative state is not visible in the client context.
+           The life cycle state “pending removal” should be used to indicate to
+           the client that the provider intends to remove the resource.";
+    }
+
+    // administrative-control
+    identity administrative-control {
+        description
+          "Reflects the current control action when the entity is not in the
+           desired state.";
+    }
+
+    identity administrative-control-unlock {
+        base administrative-control;
+        description
+          "The intention is for the entity to become unlocked.
+           The entity may already be UNLOCKED.";
+    }
+
+    identity administrative-control-lock-passive {
+        base administrative-control;
+        description
+          "The intention is for the entity to become locked but no effort is
+           expected to move to the Locked state (the state will be achieved once
+           all users stop using the resource).
+           The entity may be LOCKED.";
+    }
+
+    identity administrative-control-lock-active {
+        base administrative-control;
+        description
+          "The intention is for the entity to become locked and it is expected
+           that effort will be made to move to the Locked state (users will be
+           actively removed).
+           The entity may already be LOCKED.";
+    }
+
+    identity administrative-control-lock-immediate {
+        base administrative-control;
+        description
+          "The intention is for the entity to become locked and it is expected
+           to move to the Locked state immediately (users will be force removed).
+           The entity may already be LOCKED.";
+    }
+
+    identity administrative-control-quiescent {
+        base administrative-control;
+        description
+          "The administrative state is at a stable value (LOCKED/UNLOCKED) and
+           no action is being taken.";
+    }
+
+    // operational-state
+    identity operational-state {
+        description
+          "The operational state base identity to be used to indicate whether
+           or not the resource is installed and working.";
+        reference
+          "https://www.3gpp.org/ftp/tsg_ran/WG3_Iu/TSGR3_06/Docs/Pdfs/r3-99994.pdf";
+    }
+
+    identity operational-state-disabled {
+        base operational-state;
+        description
+          "The resource is unable to meet the SLA of the user of the resource.
+           If no (explicit) SLA is defined the resource is disabled if it is
+           totally inoperable and unable to provide service to the user.";
+    }
+
+    identity operational-state-enabled {
+        base operational-state;
+        description
+          "The resource is partially or fully operable and available for use.";
+    }
+
+    identity lifecycle-state {
+        description
+          "This state is used to track the planned deployment, allocation to
+           clients and withdrawal of resources.";
+    }
+
+    identity lifecycle-state-planned {
+        base lifecycle-state;
+        description
+          "The resource is planned but is not present in the network.
+           Should include a 'time' when the resources are expected to be
+           installed.";
+    }
+
+    identity lifecycle-state-potential-available {
+        base lifecycle-state;
+        description
+          "The supporting resources are present in the network but are shared
+           with other clients; or require further configuration before they can
+           be used; or both.
+           (1) When a potential resource is configured and allocated to a
+               client it is moved to the INSTALLED state for that client.
+           (2) If the potential resource has been consumed (e.g. allocated to
+               another client) it is moved to the POTENTIAL BUSY state for all
+               other clients.";
+    }
+
+    identity lifecycle-state-potential-busy {
+        base lifecycle-state;
+        description
+          "The supporting resources are present in the network but have been
+           allocated to other clients.";
+    }
+
+    identity lifecycle-state-installed {
+        base lifecycle-state;
+        description
+          "The resource is present in the network and is capable of providing
+           the service.";
+    }
+
+    identity lifecycle-state-pending-removal {
+        base lifecycle-state;
+        description
+          "The resource has been marked for removal. Should include a 'time'
+           when the resources are expected to be removed.";
+    }
+
+    // Type definitions
+    typedef e2ap-protocol-type {
+        // TODO switch to identity
+        type enumeration {
+            enum not-specified {
+                description
+                  "None";
+            }
+            enum x2-setup-request {
+                description
+                  "X2 setup request";
+            }
+            enum endc-x2-setup-request {
+                description
+                  "ENDC X2 setup request";
+            }
+        }
+        description
+          "The E2AP protocol setup types";
+    }
+
+    typedef connection-status-type {
+        // TODO swtitch to identity
+        type enumeration {
+            enum not-specified {
+                description
+                  "None";
+            }
+            enum connected {
+                description
+                  "Connected";
+            }
+            enum connecting {
+                description
+                  "Connecting";
+            }
+            enum disconnected {
+                description
+                  "Disconnected";
+            }
+            enum setup-failed {
+                description
+                  "Setup failed";
+            }
+            enum shutting-down {
+                description
+                  "Shutting down";
+            }
+            enum shutdown {
+                description
+                  "Shutdown";
+            }
+        }
+        description
+          "The connection status of gNB";
+    }
+
+    typedef sized-printable-string {
+        type string {
+            length "1..63";
+            pattern
+              '[\\x20-\\x7E]';
+        }
+        description
+          "A string of printable ASCII characters with a size of
+           1 to 64 characters.";
+    }
+}

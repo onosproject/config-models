@@ -1,0 +1,98 @@
+module o-ran-sc-alarms-v1 {
+  yang-version 1.1;
+  namespace "urn:o-ran:sc:alarms:1.0";
+  prefix oal;
+
+  import o-ran-sc-root-v1 {
+    prefix root;
+  }
+  import ietf-alarms {
+    prefix al;
+    reference
+      "RFC 8632: A YANG Data Model for Alarm Management";
+  }
+
+  organization
+    "O-RAN Software Community";
+  contact
+    "www.o-ran-sc.org";
+  description
+    "This module augements the  o-ran-sc-controlled-element and  
+     o-ran-sc-controlled-function object by adding ietf-alarms.
+
+     Copyright 2020 the O-RAN Alliance.
+
+     Licensed under the Apache License, Version 2.0 (the 'License');
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an 'AS IS' BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.";
+
+  revision 2020-03-09 {
+    description
+      "initial revision";
+    reference
+      "O-RAN-OAM-Interface-Specification (O1)";
+  }
+
+  grouping alarms-grp {
+    list alarm-reference {
+      key "resource alarm-type-id alarm-type-qualifier";
+      config false;
+      description
+        "References to related alarms. Note that the related alarm
+         might have been purged from the alarm list.";
+      leaf resource {
+        type leafref {
+          path "/al:alarms/al:alarm-list/al:alarm/al:resource";
+          require-instance false;
+        }
+        description
+          "The alarming resource for the related alarm.";
+      }
+      leaf alarm-type-id {
+        type leafref {
+          path "/al:alarms/al:alarm-list/al:alarm"
+             + "[al:resource=current()/../resource]"
+             + "/al:alarm-type-id";
+          require-instance false;
+        }
+        description
+          "The alarm type identifier for the related alarm.";
+      }
+      leaf alarm-type-qualifier {
+        type leafref {
+          path "/al:alarms/al:alarm-list/al:alarm"
+             + "[al:resource=current()/../resource]"
+             + "[al:alarm-type-id=current()/../alarm-type-id]"
+             + "/al:alarm-type-qualifier";
+          require-instance false;
+        }
+        description
+          "The alarm qualifier for the related alarm.";
+      }
+    }
+    description 
+      "A group adding ietf-alarm references.";
+  }
+
+  augment "/root:controlled-element" {
+    uses alarms-grp;
+    description
+      "An augmentation, which adds ietf-alarms 
+       to root:controlled-element.";
+  }
+
+  augment "/root:controlled-element/root:controlled-function" {
+    uses alarms-grp;
+    description
+      "An augmentation, which adds ietf-alarms 
+       to root:controlled-function.";
+  }
+}
