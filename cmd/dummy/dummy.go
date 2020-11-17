@@ -16,7 +16,7 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/golang/protobuf/proto"
+
 	"github.com/onosproject/config-models/cmd/empty"
 	_ "github.com/openconfig/goyang/pkg/yang"
 	_ "github.com/openconfig/ygot/genutil"
@@ -26,6 +26,7 @@ import (
 	_ "golang.org/x/sys/unix"
 	_ "golang.org/x/tools/blog"
 	_ "google.golang.org/grpc/serviceconfig"
+	_ "google.golang.org/protobuf/proto"
 )
 
 func main() {
