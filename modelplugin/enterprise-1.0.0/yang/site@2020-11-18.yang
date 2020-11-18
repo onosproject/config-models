@@ -1,6 +1,8 @@
-module device-group {
-  namespace "http://opennetworking.org/enterprise/device-group";
-  prefix dg;
+module site {
+  namespace "http://opennetworking.org/enterprise/site";
+  prefix site;
+
+  import enterprise{ prefix ent; }
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -9,27 +11,27 @@ module device-group {
     Copied from YangUIComponents project";
 
   revision "2020-11-18" {
-    description "An Aether access Profile";
+    description "An Aether Site";
     reference "RFC 6087";
   }
 
-  typedef device-group-id {
+  typedef site-id {
         type string {
             length 1..32;
         }
   }
 
-  container device-group {
+  container site {
     description "The top level container";
 
-    list device-group {
+    list site {
       key "id";
       description
-        "List of device groups";
+        "List of sites";
 
       leaf id {
-        type device-group-id;
-        description "ID for this device group.";
+        type site-id;
+        description "ID for this site.";
       }
 
       leaf display-name {
@@ -43,7 +45,15 @@ module device-group {
         type string {
           length 1..100;
         }
-        description "description of this group";
+        description "description of this site";
+      }
+
+      leaf enterprise {
+        type leafref {
+          path "/ent:enterprise/ent:enterprise/ent:id";
+        }          
+        description
+          "Link to enterprise that owns this site";
       }
     }
   } 

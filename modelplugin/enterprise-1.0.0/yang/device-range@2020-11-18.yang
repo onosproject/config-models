@@ -1,8 +1,9 @@
 module device-range {
   namespace "http://opennetworking.org/enterprise/device-range";
-  prefix sub;
+  prefix dr;
 
   import device-group{ prefix dg; }
+  import enterprise{ prefix ent; }
   import ietf-yang-types{ prefix ietf; }
 
   organization "Open Networking Foundation.";
@@ -86,6 +87,14 @@ module device-range {
             "Allow or disallow this device membership in device group";
         }
       }
+
+      leaf enterprise {
+        type leafref {
+          path "/ent:enterprise/ent:enterprise/ent:id";
+        }          
+        description
+          "Link to enterprise that owns this device range";
+      }      
     }
   } 
 }
