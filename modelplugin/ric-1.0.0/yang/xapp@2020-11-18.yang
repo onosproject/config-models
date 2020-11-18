@@ -1,32 +1,46 @@
-module xapp-config {
-  namespace "http://opennetworking.org/oran/e2node";
-  prefix e2;
+module xapp {
+  namespace "http://opennetworking.org/oran/xapp";
+  prefix xapp;
 
-  organization "Open Networking Foundation.";
-  contact "Adib Rastegarnia";
-  description "Configuration of E2Nodes
-    To generate JSON from this use command
-    pyang -f jtoxx e2node.yang | python3 -m json.tool > test1.json";
+  organization
+    "Open Networking Foundation";
+  contact
+    "Adib Rastegarnia";
+  description
+    "Configuration of xApps
+     To generate JSON from this use command
+     pyang -f jtox xapp@2020-11-18.yang | python3 -m json.tool > test1.json";
 
-  revision "2020-11-18" {
-    description "Initial Version";
-    reference "ORAN-WG3.E2GAP-V01.00";
+  revision 2020-11-18 {
+    description
+      "Initial Version";
+    reference
+      "O-RAN-OAM-architecture-Specification (O1)";
   }
 
-  container xapp {
-    description "The top level container";
-    
-    container intervals {
-        description "Intervals for E2 services";
-
-        leaf RadioMeasReportPerUe {
-            type uint32;
-            units ms;
-            description "Interval for report of RadioMeasReportPerUe";
-            default 10;
-        }
-   
+  grouping xapp-config {
+    leaf name {
+      type string;
+      description
+        "Name of the xapp";
     }
+    leaf version {
+      type string;
+      description
+        "version of the xapp";
+    }
+    description
+      "xApp configuration";
+  }
 
+  container xapps {
+    list xapp {
+      key "name";
+      uses xapp-config;
+      description
+        "xApp configuration";
+    }
+    description
+      "List of xApps to be configured.";
   }
 }

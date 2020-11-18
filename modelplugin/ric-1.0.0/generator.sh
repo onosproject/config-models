@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-go run github.com/openconfig/ygot/generator -path=yang -output_file=ric_1_0_0/generated.go -package_name=ric_1_0_0 -generate_fakeroot o-ran-sc-root-v1@2020-02-20.yang \
-o-ran-sc-types-v1@2020-02-20.yang o-ran-sc-interfaces-v1@2020-03-09.yang \
-o-ran-sc-ric-gnb-status-v1@2020-02-25.yang o-ran-sc-ric-xapp-desc-v1@2020-02-25.yang \
-o-ran-sc-ric-ueec-config-v1@2020-02-25.yang
+go run github.com/openconfig/ygot/generator -path=yang -output_file=ric_1_0_0/generated.go -package_name=ric_1_0_0 -generate_fakeroot xapp@2020-11-18.yang \
+
 
 sedi=(-i)
 case "$(uname)" in

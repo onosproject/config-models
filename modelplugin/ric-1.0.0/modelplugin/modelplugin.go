@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	_ "github.com/golang/protobuf/proto"
-	"github.com/onosproject/config-models/modelplugin/ric-1.0.0/ric_1_0_0"
+	_ "github.com/onosproject/config-models/modelplugin/ric-1.0.0/ric_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
 	_ "github.com/openconfig/ygot/genutil"
@@ -36,12 +36,7 @@ const modelversion = "1.0.0"
 const modulename = "ric.so.1.0.0"
 
 var modelData = []*gnmi.ModelData{
-	{Name: "o-ran-sc-root-v1", Organization: "O-RAN Software Community", Version: "2020-02-20"},
-	{Name: "o-ran-sc-types-v1", Organization: "O-RAN Software Community", Version: "2020-02-20"},
-	{Name: "o-ran-sc-interfaces-v1", Organization: "O-RAN Software Community", Version: "2020-03-09"},
-	{Name: "o-ran-sc-ric-xapp-desc-v1", Organization: "O-RAN Software Community", Version: "2020-02-25"},
-	{Name: "o-ran-sc-ric-gnb-status-v1", Organization: "O-RAN Software Community", Version: "2020-02-25"},
-	{Name: "o-ran-sc-ric-ueec-config-v1", Organization: "O-RAN Software Community", Version: "2020-02-25"},
+	{Name: "xapp", Organization: "Open Networking Foundation", Version: "2020-11-18"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
