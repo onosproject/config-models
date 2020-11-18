@@ -35,12 +35,12 @@ const modeltype = "ric"
 const modelversion = "1.0.0"
 const modulename = "ric.so.1.0.0"
 
-var modelData = []*gnmi.ModelData{
+var ModelData = []*gnmi.ModelData{
 	{Name: "xapp", Organization: "Open Networking Foundation", Version: "2020-11-18"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
-	return modeltype, modelversion, modelData, modulename
+	return modeltype, modelversion, ModelData, modulename
 }
 
 // UnmarshallConfigValues allows Device to implement the Unmarshaller interface
