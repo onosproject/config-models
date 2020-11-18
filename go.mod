@@ -3,7 +3,7 @@ module github.com/onosproject/config-models
 go 1.14
 
 require (
-	github.com/getkin/kin-openapi v0.20.0
+    github.com/getkin/kin-openapi v0.20.0
 	github.com/golang/protobuf v1.3.3
 	github.com/iancoleman/strcase v0.1.0
 	github.com/kylelemons/godebug v1.1.0 // indirect

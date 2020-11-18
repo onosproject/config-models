@@ -1,4 +1,4 @@
-// Copyright 2020-present Open Networking Foundation.
+// Copyright 2019-present Open Networking Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,21 +15,10 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/onosproject/config-models/cmd/empty"
-	_ "github.com/openconfig/goyang/pkg/yang"
-	_ "github.com/openconfig/ygot/genutil"
-	_ "github.com/openconfig/ygot/ygen"
-	_ "github.com/openconfig/ygot/ytypes"
-	_ "golang.org/x/net/http2"
-	_ "golang.org/x/sys/unix"
-	_ "golang.org/x/tools/blog"
-	_ "google.golang.org/grpc/serviceconfig"
-	_ "google.golang.org/protobuf/proto"
+	"github.com/onosproject/config-models/modelplugin/ric-1.0.0/modelplugin"
 )
 
-func main() {
-	fmt.Println("Just a place holder to refer to plugins packages")
-	fmt.Printf("Testing %s\n", empty.TestMe())
-}
+//go:generate ./generator.sh
+
+// ModelPlugin is the exported symbol that gives an entry point to this shared module
+var ModelPlugin modelplugin.Modelplugin
