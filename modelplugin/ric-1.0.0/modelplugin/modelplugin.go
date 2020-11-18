@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	_ "github.com/golang/protobuf/proto"
-	_ "github.com/onosproject/config-models/modelplugin/ric-1.0.0/ric_1_0_0"
+	"github.com/onosproject/config-models/modelplugin/ric-1.0.0/ric_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
 	_ "github.com/openconfig/ygot/genutil"
