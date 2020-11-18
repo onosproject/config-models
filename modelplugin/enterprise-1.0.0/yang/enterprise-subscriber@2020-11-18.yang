@@ -1,0 +1,91 @@
+module aether-subscriber {
+  namespace "http://opennetworking.org/enterprise/subscriber";
+  prefix sub;
+
+  import device-group{ prefix dg; }
+  import ietf-yang-types{ prefix ietf; }
+
+  organization "Open Networking Foundation.";
+  contact "Scott Baker";
+  description "To generate JSON from this use command
+    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+    Copied from YangUIComponents project";
+
+  revision "2020-11-18" {
+    description "An Aether Enterprise Subscriber";
+    reference "RFC 6087";
+  }
+
+  container subscriber {
+    description "The top level container";
+
+    list ue {
+      key "id";
+      description
+        "List of subscriber devices";
+
+      leaf id {
+        description "identifier for this subscriber, typically a UUID";
+        type ietf:uuid;
+      }
+
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }      
+
+      choice imsi {
+        case wildcard {
+          leaf imsi-wildcard {
+            type string {
+              length 1..15;
+            }
+          }
+        }
+        case range {
+          leaf imsi-range-from {
+            type uint64;
+          }
+          leaf imsi-range-to {
+            type uint64;
+          }
+        }
+      }
+
+      leaf priority {
+        type uint32 {
+          range 0..1000;
+        }
+        default 0;
+        description
+          "Priority for this subscriber range";
+      }
+
+      leaf enabled {
+        type boolean;
+        default false;
+        description
+          "Enable or disable this ue";
+      }
+
+      list device-group {
+        key "device-group";
+        leaf device-group {
+          type leafref {
+            path "/dg:device-group/dg:device-group/dg:id";
+          }            
+          description
+              "Link to device group";
+        }
+        leaf allowed {
+          type boolean;
+          default true;
+          description
+            "Allow or disallow this ue membership in device group";
+        }
+      }
+    }
+  } 
+}

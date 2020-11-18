@@ -1,0 +1,22 @@
+module: device-group
+  +--rw device-group
+     +--rw device-group* [id]
+        +--rw id              device-group-id
+        +--rw display-name?   string
+        +--rw description?    string
+module: aether-subscriber
+  +--rw subscriber
+     +--rw ue* [id]
+        +--rw id                       ietf:uuid
+        +--rw display-name?            string
+        +--rw (imsi)?
+        |  +--:(wildcard)
+        |  |  +--rw imsi-wildcard?     string
+        |  +--:(range)
+        |     +--rw imsi-range-from?   uint64
+        |     +--rw imsi-range-to?     uint64
+        +--rw priority?                uint32
+        +--rw enabled?                 boolean
+        +--rw device-group* [device-group]
+           +--rw device-group    -> /dg:device-group/device-group/id
+           +--rw allowed?        boolean
