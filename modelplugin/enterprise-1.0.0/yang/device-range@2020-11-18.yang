@@ -1,5 +1,5 @@
-module aether-subscriber {
-  namespace "http://opennetworking.org/enterprise/subscriber";
+module device-range {
+  namespace "http://opennetworking.org/enterprise/device-range";
   prefix sub;
 
   import device-group{ prefix dg; }
@@ -12,20 +12,20 @@ module aether-subscriber {
     Copied from YangUIComponents project";
 
   revision "2020-11-18" {
-    description "An Aether Enterprise Subscriber";
+    description "An Aether Enterprise Device";
     reference "RFC 6087";
   }
 
-  container subscriber {
+  container device-range {
     description "The top level container";
 
-    list ue {
+    list device-range {
       key "id";
       description
-        "List of subscriber devices";
+        "List of device ranges";
 
       leaf id {
-        description "identifier for this subscriber, typically a UUID";
+        description "identifier for this device range, typically a UUID";
         type ietf:uuid;
       }
 
@@ -60,7 +60,7 @@ module aether-subscriber {
         }
         default 0;
         description
-          "Priority for this subscriber range";
+          "Priority for this device";
       }
 
       leaf enabled {
@@ -83,7 +83,7 @@ module aether-subscriber {
           type boolean;
           default true;
           description
-            "Allow or disallow this ue membership in device group";
+            "Allow or disallow this device membership in device group";
         }
       }
     }

@@ -4,9 +4,9 @@ module: device-group
         +--rw id              device-group-id
         +--rw display-name?   string
         +--rw description?    string
-module: aether-subscriber
-  +--rw subscriber
-     +--rw ue* [id]
+module: device-range
+  +--rw device-range
+     +--rw device-range* [id]
         +--rw id                       ietf:uuid
         +--rw display-name?            string
         +--rw (imsi)?
