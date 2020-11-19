@@ -9,7 +9,3 @@ module: test1
      |  +--rw leaf2f?   binary
      |  +--rw leaf2g?   boolean
      +--rw leaf1a?   string
-     +--rw list2a* [name]
-        +--rw name        string
-        +--rw tx-power?   uint16
-        +--rw rx-power?   uint16
