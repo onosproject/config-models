@@ -5,6 +5,9 @@ module use-case {
   import device-group{ prefix dg; }  
   import site{ prefix st; }
   import enterprise{ prefix ent; }
+  import application{ prefix app; }
+  import visibility{ prefix vis; }
+  import qos{ prefix qos; }
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -90,7 +93,58 @@ module use-case {
           description
             "Allow or disallow this site to participate in the use case";
         }
-      }      
+      }
+
+      list application {
+        key "application";
+        leaf application {
+          type leafref {
+            path "/app:application/app:application/app:id";
+          }            
+          description
+              "Link to an appplcation that is authorized to participate in this use case";
+        }
+        leaf allowed {
+          type boolean;
+          default true;
+          description
+            "Allow or disallow this application to participate in the use case";
+        }
+      }
+
+      list visibility {
+        key "visibility";
+        leaf visibility {
+          type leafref {
+            path "/vis:visibility/vis:visibility/vis:id";
+          }            
+          description
+              "Link to an visibility profile that is authorized to participate in this use case";
+        }
+        leaf allowed {
+          type boolean;
+          default true;
+          description
+            "Allow or disallow this visibility profile to participate in the use case";
+        }
+      }
+
+      list qos {
+        key "qos";
+        leaf qos {
+          type leafref {
+            path "/qos:qos/qos:qos/qos:id";
+          }            
+          description
+              "Link to an qos profile that is authorized to participate in this use case";
+        }
+        leaf allowed {
+          type boolean;
+          default true;
+          description
+            "Allow or disallow this qos profile to participate in the use case";
+        }
+      } 
 
     }
   } 

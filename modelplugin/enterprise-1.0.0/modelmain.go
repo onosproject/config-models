@@ -19,7 +19,7 @@ import (
 	"github.com/onosproject/config-models/modelplugin/enterprise-1.0.0/modelplugin"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=enterprise_1_0_0/generated.go -package_name=enterprise_1_0_0 -generate_fakeroot device-range@2020-11-18.yang device-group@2020-11-18.yang
+//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=enterprise_1_0_0/generated.go -package_name=enterprise_1_0_0 -generate_fakeroot device-range@2020-11-18.yang device-group@2020-11-18.yang enterprise@2020-11-18.yang site@2020-11-18.yang use-case@2020-11-18.yang deployment-environment@2020-11-18.yang application@2020-11-18.yang visibility@2020-11-18.yang qos@2020-11-18.yang
 
 // ModelPlugin is the exported symbol that gives an entry point to this shared module
 var ModelPlugin modelplugin.ModelPlugin

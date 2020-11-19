@@ -36,6 +36,13 @@ const modulename = "enterprise.so.1.0.0"
 var ModelData = []*gnmi.ModelData{
 	{Name: "device-range", Organization: "Open Networking Foundation", Version: "2020-11-18"},
 	{Name: "device-group", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "enterprise", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "site", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "use-case", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "application", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "deployment-environment", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "qos", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "visibility", Organization: "Open Networking Foundation", Version: "2020-11-18"},
 }
 
 func (m ModelPlugin) ModelData() (string, string, []*gnmi.ModelData, string) {
