@@ -21,6 +21,7 @@ import (
 	"github.com/iancoleman/strcase"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
+	"os"
 	"sort"
 	"strings"
 )
@@ -60,7 +61,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 
 	swaggerLdr := openapi3.NewSwaggerLoader()
 	if err = swaggerLdr.ResolveRefsIn(&swagger, nil); err != nil {
-		return nil, fmt.Errorf("error on Resolving Refs %v", err)
+		fmt.Fprintf(os.Stderr, "error on Resolving Refs %v\n", err)
 	}
 
 	return &swagger, nil
@@ -93,7 +94,8 @@ func targetParam() *openapi3.ParameterRef {
 func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
 	openapiComponents := openapi3.Components{
-		Schemas: make(map[string]*openapi3.SchemaRef),
+		Schemas:       make(map[string]*openapi3.SchemaRef),
+		RequestBodies: make(map[string]*openapi3.RequestBodyRef),
 	}
 	for _, dirEntry := range deviceEntry.Dir {
 		itemPath := formatName(dirEntry, false, parentPath)
@@ -131,7 +133,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					Value: arr,
 				}
 			}
-		} else if dirEntry.IsContainer() {
+		} else if dirEntry.IsContainer() || dirEntry.Kind == yang.ChoiceEntry || dirEntry.Kind == yang.CaseEntry {
 			newPath := newPathItem(dirEntry, itemPath, parentPath)
 			openapiPaths[itemPath] = newPath
 
@@ -150,6 +152,21 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				Value: schemaVal,
 			}
 			openapiComponents.Schemas[toCamelCase(itemPath)] = asRef
+
+			rbRef := &openapi3.RequestBodyRef{
+				Value: openapi3.NewRequestBody().WithContent(
+					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+						Value: asRef.Value,
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+					}),
+				),
+			}
+			openapiComponents.RequestBodies[toCamelCase(itemPath)] = rbRef
+
+			if newPath.Post.RequestBody.Ref != "" {
+				newPath.Post.RequestBody.Value = rbRef.Value
+			}
+
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
@@ -183,15 +200,19 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 
 			}
+
+			for k, v := range components.RequestBodies {
+				openapiComponents.RequestBodies[k] = v
+			}
 		} else if dirEntry.IsList() {
 			keys := strings.Split(dirEntry.Key, " ")
 			listItemPath := itemPath
 			for _, k := range keys {
 				listItemPath += fmt.Sprintf("/{%s}", k)
 			}
-			openapiPaths[listItemPath] = newPathItem(dirEntry, itemPath, parentPath)
+			openapiPaths[listItemPath] = newPathItem(dirEntry, itemPath, listItemPath)
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPath)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -204,8 +225,23 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				Value: openapi3.NewObjectSchema(),
 			}
 			arr.Title = fmt.Sprintf("Item%s", toCamelCase(itemPath))
-			openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
+			asRef := &openapi3.SchemaRef{
 				Value: arr,
+			}
+			openapiComponents.Schemas[toCamelCase(itemPath)] = asRef
+
+			rbRef := &openapi3.RequestBodyRef{
+				Value: openapi3.NewRequestBody().WithContent(
+					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+						Value: asRef.Value,
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+					}),
+				),
+			}
+			openapiComponents.RequestBodies[toCamelCase(itemPath)] = rbRef
+
+			if openapiPaths[listItemPath].Post.RequestBody.Ref != "" {
+				openapiPaths[listItemPath].Post.RequestBody.Value = rbRef.Value
 			}
 
 			respGet200 := openapi3.NewResponse()
@@ -243,8 +279,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 				}
 			}
+			for k, v := range components.RequestBodies {
+				openapiComponents.RequestBodies[k] = v
+			}
 		} else {
-			return nil, nil, fmt.Errorf("unhandled dirEntry.Type %v", dirEntry.Type)
+			return nil, nil, fmt.Errorf("unhandled dirEntry %v.Type %v", dirEntry.Name, dirEntry.Type)
 		}
 	}
 	return openapiPaths, &openapiComponents, nil
@@ -275,14 +314,24 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	getOp.Responses = make(openapi3.Responses)
 
 	parameters := make(openapi3.Parameters, 0)
-	if dirEntry.IsList() {
-		keys := strings.Split(dirEntry.Key, " ")
-		for _, k := range keys {
+	pathKeys := strings.Split(parentPath, "/")
+	firstTarget := true
+	for _, pathKey := range pathKeys {
+		if pathKey == "{target}" && firstTarget {
+			targetParameterRef := openapi3.ParameterRef{
+				Ref:   fmt.Sprintf("#/components/parameters/target"),
+				Value: targetParameter.Value,
+			}
+			parameters = append(parameters, &targetParameterRef)
+			firstTarget = false
+
+		} else if strings.HasPrefix(pathKey, "{") && strings.HasSuffix(pathKey, "}") {
+			k := pathKey[1 : len(pathKey)-1]
 			p := openapi3.ParameterRef{
 				//Ref: k,
 				Value: openapi3.NewPathParameter(k),
 			}
-			p.Value.Description = fmt.Sprintf("key for %s", dirEntry.Name)
+			p.Value.Description = fmt.Sprintf("key %s", pathKey)
 			p.Value.Content = openapi3.NewContent()
 			mt := openapi3.NewMediaType()
 			mt.Schema = &openapi3.SchemaRef{
@@ -292,16 +341,16 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 			parameters = append(parameters, &p)
 		}
 	}
-	targetParameterRef := openapi3.ParameterRef{
-		Ref:   fmt.Sprintf("#/components/parameters/target"),
-		Value: targetParameter.Value,
-	}
-	parameters = append(parameters, &targetParameterRef)
 
 	newPath := openapi3.PathItem{
 		Get:         getOp,
 		Description: dirEntry.Description,
 		Parameters:  parameters,
+	}
+	if dirEntry.Kind == yang.ChoiceEntry {
+		newPath.Description = fmt.Sprintf("YANG Choice: %s", dirEntry.Name)
+	} else if dirEntry.Kind == yang.CaseEntry {
+		newPath.Description = fmt.Sprintf("YANG Choice Case: %s", dirEntry.Name)
 	}
 
 	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
@@ -314,7 +363,12 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 		postOp := openapi3.NewOperation()
 		postOp.Summary = fmt.Sprintf("POST Generated from YANG model")
 		postOp.OperationID = fmt.Sprintf("post%s", toCamelCase(itemPath))
-		postOp.Responses = openapi3.NewResponses()
+		postOp.Responses = make(openapi3.Responses)
+		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
+		postOp.RequestBody = &openapi3.RequestBodyRef{
+			Ref: fmt.Sprintf("#/components/requestBodies/%s", toCamelCase(itemPath)),
+			// Value is filled in later
+		}
 		newPath.Post = postOp
 	}
 
