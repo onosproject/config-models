@@ -161,7 +161,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}),
 				),
 			}
-			openapiComponents.RequestBodies[fmt.Sprintf("%sRequestBody", toCamelCase(itemPath))] = rbRef
+			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody%s", toCamelCase(itemPath))] = rbRef
 
 			if newPath.Post.RequestBody.Ref != "" {
 				newPath.Post.RequestBody.Value = rbRef.Value
@@ -238,7 +238,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}),
 				),
 			}
-			openapiComponents.RequestBodies[fmt.Sprintf("%sRequestBody", toCamelCase(itemPath))] = rbRef
+			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody%s", toCamelCase(itemPath))] = rbRef
 
 			if openapiPaths[listItemPath].Post.RequestBody.Ref != "" {
 				openapiPaths[listItemPath].Post.RequestBody.Value = rbRef.Value
@@ -366,7 +366,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 		postOp.Responses = make(openapi3.Responses)
 		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
 		postOp.RequestBody = &openapi3.RequestBodyRef{
-			Ref: fmt.Sprintf("#/components/requestBodies/%sRequestBody", toCamelCase(itemPath)),
+			Ref: fmt.Sprintf("#/components/requestBodies/RequestBody%s", toCamelCase(itemPath)),
 			// Value is filled in later
 		}
 		newPath.Post = postOp
