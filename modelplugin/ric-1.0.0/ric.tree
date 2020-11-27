@@ -4,9 +4,9 @@ module: test1
      +--rw leaf2a?   string
 
 module: xapp
-  +--rw nodes
-     +--rw node* [id]
-        +--rw ip?        inet:ip-address
-        +--rw port?      inet:port-number
-        +--rw plmn-id?   string
-        +--rw id         string
+  +--ro nodes
+     +--ro node* [id]
+        +--ro ip?        inet:ip-address
+        +--ro port?      inet:port-number
+        +--ro plmn-id?   string
+        +--ro id         string

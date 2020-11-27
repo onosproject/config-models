@@ -48,6 +48,7 @@ module xapp {
   }
 
   container nodes {
+    config false;
     list node {
       key "id";
       uses e2node-info;
