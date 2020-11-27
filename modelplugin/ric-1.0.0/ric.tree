@@ -2,3 +2,11 @@ module: test1
   +--rw cont1a
      +--rw leaf1a?   string
      +--rw leaf2a?   string
+
+module: xapp
+  +--rw nodes
+     +--rw node* [id]
+        +--rw ip?        inet:ip-address
+        +--rw port?      inet:port-number
+        +--rw plmn-id?   string
+        +--rw id         string
