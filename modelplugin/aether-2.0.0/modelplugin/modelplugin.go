@@ -17,6 +17,7 @@ package modelplugin
 
 import (
 	"fmt"
+
 	_ "github.com/golang/protobuf/proto"
 	"github.com/onosproject/config-models/modelplugin/aether-2.0.0/aether_2_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
@@ -26,8 +27,6 @@ import (
 	"github.com/openconfig/ygot/ygot"
 	_ "github.com/openconfig/ygot/ytypes"
 )
-
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_2_0_0/generated.go -package_name=aether_2_0_0 -generate_fakeroot aether-subscriber@2020-10-22.yang apn-profile@2020-10-22.yang up-profile@2020-10-22.yang qos-profile@2020-10-22.yang access-profile@2020-10-22.yang
 
 type Modelplugin string
 

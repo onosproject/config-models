@@ -19,5 +19,7 @@ import (
 	"github.com/onosproject/config-models/modelplugin/aether-2.0.0/modelplugin"
 )
 
+//go:generate ./generator.sh
+
 // ModelPlugin is the exported symbol that gives an entry point to this shared module
 var ModelPlugin modelplugin.Modelplugin
