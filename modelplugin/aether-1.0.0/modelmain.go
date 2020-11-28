@@ -19,7 +19,7 @@ import (
 	"github.com/onosproject/config-models/modelplugin/aether-1.0.0/modelplugin"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-08-18.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
+//go:generate ./generator.sh
 
 // ModelPlugin is the exported symbol that gives an entry point to this shared module
 var ModelPlugin modelplugin.ModelPlugin
