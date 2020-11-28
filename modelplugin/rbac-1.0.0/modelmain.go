@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+
 	_ "github.com/golang/protobuf/proto"
 	"github.com/onosproject/config-models/modelplugin/rbac-1.0.0/rbac_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
@@ -26,7 +27,8 @@ import (
 	"github.com/openconfig/ygot/ygot"
 	_ "github.com/openconfig/ygot/ytypes"
 )
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=rbac_1_0_0/generated.go -package_name=rbac_1_0_0 -generate_fakeroot rbac@2020-08-10.yang
+
+//go:generate ./generator.sh
 
 type modelplugin string
 
@@ -35,7 +37,7 @@ const modelversion = "1.0.0"
 const modulename = "rbac.so.1.0.0"
 
 var modelData = []*gnmi.ModelData{
-      {Name: "rbac",Organization: "Open Networking Foundation",Version: "2020-08-10"},
+	{Name: "rbac", Organization: "Open Networking Foundation", Version: "2020-08-10"},
 }
 
 func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
