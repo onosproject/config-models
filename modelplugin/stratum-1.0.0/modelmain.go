@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/onosproject/config-models/modelplugin/stratum-1.0.0/stratum_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
@@ -26,7 +27,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=stratum_1_0_0/generated.go -package_name=stratum_1_0_0 -generate_fakeroot openconfig-interfaces@2018-11-21.yang openconfig-if-ip@2018-11-21.yang openconfig-lacp@2018-11-21.yang openconfig-platform@2019-04-16.yang openconfig-platform-linecard@2018-11-21.yang openconfig-platform-port@2018-11-21.yang openconfig-platform-transceiver@2018-11-25.yang openconfig-vlan@2018-11-21.yang openconfig-system@2019-01-29.yang openconfig-hercules-platform-linecard@2018-06-01.yang openconfig-hercules-qos@2018-06-01.yang openconfig-hercules-platform@2018-06-01.yang openconfig-hercules-platform-chassis@2018-06-01.yang openconfig-hercules-platform-port@2018-06-01.yang openconfig-hercules@2018-06-01.yang openconfig-hercules-interfaces@2018-06-01.yang openconfig-hercules-platform-node@2018-06-01.yang
+//go:generate ./generator.sh
 
 type modelplugin string
 
