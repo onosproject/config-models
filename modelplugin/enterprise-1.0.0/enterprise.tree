@@ -12,6 +12,7 @@ module: application
         +--rw qos* [qos]
            +--rw qos        -> /qos:qos/qos/id
            +--rw allowed?   boolean
+
 module: deployment-environment
   +--rw deployment-environment
      +--rw deployment-environment* [id]
@@ -20,12 +21,14 @@ module: deployment-environment
         +--rw cluster-name?   string
         +--rw description?    string
         +--rw site?           -> /st:site/site/id
+
 module: device-group
   +--rw device-group
      +--rw device-group* [id]
         +--rw id              device-group-id
         +--rw display-name?   string
         +--rw description?    string
+
 module: device-range
   +--rw device-range
      +--rw device-range* [id]
@@ -43,12 +46,14 @@ module: device-range
         |  +--rw device-group    -> /dg:device-group/device-group/id
         |  +--rw allowed?        boolean
         +--rw enterprise?              -> /ent:enterprise/enterprise/id
+
 module: enterprise
   +--rw enterprise
      +--rw enterprise* [id]
         +--rw id              enterprise-id
         +--rw display-name?   string
         +--rw description?    string
+
 module: qos
   +--rw qos
      +--rw qos* [id]
@@ -59,6 +64,7 @@ module: qos
            +--rw apn-ambr
               +--rw uplink?     uint32
               +--rw downlink?   uint32
+
 module: site
   +--rw site
      +--rw site* [id]
@@ -66,6 +72,7 @@ module: site
         +--rw display-name?   string
         +--rw description?    string
         +--rw enterprise?     -> /ent:enterprise/enterprise/id
+
 module: use-case
   +--rw use-case
      +--rw use-case* [id]
@@ -88,6 +95,7 @@ module: use-case
         +--rw qos* [qos]
            +--rw qos        -> /qos:qos/qos/id
            +--rw allowed?   boolean
+
 module: visibility
   +--rw visibility
      +--rw visibility* [id]
