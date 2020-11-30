@@ -1,5 +1,5 @@
 prefix: <
-    target: 'spgw-1'
+    target: 'connectivity-service-v2'
     elem: <
         name: 'up-profile'
     >
