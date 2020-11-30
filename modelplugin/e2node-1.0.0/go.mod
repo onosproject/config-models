@@ -3,7 +3,6 @@ module github.com/onosproject/config-models/modelplugin/e2node-1.0.0
 go 1.14
 
 require (
-	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/openconfig/gnmi v0.0.0-20190823184014-89b2bf29312c

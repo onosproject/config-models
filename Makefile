@@ -38,6 +38,9 @@ build/_output/aether.so.2.0.0: # @HELP build aether.so.2.0.0
 build/_output/ric.so.1.0.0: # @HELP build ric.so.1.0.0
 	CGO_ENABLED=1 go build -o build/_output/ric.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/ric-1.0.0
 
+build/_output/enterprise.so.1.0.0: # @HELP build enterprise.so.1.0.0
+	CGO_ENABLED=1 go build -o build/_output/enterprise.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/enterprise-1.0.0
+
 
 
 linters: # @HELP examines Go source code and reports coding problems
@@ -61,7 +64,8 @@ build: linters license_check gofmt \
     build/_output/e2node.so.1.0.0 \
     build/_output/rbac.so.1.0.0 \
     build/_output/aether.so.1.0.0 \
-    build/_output/ric.so.1.0.0
+    build/_output/ric.so.1.0.0 \
+    build/_output/enterprise.so.1.0.0
 
 PHONY: config-plugin-docker-testdevice-1.0.0
 config-plugin-docker-testdevice-1.0.0: # @HELP build testdevice 1.0.0 plugin Docker image
@@ -154,6 +158,16 @@ config-plugin-docker-ric-1.0.0: # @HELP build ric 1.0.0 plugin Docker image
 		-t ${DOCKER_REPOSITORY}config-model-ric-1.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
+PHONY: config-plugin-docker-enterprise-1.0.0
+config-plugin-docker-enterprise-1.0.0: # @HELP build enterprise 1.0.0 plugin Docker image
+	@go mod vendor
+	docker build . -f build/plugins/Dockerfile \
+		--build-arg PLUGIN_MAKE_TARGET=enterprise \
+		--build-arg PLUGIN_MAKE_VERSION=1.0.0 \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
+		-t ${DOCKER_REPOSITORY}config-model-enterprise-1.0.0:${ONOS_CONFIG_VERSION}
+	@rm -rf vendor
+
 PHONY: images
 images: config-plugin-docker-testdevice-1.0.0 \
         config-plugin-docker-testdevice-2.0.0 \
@@ -163,7 +177,9 @@ images: config-plugin-docker-testdevice-1.0.0 \
         config-plugin-docker-rbac-1.0.0 \
         config-plugin-docker-aether-1.0.0 \
 		config-plugin-docker-aether-2.0.0 \
-		config-plugin-docker-ric-1.0.0
+		config-plugin-docker-ric-1.0.0 \
+		config-plugin-docker-enterprise-1.0.0
+
 
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images kind-only
@@ -179,6 +195,8 @@ kind-only:
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-2.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-ric-1.0.0:${ONOS_CONFIG_VERSION}
+	kind load docker-image ${DOCKER_REPOSITORY}config-model-enterprise-1.0.0:${ONOS_CONFIG_VERSION}
+
 
 all: # @HELP build all libraries and all docker images
 all: build images
@@ -193,7 +211,8 @@ publish: # @HELP publish version on github and dockerhub
 		${DOCKER_REPOSITORY}config-model-rbac-1.0.0 \
 		${DOCKER_REPOSITORY}config-model-aether-1.0.0 \
 		${DOCKER_REPOSITORY}config-model-aether-2.0.0 \
-		${DOCKER_REPOSITORY}config-model-ric-1.0.0
+		${DOCKER_REPOSITORY}config-model-ric-1.0.0 \
+		${DOCKER_REPOSITORY}config-model-enterprise-1.0.0
 
 
 clean: # @HELP remove all the build artifacts

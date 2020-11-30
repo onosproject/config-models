@@ -76,6 +76,7 @@ module: openconfig-interfaces
                     +--ro out-errors?            oc-yang:counter64
                     +--ro carrier-transitions?   oc-yang:counter64
                     +--ro last-clear?            oc-types:timeticks64
+
 module: openconfig-platform
   +--rw components
      +--rw component* [name]
@@ -113,6 +114,7 @@ module: openconfig-platform
               |  +--rw name?   -> ../../../../../component/config/name
               +--ro state
                  +--ro name?   -> ../../../../../component/config/name
+
 module: openconfig-system
   +--rw system
      +--rw config
@@ -431,3 +433,4 @@ module: openconfig-system
               +--ro openflow:backoff-interval?   uint32
               +--ro openflow:max-backoff?        uint32
               +--ro openflow:inactivity-probe?   uint32
+

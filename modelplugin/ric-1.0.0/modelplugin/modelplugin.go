@@ -36,7 +36,8 @@ const modelversion = "1.0.0"
 const modulename = "ric.so.1.0.0"
 
 var ModelData = []*gnmi.ModelData{
-	{Name: "xapp", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "test1", Organization: "Open Networking Foundation", Version: "2020-11-18"},
+	{Name: "xapp", Organization: "Open Networking Foundation", Version: "2020-11-24"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {

@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/onosproject/config-models/modelplugin/e2node-1.0.0/e2node_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
@@ -26,7 +27,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=e2node_1_0_0/generated.go -package_name=e2node_1_0_0 -generate_fakeroot e2node@2020-05-01.yang
+//go:generate ./generator.sh
 
 type modelplugin string
 

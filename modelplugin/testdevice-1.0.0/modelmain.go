@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+
 	_ "github.com/golang/protobuf/proto"
 	"github.com/onosproject/config-models/modelplugin/testdevice-1.0.0/testdevice_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
@@ -26,7 +27,8 @@ import (
 	"github.com/openconfig/ygot/ygot"
 	_ "github.com/openconfig/ygot/ytypes"
 )
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=testdevice_1_0_0/generated.go -package_name=testdevice_1_0_0 -generate_fakeroot test1@2018-02-20.yang
+
+//go:generate ./generator.sh
 
 type modelplugin string
 
@@ -35,7 +37,7 @@ const modelversion = "1.0.0"
 const modulename = "testdevice.so.1.0.0"
 
 var modelData = []*gnmi.ModelData{
-      {Name: "test1",Organization: "Open Networking Foundation",Version: "2018-02-20"},
+	{Name: "test1", Organization: "Open Networking Foundation", Version: "2018-02-20"},
 }
 
 func (m modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {

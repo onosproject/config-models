@@ -5,6 +5,7 @@ module: access-profile
         +--rw type?          string
         +--rw filter?        string
         +--rw description?   string
+
 module: aether-subscriber
   +--rw subscriber
      +--rw ue* [ueid]
@@ -23,6 +24,7 @@ module: aether-subscriber
            +--rw access-profile* [access-profile]
               +--rw access-profile    -> /ap:access-profile/access-profile/id
               +--rw allowed?          boolean
+
 module: apn-profile
   +--rw apn-profile
      +--rw apn-profile* [id]
@@ -33,6 +35,7 @@ module: apn-profile
         +--rw mtu?             uint32
         +--rw gx-enabled?      boolean
         +--rw description?     string
+
 module: qos-profile
   +--rw qos-profile
      +--rw qos-profile* [id]
@@ -41,6 +44,7 @@ module: qos-profile
         |  +--rw uplink?     uint32
         |  +--rw downlink?   uint32
         +--rw description?   string
+
 module: up-profile
   +--rw up-profile
      +--rw up-profile* [id]

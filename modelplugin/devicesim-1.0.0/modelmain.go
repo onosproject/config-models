@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+
 	_ "github.com/golang/protobuf/proto"
 	"github.com/onosproject/config-models/modelplugin/devicesim-1.0.0/devicesim_1_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
@@ -27,7 +28,7 @@ import (
 	_ "github.com/openconfig/ygot/ytypes"
 )
 
-//go:generate go run github.com/openconfig/ygot/generator -path=yang -output_file=devicesim_1_0_0/generated.go -package_name=devicesim_1_0_0 -generate_fakeroot openconfig-interfaces@2017-07-14.yang openconfig-openflow@2017-06-01.yang openconfig-platform@2016-12-22.yang openconfig-system@2017-07-06.yang
+//go:generate ./generator.sh
 
 type modelplugin string
 
