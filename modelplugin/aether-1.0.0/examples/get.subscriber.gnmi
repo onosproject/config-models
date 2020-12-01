@@ -1,5 +1,5 @@
 path: <
-    target: 'spgw-1'
+    target: 'connectivity-service-v1'
     elem: <
         name: 'subscriber'
     >
