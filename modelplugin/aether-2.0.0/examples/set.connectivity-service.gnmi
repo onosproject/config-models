@@ -1,0 +1,55 @@
+prefix: <
+    target: 'connectivity-service-v2'
+    elem: <
+        name: 'connectivity-service'
+    >
+    elem: <
+        name: 'connectivity-service'
+        key:<
+            key:'id'
+            value:'cs-demo-1'
+        >
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'description'
+        >
+    >
+    val: <
+        string_val: 'demonstration connectivity service'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'spgwc-endpoint'
+        >
+    >
+    val: <
+        string_val: 'http://hostname:port/path/to/spgwc'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'hss-endpoint'
+        >
+    >
+    val: <
+        string_val: 'http://hostname:port/path/to/hss'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 101,
+        msg:'2.0.0'
+    >
+>
+extension: <
+    registered_ext: <
+        id: 102,
+        msg:'Aether'
+    >
+>
