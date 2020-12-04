@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-go run github.com/openconfig/ygot/generator -path=yang -output_file=ric_1_0_0/generated.go -package_name=ric_1_0_0 -generate_fakeroot test1@2020-11-18.yang xapp@2020-11-24.yang  \
+go run github.com/openconfig/ygot/generator -path=yang -output_file=ric_1_0_0/generated.go -package_name=ric_1_0_0 -generate_fakeroot xapp@2020-11-24.yang kpimon-xapp@2020-12-04.yang  \
 
 
 sedi=(-i)
