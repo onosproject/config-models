@@ -8,7 +8,7 @@ module kpimon-xapp {
     "Adib Rastegarnia";
   description
     "To generate JSON from this use command
-     pyang -f jtoxx xapp.yang | python3 -m json.tool > test1.json
+     pyang -f jtoxx kpimon-xapp.yang | python3 -m json.tool > kpimon-xapp.json
      Copied from YangUIComponents project";
 
   revision 2020-12-04 {
