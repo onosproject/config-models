@@ -1,6 +1,6 @@
 module security-profile {
   namespace "http://opennetworking.org/aether/security-profile";
-  prefix pro;
+  prefix sec;
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -9,13 +9,10 @@ module security-profile {
     Copied from YangUIComponents project";
 
   revision "2020-11-30" {
-    description "An Aether Security Profile";
+    description "An Aether Security Profile. Contains keys and other security items associated with devices. Configured by the operator.";
     reference "RFC 6087";
   }
 
-  // TODO: Think more on whether this should be a UUID or
-  // simply a unique name. If it's a UUID, could fix the 
-  // string length.
   typedef security-profile-id {
         type string {
             length 1..32;

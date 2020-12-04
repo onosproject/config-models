@@ -11,7 +11,7 @@ module connectivity-service {
     Copied from YangUIComponents project";
 
   revision "2020-11-30" {
-    description "An Aether Connectivity Service";
+    description "An Aether Connectivity Service. Specifies the endpoints where the sdcore-adapter should push configuration to. A single connectivity service may be attached to multiple Enterprises.";
     reference "RFC 6087";
   }
 

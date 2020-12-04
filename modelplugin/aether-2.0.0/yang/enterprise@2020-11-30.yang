@@ -11,7 +11,7 @@ module enterprise {
     Copied from YangUIComponents project";
 
   revision "2020-11-30" {
-    description "An Aether Enterprise";
+    description "An Aether Enterprise. Used to distinguish ownership of devices and other resources as well as a domain of configuration.";
     reference "RFC 6087";
   }
 
@@ -55,7 +55,7 @@ module enterprise {
             path "/cs:connectivity-service/cs:connectivity-service/cs:id";
           }            
           description
-            "Link to connectivity service that should be used for this enterprise";
+            "Link to connectivity services where configuration should be pushed for this enterprise's devices";
         }
         leaf enabled {
           type boolean;
