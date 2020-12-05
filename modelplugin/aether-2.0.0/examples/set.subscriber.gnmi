@@ -149,6 +149,29 @@ update: <
         bool_val: true
     >
 >
+update: <
+    path: <
+        elem: <
+            name: 'profiles'
+        >
+        elem: <
+            name: 'security-profile'
+        >
+    >
+    val: <
+        string_val: 'profile-security-demo-1'
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'enterprise'
+        >
+    >
+    val: <
+        string_val: 'enterprise-demo-1'
+    >
+>
 extension: <
     registered_ext: <
         id: 101,

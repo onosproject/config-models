@@ -35,11 +35,14 @@ const modelversion = "2.0.0"
 const modulename = "aether.so.2.0.0"
 
 var ModelData = []*gnmi.ModelData{
+	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "connectivity-service", Organization: "Open Networking Foundation", Version: "2020-11-30"},
+	{Name: "enterprise", Organization: "Open Networking Foundation", Version: "2020-11-30"},
 	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "security-profile", Organization: "Open Networking Foundation", Version: "2020-11-30"},
+	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
