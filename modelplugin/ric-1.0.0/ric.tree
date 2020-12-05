@@ -1,7 +1,6 @@
-module: test1
-  +--rw cont1a
-     +--rw leaf1a?   string
-     +--rw leaf2a?   string
+module: kpimon-xapp
+  +--rw report_period
+     +--rw interval?   uint32
 
 module: xapp
   +--ro nodes

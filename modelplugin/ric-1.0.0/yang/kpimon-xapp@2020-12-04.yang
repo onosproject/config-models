@@ -1,0 +1,32 @@
+module kpimon-xapp {
+  namespace "http://opennetworking.org/oran/kpimon-xapp";
+  prefix kpimon-xapp;
+
+  organization
+    "Open Networking Foundation.";
+  contact
+    "Adib Rastegarnia";
+  description
+    "To generate JSON from this use command
+     pyang -f jtoxx kpimon-xapp.yang | python3 -m json.tool > kpimon-xapp.json
+     Copied from YangUIComponents project";
+
+  revision 2020-12-04 {
+    description
+      "Define kpimon-xapp report period container";
+    reference
+      "";
+  }
+
+  container report_period {
+    description
+      "The kpimon-xapp report period container";
+    leaf interval {
+      type uint32;
+      units "ms";
+      description
+        "Report interval for indication messages";
+      default "10";
+    }
+  }
+}
