@@ -18,12 +18,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/iancoleman/strcase"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
 	"os"
-	"sort"
 	"strings"
+	"unicode"
 )
 
 var swagger openapi3.Swagger
@@ -37,7 +36,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 	targetParameter = targetParam()
 
 	topEntry := yangSchema.SchemaTree["Device"]
-	paths, components, err := buildSchema(topEntry, yang.TSFalse, pathPrefix)
+	paths, components, err := buildSchema(topEntry, yang.TSFalse, "")
 	if err != nil {
 		return nil, err
 	}
@@ -48,8 +47,24 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
 		Info: &openapi3.Info{
-			Title:   fmt.Sprintf("%s onos-config model plugin", modelType),
-			Version: modelVersion,
+			Title:          fmt.Sprintf("%s onos-config model plugin", modelType),
+			Version:        modelVersion,
+			TermsOfService: "https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf",
+			Contact: &openapi3.Contact{
+				Name:  "Open Networking Foundation",
+				URL:   "https://opennetworking.org",
+				Email: "info@opennetworking.org",
+			},
+			License: &openapi3.License{
+				Name: "LicenseRef-ONF-Member-1.0",
+				URL:  "https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf",
+			},
+		},
+		Servers: []*openapi3.Server{
+			{
+				URL:         "http://aether-roc-api",
+				Description: "Local access point",
+			},
 		},
 		Paths:      paths,
 		Components: *components,
@@ -98,13 +113,19 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 		RequestBodies: make(map[string]*openapi3.RequestBodyRef),
 	}
 	for _, dirEntry := range deviceEntry.Dir {
-		itemPath := formatName(dirEntry, false, parentPath)
+		itemPath := fmt.Sprintf("%s/%s", parentPath, dirEntry.Name)
 		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
 			// No need to recurse
 			var schemaVal *openapi3.Schema
 			switch dirEntry.Type.Kind {
-			case yang.Ystring, yang.Yunion, yang.Yleafref, yang.Yidentityref:
+			case yang.Ystring, yang.Yunion, yang.Yleafref:
 				schemaVal = openapi3.NewStringSchema()
+			case yang.Yidentityref:
+				schemaVal = openapi3.NewStringSchema()
+				schemaVal.Enum = make([]interface{}, 0)
+				for _, val := range dirEntry.Type.IdentityBase.Values {
+					schemaVal.Enum = append(schemaVal.Enum, val.Name)
+				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
 			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16:
@@ -117,9 +138,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
 			schemaVal.Title = dirEntry.Name
+			schemaVal.Description = dirEntry.Description
 
 			if dirEntry.IsLeaf() {
-				openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
+				openapiComponents.Schemas[toUnderScore(itemPath)] = &openapi3.SchemaRef{
 					Value: schemaVal,
 				}
 			} else { // Leaflist
@@ -129,13 +151,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					Value: schemaVal,
 				}
 				arr.Title = fmt.Sprintf("leaf-list-%s", dirEntry.Name)
-				openapiComponents.Schemas[toCamelCase(itemPath)] = &openapi3.SchemaRef{
+				openapiComponents.Schemas[toUnderScore(itemPath)] = &openapi3.SchemaRef{
 					Value: arr,
 				}
 			}
 		} else if dirEntry.IsContainer() || dirEntry.Kind == yang.ChoiceEntry || dirEntry.Kind == yang.CaseEntry {
 			newPath := newPathItem(dirEntry, itemPath, parentPath)
-			openapiPaths[itemPath] = newPath
+			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
 			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath)
 			if err != nil {
@@ -147,21 +169,21 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 
 			schemaVal := openapi3.NewObjectSchema()
 			schemaVal.Properties = make(map[string]*openapi3.SchemaRef)
-			schemaVal.Title = toCamelCase(itemPath)
+			schemaVal.Title = toUnderScore(itemPath)
 			asRef := &openapi3.SchemaRef{
 				Value: schemaVal,
 			}
-			openapiComponents.Schemas[toCamelCase(itemPath)] = asRef
+			openapiComponents.Schemas[toUnderScore(itemPath)] = asRef
 
 			rbRef := &openapi3.RequestBodyRef{
 				Value: openapi3.NewRequestBody().WithContent(
 					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
 						Value: asRef.Value,
-						Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
 					}),
 				),
 			}
-			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody%s", toCamelCase(itemPath))] = rbRef
+			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
 
 			if newPath.Post.RequestBody.Ref != "" {
 				newPath.Post.RequestBody.Value = rbRef.Value
@@ -170,7 +192,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
 				Value: asRef.Value,
 			})
 			newPath.Get.AddResponse(200, respGet200)
@@ -184,7 +206,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Value: v.Value.Items.Value,
 					}
 					arrayObj.Title = v.Value.Title
-					schemaVal.Properties[fmt.Sprintf("List%s", k)] = &openapi3.SchemaRef{
+					schemaVal.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
@@ -210,7 +232,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			for _, k := range keys {
 				listItemPath += fmt.Sprintf("/{%s}", k)
 			}
-			openapiPaths[listItemPath] = newPathItem(dirEntry, itemPath, listItemPath)
+			openapiPaths[pathWithPrefix(listItemPath)] = newPathItem(dirEntry, itemPath, listItemPath)
 
 			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPath)
 			if err != nil {
@@ -224,33 +246,33 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			arr.Items = &openapi3.SchemaRef{
 				Value: openapi3.NewObjectSchema(),
 			}
-			arr.Title = fmt.Sprintf("Item%s", toCamelCase(itemPath))
+			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
 			asRef := &openapi3.SchemaRef{
 				Value: arr,
 			}
-			openapiComponents.Schemas[toCamelCase(itemPath)] = asRef
+			openapiComponents.Schemas[toUnderScore(itemPath)] = asRef
 
 			rbRef := &openapi3.RequestBodyRef{
 				Value: openapi3.NewRequestBody().WithContent(
 					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
 						Value: asRef.Value,
-						Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
 					}),
 				),
 			}
-			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody%s", toCamelCase(itemPath))] = rbRef
+			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
 
-			if openapiPaths[listItemPath].Post.RequestBody.Ref != "" {
-				openapiPaths[listItemPath].Post.RequestBody.Value = rbRef.Value
+			if openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Ref != "" {
+				openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Value = rbRef.Value
 			}
 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Ref:   fmt.Sprintf("#/components/schemas/%s", toCamelCase(itemPath)),
-				Value: openapiComponents.Schemas[toCamelCase(itemPath)].Value,
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
+				Value: openapiComponents.Schemas[toUnderScore(itemPath)].Value,
 			})
-			openapiPaths[listItemPath].Get.AddResponse(200, respGet200)
+			openapiPaths[pathWithPrefix(listItemPath)].Get.AddResponse(200, respGet200)
 
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
@@ -260,14 +282,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Ref:   fmt.Sprintf("#/components/schemas/%s", k),
 						Value: v.Value.Items.Value,
 					}
-					arrayObj.Title = fmt.Sprintf("List%s", k)
-					arr.Items.Value.Properties[fmt.Sprintf("List%s", k)] = &openapi3.SchemaRef{
+					arrayObj.Title = lastPartOf(k)
+					arr.Items.Value.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of list
 					if v.Value.Title != "" {
-						arr.Items.Value.Properties[k] = &openapi3.SchemaRef{
+						arr.Items.Value.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 							Value: v.Value,
 						}
@@ -289,43 +311,23 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 	return openapiPaths, &openapiComponents, nil
 }
 
-func formatName(dirEntry *yang.Entry, isList bool, parentPath string) string {
-	parentAndSubPath := parentPath
-	var name string
-	if isList {
-		//have to ensure index order is consistent where there's more than one
-		keyParts := strings.Split(dirEntry.Key, " ")
-		sort.Slice(keyParts, func(i, j int) bool {
-			return keyParts[i] < keyParts[j]
-		})
-		name = fmt.Sprintf("%s/%s[%s=*]", parentAndSubPath, dirEntry.Name, strings.Join(keyParts, " "))
-	} else {
-		name = fmt.Sprintf("%s/%s", parentAndSubPath, dirEntry.Name)
-	}
-
-	return name
-}
-
 func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *openapi3.PathItem {
 	getOp := openapi3.NewOperation()
 	getOp.Summary = fmt.Sprintf("GET %s Generated from YANG model", itemPath)
-	getOp.OperationID = fmt.Sprintf("get%s", toCamelCase(itemPath))
-	getOp.Tags = []string{toCamelCase(parentPath)}
+	getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
+	getOp.Tags = []string{toUnderScore(parentPath)}
 	getOp.Responses = make(openapi3.Responses)
 
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
-	firstTarget := true
-	for _, pathKey := range pathKeys {
-		if pathKey == "{target}" && firstTarget {
-			targetParameterRef := openapi3.ParameterRef{
-				Ref:   fmt.Sprintf("#/components/parameters/target"),
-				Value: targetParameter.Value,
-			}
-			parameters = append(parameters, &targetParameterRef)
-			firstTarget = false
+	targetParameterRef := openapi3.ParameterRef{
+		Ref:   fmt.Sprintf("#/components/parameters/target"),
+		Value: targetParameter.Value,
+	}
+	parameters = append(parameters, &targetParameterRef)
 
-		} else if strings.HasPrefix(pathKey, "{") && strings.HasSuffix(pathKey, "}") {
+	for _, pathKey := range pathKeys {
+		if strings.HasPrefix(pathKey, "{") && strings.HasSuffix(pathKey, "}") {
 			k := pathKey[1 : len(pathKey)-1]
 			p := openapi3.ParameterRef{
 				//Ref: k,
@@ -356,17 +358,17 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
 		deleteOp := openapi3.NewOperation()
 		deleteOp.Summary = fmt.Sprintf("DELETE Generated from YANG model")
-		deleteOp.OperationID = fmt.Sprintf("delete%s", toCamelCase(itemPath))
+		deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
 		deleteOp.Responses = openapi3.NewResponses()
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
 		postOp.Summary = fmt.Sprintf("POST Generated from YANG model")
-		postOp.OperationID = fmt.Sprintf("post%s", toCamelCase(itemPath))
+		postOp.OperationID = fmt.Sprintf("post%s", toUnderScore(itemPath))
 		postOp.Responses = make(openapi3.Responses)
 		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
 		postOp.RequestBody = &openapi3.RequestBodyRef{
-			Ref: fmt.Sprintf("#/components/requestBodies/RequestBody%s", toCamelCase(itemPath)),
+			Ref: fmt.Sprintf("#/components/requestBodies/RequestBody_%s", toUnderScore(itemPath)),
 			// Value is filled in later
 		}
 		newPath.Post = postOp
@@ -375,7 +377,34 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	return &newPath
 }
 
-func toCamelCase(itemPath string) string {
-	temp := strings.ReplaceAll(itemPath, "/", "_")
-	return strcase.ToCamel(temp)
+func toUnderScore(itemPath string) string {
+	pathParts := make([]string, 0)
+	for _, pathPart := range strings.Split(itemPath, "/") {
+		if pathPart == "" || strings.HasPrefix(pathPart, "{") || strings.HasSuffix(pathPart, "}") {
+			continue
+		}
+		pathParts = append(pathParts, uppercaseFirstCharacter(pathPart))
+	}
+
+	return strings.Join(pathParts, "_")
+}
+
+func lastPartOf(path string) string {
+	pathParts := strings.Split(path, "_")
+	return pathParts[len(pathParts)-1]
+}
+
+// Uppercase the first character in a string. This assumes UTF-8, so we have
+// to be careful with unicode, don't treat it as a byte array.
+func uppercaseFirstCharacter(str string) string {
+	if str == "" {
+		return ""
+	}
+	runes := []rune(str)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
+}
+
+func pathWithPrefix(itemPath string) string {
+	return fmt.Sprintf("%s%s", pathPrefix, itemPath)
 }
