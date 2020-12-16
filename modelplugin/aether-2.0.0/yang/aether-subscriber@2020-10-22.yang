@@ -5,7 +5,6 @@ module aether-subscriber {
   import apn-profile{ prefix apn; }
   import qos-profile{ prefix qos; }
   import up-profile{ prefix up; }
-  import access-profile{ prefix ap; }
   import security-profile{ prefix sec; }
   import enterprise{ prefix ent; }  
   import ietf-yang-types{ prefix ietf; }
@@ -149,7 +148,7 @@ module aether-subscriber {
           key "access-profile";
           leaf access-profile {
             type leafref {
-              path "/ap:access-profile/ap:access-profile/ap:id";
+              path "../../../../../access-profile/access-profile/id";
             }            
             description
                 "Link to access profile";

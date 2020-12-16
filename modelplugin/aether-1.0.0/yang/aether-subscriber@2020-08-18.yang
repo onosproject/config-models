@@ -5,7 +5,6 @@ module aether-subscriber {
   import apn-profile{ prefix apn; }
   import qos-profile{ prefix qos; }
   import up-profile{ prefix up; }
-  import access-profile{ prefix ap; }
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -124,9 +123,8 @@ module aether-subscriber {
           key "access-profile";
           leaf access-profile {
             type leafref {
-              path "/ap:access-profile/ap:access-profile/ap:id";
+              path "../../../../../access-profile/access-profile/id";
             }            
-//            type ap:access-profile-id;
             description
                 "Link to access profile";
           }

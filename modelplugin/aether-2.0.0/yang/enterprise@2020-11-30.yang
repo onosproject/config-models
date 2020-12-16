@@ -2,8 +2,6 @@ module enterprise {
   namespace "http://opennetworking.org/aether/enterprise";
   prefix ent;
 
-  import connectivity-service { prefix cs; }
-
   organization "Open Networking Foundation.";
   contact "Scott Baker";
   description "To generate JSON from this use command
@@ -52,7 +50,7 @@ module enterprise {
         key "connectivity-service";
         leaf connectivity-service {
           type leafref {
-            path "/cs:connectivity-service/cs:connectivity-service/cs:id";
+            path "../../../../connectivity-service/connectivity-service/id";
           }            
           description
             "Link to connectivity services where configuration should be pushed for this enterprise's devices";

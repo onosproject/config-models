@@ -22,7 +22,7 @@ module: aether-subscriber
            +--rw up-profile?       -> /up:up-profile/up-profile/id
            +--rw qos-profile?      -> /qos:qos-profile/qos-profile/id
            +--rw access-profile* [access-profile]
-              +--rw access-profile    -> /ap:access-profile/access-profile/id
+              +--rw access-profile    -> ../../../../../access-profile/access-profile/id
               +--rw allowed?          boolean
 
 module: apn-profile
