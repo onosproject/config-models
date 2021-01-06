@@ -6,6 +6,7 @@ module: access-profile
         +--rw type?           string
         +--rw filter?         string
         +--rw description?    string
+
 module: aether-subscriber
   +--rw subscriber
      +--rw ue* [id]
@@ -33,6 +34,7 @@ module: aether-subscriber
            |  +--rw access-profile    -> /ap:access-profile/access-profile/id
            |  +--rw allowed?          boolean
            +--rw security-profile?   -> /sec:security-profile/security-profile/id
+
 module: apn-profile
   +--rw apn-profile
      +--rw apn-profile* [id]
@@ -44,6 +46,7 @@ module: apn-profile
         +--rw mtu?             uint32
         +--rw gx-enabled?      boolean
         +--rw description?     string
+
 module: connectivity-service
   +--rw connectivity-service
      +--rw connectivity-service* [id]
@@ -52,6 +55,7 @@ module: connectivity-service
         +--rw description?      string
         +--rw spgwc-endpoint?   inet:uri
         +--rw hss-endpoint?     inet:uri
+
 module: enterprise
   +--rw enterprise
      +--rw enterprise* [id]
@@ -61,6 +65,7 @@ module: enterprise
         +--rw connectivity-service* [connectivity-service]
            +--rw connectivity-service    -> /cs:connectivity-service/connectivity-service/id
            +--rw enabled?                boolean
+
 module: qos-profile
   +--rw qos-profile
      +--rw qos-profile* [id]
@@ -69,7 +74,13 @@ module: qos-profile
         +--rw apn-ambr
         |  +--rw uplink?     uint32
         |  +--rw downlink?   uint32
+        +--rw qci?            uint32
+        +--rw arp
+        |  +--rw priority?                   uint32
+        |  +--rw preemption-capability?      boolean
+        |  +--rw preemption-vulnerability?   boolean
         +--rw description?    string
+
 module: security-profile
   +--rw security-profile
      +--rw security-profile* [id]
@@ -79,6 +90,7 @@ module: security-profile
         +--rw opc?            string
         +--rw sqn?            uint32
         +--rw description?    string
+
 module: up-profile
   +--rw up-profile
      +--rw up-profile* [id]
