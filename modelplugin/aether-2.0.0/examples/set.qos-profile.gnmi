@@ -40,6 +40,42 @@ update: <
 update: <
     path: <
         elem: <
+            name: 'qci'
+        >
+    >
+    val: <
+        int_val: 9
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'arp'
+        >
+        elem: <
+            name: 'preemption-capability'
+        >
+    >
+    val: <
+        bool_val: true
+    >
+>
+update: <
+    path: <
+        elem: <
+            name: 'arp'
+        >
+        elem: <
+            name: 'preemption-vulnerability'
+        >
+    >
+    val: <
+        bool_val: true
+    >
+>
+update: <
+    path: <
+        elem: <
             name: 'description'
         >
     >
