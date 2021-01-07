@@ -118,7 +118,21 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			// No need to recurse
 			var schemaVal *openapi3.Schema
 			switch dirEntry.Type.Kind {
-			case yang.Ystring, yang.Yunion, yang.Yleafref:
+			case yang.Ystring:
+				schemaVal = openapi3.NewStringSchema()
+				if dirEntry.Type.Length != nil {
+					min, max, err := yangRange(dirEntry.Type.Length)
+					if err != nil {
+						return nil, nil, err
+					}
+					schemaVal.MinLength = min
+					schemaVal.MaxLength = &max
+				}
+				if dirEntry.Type.Pattern != nil && len(dirEntry.Type.Pattern) > 0 {
+					// All we can do is take the first one
+					schemaVal.Pattern = dirEntry.Type.Pattern[0]
+				}
+			case yang.Yunion, yang.Yleafref:
 				schemaVal = openapi3.NewStringSchema()
 			case yang.Yidentityref:
 				schemaVal = openapi3.NewStringSchema()
@@ -128,12 +142,25 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
-			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16:
-				schemaVal = openapi3.NewIntegerSchema()
-			case yang.Yuint32, yang.Yint32:
-				schemaVal = openapi3.NewInt32Schema()
-			case yang.Yuint64, yang.Yint64:
-				schemaVal = openapi3.NewInt64Schema()
+			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16, yang.Yuint32, yang.Yint32, yang.Yuint64, yang.Yint64:
+				switch dirEntry.Type.Kind {
+				case yang.Yuint32, yang.Yint32:
+					schemaVal = openapi3.NewInt32Schema()
+				case yang.Yuint64, yang.Yint64:
+					schemaVal = openapi3.NewInt64Schema()
+				default:
+					schemaVal = openapi3.NewIntegerSchema()
+				}
+				if dirEntry.Type.Range != nil {
+					start, end, err := yangRange(dirEntry.Type.Range)
+					if err != nil {
+						return nil, nil, err
+					}
+					startFloat := float64(start)
+					schemaVal.Min = &startFloat
+					endFloat := float64(end)
+					schemaVal.Max = &endFloat
+				}
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
@@ -155,7 +182,19 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					Value: arr,
 				}
 			}
-		} else if dirEntry.IsContainer() || dirEntry.Kind == yang.ChoiceEntry || dirEntry.Kind == yang.CaseEntry {
+		} else if dirEntry.Kind == yang.ChoiceEntry {
+			for name, dir := range dirEntry.Dir {
+				_, components, err := buildSchema(dir, dir.Config, parentPath)
+				if err != nil {
+					return nil, nil, err
+				}
+				for k, v := range components.Schemas {
+					v.Value.Description = fmt.Sprintf("For choice %s:%s", dirEntry.Name, name)
+					openapiComponents.Schemas[toUnderScore(k)] = v
+				}
+			}
+
+		} else if dirEntry.IsContainer() {
 			newPath := newPathItem(dirEntry, itemPath, parentPath)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
@@ -407,4 +446,17 @@ func uppercaseFirstCharacter(str string) string {
 
 func pathWithPrefix(itemPath string) string {
 	return fmt.Sprintf("%s%s", pathPrefix, itemPath)
+}
+
+func yangRange(yangRange yang.YangRange) (uint64, uint64, error) {
+	var minVal uint64
+	var maxVal uint64
+	if yangRange.Len() == 0 {
+		return 0, 0, fmt.Errorf("unexpected nil range")
+	}
+	for i := 0; i < yangRange.Len(); i++ {
+		minVal = yangRange[0].Min.Value
+		maxVal = yangRange[0].Max.Value
+	}
+	return minVal, maxVal, nil
 }
