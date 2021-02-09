@@ -53,9 +53,15 @@ license_check: # @HELP examine and ensure license headers exist
 gofmt: # @HELP run the Go format validation
 	bash -c "diff -u <(echo -n) <(gofmt -d pkg/)"
 
+test-rbac: # @HELP run go test on rbac module
+	cd modelplugin/rbac-1.0.0 && CGO_ENABLED=1 go test -race ./...
+
+test: # @HELP run go test on projects
+test: build linters license_check gofmt test-rbac
+
 PHONY:build
 build: # @HELP build all libraries
-build: linters license_check gofmt \
+build:  \
     build/_output/copylibandstay \
     build/_output/testdevice.so.1.0.0 \
     build/_output/testdevice.so.2.0.0 \

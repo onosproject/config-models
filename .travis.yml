@@ -34,7 +34,7 @@ jobs:
     - stage: tests
       if: type == pull_request ||  fork == false
       script:
-        - make build
+        - make test
     - stage: release
       if: type != pull_request && fork == false
       script:
