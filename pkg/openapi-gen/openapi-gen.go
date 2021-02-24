@@ -63,7 +63,23 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 		Servers: []*openapi3.Server{
 			{
 				URL:         "http://aether-roc-api",
+				Description: "Kubernetes Pod access point",
+			},
+			{
+				URL:         "http://aether-roc-api:8181",
+				Description: "Access from one container to another",
+			},
+			{
+				URL:         "https://roc.aetherproject.org/aether-roc-api",
+				Description: "Production access point",
+			},
+			{
+				URL:         "http://localhost:8181",
 				Description: "Local access point",
+			},
+			{
+				URL:         "http://localhost:8183/aether-roc-api",
+				Description: "Local access point through nginx",
 			},
 		},
 		Paths:      paths,
@@ -105,6 +121,17 @@ func targetParam() *openapi3.ParameterRef {
 	return &targetParam
 }
 
+// add AdditionalProperties reference to target to a particular schema
+func addAdditionalProperties(schemaVal *openapi3.Schema) {
+	schemaValAdditionalRef := openapi3.NewObjectSchema()
+	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValAdditionalRef.Title = "ref"
+	schemaVal.AdditionalProperties = &openapi3.SchemaRef{
+		Value: schemaValAdditionalRef,
+		Ref:   "#/components/schemas/AdditionalPropertyTarget",
+	}
+}
+
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
 func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
@@ -112,6 +139,27 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 		Schemas:       make(map[string]*openapi3.SchemaRef),
 		RequestBodies: make(map[string]*openapi3.RequestBodyRef),
 	}
+
+	// At the root of the API, add in the definition of "additionalPropertyTarget"
+	if parentPath == "" {
+		schemaValTarget := openapi3.NewObjectSchema()
+		schemaValTarget.Title = "target"
+		schemaValTarget.Type = "string"
+		schemaValTargetRef := &openapi3.SchemaRef{
+			Value: schemaValTarget,
+		}
+
+		schemaValAddTarget := openapi3.NewObjectSchema()
+		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
+		schemaValAddTarget.Title = "AdditionalPropertyTarget"
+		schemaValAddTarget.Description = "Used for updates"
+		schemaValAddTargetRef := &openapi3.SchemaRef{
+			Value: schemaValAddTarget,
+		}
+		schemaValAddTarget.Properties["target"] = schemaValTargetRef
+		openapiComponents.Schemas["AdditionalPropertyTarget"] = schemaValAddTargetRef
+	}
+
 	for _, dirEntry := range deviceEntry.Dir {
 		itemPath := fmt.Sprintf("%s/%s", parentPath, dirEntry.Name)
 		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
@@ -174,6 +222,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			} else { // Leaflist
 				arr := openapi3.NewSchema()
 				arr.Type = "leaf-list"
+				addAdditionalProperties(schemaVal)
 				arr.Items = &openapi3.SchemaRef{
 					Value: schemaVal,
 				}
@@ -209,6 +258,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal := openapi3.NewObjectSchema()
 			schemaVal.Properties = make(map[string]*openapi3.SchemaRef)
 			schemaVal.Title = toUnderScore(itemPath)
+			addAdditionalProperties(schemaVal)
 			asRef := &openapi3.SchemaRef{
 				Value: schemaVal,
 			}
@@ -313,6 +363,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			})
 			openapiPaths[pathWithPrefix(listItemPath)].Get.AddResponse(200, respGet200)
 
+			addAdditionalProperties(arr.Items.Value)
+
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
@@ -328,7 +380,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of list
 					if v.Value.Title != "" {
-						arr.Items.Value.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
+						arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 							Value: v.Value,
 						}
