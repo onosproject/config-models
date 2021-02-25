@@ -35,7 +35,14 @@ func main() {
 		os.Exit(-1)
 	}
 
-	schema, err := openapi_gen.BuildOpenapi(schemaMap, "Rbac", "1.0.0")
+	settings := openapi_gen.ApiGenSettings{
+		ModelType:    "Rbac",
+		ModelVersion: "1.0.0",
+		Example:      "rbac",
+		Title:        "Rbac 1.0.0",
+	}
+
+	schema, err := openapi_gen.BuildOpenapi(schemaMap, settings)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
