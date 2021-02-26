@@ -416,7 +416,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
 	targetParameterRef := openapi3.ParameterRef{
-		Ref:   fmt.Sprintf("#/components/parameters/target"),
+		Ref:   "#/components/parameters/target",
 		Value: targetParameter.Value,
 	}
 	parameters = append(parameters, &targetParameterRef)
@@ -452,13 +452,13 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 
 	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
 		deleteOp := openapi3.NewOperation()
-		deleteOp.Summary = fmt.Sprintf("DELETE Generated from YANG model")
+		deleteOp.Summary = "DELETE Generated from YANG model"
 		deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
 		deleteOp.Responses = openapi3.NewResponses()
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
-		postOp.Summary = fmt.Sprintf("POST Generated from YANG model")
+		postOp.Summary = "POST Generated from YANG model"
 		postOp.OperationID = fmt.Sprintf("post%s", toUnderScore(itemPath))
 		postOp.Responses = make(openapi3.Responses)
 		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
