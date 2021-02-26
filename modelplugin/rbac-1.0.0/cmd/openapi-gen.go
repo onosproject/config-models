@@ -35,7 +35,14 @@ func main() {
 		os.Exit(-1)
 	}
 
-	schema, err := openapi_gen.BuildOpenapi(schemaMap, "Rbac", "1.0.0")
+	settings := openapi_gen.ApiGenSettings{
+		ModelType:    "Rbac",
+		ModelVersion: "1.0.0",
+		Example:      "rbac",
+		Title:        "Rbac 1.0.0",
+	}
+
+	schema, err := openapi_gen.BuildOpenapi(schemaMap, settings)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
@@ -47,13 +54,20 @@ func main() {
 		os.Exit(-1)
 	}
 
+	license := []byte(`# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+`)
+
+	licensedYaml := append(license, yaml...)
+
 	if outputFile != "" {
-		err = ioutil.WriteFile(outputFile, yaml, 0644)
+		err = ioutil.WriteFile(outputFile, licensedYaml, 0644)
 		if err != nil {
 			fmt.Printf("error writing generated code to file: %s\n", err)
 			os.Exit(-1)
 		}
 	} else {
-		fmt.Println(string(yaml))
+		fmt.Println(string(licensedYaml))
 	}
 }

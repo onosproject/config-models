@@ -31,9 +31,35 @@ var respGet200Desc = "GET OK 200"
 var pathPrefix string
 var targetParameter *openapi3.ParameterRef
 
-func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion string) (*openapi3.Swagger, error) {
-	pathPrefix = fmt.Sprintf("/%s/v%s/{target}", strings.ToLower(modelType), modelVersion)
-	targetParameter = targetParam()
+type ApiGenSettings struct {
+	ModelType    string
+	ModelVersion string
+	Example      string
+	Title        string
+}
+
+func (settings ApiGenSettings) ApplyDefaults() {
+	if settings.ModelType == "" {
+		panic("ModelType not specified")
+	}
+
+	// Fill in defaults for any unset settings
+	if settings.ModelVersion == "" {
+		settings.ModelVersion = "0.0.1"
+	}
+	if settings.Title == "" {
+		settings.Title = fmt.Sprintf("%s onos-config model plugin", settings.ModelType)
+	}
+	if settings.Example == "" {
+		settings.Example = "internal"
+	}
+}
+
+func BuildOpenapi(yangSchema *ytypes.Schema, settings ApiGenSettings) (*openapi3.Swagger, error) {
+	settings.ApplyDefaults()
+
+	pathPrefix = fmt.Sprintf("/%s/v%s/{target}", strings.ToLower(settings.ModelType), settings.ModelVersion)
+	targetParameter = targetParam(settings.Example)
 
 	topEntry := yangSchema.SchemaTree["Device"]
 	paths, components, err := buildSchema(topEntry, yang.TSFalse, "")
@@ -47,8 +73,8 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
 		Info: &openapi3.Info{
-			Title:          fmt.Sprintf("%s onos-config model plugin", modelType),
-			Version:        modelVersion,
+			Title:          settings.Title,
+			Version:        settings.ModelVersion,
 			TermsOfService: "https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf",
 			Contact: &openapi3.Contact{
 				Name:  "Open Networking Foundation",
@@ -58,12 +84,6 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 			License: &openapi3.License{
 				Name: "LicenseRef-ONF-Member-1.0",
 				URL:  "https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf",
-			},
-		},
-		Servers: []*openapi3.Server{
-			{
-				URL:         "http://aether-roc-api",
-				Description: "Local access point",
 			},
 		},
 		Paths:      paths,
@@ -82,7 +102,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, modelType string, modelVersion stri
 	return &swagger, nil
 }
 
-func targetParam() *openapi3.ParameterRef {
+func targetParam(example string) *openapi3.ParameterRef {
 
 	stringContent := openapi3.NewContent()
 	mt := openapi3.NewMediaType()
@@ -97,12 +117,23 @@ func targetParam() *openapi3.ParameterRef {
 			In:          "path",
 			Description: "target (device in onos-config)",
 			Required:    true,
-			Example:     "internal",
+			Example:     example,
 			Content:     stringContent,
 		},
 	}
 
 	return &targetParam
+}
+
+// add AdditionalProperties reference to target to a particular schema
+func addAdditionalProperties(schemaVal *openapi3.Schema) {
+	schemaValAdditionalRef := openapi3.NewObjectSchema()
+	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValAdditionalRef.Title = "ref"
+	schemaVal.AdditionalProperties = &openapi3.SchemaRef{
+		Value: schemaValAdditionalRef,
+		Ref:   "#/components/schemas/AdditionalPropertyTarget",
+	}
 }
 
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
@@ -112,6 +143,27 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 		Schemas:       make(map[string]*openapi3.SchemaRef),
 		RequestBodies: make(map[string]*openapi3.RequestBodyRef),
 	}
+
+	// At the root of the API, add in the definition of "additionalPropertyTarget"
+	if parentPath == "" {
+		schemaValTarget := openapi3.NewObjectSchema()
+		schemaValTarget.Title = "target"
+		schemaValTarget.Type = "string"
+		schemaValTargetRef := &openapi3.SchemaRef{
+			Value: schemaValTarget,
+		}
+
+		schemaValAddTarget := openapi3.NewObjectSchema()
+		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
+		schemaValAddTarget.Title = "AdditionalPropertyTarget"
+		schemaValAddTarget.Description = "Used for updates"
+		schemaValAddTargetRef := &openapi3.SchemaRef{
+			Value: schemaValAddTarget,
+		}
+		schemaValAddTarget.Properties["target"] = schemaValTargetRef
+		openapiComponents.Schemas["AdditionalPropertyTarget"] = schemaValAddTargetRef
+	}
+
 	for _, dirEntry := range deviceEntry.Dir {
 		itemPath := fmt.Sprintf("%s/%s", parentPath, dirEntry.Name)
 		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
@@ -174,6 +226,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			} else { // Leaflist
 				arr := openapi3.NewSchema()
 				arr.Type = "leaf-list"
+				addAdditionalProperties(schemaVal)
 				arr.Items = &openapi3.SchemaRef{
 					Value: schemaVal,
 				}
@@ -209,6 +262,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal := openapi3.NewObjectSchema()
 			schemaVal.Properties = make(map[string]*openapi3.SchemaRef)
 			schemaVal.Title = toUnderScore(itemPath)
+			addAdditionalProperties(schemaVal)
 			asRef := &openapi3.SchemaRef{
 				Value: schemaVal,
 			}
@@ -245,7 +299,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Value: v.Value.Items.Value,
 					}
 					arrayObj.Title = v.Value.Title
-					schemaVal.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
+					schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
@@ -313,6 +367,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			})
 			openapiPaths[pathWithPrefix(listItemPath)].Get.AddResponse(200, respGet200)
 
+			addAdditionalProperties(arr.Items.Value)
+
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
@@ -322,13 +378,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Value: v.Value.Items.Value,
 					}
 					arrayObj.Title = lastPartOf(k)
-					arr.Items.Value.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
+					arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of list
 					if v.Value.Title != "" {
-						arr.Items.Value.Properties[lastPartOf(k)] = &openapi3.SchemaRef{
+						arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 							Value: v.Value,
 						}
@@ -360,7 +416,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
 	targetParameterRef := openapi3.ParameterRef{
-		Ref:   fmt.Sprintf("#/components/parameters/target"),
+		Ref:   "#/components/parameters/target",
 		Value: targetParameter.Value,
 	}
 	parameters = append(parameters, &targetParameterRef)
@@ -396,13 +452,13 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 
 	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
 		deleteOp := openapi3.NewOperation()
-		deleteOp.Summary = fmt.Sprintf("DELETE Generated from YANG model")
+		deleteOp.Summary = "DELETE Generated from YANG model"
 		deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
 		deleteOp.Responses = openapi3.NewResponses()
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
-		postOp.Summary = fmt.Sprintf("POST Generated from YANG model")
+		postOp.Summary = "POST Generated from YANG model"
 		postOp.OperationID = fmt.Sprintf("post%s", toUnderScore(itemPath))
 		postOp.Responses = make(openapi3.Responses)
 		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
