@@ -56,7 +56,7 @@ func main() {
 
 	license := []byte(`# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 #
-# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0' aether-2.0.0-openapi3.yaml
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
 `)
 
 	licensedYaml := append(license, yaml...)
