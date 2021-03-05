@@ -37,7 +37,7 @@ const modulename = "aether.so.2.1.0"
 var ModelData = []*gnmi.ModelData{
 	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
+	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2021-03-04"},
 	{Name: "connectivity-service", Organization: "Open Networking Foundation", Version: "2020-11-30"},
 	{Name: "enterprise", Organization: "Open Networking Foundation", Version: "2020-11-30"},
 	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},

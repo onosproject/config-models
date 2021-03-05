@@ -22,17 +22,9 @@ module service-group {
   }
 
   typedef service-kind {
-    type enumeration {
-      enum default {
-        value 0;
-        description
-         "Default service";
-      }
-      enum on-demand {
-        value 1;
-        description
-         "On-demand service";
-      }
+    type string {
+      length 1..32;
+      pattern "default|on-demand";
     }
   }
 
@@ -75,7 +67,7 @@ module service-group {
         }
         leaf kind {    
           type service-kind;
-          default default;
+          default "default";
           description
             "Type of service link";
         }

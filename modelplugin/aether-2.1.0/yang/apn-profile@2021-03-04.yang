@@ -11,7 +11,7 @@ module apn-profile {
     pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
     Copied from YangUIComponents project";
 
-  revision "2020-10-22" {
+  revision "2021-03-04" {
     description "An Aether APN Profile";
     reference "RFC 6087";
   }

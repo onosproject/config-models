@@ -46,6 +46,113 @@ module service-rule {
         description "name of charging rule";
       }
 
+      container qos {
+        leaf qci {
+          type uint32 {
+            range 0..85;
+          }
+          default 9;
+          description
+            "QoS Class Identifier";
+        }
+
+        container arp {
+          leaf priority {
+            type uint32 {
+              range 0..15;
+            }          
+            default 0;
+            description
+              "Priority";
+          }        
+          leaf preemption-capability {
+            type boolean;
+            default true;
+            description
+              "True if a bearer with lower priority should be dropped";
+          }
+          leaf preemption-vulnerability {
+            type boolean;
+            default true;
+            description
+              "This bearer may be dropped for a bearer with higher priority";
+          }
+          description "Evolved-ARP";
+        }
+
+        container maximum-requested-bandwidth {
+          leaf uplink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Upstream maximum requested bandwidth";
+          }
+          leaf downlink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Downstream maximum requested bandwidth";
+          }        
+        }
+
+        container guaranteed-bitrate {
+          leaf uplink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Upstream guaranteed bitrate";
+          }
+          leaf downlink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Downstream guaranteed bitrate";
+          }        
+        }
+
+        container aggregate-maximum-bitrate {
+          leaf uplink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Upstream aggregate maximum bitrate";
+          }
+          leaf downlink {
+            type uint32 {
+              range 0..4294967295;
+            }
+            default 0;
+            units bps;
+            description
+              "Downstream aggregate maximum bitrate";
+          }        
+        }
+      }
+  
+      container flow {
+        leaf specification {
+          type string {
+            length 1..1024;
+          }
+          description "specification of this flow";
+        }
+      }
+
       leaf description {
         type string {
           length 1..100;

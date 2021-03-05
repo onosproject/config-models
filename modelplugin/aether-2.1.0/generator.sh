@@ -3,7 +3,7 @@
 mkdir -p aether_2_1_0
 
 go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_2_1_0/generated.go -package_name=aether_2_1_0 -generate_fakeroot \
-       aether-subscriber@2020-10-22.yang apn-profile@2020-10-22.yang up-profile@2020-10-22.yang qos-profile@2020-10-22.yang \
+       aether-subscriber@2020-10-22.yang apn-profile@2021-03-04.yang up-profile@2020-10-22.yang qos-profile@2020-10-22.yang \
        access-profile@2020-10-22.yang security-profile@2020-11-30.yang enterprise@2020-11-30.yang connectivity-service@2020-11-30.yang \
        service-group@2021-03-04.yang service@2021-03-04.yang
 

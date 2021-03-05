@@ -137,6 +137,17 @@ func addAdditionalProperties(schemaVal *openapi3.Schema) {
 	}
 }
 
+func generateEnumSchema(enum *yang.EnumType) *openapi3.Schema {
+	o := openapi3.NewStringSchema()
+	names := enum.Names()
+	enumNames := make([]string, len(names))
+	for i, v := range names {
+		enumNames[i] = v
+	}
+	o.WithEnum(enumNames)
+	return o
+}
+
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
 func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
@@ -225,6 +236,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						schemaVal.Max = &endFloat
 					}
 				}
+			case yang.Yenum:
+				// NOTE: This should work, but dirEntry.Type.Enum seems to always be empty
+				schemaVal = generateEnumSchema(dirEntry.Type.Enum)
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
