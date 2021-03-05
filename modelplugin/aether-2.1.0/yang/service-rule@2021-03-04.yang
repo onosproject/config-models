@@ -1,0 +1,57 @@
+module service-rule {
+  namespace "http://opennetworking.org/aether/service-rule";
+  prefix sr;
+
+  organization "Open Networking Foundation.";
+  contact "Scott Baker";
+  description "To generate JSON from this use command
+    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+    Copied from YangUIComponents project";
+
+  revision "2021-03-04" {
+    description "An Aether Service Rule";
+    reference "RFC 6087";
+  }
+
+  typedef service-rule-id {
+        type string {
+            length 1..32;
+        }
+  }
+
+  container service-rule {
+    description "The top level container";
+
+    list service-rule {
+      key "id";
+      description
+        "List of service rules";
+
+      leaf id {
+        type service-rule-id;
+        description "ID for this service.";
+      }
+
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }
+
+      leaf charging-rule-name {
+        type string {
+            length 1..80;
+        }
+        description "name of charging rule";
+      }
+
+      leaf description {
+        type string {
+          length 1..100;
+        }
+        description "description of this rule";
+      }      
+    }
+  } 
+}

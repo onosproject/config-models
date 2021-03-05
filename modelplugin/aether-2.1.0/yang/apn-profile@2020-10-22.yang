@@ -3,6 +3,7 @@ module apn-profile {
   prefix pro;
 
   import ietf-inet-types { prefix inet; }
+  import service-group { prefix sg; }
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -81,7 +82,15 @@ module apn-profile {
           length 1..100;
         }
         description "description of this profile";
-      }      
+      }
+
+      leaf service-group {
+        type leafref {
+          path "/sg:service-group/sg:service-group/sg:id";
+        }
+        description
+          "Link to service group";
+      }
     }
   } 
 }
