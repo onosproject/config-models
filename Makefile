@@ -35,6 +35,9 @@ build/_output/aether.so.1.0.0: # @HELP build aether.so.1.0.0
 build/_output/aether.so.2.0.0: # @HELP build aether.so.2.0.0
 	CGO_ENABLED=1 go build -o build/_output/aether.so.2.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/aether-2.0.0	
 
+build/_output/aether.so.2.1.0: # @HELP build aether.so.2.1.0
+	CGO_ENABLED=1 go build -o build/_output/aether.so.2.1.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/aether-2.1.0
+
 build/_output/ric.so.1.0.0: # @HELP build ric.so.1.0.0
 	CGO_ENABLED=1 go build -o build/_output/ric.so.1.0.0 -buildmode=plugin github.com/onosproject/config-models/modelplugin/ric-1.0.0
 
@@ -153,6 +156,15 @@ config-plugin-docker-aether-2.0.0: # @HELP build aether 1.0.0 plugin Docker imag
 		-t ${DOCKER_REPOSITORY}config-model-aether-2.0.0:${ONOS_CONFIG_VERSION}
 	@rm -rf vendor
 
+PHONY: config-plugin-docker-aether-2.1.0
+config-plugin-docker-aether-2.1.0: # @HELP build aether 2.1.0 plugin Docker image
+	@go mod vendor
+	docker build . -f build/plugins/Dockerfile \
+		--build-arg PLUGIN_MAKE_TARGET=aether \
+		--build-arg PLUGIN_MAKE_VERSION=2.1.0 \
+		--build-arg PLUGIN_BUILD_VERSION=${ONOS_BUILD_VERSION} \
+		-t ${DOCKER_REPOSITORY}config-model-aether-2.1.0:${ONOS_CONFIG_VERSION}
+	@rm -rf vendor
 
 PHONY: config-plugin-docker-ric-1.0.0
 config-plugin-docker-ric-1.0.0: # @HELP build ric 1.0.0 plugin Docker image
