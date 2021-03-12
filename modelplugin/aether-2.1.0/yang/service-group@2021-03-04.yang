@@ -48,14 +48,6 @@ module service-group {
         description "display name to use in GUI or CLI";
       }
 
-      leaf default-service {
-        type leafref {
-          path "/serv:service/serv:service/serv:id";
-        }
-        description
-          "Link to default service";
-      }
-
       list services {
         key "service";
         leaf service {

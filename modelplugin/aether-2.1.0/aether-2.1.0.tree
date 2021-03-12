@@ -95,13 +95,12 @@ module: security-profile
 module: service-group
   +--rw service-group
      +--rw service-group* [id]
-        +--rw id                 service-group-id
-        +--rw display-name?      string
-        +--rw default-service?   -> /serv:service/service/id
+        +--rw id              service-group-id
+        +--rw display-name?   string
         +--rw services* [service]
         |  +--rw service    -> /serv:service/service/id
         |  +--rw kind?      service-kind
-        +--rw description?       string
+        +--rw description?    string
 
 module: service-rule
   +--rw service-rule
