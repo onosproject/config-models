@@ -20,6 +20,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
+	"math"
 	"os"
 	"strings"
 	"unicode"
@@ -178,9 +179,12 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						return nil, nil, err
 					}
 					if min != nil {
-						schemaVal.MinLength = *min
+						schemaVal.MinLength = uint64(*min)
 					}
-					schemaVal.MaxLength = max
+					if max != nil {
+						v := uint64(*max)
+						schemaVal.MaxLength = &v
+					}
 				}
 				if dirEntry.Type.Pattern != nil && len(dirEntry.Type.Pattern) > 0 {
 					// All we can do is take the first one
@@ -196,12 +200,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
-			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16, yang.Yuint32, yang.Yint32, yang.Yuint64, yang.Yint64:
+			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16, yang.Yuint32, yang.Yint32, yang.Yuint64, yang.Yint64, yang.Ydecimal64:
 				switch dirEntry.Type.Kind {
 				case yang.Yuint32, yang.Yint32:
 					schemaVal = openapi3.NewInt32Schema()
 				case yang.Yuint64, yang.Yint64:
 					schemaVal = openapi3.NewInt64Schema()
+				case yang.Ydecimal64:
+					schemaVal = openapi3.NewFloat64Schema()
 				default:
 					schemaVal = openapi3.NewIntegerSchema()
 				}
@@ -405,7 +411,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						}
 					}
 					openapiComponents.Schemas[k] = v
-				case "string", "boolean", "integer": // leaf as a child of list
+				case "string", "boolean", "integer", "number": // leaf as a child of list
 					arr.Items.Value.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
@@ -519,6 +525,7 @@ func pathWithPrefix(itemPath string) string {
 	return fmt.Sprintf("%s%s", pathPrefix, itemPath)
 }
 
+// Removes any indices
 func pathToSchemaName(itemPath string) string {
 	parts := strings.Split(itemPath, "/")
 	partsWoIdx := make([]string, 0)
@@ -533,9 +540,9 @@ func pathToSchemaName(itemPath string) string {
 // If there is more than 1 range - try to find the overall min and max
 // If YANG uses min and max, then leave out any statement in OpenAPI 3
 // Leave it to the implementation handle the min and max for the type
-func yangRange(yangRange yang.YangRange) (*uint64, *uint64, error) {
-	var minVal *uint64
-	var maxVal *uint64
+func yangRange(yangRange yang.YangRange) (*float64, *float64, error) {
+	var minVal *float64
+	var maxVal *float64
 	var hasMinMin, hasMaxMax bool
 	if yangRange.Len() == 0 {
 		return nil, nil, fmt.Errorf("unexpected nil range")
@@ -544,16 +551,29 @@ func yangRange(yangRange yang.YangRange) (*uint64, *uint64, error) {
 		if yangRange[i].Min.Kind == yang.MinNumber {
 			minVal = nil
 			hasMinMin = true
-		} else if (!hasMinMin && minVal == nil) || (minVal != nil && yangRange[i].Min.Value < *minVal) {
-			minVal = &yangRange[i].Min.Value
+		} else if m := floatFromYnumber(yangRange[i].Min); (!hasMinMin && minVal == nil) || (minVal != nil && *m < *minVal) {
+			minVal = m
 		}
 
 		if yangRange[i].Max.Kind == yang.MaxNumber {
 			maxVal = nil
 			hasMaxMax = true
-		} else if (!hasMaxMax && maxVal == nil) || (maxVal != nil && yangRange[i].Max.Value > *maxVal) {
-			maxVal = &yangRange[i].Max.Value
+		} else if m := floatFromYnumber(yangRange[i].Max); (!hasMaxMax && maxVal == nil) || (maxVal != nil && *m > *maxVal) {
+			maxVal = m
 		}
 	}
 	return minVal, maxVal, nil
+}
+
+func floatFromYnumber(ynumber yang.Number) *float64 {
+	neg := 1.0
+	if ynumber.Kind == yang.Negative {
+		neg = -1.0
+	}
+	if !ynumber.IsDecimal() {
+		v := float64(ynumber.Value) * neg
+		return &v
+	}
+	v := float64(ynumber.Value) * math.Pow(10, -1.0*float64(ynumber.FractionDigits))
+	return &v
 }
