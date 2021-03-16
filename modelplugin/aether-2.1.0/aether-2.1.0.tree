@@ -98,39 +98,14 @@ module: service-group
         +--rw id              service-group-id
         +--rw display-name?   string
         +--rw services* [service]
-        |  +--rw service    -> /serv:service/service/id
+        |  +--rw service    -> /serv:service-policy/service-policy/id
         |  +--rw kind?      service-kind
         +--rw description?    string
 
-module: service-rule
-  +--rw service-rule
-     +--rw service-rule* [id]
-        +--rw id                    service-rule-id
-        +--rw display-name?         string
-        +--rw charging-rule-name?   string
-        +--rw qos
-        |  +--rw qci?                           uint32
-        |  +--rw arp
-        |  |  +--rw priority?                   uint32
-        |  |  +--rw preemption-capability?      boolean
-        |  |  +--rw preemption-vulnerability?   boolean
-        |  +--rw maximum-requested-bandwidth
-        |  |  +--rw uplink?     uint32
-        |  |  +--rw downlink?   uint32
-        |  +--rw guaranteed-bitrate
-        |  |  +--rw uplink?     uint32
-        |  |  +--rw downlink?   uint32
-        |  +--rw aggregate-maximum-bitrate
-        |     +--rw uplink?     uint32
-        |     +--rw downlink?   uint32
-        +--rw flow
-        |  +--rw specification?   string
-        +--rw description?          string
-
-module: service
-  +--rw service
-     +--rw service* [id]
-        +--rw id              service-id
+module: service-policy
+  +--rw service-policy
+     +--rw service-policy* [id]
+        +--rw id              service-policy-id
         +--rw display-name?   string
         +--rw qci?            uint32
         +--rw arp?            uint32
@@ -141,6 +116,30 @@ module: service
         |  +--rw rule       -> /sr:service-rule/service-rule/id
         |  +--rw enabled?   boolean
         +--rw description?    string
+
+module: service-rule
+  +--rw service-rule
+     +--rw service-rule* [id]
+        +--rw id                             service-rule-id
+        +--rw display-name?                  string
+        +--rw charging-rule-name?            string
+        +--rw qci?                           uint32
+        +--rw arp
+        |  +--rw priority?                   uint32
+        |  +--rw preemption-capability?      boolean
+        |  +--rw preemption-vulnerability?   boolean
+        +--rw maximum-requested-bandwidth
+        |  +--rw uplink?     uint32
+        |  +--rw downlink?   uint32
+        +--rw guaranteed-bitrate
+        |  +--rw uplink?     uint32
+        |  +--rw downlink?   uint32
+        +--rw aggregate-maximum-bitrate
+        |  +--rw uplink?     uint32
+        |  +--rw downlink?   uint32
+        +--rw flow
+        |  +--rw specification?   string
+        +--rw description?                   string
 
 module: up-profile
   +--rw up-profile

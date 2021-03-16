@@ -211,6 +211,7 @@ kind-only:
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-e2node-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-rbac-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-1.0.0:${ONOS_CONFIG_VERSION}
+	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-2.1.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-aether-2.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-ric-1.0.0:${ONOS_CONFIG_VERSION}
 	kind load docker-image ${DOCKER_REPOSITORY}config-model-enterprise-1.0.0:${ONOS_CONFIG_VERSION}

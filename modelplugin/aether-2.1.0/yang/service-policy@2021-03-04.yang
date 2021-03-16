@@ -1,5 +1,5 @@
-module service {
-  namespace "http://opennetworking.org/aether/service";
+module service-policy {
+  namespace "http://opennetworking.org/aether/service-policy";
   prefix serv;
 
   import service-rule { prefix sr; }
@@ -15,22 +15,22 @@ module service {
     reference "RFC 6087";
   }
 
-  typedef service-id {
+  typedef service-policy-id {
         type string {
             length 1..32;
         }
   }
 
-  container service {
+  container service-policy {
     description "The top level container";
 
-    list service {
+    list service-policy {
       key "id";
       description
         "List of services";
 
       leaf id {
-        type service-id;
+        type service-policy-id;
         description "ID for this service.";
       }
 

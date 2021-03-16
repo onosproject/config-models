@@ -43,7 +43,7 @@ var ModelData = []*gnmi.ModelData{
 	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
 	{Name: "security-profile", Organization: "Open Networking Foundation", Version: "2020-11-30"},
 	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "service", Organization: "Open Networking Foundation", Version: "2021-03-04"},
+	{Name: "service-policy", Organization: "Open Networking Foundation", Version: "2021-03-04"},
 	{Name: "service-group", Organization: "Open Networking Foundation", Version: "2021-03-04"},
 	{Name: "service-rule", Organization: "Open Networking Foundation", Version: "2021-03-04"},
 }

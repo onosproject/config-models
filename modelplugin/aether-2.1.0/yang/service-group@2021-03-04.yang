@@ -2,7 +2,7 @@ module service-group {
   namespace "http://opennetworking.org/aether/service-group";
   prefix sg;
 
-  import service { prefix serv; }
+  import service-policy { prefix serv; }
 
   organization "Open Networking Foundation.";
   contact "Scott Baker";
@@ -52,7 +52,7 @@ module service-group {
         key "service";
         leaf service {
           type leafref {
-            path "/serv:service/serv:service/serv:id";
+            path "/serv:service-policy/serv:service-policy/serv:id";
           }
           description
               "Link to service";
