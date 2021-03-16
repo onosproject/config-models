@@ -177,8 +177,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					if err != nil {
 						return nil, nil, err
 					}
-					schemaVal.MinLength = min
-					schemaVal.MaxLength = &max
+					if min != nil {
+						schemaVal.MinLength = *min
+					}
+					schemaVal.MaxLength = max
 				}
 				if dirEntry.Type.Pattern != nil && len(dirEntry.Type.Pattern) > 0 {
 					// All we can do is take the first one
@@ -208,10 +210,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					if err != nil {
 						return nil, nil, err
 					}
-					startFloat := float64(start)
-					schemaVal.Min = &startFloat
-					endFloat := float64(end)
-					schemaVal.Max = &endFloat
+					if start != nil {
+						startFloat := float64(*start)
+						schemaVal.Min = &startFloat
+					}
+					if end != nil {
+						endFloat := (float64)(*end)
+						schemaVal.Max = &endFloat
+					}
 				}
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
@@ -304,6 +310,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of container
+					schemaPath := pathToSchemaName(itemPath)
+					root := k[len(schemaPath):]
+					if v.Value.Title != "" && !strings.Contains(root, "_") {
+						schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
+							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
+							Value: v.Value,
+						}
+					}
 					openapiComponents.Schemas[k] = v
 				case "string", "boolean", "integer": // leaf as a child of list
 					schemaVal.Properties[v.Value.Title] = v
@@ -313,7 +327,6 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					return nil, nil, fmt.Errorf("undhanled in container %s: %s", k, v.Value.Type)
 				}
-
 			}
 
 			for k, v := range components.RequestBodies {
@@ -383,7 +396,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					openapiComponents.Schemas[k] = v.Value.Items
 				case "object": // Container as a child of list
-					if v.Value.Title != "" {
+					schemaPath := pathToSchemaName(itemPath)
+					root := k[len(schemaPath):]
+					if v.Value.Title != "" && !strings.Contains(root, "_") {
 						arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 							Value: v.Value,
@@ -504,15 +519,41 @@ func pathWithPrefix(itemPath string) string {
 	return fmt.Sprintf("%s%s", pathPrefix, itemPath)
 }
 
-func yangRange(yangRange yang.YangRange) (uint64, uint64, error) {
-	var minVal uint64
-	var maxVal uint64
+func pathToSchemaName(itemPath string) string {
+	parts := strings.Split(itemPath, "/")
+	partsWoIdx := make([]string, 0)
+	for _, p := range parts {
+		if !strings.Contains(p, "{") {
+			partsWoIdx = append(partsWoIdx, p)
+		}
+	}
+	return strings.ToLower(strings.Join(partsWoIdx, "/"))
+}
+
+// If there is more than 1 range - try to find the overall min and max
+// If YANG uses min and max, then leave out any statement in OpenAPI 3
+// Leave it to the implementation handle the min and max for the type
+func yangRange(yangRange yang.YangRange) (*uint64, *uint64, error) {
+	var minVal *uint64
+	var maxVal *uint64
+	var hasMinMin, hasMaxMax bool
 	if yangRange.Len() == 0 {
-		return 0, 0, fmt.Errorf("unexpected nil range")
+		return nil, nil, fmt.Errorf("unexpected nil range")
 	}
 	for i := 0; i < yangRange.Len(); i++ {
-		minVal = yangRange[0].Min.Value
-		maxVal = yangRange[0].Max.Value
+		if yangRange[i].Min.Kind == yang.MinNumber {
+			minVal = nil
+			hasMinMin = true
+		} else if (!hasMinMin && minVal == nil) || (minVal != nil && yangRange[i].Min.Value < *minVal) {
+			minVal = &yangRange[i].Min.Value
+		}
+
+		if yangRange[i].Max.Kind == yang.MaxNumber {
+			maxVal = nil
+			hasMaxMax = true
+		} else if (!hasMaxMax && maxVal == nil) || (maxVal != nil && yangRange[i].Max.Value > *maxVal) {
+			maxVal = &yangRange[i].Max.Value
+		}
 	}
 	return minVal, maxVal, nil
 }
