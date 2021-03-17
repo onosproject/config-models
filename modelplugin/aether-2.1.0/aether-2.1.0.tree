@@ -120,26 +120,27 @@ module: service-policy
 module: service-rule
   +--rw service-rule
      +--rw service-rule* [id]
-        +--rw id                             service-rule-id
-        +--rw display-name?                  string
-        +--rw charging-rule-name?            string
-        +--rw qci?                           uint32
-        +--rw arp
-        |  +--rw priority?                   uint32
-        |  +--rw preemption-capability?      boolean
-        |  +--rw preemption-vulnerability?   boolean
-        +--rw maximum-requested-bandwidth
-        |  +--rw uplink?     uint32
-        |  +--rw downlink?   uint32
-        +--rw guaranteed-bitrate
-        |  +--rw uplink?     uint32
-        |  +--rw downlink?   uint32
-        +--rw aggregate-maximum-bitrate
-        |  +--rw uplink?     uint32
-        |  +--rw downlink?   uint32
+        +--rw id                    service-rule-id
+        +--rw display-name?         string
+        +--rw charging-rule-name?   string
+        +--rw qos
+        |  +--rw qci?                           uint32
+        |  +--rw arp
+        |  |  +--rw priority?                   uint32
+        |  |  +--rw preemption-capability?      boolean
+        |  |  +--rw preemption-vulnerability?   boolean
+        |  +--rw maximum-requested-bandwidth
+        |  |  +--rw uplink?     uint32
+        |  |  +--rw downlink?   uint32
+        |  +--rw guaranteed-bitrate
+        |  |  +--rw uplink?     uint32
+        |  |  +--rw downlink?   uint32
+        |  +--rw aggregate-maximum-bitrate
+        |     +--rw uplink?     uint32
+        |     +--rw downlink?   uint32
         +--rw flow
         |  +--rw specification?   string
-        +--rw description?                   string
+        +--rw description?          string
 
 module: up-profile
   +--rw up-profile

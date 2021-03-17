@@ -46,7 +46,7 @@ module service-rule {
         description "name of charging rule";
       }
 
-      //container qos {
+      container qos {
         leaf qci {
           type uint32 {
             range 0..85;
@@ -142,7 +142,7 @@ module service-rule {
               "Downstream aggregate maximum bitrate";
           }        
         }
-      //}
+      }
   
       container flow {
         leaf specification {
