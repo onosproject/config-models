@@ -1,0 +1,108 @@
+module service-policy {
+  namespace "http://opennetworking.org/aether/service-policy";
+  prefix serv;
+
+  import service-rule { prefix sr; }
+
+  organization "Open Networking Foundation.";
+  contact "Scott Baker";
+  description "To generate JSON from this use command
+    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+    Copied from YangUIComponents project";
+
+  revision "2021-03-04" {
+    description "An Aether Service";
+    reference "RFC 6087";
+  }
+
+  typedef service-policy-id {
+        type string {
+            length 1..32;
+        }
+  }
+
+  container service-policy {
+    description "The top level container";
+
+    list service-policy {
+      key "id";
+      description
+        "List of services";
+
+      leaf id {
+        type service-policy-id;
+        description "ID for this service.";
+      }
+
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }
+
+      leaf qci {
+        type uint32 {
+          range 0..85;
+        }
+        default 9;
+        description
+          "QoS Class Identifier";
+      }
+
+      leaf arp {
+        type uint32 {
+          range 0..15;
+        }
+        default 9;
+        description
+          "Evolved-ARP";
+      }      
+
+      container ambr {
+        leaf uplink {
+          type uint32 {
+            range 0..4294967295;
+          }
+          default 0;
+          units bps;
+          description
+            "Upstream aggregate maximum bit rate";
+        }
+        leaf downlink {
+          type uint32 {
+            range 0..4294967295;
+          }
+          default 0;
+          units bps;
+          description
+            "Downstream aggregate maximum bit rate";
+        }        
+      }
+
+      list rules {
+        key "rule";
+        leaf rule {
+          type leafref {
+            path "/sr:service-rule/sr:service-rule/sr:id";
+          }
+          description
+              "Link to service rule";
+        }
+        leaf enabled {
+          type boolean;
+          default true;
+          description
+            "Enable or disable this service to use this rule";
+        }
+      }       
+
+      leaf description {
+        type string {
+          length 1..100;
+        }
+        description "description of this profile";
+      }      
+    }
+  } 
+}

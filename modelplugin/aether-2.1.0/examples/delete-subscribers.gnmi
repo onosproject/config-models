@@ -1,0 +1,12 @@
+prefix: <
+    target: 'connectivity-service-v2'
+    elem: <
+        name: 'subscriber'
+    >
+>
+delete <
+    elem: <
+        name: 'ue'
+    >
+>
+

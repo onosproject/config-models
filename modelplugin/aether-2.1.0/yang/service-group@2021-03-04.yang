@@ -1,0 +1,76 @@
+module service-group {
+  namespace "http://opennetworking.org/aether/service-group";
+  prefix sg;
+
+  import service-policy { prefix serv; }
+
+  organization "Open Networking Foundation.";
+  contact "Scott Baker";
+  description "To generate JSON from this use command
+    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+    Copied from YangUIComponents project";
+
+  revision "2021-03-04" {
+    description "An Aether Service Group";
+    reference "RFC 6087";
+  }
+
+  typedef service-group-id {
+        type string {
+            length 1..32;
+        }
+  }
+
+  typedef service-kind {
+    type string {
+      length 1..32;
+      pattern "default|on-demand";
+    }
+  }
+
+  container service-group {
+    description "The top level container";
+
+    list service-group {
+      key "id";
+      description
+        "List of service groups";
+
+      leaf id {
+        type service-group-id;
+        description "ID for this service group.";
+      }
+
+      leaf display-name {
+        type string {
+            length 1..80;
+        }
+        description "display name to use in GUI or CLI";
+      }
+
+      list service-policies {
+        key "service-policy";
+        leaf service-policy {
+          type leafref {
+            path "/serv:service-policy/serv:service-policy/serv:id";
+          }
+          description
+              "Link to service policy";
+        }
+        leaf kind {    
+          type service-kind;
+          default "default";
+          description
+            "Type of service link";
+        }
+      }      
+
+      leaf description {
+        type string {
+          length 1..100;
+        }
+        description "description of this service group";
+      }      
+    }
+  } 
+}

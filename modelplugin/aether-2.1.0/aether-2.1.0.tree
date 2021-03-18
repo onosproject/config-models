@@ -1,0 +1,153 @@
+module: access-profile
+  +--rw access-profile
+     +--rw access-profile* [id]
+        +--rw id              access-profile-id
+        +--rw display-name?   string
+        +--rw type?           string
+        +--rw filter?         string
+        +--rw description?    string
+
+module: aether-subscriber
+  +--rw subscriber
+     +--rw ue* [id]
+        +--rw id                       ietf:uuid
+        +--rw display-name?            string
+        +--rw (imsi)?
+        |  +--:(wildcard)
+        |  |  +--rw imsi-wildcard?     string
+        |  +--:(range)
+        |     +--rw imsi-range-from?   uint64
+        |     +--rw imsi-range-to?     uint64
+        +--rw serving-plmn
+        |  +--rw mcc?   mcc
+        |  +--rw mnc?   mnc
+        |  +--rw tac?   tac
+        +--rw requested-apn?           string
+        +--rw priority?                uint32
+        +--rw enabled?                 boolean
+        +--rw enterprise?              -> /ent:enterprise/enterprise/id
+        +--rw profiles
+           +--rw apn-profile?        -> /apn:apn-profile/apn-profile/id
+           +--rw up-profile?         -> /up:up-profile/up-profile/id
+           +--rw qos-profile?        -> /qos:qos-profile/qos-profile/id
+           +--rw access-profile* [access-profile]
+           |  +--rw access-profile    -> /ap:access-profile/access-profile/id
+           |  +--rw allowed?          boolean
+           +--rw security-profile?   -> /sec:security-profile/security-profile/id
+
+module: apn-profile
+  +--rw apn-profile
+     +--rw apn-profile* [id]
+        +--rw id               apn-profile-id
+        +--rw display-name?    string
+        +--rw apn-name?        string
+        +--rw dns-primary?     inet:ip-address
+        +--rw dns-secondary?   inet:ip-address
+        +--rw mtu?             uint32
+        +--rw gx-enabled?      boolean
+        +--rw description?     string
+        +--rw service-group?   -> /sg:service-group/service-group/id
+
+module: connectivity-service
+  +--rw connectivity-service
+     +--rw connectivity-service* [id]
+        +--rw id                connectivity-service-id
+        +--rw display-name?     string
+        +--rw description?      string
+        +--rw spgwc-endpoint?   inet:uri
+        +--rw hss-endpoint?     inet:uri
+        +--rw pcrf-endpoint?    inet:uri
+
+module: enterprise
+  +--rw enterprise
+     +--rw enterprise* [id]
+        +--rw id                      enterprise-id
+        +--rw display-name?           string
+        +--rw description?            string
+        +--rw connectivity-service* [connectivity-service]
+           +--rw connectivity-service    -> /cs:connectivity-service/connectivity-service/id
+           +--rw enabled?                boolean
+
+module: qos-profile
+  +--rw qos-profile
+     +--rw qos-profile* [id]
+        +--rw id              qos-profile-id
+        +--rw display-name?   string
+        +--rw apn-ambr
+        |  +--rw uplink?     uint32
+        |  +--rw downlink?   uint32
+        +--rw qci?            uint32
+        +--rw arp
+        |  +--rw priority?                   uint32
+        |  +--rw preemption-capability?      boolean
+        |  +--rw preemption-vulnerability?   boolean
+        +--rw description?    string
+
+module: security-profile
+  +--rw security-profile
+     +--rw security-profile* [id]
+        +--rw id              security-profile-id
+        +--rw display-name?   string
+        +--rw key?            string
+        +--rw opc?            string
+        +--rw sqn?            uint32
+        +--rw description?    string
+
+module: service-group
+  +--rw service-group
+     +--rw service-group* [id]
+        +--rw id                  service-group-id
+        +--rw display-name?       string
+        +--rw service-policies* [service-policy]
+        |  +--rw service-policy    -> /serv:service-policy/service-policy/id
+        |  +--rw kind?             service-kind
+        +--rw description?        string
+
+module: service-policy
+  +--rw service-policy
+     +--rw service-policy* [id]
+        +--rw id              service-policy-id
+        +--rw display-name?   string
+        +--rw qci?            uint32
+        +--rw arp?            uint32
+        +--rw ambr
+        |  +--rw uplink?     uint32
+        |  +--rw downlink?   uint32
+        +--rw rules* [rule]
+        |  +--rw rule       -> /sr:service-rule/service-rule/id
+        |  +--rw enabled?   boolean
+        +--rw description?    string
+
+module: service-rule
+  +--rw service-rule
+     +--rw service-rule* [id]
+        +--rw id                    service-rule-id
+        +--rw display-name?         string
+        +--rw charging-rule-name?   string
+        +--rw qos
+        |  +--rw qci?                           uint32
+        |  +--rw arp
+        |  |  +--rw priority?                   uint32
+        |  |  +--rw preemption-capability?      boolean
+        |  |  +--rw preemption-vulnerability?   boolean
+        |  +--rw maximum-requested-bandwidth
+        |  |  +--rw uplink?     uint32
+        |  |  +--rw downlink?   uint32
+        |  +--rw guaranteed-bitrate
+        |  |  +--rw uplink?     uint32
+        |  |  +--rw downlink?   uint32
+        |  +--rw aggregate-maximum-bitrate
+        |     +--rw uplink?     uint32
+        |     +--rw downlink?   uint32
+        +--rw flow
+        |  +--rw specification?   string
+        +--rw description?          string
+
+module: up-profile
+  +--rw up-profile
+     +--rw up-profile* [id]
+        +--rw id                up-profile-id
+        +--rw display-name?     string
+        +--rw user-plane?       string
+        +--rw access-control?   string
+        +--rw description?      string
