@@ -56,6 +56,7 @@ module: connectivity-service
         +--rw description?      string
         +--rw spgwc-endpoint?   inet:uri
         +--rw hss-endpoint?     inet:uri
+        +--rw pcrf-endpoint?    inet:uri
 
 module: enterprise
   +--rw enterprise
@@ -95,12 +96,12 @@ module: security-profile
 module: service-group
   +--rw service-group
      +--rw service-group* [id]
-        +--rw id              service-group-id
-        +--rw display-name?   string
-        +--rw services* [service]
-        |  +--rw service    -> /serv:service-policy/service-policy/id
-        |  +--rw kind?      service-kind
-        +--rw description?    string
+        +--rw id                  service-group-id
+        +--rw display-name?       string
+        +--rw service-policies* [service-policy]
+        |  +--rw service-policy    -> /serv:service-policy/service-policy/id
+        |  +--rw kind?             service-kind
+        +--rw description?        string
 
 module: service-policy
   +--rw service-policy

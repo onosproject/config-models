@@ -48,14 +48,14 @@ module service-group {
         description "display name to use in GUI or CLI";
       }
 
-      list services {
-        key "service";
-        leaf service {
+      list service-policies {
+        key "service-policy";
+        leaf service-policy {
           type leafref {
             path "/serv:service-policy/serv:service-policy/serv:id";
           }
           description
-              "Link to service";
+              "Link to service policy";
         }
         leaf kind {    
           type service-kind;

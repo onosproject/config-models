@@ -10,7 +10,7 @@ module connectivity-service {
     pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
     Copied from YangUIComponents project";
 
-  revision "2020-11-30" {
+  revision "2021-03-18" {
     description "An Aether Connectivity Service. Specifies the endpoints where the sdcore-adapter should push configuration to. A single connectivity service may be attached to multiple Enterprises.";
     reference "RFC 6087";
   }
@@ -56,7 +56,12 @@ module connectivity-service {
       leaf hss-endpoint {
         type inet:uri;
         description "url of the hss service";
-      }      
+      }
+
+      leaf pcrf-endpoint {
+        type inet:uri;
+        description "url of the pcrf service";
+      }         
     }
   } 
 }
