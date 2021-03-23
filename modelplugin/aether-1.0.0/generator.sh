@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-go run github.com/openconfig/ygot/generator -path=yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-08-18.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
+go run github.com/openconfig/ygot/generator -path=../../../sdran-helm-charts/config-models/aether-1.x/files/yang -output_file=aether_1_0_0/generated.go -package_name=aether_1_0_0 -generate_fakeroot aether-subscriber@2020-08-18.yang apn-profile@2020-08-18.yang up-profile@2020-08-18.yang qos-profile@2020-08-18.yang access-profile@2020-08-18.yang
 
 
 sedi=(-i)
