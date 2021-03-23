@@ -1,6 +1,6 @@
 models:
 	go generate
-	pyang -f tree yang/*.yang > aether-1.0.0.tree
+	pyang -f tree ../../../sdran-helm-charts/config-models/aether-1.x/files/yang/*.yang > aether-1.0.0.tree
 
 openapi-gen:
 	go build cmd/openapi-gen.go

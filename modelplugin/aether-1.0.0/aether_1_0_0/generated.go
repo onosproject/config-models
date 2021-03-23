@@ -13,7 +13,7 @@ using the following YANG input files:
 	- qos-profile@2020-08-18.yang
 	- access-profile@2020-08-18.yang
 Imported modules were sourced from:
-	- yang/...
+	- ../../../sdran-helm-charts/config-models/aether-1.x/files/yang/...
 */
 package aether_1_0_0
 
