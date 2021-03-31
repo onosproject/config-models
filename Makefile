@@ -23,6 +23,7 @@ gofmt: # @HELP run the Go format validation
 
 test: # @HELP run go test on projects
 test: build linters license_check gofmt
+	cd modelplugin/testdevice-1.0.0/ && (go test ./... || cd ..)
 
 PHONY:build
 build: # @HELP build all libraries
