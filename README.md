@@ -1,48 +1,31 @@
 # config-models
-Model Plugins for `onos-config` YANG Files compiled with YGOT loadable as Shared Object Libraries
+Legacy support for Model Plugins for `onos-config`.
 
-## Building the modules
-The plugins can be built individually (use `make help` to see the target names),
-or altogether with `make images`.
+This has now been replaced by the `onos-operator` loader for Config Model Plugins.
 
-## Running
-The plugins are loaded in Kubernetes by declaring them 
+* The Model Plugins YANG files are now held in the helm Charts at
+https://github.com/onosproject/onos-helm-charts/tree/master/config-models
+* The Config Model compiler is at
+https://github.com/onosproject/onos-config-model
 
-1. as additional (sidecar) containers in the `onos-config` Pod AND
-2. as a -modelPlugin option on the startup of `onos-config`
+This repo is for holding compiled versions of some model plugins
 
-These are usually specified in the `onos-config` [Helm Chart](https://github.com/onosproject/onos-helm-charts/tree/master/onos-config)
-or in [onit](https://github.com/onosproject/onos-test).
+# aether-1.0.0, aether-2.0.0, aether-2.1.0
+These folders hold the compiled version of `generated.go` which allows an **OpenAPI 3** model to
+be generated from the compiled YANG. In each case this can be called like e.g.:
+```bash
+cd modelplugin/aether-2.1.0
+./generator.sh
+go run cmd/openapi-gen.go
+```
+> The output is sent to the console - it should be saved to https://github.com/onosproject/aether-roc-api/tree/master/api
 
-As the plugin containers startup in Kubernetes the default command is `copylibandstay`.
-This is a tiny program that copies the library in to a shared folder where
-`onos-config` can refer to it as a file e.g. `/usr/local/lib/shared/devicesim.so.1.0.0`
-
-## Extending
-See the guide [Extending onos-config with Model Plugins](https://docs.onosproject.org/onos-config/docs/modelplugin/) for more details.
-
-## Troubleshooting
-There are some tips at the end of the Extending guide [Troubleshooting](https://docs.onosproject.org/onos-config/docs/modelplugin/#troubleshooting)
-
-## Additional notes
-The first 3 plugins
-
-* testdevice-1.0.0
-* testdevice-2.0.0
-* devicesim-1.0.0
-
-are used as Go module packages in their own right from inside the Unit tests of `onos-config`.
+# devicesim-1.0.0, testdevice-1.0.0, testdevice-2.0.0
+These folders hold the compiled version of `generated.go` which are used in unit tests for `onos-config`
 For this reason each one has it's own `go.mod`.
 
-The plugin
+When the YGOT version is changed in these go modules, the version used by `onos-config` will have to be updated too,
+and in turn the `onos-config-model` will have to be updated and re-released.
 
-* stratum-1.0.0
-
-has its own `go.mod` to that it is ignored by the top level `go.mod`.
-> Also in future it is intended that the `stratum_1_0_0` package will be generated at compile time from YANG, (using YGOT
->Generate) and removed from Git versioning
-
-The main purpose of the top level `go.mod` is to provide a set of go modules (as **vendor**) to the Docker build container.
-
-The versions of the packages in this top level `go.mod` must exactly match those of `onos-config`'s `go.mod`, or the plugin
-will not be loadable by `onos-config` at run time.
+# Top level
+The main purpose of the top level `go.mod` is for the common library - **pkg/openapi-gen**

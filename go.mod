@@ -5,8 +5,8 @@ go 1.14
 require (
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/golang/protobuf v1.4.3 // indirect
-	github.com/openconfig/goyang v0.2.1
-	github.com/openconfig/ygot v0.8.12
+	github.com/openconfig/goyang v0.2.2
+	github.com/openconfig/ygot v0.10.5
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2
 	golang.org/x/sys v0.0.0-20200519105757-fe76b779f299
