@@ -36,7 +36,13 @@ test: build linters license_check gofmt
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
-	GODEBUG=cgocheck=0 TEST_PACKAGES=github.com/onosproject/onos-e2t/... ./../build-tools/build/jenkins/make-unit
+	cd modelplugin/testdevice-1.0.0  && CGO_ENABLED=1 TEST_PACKAGES=github.com/onosproject/config-models/modelplugin/testdevice-1.0.0/... ../../../build-tools/build/jenkins/make-unit
+	cp modelplugin/testdevice-1.0.0/*.xml .
+
+deps: # @HELP ensure that the required dependencies are in place
+	go build -v ./...
+	bash -c "diff -u <(echo -n) <(git diff go.mod)"
+	bash -c "diff -u <(echo -n) <(git diff go.sum)"
 
 PHONY:build
 build: # @HELP build all libraries
