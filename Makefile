@@ -56,6 +56,12 @@ build: \
 all: # @HELP build all libraries and all docker images
 all: build
 
+publish: # @HELP publish version on github, dockerhub, abd PyPI
+	./../build-tools/publish-version ${VERSION}
+
+jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
+	../build-tools/release-merge-commit
+
 clean: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor
 	go clean -testcache github.com/onosproject/config-models/...
