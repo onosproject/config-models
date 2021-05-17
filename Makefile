@@ -63,7 +63,6 @@ publish: # @HELP publish version on github, dockerhub, abd PyPI
 	./../build-tools/publish-version modelplugin/devicesim-1.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/testdevice-1.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/testdevice-2.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/testdevice-2.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-2.1.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-2.2.0/${VERSION}
 
