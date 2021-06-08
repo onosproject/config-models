@@ -35,16 +35,6 @@ const modelversion = "3.0.0"
 const modulename = "aether.so.3.0.0"
 
 var ModelData = []*gnmi.ModelData{
-	{Name: "access-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "aether-subscriber", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "apn-profile", Organization: "Open Networking Foundation", Version: "2021-03-04"},
-	{Name: "qos-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "security-profile", Organization: "Open Networking Foundation", Version: "2021-05-10"},
-	{Name: "up-profile", Organization: "Open Networking Foundation", Version: "2020-10-22"},
-	{Name: "service-policy", Organization: "Open Networking Foundation", Version: "2021-03-04"},
-	{Name: "service-group", Organization: "Open Networking Foundation", Version: "2021-03-04"},
-	{Name: "service-rule", Organization: "Open Networking Foundation", Version: "2021-03-04"},
-
 	{Name: "connectivity-service", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "enterprise", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 
@@ -56,9 +46,9 @@ var ModelData = []*gnmi.ModelData{
 	{Name: "ip-domain", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "network", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "site", Organization: "Open Networking Foundation", Version: "2021-06-02"},
-	{Name: "upf-list", Organization: "Open Networking Foundation", Version: "2021-06-02"},
+	{Name: "upf", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "vcs", Organization: "Open Networking Foundation", Version: "2021-06-02"},
-	{Name: "vcs-template", Organization: "Open Networking Foundation", Version: "2021-06-02"},
+	{Name: "template", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
