@@ -1,9 +1,0 @@
-path: <
-    target: 'connectivity-service-v1'
-    elem: <
-        name: 'subscriber'
-    >
-    elem: <
-        name: 'ue'
-    >
->
