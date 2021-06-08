@@ -1,6 +1,6 @@
 module github.com/onosproject/config-models/modelplugin/aether-3.0.0
 
-go 1.14
+go 1.15
 
 require (
 	github.com/ghodss/yaml v1.0.0

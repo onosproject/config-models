@@ -1,4 +1,4 @@
-// Copyright 2020-present Open Networking Foundation.
+// Copyright 2021-present Open Networking Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	license := []byte(`# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+	license := []byte(`# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
 `)
