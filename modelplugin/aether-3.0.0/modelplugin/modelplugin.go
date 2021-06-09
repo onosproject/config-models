@@ -49,6 +49,7 @@ var ModelData = []*gnmi.ModelData{
 	{Name: "upf", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "vcs", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "template", Organization: "Open Networking Foundation", Version: "2021-06-02"},
+	{Name: "traffic-class", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 }
 
 func (m Modelplugin) ModelData() (string, string, []*gnmi.ModelData, string) {
