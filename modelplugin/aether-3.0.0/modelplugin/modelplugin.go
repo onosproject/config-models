@@ -42,7 +42,6 @@ var ModelData = []*gnmi.ModelData{
 	{Name: "ap-list", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "application", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "device-group", Organization: "Open Networking Foundation", Version: "2021-06-02"},
-	{Name: "device-model-list", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "ip-domain", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "network", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 	{Name: "site", Organization: "Open Networking Foundation", Version: "2021-06-02"},

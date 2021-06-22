@@ -6,7 +6,7 @@ go run github.com/openconfig/ygot/generator -path=../../../sdran-helm-charts/con
        -output_file=aether_3_0_0/generated.go -package_name=aether_3_0_0 -generate_fakeroot --include_descriptions\
        enterprise.yang connectivity-service.yang \
        aether-types.yang application.yang device-group.yang ip-domain.yang network.yang \
-       site.yang device-model-list.yang upf.yang ap-list.yang template.yang vcs.yang \
+       site.yang upf.yang ap-list.yang template.yang vcs.yang \
        traffic-class.yang
 
 
