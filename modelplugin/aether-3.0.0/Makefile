@@ -16,6 +16,7 @@ aether-3.0.0-openapi3.yaml: openapi-gen
 
 copyout:
 	cp aether-3.0.0-openapi3.yaml ../../../aether-roc-api/api/
+	cp aether-3.0.0.tree ../../../sdran-helm-charts/config-models/aether-3.x/files/
 
 clean:
 	rm -f openapi-gen aether-3.0.0-openapi3.yaml
