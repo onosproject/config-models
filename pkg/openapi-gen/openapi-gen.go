@@ -228,6 +228,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
+			schemaVal.AllowEmptyValue = !dirEntry.Mandatory.Value()
 			schemaVal.Title = dirEntry.Name
 			schemaVal.Description = dirEntry.Description
 
