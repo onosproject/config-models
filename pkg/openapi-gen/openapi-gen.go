@@ -228,7 +228,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
-			schemaVal.AllowEmptyValue = !dirEntry.Mandatory.Value()
+			if dirEntry.Mandatory.Value() {
+				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
+			}
 			schemaVal.Title = dirEntry.Name
 			schemaVal.Description = dirEntry.Description
 
@@ -413,6 +415,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					openapiComponents.Schemas[k] = v
 				case "string", "boolean", "integer", "number": // leaf as a child of list
+					if v.Value.Required != nil {
+						arr.Items.Value.Required = append(arr.Items.Value.Required, v.Value.Required...)
+						v.Value.Required = nil
+					}
 					arr.Items.Value.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
