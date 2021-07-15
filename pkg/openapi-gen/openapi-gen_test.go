@@ -91,7 +91,7 @@ func Test_pathToSchemaName(t *testing.T) {
 
 func Test_newPathItem(t *testing.T) {
 
-	targetParameter = targetParam("test-target")
+	targetParameter = targetParam()
 
 	testDirEntry := yang.Entry{
 		Config: yang.TSTrue,
@@ -137,7 +137,7 @@ func Test_newPathItem(t *testing.T) {
 
 func Test_buildSchemaIntegerLeaf(t *testing.T) {
 
-	targetParameter = targetParam("test-target")
+	targetParameter = targetParam()
 
 	testLeaf1 := yang.Entry{
 		Name:   "Leaf1",

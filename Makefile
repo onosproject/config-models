@@ -4,12 +4,8 @@ export GO111MODULE=on
 .PHONY: build
 
 KIND_CLUSTER_NAME   ?= kind
-DOCKER_REPOSITORY   ?= onosproject/
 ONOS_CONFIG_VERSION ?= latest
-ONOS_BUILD_VERSION  := v0.6.3
-
-build/_output/copylibandstay: # @HELP build the copylibandstay utility
-	CGO_ENABLED=1 go build -o build/_output/copylibandstay github.com/onosproject/config-models/cmd
+ONOS_BUILD_VERSION  := v0.6.9
 
 linters: golang-ci # @HELP examines Go source code and reports coding problems
 	golangci-lint run --timeout 30m
@@ -32,6 +28,7 @@ gofmt: # @HELP run the Go format validation
 
 test: # @HELP run go test on projects
 test: build linters license_check gofmt
+	go test ./...
 	cd modelplugin/testdevice-1.0.0/ && (go test ./... || cd ..)
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
@@ -46,8 +43,7 @@ deps: # @HELP ensure that the required dependencies are in place
 
 PHONY:build
 build: # @HELP build all libraries
-build: \
-	build/_output/copylibandstay
+build:
 	go build ./...
 	cd modelplugin/devicesim-1.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/testdevice-1.0.0/ && (go build ./... || cd ..)
@@ -55,10 +51,10 @@ build: \
 	cd modelplugin/aether-2.1.0/ && (go build ./... || cd ..)
 	cd modelplugin/aether-3.0.0/ && (go build ./... || cd ..)
 
-all: # @HELP build all libraries and all docker images
+all: # @HELP build all libraries
 all: build
 
-publish: # @HELP publish version on github, dockerhub, abd PyPI
+publish: # @HELP publish version on github, and PyPI
 	./../build-tools/publish-version ${VERSION}
 	./../build-tools/publish-version modelplugin/devicesim-1.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/testdevice-1.0.0/${VERSION}

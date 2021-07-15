@@ -38,7 +38,6 @@ func main() {
 	settings := openapi_gen.ApiGenSettings{
 		ModelType:    "Aether",
 		ModelVersion: "2.1.0",
-		Example:      "connectivity-service-v2",
 		Title:        "Aether 2.1.0",
 	}
 
