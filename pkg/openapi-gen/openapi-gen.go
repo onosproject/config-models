@@ -145,8 +145,17 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 		schemaValTarget := openapi3.NewObjectSchema()
 		schemaValTarget.Title = "target"
 		schemaValTarget.Type = "string"
+		schemaValTarget.Description = "an override of the target (device)"
 		schemaValTargetRef := &openapi3.SchemaRef{
 			Value: schemaValTarget,
+		}
+
+		schemaValUnchanged := openapi3.NewObjectSchema()
+		schemaValUnchanged.Title = "unchanged"
+		schemaValUnchanged.Type = "string"
+		schemaValUnchanged.Description = "A comma seperated list of unchanged mandatory attribute names"
+		schemaValUnchangedRef := &openapi3.SchemaRef{
+			Value: schemaValUnchanged,
 		}
 
 		schemaValAddTarget := openapi3.NewObjectSchema()
@@ -157,6 +166,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			Value: schemaValAddTarget,
 		}
 		schemaValAddTarget.Properties["target"] = schemaValTargetRef
+		schemaValAddTarget.Properties["unchanged"] = schemaValUnchangedRef
 		openapiComponents.Schemas["AdditionalPropertyTarget"] = schemaValAddTargetRef
 	}
 
