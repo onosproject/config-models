@@ -2,7 +2,7 @@
 
 go run github.com/openconfig/ygot/generator -path=../../../onos-helm-charts/config-models/testdevice-1.x/files/yang \
 -output_file=testdevice_1_0_0/generated.go -package_name=testdevice_1_0_0 \
--generate_fakeroot test1@2018-02-20.yang test1-extra@2021-04-01.yang
+-generate_fakeroot -include_descriptions test1@2018-02-20.yang test1-extra@2021-04-01.yang
 
 sedi=(-i)
 case "$(uname)" in
