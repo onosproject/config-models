@@ -233,11 +233,19 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
-			if dirEntry.Mandatory.Value() {
-				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
-			}
 			schemaVal.Title = dirEntry.Name
 			schemaVal.Description = dirEntry.Description
+			if dirEntry.Mandatory.Value() {
+				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
+			} else if dirEntry.Parent.Key == dirEntry.Name {
+				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
+			}
+
+			if dirEntry.Type.Default != "" {
+				schemaVal.Default = dirEntry.Type.Default
+			} else if dirEntry.Default != "" {
+				schemaVal.Default = dirEntry.Default
+			}
 
 			if dirEntry.IsLeaf() {
 				openapiComponents.Schemas[toUnderScore(itemPath)] = &openapi3.SchemaRef{
@@ -370,6 +378,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			arr.Items = &openapi3.SchemaRef{
 				Value: openapi3.NewObjectSchema(),
 			}
+			arr.MinItems = dirEntry.ListAttr.MinElements
+			if dirEntry.ListAttr.MaxElements != math.MaxUint64 {
+				arr.MaxItems = &dirEntry.ListAttr.MaxElements
+			}
+			arr.UniqueItems = true
+			arr.Extensions = make(map[string]interface{})
+			arr.Extensions["keys"] = strings.Split(dirEntry.Key, " ")
 			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
 			asRef := &openapi3.SchemaRef{
 				Value: arr,
@@ -408,6 +423,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Ref:   fmt.Sprintf("#/components/schemas/%s", k),
 						Value: v.Value.Items.Value,
 					}
+					arrayObj.UniqueItems = v.Value.UniqueItems
+					arrayObj.MinItems = v.Value.MinItems
+					arrayObj.MaxItems = v.Value.MaxItems
+					arrayObj.Extensions = v.Value.Extensions
 					arrayObj.Title = lastPartOf(k)
 					arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
