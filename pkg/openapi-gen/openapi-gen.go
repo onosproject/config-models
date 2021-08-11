@@ -327,6 +327,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						Value: v.Value.Items.Value,
 					}
 					arrayObj.Title = v.Value.Title
+					arrayObj.MinItems = v.Value.MinItems
+					arrayObj.MaxItems = v.Value.MaxItems
+					arrayObj.UniqueItems = v.Value.UniqueItems
+					arrayObj.Extensions = v.Value.Extensions
 					schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
@@ -375,6 +379,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 
 			arr := openapi3.NewArraySchema()
+			arr.Extensions = make(map[string]interface{})
+			arr.Extensions["x-keys"] = keys
 			arr.Items = &openapi3.SchemaRef{
 				Value: openapi3.NewObjectSchema(),
 			}
@@ -383,8 +389,6 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				arr.MaxItems = &dirEntry.ListAttr.MaxElements
 			}
 			arr.UniqueItems = true
-			arr.Extensions = make(map[string]interface{})
-			arr.Extensions["keys"] = strings.Split(dirEntry.Key, " ")
 			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
 			asRef := &openapi3.SchemaRef{
 				Value: arr,
