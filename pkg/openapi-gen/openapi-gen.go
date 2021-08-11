@@ -22,6 +22,7 @@ import (
 	"github.com/openconfig/ygot/ytypes"
 	"math"
 	"os"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -195,8 +196,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					// All we can do is take the first one
 					schemaVal.Pattern = dirEntry.Type.Pattern[0]
 				}
+				if dirEntry.Type.Default != "" {
+					schemaVal.Default = dirEntry.Type.Default
+				}
 			case yang.Yunion, yang.Yleafref:
 				schemaVal = openapi3.NewStringSchema()
+				if dirEntry.Type.Default != "" {
+					schemaVal.Default = dirEntry.Type.Default
+				}
 			case yang.Yidentityref:
 				schemaVal = openapi3.NewStringSchema()
 				schemaVal.Enum = make([]interface{}, 0)
@@ -205,6 +212,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
+				if dirEntry.Type.Default == "true" || dirEntry.Default == "true" {
+					schemaVal.Default = true
+				} else if dirEntry.Type.Default == "false" || dirEntry.Default == "false" {
+					schemaVal.Default = false
+				}
 			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16, yang.Yuint32, yang.Yint32, yang.Yuint64, yang.Yint64, yang.Ydecimal64:
 				switch dirEntry.Type.Kind {
 				case yang.Yuint32, yang.Yint32:
@@ -216,6 +228,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					schemaVal = openapi3.NewIntegerSchema()
 				}
+				def, err := yangDefault(dirEntry)
+				if err != nil {
+					return nil, nil, err
+				}
+				schemaVal.Default = def
 				if dirEntry.Type.Range != nil {
 					start, end, err := yangRange(dirEntry.Type.Range)
 					if err != nil {
@@ -237,14 +254,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal.Description = dirEntry.Description
 			if dirEntry.Mandatory.Value() {
 				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
-			} else if dirEntry.Parent.Key == dirEntry.Name {
+			} else if strings.Contains(dirEntry.Parent.Key, dirEntry.Name) {
 				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
-			}
-
-			if dirEntry.Type.Default != "" {
-				schemaVal.Default = dirEntry.Type.Default
-			} else if dirEntry.Default != "" {
-				schemaVal.Default = dirEntry.Default
 			}
 
 			if dirEntry.IsLeaf() {
@@ -602,6 +613,40 @@ func yangRange(yangRange yang.YangRange) (*float64, *float64, error) {
 		}
 	}
 	return minVal, maxVal, nil
+}
+
+func yangDefault(leaf *yang.Entry) (interface{}, error) {
+	if leaf.Type.Default != "" {
+		switch leaf.Type.Kind {
+		case yang.Yint8:
+			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 8)
+			return int8(intValue), err
+		case yang.Yuint8:
+			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 8)
+			return uint8(intValue), err
+		case yang.Yint16:
+			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 16)
+			return int16(intValue), err
+		case yang.Yuint16:
+			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 16)
+			return uint16(intValue), err
+		case yang.Yint32:
+			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 32)
+			return int32(intValue), err
+		case yang.Yuint32:
+			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 32)
+			return uint32(intValue), err
+		case yang.Yint64:
+			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 64)
+			return int64(intValue), err
+		case yang.Yuint64:
+			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 64)
+			return uint64(intValue), err
+		case yang.Ydecimal64:
+			return strconv.ParseFloat(leaf.Type.Default, 64)
+		}
+	}
+	return nil, nil
 }
 
 func floatFromYnumber(ynumber yang.Number) *float64 {
