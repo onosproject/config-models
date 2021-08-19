@@ -108,15 +108,15 @@ func Test_newPathItem(t *testing.T) {
 		g := pathItem.Get
 		assert.Assert(t, g != nil)
 		if g != nil {
-			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4 Generated from YANG model", g.Summary)
+			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4", g.Summary)
 			assert.DeepEqual(t, []string{"Parent-1_Parent-2"}, g.Tags)
 		}
 		assert.Assert(t, pathItem.Post != nil)
-		assert.Equal(t, "POST Generated from YANG model", pathItem.Post.Summary)
+		assert.Equal(t, "POST /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Post.Summary)
 		assert.Equal(t, "postTest-1_Test-2_Test-3_Test-4", pathItem.Post.OperationID)
 
 		assert.Assert(t, pathItem.Delete != nil)
-		assert.Equal(t, "DELETE Generated from YANG model", pathItem.Delete.Summary)
+		assert.Equal(t, "DELETE /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Delete.Summary)
 		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4", pathItem.Delete.OperationID)
 
 		assert.Equal(t, 3, len(pathItem.Parameters))
@@ -140,10 +140,46 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	targetParameter = targetParam()
 
 	testLeaf1 := yang.Entry{
-		Name:   "Leaf1",
-		Config: yang.TSTrue,
+		Name:        "Leaf1",
+		Description: "Leaf1 Description",
+		Config:      yang.TSTrue,
+		Mandatory:   yang.TSTrue,
 		Type: &yang.YangType{
 			Kind: yang.Yint16,
+			Range: []yang.YRange{
+				{Min: yang.Number{
+					Kind:  yang.Positive,
+					Value: 1,
+				},
+					Max: yang.Number{
+						Kind:  yang.Positive,
+						Value: 10,
+					},
+				},
+			},
+		},
+	}
+
+	testLeaf2 := yang.Entry{
+		Name:        "Leaf2",
+		Description: "Leaf2 Description",
+		Config:      yang.TSTrue,
+		Type: &yang.YangType{
+			Kind:    yang.Ystring,
+			Pattern: []string{"^[abc]*"},
+			Default: "test default",
+			Length: []yang.YRange{
+				{
+					Min: yang.Number{
+						Kind:  yang.Positive,
+						Value: 20,
+					},
+					Max: yang.Number{
+						Kind:  yang.Positive,
+						Value: 30,
+					},
+				},
+			},
 		},
 	}
 
@@ -158,14 +194,30 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 		},
 	}
 	testLeaf1.Parent = &testDirEntry
+	testLeaf2.Parent = &testDirEntry
 	testDirEntry.Dir["leaf1"] = &testLeaf1
+	testDirEntry.Dir["leaf2"] = &testLeaf2
 
 	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test")
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 0)
-	assert.Equal(t, len(components.Schemas), 1)
+	assert.Equal(t, len(components.Schemas), 2)
 	s, ok := components.Schemas["Test_Leaf1"]
 	assert.Assert(t, ok, "expecting Test_Leaf1")
 	assert.Equal(t, "Leaf1", s.Value.Title)
+	assert.Equal(t, "Leaf1 Description", s.Value.Description)
 	assert.Equal(t, "integer", s.Value.Type)
+	assert.Equal(t, 1, len(s.Value.Required))
+	assert.Equal(t, 1.0, *s.Value.Min)
+	assert.Equal(t, 10.0, *s.Value.Max)
+
+	s, ok = components.Schemas["Test_Leaf2"]
+	assert.Assert(t, ok, "expecting Test_Leaf2")
+	assert.Equal(t, "Leaf2", s.Value.Title)
+	assert.Equal(t, "Leaf2 Description", s.Value.Description)
+	assert.Equal(t, "string", s.Value.Type)
+	assert.Equal(t, "^[abc]*", s.Value.Pattern)
+	assert.Equal(t, "test default", s.Value.Default)
+	assert.Equal(t, uint64(20), s.Value.MinLength)
+	assert.Equal(t, uint64(30), *s.Value.MaxLength)
 }

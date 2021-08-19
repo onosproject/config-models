@@ -27,6 +27,11 @@ import (
 	"unicode"
 )
 
+const (
+	AdditionalPropertyTarget    = "AdditionalPropertyTarget"
+	AdditionalPropertyUnchanged = "AdditionalPropertyUnchanged"
+)
+
 var swagger openapi3.Swagger
 
 var respGet200Desc = "GET OK 200"
@@ -123,13 +128,13 @@ func targetParam() *openapi3.ParameterRef {
 }
 
 // add AdditionalProperties reference to target to a particular schema
-func addAdditionalProperties(schemaVal *openapi3.Schema) {
+func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
 	schemaValAdditionalRef := openapi3.NewObjectSchema()
 	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)
 	schemaValAdditionalRef.Title = "ref"
 	schemaVal.AdditionalProperties = &openapi3.SchemaRef{
 		Value: schemaValAdditionalRef,
-		Ref:   "#/components/schemas/AdditionalPropertyTarget",
+		Ref:   fmt.Sprintf("#/components/schemas/%s", name),
 	}
 }
 
@@ -151,6 +156,16 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			Value: schemaValTarget,
 		}
 
+		schemaValAddTarget := openapi3.NewObjectSchema()
+		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
+		schemaValAddTarget.Title = AdditionalPropertyTarget
+		schemaValAddTarget.Description = "Optionally specify a target other than the default (only on PATCH method)"
+		schemaValAddTargetRef := &openapi3.SchemaRef{
+			Value: schemaValAddTarget,
+		}
+		schemaValAddTarget.Properties["target"] = schemaValTargetRef
+		openapiComponents.Schemas[AdditionalPropertyTarget] = schemaValAddTargetRef
+
 		schemaValUnchanged := openapi3.NewObjectSchema()
 		schemaValUnchanged.Title = "unchanged"
 		schemaValUnchanged.Type = "string"
@@ -159,16 +174,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			Value: schemaValUnchanged,
 		}
 
-		schemaValAddTarget := openapi3.NewObjectSchema()
-		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
-		schemaValAddTarget.Title = "AdditionalPropertyTarget"
-		schemaValAddTarget.Description = "Used for updates"
-		schemaValAddTargetRef := &openapi3.SchemaRef{
-			Value: schemaValAddTarget,
+		schemaValAddUnchanged := openapi3.NewObjectSchema()
+		schemaValAddUnchanged.Properties = make(map[string]*openapi3.SchemaRef)
+		schemaValAddUnchanged.Title = AdditionalPropertyUnchanged
+		schemaValAddUnchanged.Description = "To optionally omit 'required' properties, add them to 'unchanged' list"
+		schemaValAddUnchangedRef := &openapi3.SchemaRef{
+			Value: schemaValAddUnchanged,
 		}
-		schemaValAddTarget.Properties["target"] = schemaValTargetRef
-		schemaValAddTarget.Properties["unchanged"] = schemaValUnchangedRef
-		openapiComponents.Schemas["AdditionalPropertyTarget"] = schemaValAddTargetRef
+		schemaValAddUnchanged.Properties["unchanged"] = schemaValUnchangedRef
+		openapiComponents.Schemas[AdditionalPropertyUnchanged] = schemaValAddUnchangedRef
 	}
 
 	for _, dirEntry := range deviceEntry.Dir {
@@ -265,7 +279,6 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			} else { // Leaflist
 				arr := openapi3.NewSchema()
 				arr.Type = "leaf-list"
-				addAdditionalProperties(schemaVal)
 				arr.Items = &openapi3.SchemaRef{
 					Value: schemaVal,
 				}
@@ -301,7 +314,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal := openapi3.NewObjectSchema()
 			schemaVal.Properties = make(map[string]*openapi3.SchemaRef)
 			schemaVal.Title = toUnderScore(itemPath)
-			addAdditionalProperties(schemaVal)
+			schemaVal.Description = dirEntry.Description
+			if len(strings.Split(itemPath, "/")) <= 2 {
+				addAdditionalProperties(schemaVal, AdditionalPropertyTarget)
+			}
 			asRef := &openapi3.SchemaRef{
 				Value: schemaVal,
 			}
@@ -342,6 +358,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					arrayObj.MaxItems = v.Value.MaxItems
 					arrayObj.UniqueItems = v.Value.UniqueItems
 					arrayObj.Extensions = v.Value.Extensions
+					arrayObj.Description = v.Value.Description
 					schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
 					}
@@ -368,6 +385,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					return nil, nil, fmt.Errorf("undhanled in container %s: %s", k, v.Value.Type)
 				}
+			}
+			if len(schemaVal.Required) > 0 {
+				addAdditionalProperties(schemaVal, AdditionalPropertyUnchanged)
 			}
 
 			for k, v := range components.RequestBodies {
@@ -401,6 +421,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			arr.UniqueItems = true
 			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
+			arr.Description = dirEntry.Description
 			asRef := &openapi3.SchemaRef{
 				Value: arr,
 			}
@@ -427,9 +448,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				Value: openapiComponents.Schemas[toUnderScore(itemPath)].Value,
 			})
 			openapiPaths[pathWithPrefix(listItemPath)].Get.AddResponse(200, respGet200)
-
-			addAdditionalProperties(arr.Items.Value)
-
+			if len(strings.Split(itemPath, "/")) <= 2 {
+				addAdditionalProperties(arr.Items.Value, AdditionalPropertyTarget)
+			}
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
@@ -442,6 +463,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					arrayObj.MinItems = v.Value.MinItems
 					arrayObj.MaxItems = v.Value.MaxItems
 					arrayObj.Extensions = v.Value.Extensions
+					arrayObj.Description = v.Value.Description
 					arrayObj.Title = lastPartOf(k)
 					arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 						Value: arrayObj,
@@ -467,6 +489,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 				}
 			}
+			if len(arr.Items.Value.Required) > 1 {
+				addAdditionalProperties(arr.Items.Value, AdditionalPropertyUnchanged)
+			}
 			for k, v := range components.RequestBodies {
 				openapiComponents.RequestBodies[k] = v
 			}
@@ -479,7 +504,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 
 func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *openapi3.PathItem {
 	getOp := openapi3.NewOperation()
-	getOp.Summary = fmt.Sprintf("GET %s Generated from YANG model", itemPath)
+	getOp.Summary = fmt.Sprintf("GET %s", itemPath)
 	getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
 	getOp.Tags = []string{toUnderScore(parentPath)}
 	getOp.Responses = make(openapi3.Responses)
@@ -523,13 +548,13 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 
 	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
 		deleteOp := openapi3.NewOperation()
-		deleteOp.Summary = "DELETE Generated from YANG model"
+		deleteOp.Summary = fmt.Sprintf("DELETE %s", itemPath)
 		deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
 		deleteOp.Responses = openapi3.NewResponses()
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
-		postOp.Summary = "POST Generated from YANG model"
+		postOp.Summary = fmt.Sprintf("POST %s", itemPath)
 		postOp.OperationID = fmt.Sprintf("post%s", toUnderScore(itemPath))
 		postOp.Responses = make(openapi3.Responses)
 		postOp.Responses["201"] = &openapi3.ResponseRef{Value: openapi3.NewResponse().WithDescription("created")}
