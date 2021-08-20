@@ -34,11 +34,14 @@ func main() {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
-
+	description, err := ioutil.ReadFile("description.md") // From https://docs.aetherproject.org/master/_sources/developer/roc-api.rst.txt
+	// TODO - convert the .rst file from the portal to .md on the fly
+	//  so that if the source is changed it can just be dropped in here without editing
 	settings := openapi_gen.ApiGenSettings{
 		ModelType:    "Aether",
 		ModelVersion: "3.0.0",
 		Title:        "Aether 3.0.0",
+		Description:  string(description),
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, settings)

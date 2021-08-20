@@ -42,6 +42,7 @@ type ApiGenSettings struct {
 	ModelType    string
 	ModelVersion string
 	Title        string
+	Description  string
 }
 
 func (settings ApiGenSettings) ApplyDefaults() {
@@ -55,6 +56,10 @@ func (settings ApiGenSettings) ApplyDefaults() {
 	}
 	if settings.Title == "" {
 		settings.Title = fmt.Sprintf("%s onos-config model plugin", settings.ModelType)
+	}
+	if settings.Description == "" {
+		settings.Description = fmt.Sprintf("This OpenAPI 3 specification is generated from" +
+			"%s onos-config model plugin", settings.ModelType)
 	}
 }
 
@@ -88,6 +93,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings ApiGenSettings) (*openapi3
 				Name: "LicenseRef-ONF-Member-1.0",
 				URL:  "https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf",
 			},
+			Description: settings.Description,
 		},
 		Paths:      paths,
 		Components: *components,
@@ -213,11 +219,20 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				if dirEntry.Type.Default != "" {
 					schemaVal.Default = dirEntry.Type.Default
 				}
-			case yang.Yunion, yang.Yleafref:
+			case yang.Yunion:
 				schemaVal = openapi3.NewStringSchema()
 				if dirEntry.Type.Default != "" {
 					schemaVal.Default = dirEntry.Type.Default
 				}
+			case yang.Yleafref:
+				schemaVal = openapi3.NewStringSchema()
+				if dirEntry.Type.Default != "" {
+					schemaVal.Default = dirEntry.Type.Default
+				}
+				if schemaVal.Extensions == nil {
+					schemaVal.Extensions = make(map[string]interface{})
+				}
+				schemaVal.Extensions["x-leafref"] = dirEntry.Type.Path
 			case yang.Yidentityref:
 				schemaVal = openapi3.NewStringSchema()
 				schemaVal.Enum = make([]interface{}, 0)
