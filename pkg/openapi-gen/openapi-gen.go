@@ -45,7 +45,7 @@ type ApiGenSettings struct {
 	Description  string
 }
 
-func (settings ApiGenSettings) ApplyDefaults() {
+func (settings *ApiGenSettings) ApplyDefaults() {
 	if settings.ModelType == "" {
 		panic("ModelType not specified")
 	}
@@ -58,12 +58,12 @@ func (settings ApiGenSettings) ApplyDefaults() {
 		settings.Title = fmt.Sprintf("%s onos-config model plugin", settings.ModelType)
 	}
 	if settings.Description == "" {
-		settings.Description = fmt.Sprintf("This OpenAPI 3 specification is generated from" +
+		settings.Description = fmt.Sprintf("This OpenAPI 3 specification is generated from"+
 			"%s onos-config model plugin", settings.ModelType)
 	}
 }
 
-func BuildOpenapi(yangSchema *ytypes.Schema, settings ApiGenSettings) (*openapi3.Swagger, error) {
+func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.Swagger, error) {
 	settings.ApplyDefaults()
 
 	pathPrefix = fmt.Sprintf("/%s/v%s/{target}", strings.ToLower(settings.ModelType), settings.ModelVersion)
