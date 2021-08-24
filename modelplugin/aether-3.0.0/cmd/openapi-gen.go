@@ -44,7 +44,7 @@ func main() {
 		Description:  string(description),
 	}
 
-	schema, err := openapi_gen.BuildOpenapi(schemaMap, settings)
+	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)

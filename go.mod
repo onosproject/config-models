@@ -1,6 +1,6 @@
 module github.com/onosproject/config-models
 
-go 1.14
+go 1.16
 
 require (
 	github.com/getkin/kin-openapi v0.20.0
