@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// A plugin for the YGOT model of aether-3.0.0.
+// Package modelplugin - A plugin for the YGOT model of aether-3.0.0.
+// TODO: Remove this - not needed anymore - check sdcore-adapter
+//  All this metadata is now kept in the sdran-helm-charts/config-models/aether-3.0.0
 package modelplugin
 
 import (
 	"fmt"
 
-	_ "github.com/golang/protobuf/proto"
 	"github.com/onosproject/config-models/modelplugin/aether-3.0.0/aether_3_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
