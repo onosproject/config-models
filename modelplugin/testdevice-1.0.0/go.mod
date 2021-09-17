@@ -1,6 +1,6 @@
 module github.com/onosproject/config-models/modelplugin/testdevice-1.0.0
 
-go 1.14
+go 1.16
 
 require (
 	github.com/openconfig/goyang v0.2.5
