@@ -16,3 +16,7 @@ build/_output
 # Jenkins report files
 coverage.xml
 report.xml
+
+modelplugin/aether-*/openapi-gen
+modelplugin/aether-*/aether-*.tree
+modelplugin/aether-*/aether-*-openapi3.yaml
