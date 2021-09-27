@@ -50,6 +50,7 @@ build:
 	cd modelplugin/testdevice-2.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/aether-2.1.0/ && (go build ./... || cd ..)
 	cd modelplugin/aether-3.0.0/ && (go build ./... || cd ..)
+	cd modelplugin/aether-4.0.0/ && (go build ./... || cd ..)
 
 all: # @HELP build all libraries
 all: build
@@ -61,6 +62,7 @@ publish: # @HELP publish version on github, and PyPI
 	./../build-tools/publish-version modelplugin/testdevice-2.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-2.1.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-3.0.0/${VERSION}
+	./../build-tools/publish-version modelplugin/aether-4.0.0/${VERSION}
 
 jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
 	../build-tools/release-merge-commit

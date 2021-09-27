@@ -13,7 +13,7 @@ aether-4.0.0-openapi3.yaml: openapi-gen
 	./openapi-gen > aether-4.0.0-openapi3.yaml
 
 copyout:
-	cp aether-4.0.0-openapi3.yaml ${OPENCORD}/aether-roc-api/api/
+	cp aether-4.0.0-openapi3.yaml ../../../aether-roc-api/api/
 	cp aether-4.0.0.tree ${OPENCORD}/roc-helm-charts/config-models/aether-4.x/files/
 
 clean:
