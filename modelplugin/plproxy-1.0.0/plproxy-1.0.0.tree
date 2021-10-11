@@ -1,7 +1,0 @@
-module: prom-label-proxy
-  +--rw user-groups
-     +--rw user-group* [name]
-        +--rw name     string
-        +--rw label* [name]
-           +--rw name     string
-           +--rw value    string
