@@ -36,7 +36,7 @@ const modelversion = "4.0.0"
 const modulename = "aether.so.4.0.0"
 
 var ModelData = []*gnmi.ModelData{
-	{Name: "onf-connectivity-service", Organization: "Open Networking Foundation", Version: "2021-06-02"},
+	{Name: "onf-connectivity-service", Organization: "Open Networking Foundation", Version: "2021-10-21"},
 	{Name: "onf-enterprise", Organization: "Open Networking Foundation", Version: "2021-06-02"},
 
 	{Name: "onf-aether-types", Organization: "Open Networking Foundation", Version: "2021-09-10"},
