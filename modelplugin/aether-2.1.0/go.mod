@@ -6,8 +6,8 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/onosproject/config-models v0.6.9
 	github.com/openconfig/gnmi v0.0.0-20210707145734-c69a5df04b53
-	github.com/openconfig/goyang v0.2.9
-	github.com/openconfig/ygot v0.12.0
+	github.com/openconfig/goyang v0.3.1
+	github.com/openconfig/ygot v0.12.4
 )
 
 replace github.com/onosproject/config-models => ../../

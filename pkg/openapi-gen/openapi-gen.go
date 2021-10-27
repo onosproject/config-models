@@ -437,6 +437,38 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			arr.UniqueItems = true
 			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
 			arr.Description = dirEntry.Description
+
+			if dirEntry.Extra != nil {
+				mustArgs := make([]yang.Must, 0)
+				for k, v := range dirEntry.Extra {
+					switch k {
+					case "must":
+						for _, e := range v {
+							emap, ok := e.(map[string]interface{})
+							if ok {
+								m := yang.Must{}
+								if name, ok := emap["Name"]; ok {
+									m.Name = name.(string)
+								} else {
+									continue
+								}
+								if errMsg, ok := emap["ErrorMessage"]; ok {
+									if errMsgMap, ok := errMsg.(map[string]interface{}); ok {
+										if errMsgName, ok := errMsgMap["Name"]; ok {
+											m.ErrorMessage = &yang.Value{
+												Name: errMsgName.(string),
+											}
+										}
+									}
+								}
+								mustArgs = append(mustArgs, m)
+							}
+						}
+					}
+				}
+				arr.Extensions["x-must"] = mustArgs
+			}
+
 			asRef := &openapi3.SchemaRef{
 				Value: arr,
 			}
