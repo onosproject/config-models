@@ -5,7 +5,6 @@ export GO111MODULE=on
 
 KIND_CLUSTER_NAME   ?= kind
 ONOS_CONFIG_VERSION ?= latest
-ONOS_BUILD_VERSION  := v0.6.9
 
 linters: golang-ci # @HELP examines Go source code and reports coding problems
 	golangci-lint run --timeout 30m
@@ -30,6 +29,7 @@ test: # @HELP run go test on projects
 test: build linters license_check gofmt
 	go test ./...
 	cd modelplugin/testdevice-1.0.0/ && (go test ./... || cd ..)
+	cd modelplugin/testdevice-2.0.0/ && (go test ./... || cd ..)
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
@@ -48,7 +48,6 @@ build:
 	cd modelplugin/devicesim-1.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/testdevice-1.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/testdevice-2.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/aether-2.1.0/ && (go build ./... || cd ..)
 	cd modelplugin/aether-3.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/aether-4.0.0/ && (go build ./... || cd ..)
 	cd modelplugin/plproxy-1.0.0/ && (go build ./... || cd ..)
@@ -61,7 +60,6 @@ publish: # @HELP publish version on github, and PyPI
 	./../build-tools/publish-version modelplugin/devicesim-1.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/testdevice-1.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/testdevice-2.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/aether-2.1.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-3.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/aether-4.0.0/${VERSION}
 	./../build-tools/publish-version modelplugin/plproxy-1.0.0/${VERSION}
