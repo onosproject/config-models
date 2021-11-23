@@ -20,8 +20,9 @@ import (
 
 // MetaData plugin meta-data
 type MetaData struct {
-	Name    string `mapstructure:"name" yaml:"name"`
-	Version string `mapstructure:"version" yaml:"version"`
+	Name      string   `mapstructure:"name" yaml:"name"`
+	Version   string   `mapstructure:"version" yaml:"version"`
+	YangFiles []string `mapstructure:"yangFiles" yaml:"yangFiles"`
 }
 
 // LoadMetaData loads the metadata.yaml file
