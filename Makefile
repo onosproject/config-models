@@ -28,11 +28,6 @@ gofmt: # @HELP run the Go format validation
 test: # @HELP run go test on projects
 test: build linters license_check gofmt
 	go test ./...
-	cd modelplugin/testdevice-1.0.0/ && (go test ./... || cd ..)
-	cd modelplugin/testdevice-2.0.0/ && (go test ./... || cd ..)
-	cd modelplugin/aether-2.0.0/ && (go test ./... || cd ..)
-	cd modelplugin/aether-3.0.0/ && (go test ./... || cd ..)
-	cd modelplugin/aether-4.0.0/ && (go test ./... || cd ..)
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
@@ -48,13 +43,6 @@ PHONY:build
 build: # @HELP build all libraries
 build:
 	go build ./...
-	cd modelplugin/devicesim-1.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/testdevice-1.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/testdevice-2.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/aether-2.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/aether-3.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/aether-4.0.0/ && (go build ./... || cd ..)
-	cd modelplugin/plproxy-1.0.0/ && (go build ./... || cd ..)
 
 all: # @HELP build all libraries
 all: build
