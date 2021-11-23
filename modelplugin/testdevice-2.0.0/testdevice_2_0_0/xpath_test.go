@@ -185,7 +185,64 @@ func Test_XPath(t *testing.T) {
 	assert.Equal(t, xpath.ElementNode, ynn.NodeType())
 	assert.Equal(t, "t1", ynn.Prefix())
 
-	assert.False(t, ynn.MoveToNext())
+	assert.True(t, ynn.MoveToChild())
+	assert.Equal(t, "list2b", ynn.LocalName())
+	assert.Equal(t, xpath.ElementNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
 
-	// TODO: continue with list2b
+	assert.True(t, ynn.MoveToChild())
+	assert.Equal(t, "index1", ynn.LocalName())
+	assert.Equal(t, xpath.AttributeNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "10", ynn.Value())
+
+	assert.False(t, ynn.MoveToChild())
+
+	assert.True(t, ynn.MoveToNext())
+	assert.Equal(t, "index2", ynn.LocalName())
+	assert.Equal(t, xpath.AttributeNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "20", ynn.Value())
+
+	assert.True(t, ynn.MoveToNext())
+	assert.Equal(t, "leaf3c", ynn.LocalName())
+	assert.Equal(t, xpath.TextNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "3c 10-20 test", ynn.Value())
+
+	assert.False(t, ynn.MoveToNext()) // There's no leaf3d present
+
+	assert.True(t, ynn.MoveToParent())
+	assert.Equal(t, "list2b", ynn.LocalName())
+	assert.Equal(t, xpath.ElementNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+
+	assert.True(t, ynn.MoveToNext()) // the next list entry
+
+	assert.True(t, ynn.MoveToChild())
+	assert.Equal(t, "index1", ynn.LocalName())
+	assert.Equal(t, xpath.AttributeNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "11", ynn.Value())
+
+	assert.True(t, ynn.MoveToNext())
+	assert.Equal(t, "index2", ynn.LocalName())
+	assert.Equal(t, xpath.AttributeNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "20", ynn.Value())
+
+	assert.True(t, ynn.MoveToNext())
+	assert.Equal(t, "leaf3c", ynn.LocalName())
+	assert.Equal(t, xpath.TextNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "3c 11-20 test", ynn.Value())
+
+	assert.True(t, ynn.MoveToNext())
+	assert.Equal(t, "leaf3d", ynn.LocalName())
+	assert.Equal(t, xpath.TextNode, ynn.NodeType())
+	assert.Equal(t, "t1", ynn.Prefix())
+	assert.Equal(t, "IDTYPE2", ynn.Value())
+
+	assert.False(t, ynn.MoveToNext()) // No further leaves
+
 }

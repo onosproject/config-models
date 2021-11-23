@@ -97,6 +97,12 @@ func (x *YangNodeNavigator) Value() string {
 			return fmt.Sprint(val.Elem().Interface())
 		case reflect.Ptr:
 			return fmt.Sprint(val.Elem().Interface())
+		case reflect.Int64: // For identities (enumerations)
+			if x.curr.Type != nil && x.curr.Type.IdentityBase != nil &&
+				len(x.curr.Type.IdentityBase.Values) > int(val.Int()-1) {
+				return x.curr.Type.IdentityBase.Values[val.Int()-1].Name
+			}
+			return fmt.Sprintf("%d", val.Int())
 		default:
 			fmt.Printf("unexpected kind %s\n", k)
 		}
@@ -137,23 +143,29 @@ func (x *YangNodeNavigator) MoveToChild() bool {
 	if x.curr.IsList() {
 		x.currKeys, x.currListKeys = orderKeys(x.curr.Dir, x.curr.Key)
 		x.currIdx = -len(x.currListKeys)
-		currValue, _ := listEntryFromPathTag(x.currValueStack, x.currListIdx, false)
+		currValue, currListIdx := listEntryFromPathTag(x.currValueStack, x.currListIdx, false)
+		x.currListIdx = currListIdx
 		x.currValueStack[len(x.currValueStack)-1] = currValue // Replace last entry
 		x.currValueStack = append(x.currValueStack, fieldFromPathTag(x.currValueStack, x.currListKeys[0]))
 		x.curr = x.curr.Dir[x.currListKeys[0]] // TODO: don't use fixed value
 		return true
 	}
 	if !x.curr.IsLeaf() && x.curr.Dir != nil {
+		currKeys, _ := orderKeys(x.curr.Dir, x.curr.Key)
 		for i := 0; i < len(x.currKeys); i++ {
-			curr, ok := x.curr.Dir[x.currKeys[x.currIdx]]
+			curr, ok := x.curr.Dir[currKeys[i]]
 			if !ok {
+				continue
+			}
+			valueObject := fieldFromPathTag(x.currValueStack, curr.Name)
+			if valueObject == nil {
 				continue
 			}
 			x.curr = curr
 			if !x.curr.IsLeaf() {
 				x.currKeys, x.currListKeys = orderKeys(x.curr.Dir, x.curr.Key)
 			}
-			x.currValueStack = append(x.currValueStack, fieldFromPathTag(x.currValueStack, curr.Name))
+			x.currValueStack = append(x.currValueStack, valueObject)
 			return true
 		}
 	}
@@ -195,6 +207,19 @@ func (x *YangNodeNavigator) MoveToNext() bool {
 			return true
 		}
 	}
+	// handle any extra list keys values if they exist
+	if x.currIdx < -1 {
+		x.currIdx++
+		listIdx := x.currIdx + len(x.currListKeys)
+		x.curr = x.curr.Parent.Dir[x.currListKeys[listIdx]]
+		// First check it has a value
+		currValueStack := x.currValueStack[:len(x.currValueStack)-1]
+		nextIdx := fieldFromPathTag(currValueStack, x.curr.Name)
+		currValueStack = append(currValueStack, nextIdx)
+		x.currValueStack = currValueStack
+		return true
+	}
+
 	for i := 0; i < len(x.currKeys); i++ {
 		currIdx := x.currIdx + i + 1
 		if currIdx > len(x.currKeys)-1 {
@@ -292,6 +317,9 @@ func findKeyIndex(keys []string, name string) int {
 
 func fieldFromPathTag(currValue []interface{}, tag string) interface{} {
 	topCurrValue := currValue[len(currValue)-1]
+	if topCurrValue == nil {
+		return nil
+	}
 	currValueType := reflect.TypeOf(topCurrValue).Elem()
 	for i := 0; i < currValueType.NumField(); i++ {
 		if currValueType.Field(i).Tag.Get("path") == tag {
@@ -311,10 +339,10 @@ func fieldFromPathTag(currValue []interface{}, tag string) interface{} {
 func listEntryFromPathTag(currValueStack []interface{}, index interface{}, next bool) (interface{}, interface{}) {
 	topCurrValue := currValueStack[len(currValueStack)-1]
 	currValueType := reflect.TypeOf(topCurrValue)
+	topCurrValueType := reflect.ValueOf(topCurrValue)
 	switch currValueType.Kind() {
 	case reflect.Map:
-		topCurrValueMap := reflect.ValueOf(topCurrValue)
-		mapKeys := topCurrValueMap.MapKeys()
+		mapKeys := topCurrValueType.MapKeys()
 		sort.Slice(mapKeys, func(i, j int) bool {
 			return mapKeys[i].String() < mapKeys[j].String()
 		})
@@ -326,16 +354,37 @@ func listEntryFromPathTag(currValueStack []interface{}, index interface{}, next 
 					if next {
 						continue
 					} else {
-						return topCurrValueMap.MapIndex(k).Interface(), k.Interface()
+						return topCurrValueType.MapIndex(k).Interface(), k.Interface()
 					}
 				}
 				if gotIndex {
-					return topCurrValueMap.MapIndex(k).Interface(), k.Interface()
+					return topCurrValueType.MapIndex(k).Interface(), k.Interface()
 				}
 			} else {
-				return topCurrValueMap.MapIndex(k).Interface(), k.Interface()
+				return topCurrValueType.MapIndex(k).Interface(), k.Interface()
 			}
 		}
+	case reflect.Ptr:
+		topParentValue := currValueStack[len(currValueStack)-2]
+		fmt.Println(topParentValue)
+
+		// Need to build up a new Key object for the next instance
+		// This happens where there is more than one key in a list
+		// Then rather than using the native type(s) a struct is created
+		// Here we know what that key struct type is from prior "index"
+		indexType := reflect.TypeOf(index)
+		newKeyValue := reflect.New(indexType) // Ptr
+		for i := 0; i < indexType.NumField(); i++ {
+			sfKey := indexType.FieldByIndex([]int{i})
+			switch sfKey.Type.Kind() {
+			case reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint:
+				fieldI := topCurrValueType.Elem().FieldByIndex([]int{i}).Elem().Uint()
+				newKeyValue.Elem().FieldByIndex([]int{i}).SetUint(fieldI)
+			default:
+				panic(fmt.Errorf("unhandled type %v", sfKey))
+			}
+		}
+		fmt.Printf("new key %v (old %v)\n", newKeyValue.Interface(), index)
 	default:
 		fmt.Printf("unhandled type %s\n", currValueType.Kind().String())
 	}
