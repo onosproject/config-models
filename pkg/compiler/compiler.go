@@ -73,9 +73,6 @@ func (c *ModelCompiler) Compile(path string) error {
 	}
 
 	// Generate model plugin artifacts from generic templates
-	// - main
-	// - gRPC PluginService NB
-	// - model plugin Dockerfile from template
 	err = c.generatePluginArtifacts(path)
 	if err != nil {
 		log.Errorf("Unable to generate model plugin artifacts: %+v", err)
@@ -96,8 +93,8 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 }
 
 func (c *ModelCompiler) generateGolangBindings(path string) error {
-	pkg := c.getModelPackage()
-	file := filepath.Join(path, pkg, "generated.go")
+	pkg := filepath.Base(path)
+	file := filepath.Join(path, "generated.go")
 	log.Infof("Generating YANG bindings '%s'", file)
 
 	args := []string{
@@ -150,13 +147,31 @@ func (c *ModelCompiler) generateModelTree(path string) error {
 }
 
 func (c *ModelCompiler) generatePluginArtifacts(path string) error {
+	// Generate main
+	if err := c.generateMain(path); err != nil {
+		return err
+	}
+
+	// Generate gRPC PluginService NB
+	if err := c.generateNorthbound(path); err != nil {
+		return err
+	}
+
+	// Generate Dockerfile from template
+	if err := c.generateDockerfile(path); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (c *ModelCompiler) getModelPackage() string {
-	return sanitized(c.modelInfo.Name) + "_" + sanitized(c.modelInfo.Version)
+func (c *ModelCompiler) generateMain(path string) error {
+	return nil
 }
 
-func sanitized(s string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(s, ".", "_"), "-", "_")
+func (c *ModelCompiler) generateNorthbound(path string) error {
+	return nil
+}
+
+func (c *ModelCompiler) generateDockerfile(path string) error {
+	return nil
 }
