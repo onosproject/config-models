@@ -34,6 +34,10 @@ import (
 
 var log = logging.GetLogger("config-model", "compiler")
 
+const (
+	mainTemplate   = "main.go.tpl"
+)
+
 // NewCompiler creates a new config model compiler
 func NewCompiler() *ModelCompiler {
 	return &ModelCompiler{}
@@ -93,16 +97,18 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 }
 
 func (c *ModelCompiler) generateGolangBindings(path string) error {
-	pkg := filepath.Base(path)
-	file := filepath.Join(path, "generated.go")
-	log.Infof("Generating YANG bindings '%s'", file)
+	apiDir := filepath.Join(path, "api")
+	c.createDir(apiDir)
+
+	apiFile := filepath.Join(apiDir, "generated.go")
+	log.Infof("Generating YANG bindings '%s'", apiFile)
 
 	args := []string{
 		"run",
 		"github.com/openconfig/ygot/generator",
 		fmt.Sprintf("-path=%s/yang", path),
-		fmt.Sprintf("-output_file=%s", file),
-		fmt.Sprintf("-package_name=%s", pkg),
+		fmt.Sprintf("-output_file=%s", apiFile),
+		"-package_name=api",
 		"-generate_fakeroot",
 		"--include_descriptions",
 	}
@@ -127,7 +133,7 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 }
 
 func (c *ModelCompiler) generateModelTree(path string) error {
-	treeFile := filepath.Join(path, c.modelInfo.Name + "-" + c.modelInfo.Version + ".tree")
+	treeFile := filepath.Join(path, c.modelInfo.Name+"-"+c.modelInfo.Version+".tree")
 	log.Infof("Generating YANG tree '%s'", treeFile)
 
 	yangDir := filepath.Join(path, "yang")
@@ -152,11 +158,6 @@ func (c *ModelCompiler) generatePluginArtifacts(path string) error {
 		return err
 	}
 
-	// Generate gRPC PluginService NB
-	if err := c.generateNorthbound(path); err != nil {
-		return err
-	}
-
 	// Generate Dockerfile from template
 	if err := c.generateDockerfile(path); err != nil {
 		return err
@@ -165,11 +166,12 @@ func (c *ModelCompiler) generatePluginArtifacts(path string) error {
 }
 
 func (c *ModelCompiler) generateMain(path string) error {
-	return nil
-}
+	mainDir := filepath.Join(path, "plugin")
+	mainFile := filepath.Join(mainDir, "main.go")
+	log.Infof("Generating plugin main '%s'", mainFile)
+	c.createDir(mainDir)
 
-func (c *ModelCompiler) generateNorthbound(path string) error {
-	return nil
+	return applyTemplate(mainTemplate, c.getTemplatePath(mainTemplate), mainFile, c.modelInfo)
 }
 
 func (c *ModelCompiler) generateDockerfile(path string) error {

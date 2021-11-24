@@ -4,7 +4,11 @@ export GO111MODULE=on
 .PHONY: build
 
 KIND_CLUSTER_NAME   ?= kind
-ONOS_CONFIG_VERSION ?= latest
+CONFIG_MODEL_VERSION ?= latest
+
+build: # @HELP build all libraries
+build:
+	go build -o build/_output/model-compiler ./cmd/model-compiler
 
 linters: golang-ci # @HELP examines Go source code and reports coding problems
 	golangci-lint run --timeout 30m
@@ -27,35 +31,21 @@ gofmt: # @HELP run the Go format validation
 
 test: # @HELP run go test on projects
 test: build linters license_check gofmt
-	go test ./...
+	go test ./pkg/...
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
-	cd modelplugin/testdevice-1.0.0  && CGO_ENABLED=1 TEST_PACKAGES=github.com/onosproject/config-models/modelplugin/testdevice-1.0.0/... ../../../build-tools/build/jenkins/make-unit
-	cp modelplugin/testdevice-1.0.0/*.xml .
 
 deps: # @HELP ensure that the required dependencies are in place
-	go build -v ./...
+	go build -v ./cmd/... ./pkg/...
 	bash -c "diff -u <(echo -n) <(git diff go.mod)"
 	bash -c "diff -u <(echo -n) <(git diff go.sum)"
-
-PHONY:build
-build: # @HELP build all libraries
-build:
-	go build ./...
 
 all: # @HELP build all libraries
 all: build
 
 publish: # @HELP publish version on github, and PyPI
 	./../build-tools/publish-version ${VERSION}
-	./../build-tools/publish-version modelplugin/devicesim-1.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/testdevice-1.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/testdevice-2.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/aether-2.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/aether-3.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/aether-4.0.0/${VERSION}
-	./../build-tools/publish-version modelplugin/plproxy-1.0.0/${VERSION}
 
 jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
 	../build-tools/release-merge-commit

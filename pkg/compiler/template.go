@@ -18,12 +18,12 @@ import (
 	"fmt"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 )
 
-// ApplyTemplate applies template to generate a file
-func ApplyTemplate(name, tplPath, outPath string, data admin.ModelInfo) error {
+func applyTemplate(name, tplPath, outPath string, data *admin.ModelInfo) error {
 	var funcs template.FuncMap = map[string]interface{}{
 		"quote": func(value interface{}) string {
 			return fmt.Sprintf("\"%s\"", value)
@@ -47,5 +47,18 @@ func ApplyTemplate(name, tplPath, outPath string, data admin.ModelInfo) error {
 	defer file.Close()
 
 	return tpl.Execute(file, data)
+}
+
+func (c *ModelCompiler) getTemplatePath(name string) string {
+	return filepath.Join("templates", name)
+}
+
+func (c *ModelCompiler) createDir(dir string) {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		log.Debugf("Creating '%s'", dir)
+		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+			log.Errorf("Creating '%s' failed: %s", dir, err)
+		}
+	}
 }
 
