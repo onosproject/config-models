@@ -17,55 +17,31 @@ package navigator
 import (
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/stretchr/testify/assert"
+	"reflect"
 	"testing"
 )
 
-func Test_orderKeysWithListKeys(t *testing.T) {
-	entriesMap := map[string]*yang.Entry{
-		"key1": {
-			Name: "e1",
-		},
-		"key2": {
-			Name: "e2",
-		},
-		"key10": {
-			Name: "e10",
-		},
-		"key0": {
-			Name: "e0",
-		},
-	}
-	listKeysStr := "key1 key2"
-	otherKeys, listKeys := orderKeys(entriesMap, listKeysStr)
-	assert.ElementsMatch(t, []string{"key0", "key10"}, otherKeys)
-	assert.ElementsMatch(t, []string{"key1", "key2"}, listKeys)
+type testStruct struct {
+	A string `path:"a" module:"onf-test1"`
+	B int    `path:"b" module:"onf-test1"`
 }
 
-func Test_orderKeysNoList(t *testing.T) {
-	entriesMap := map[string]*yang.Entry{
-		"key0": {
-			Name: "e0",
-		},
-		"key1": {
-			Name: "e1",
-		},
-		"key2": {
-			Name: "e2",
-		},
-		"key10": {
-			Name: "e10",
-		},
-	}
-	listKeysStr := ""
-	otherKeys, listKeys := orderKeys(entriesMap, listKeysStr)
-	assert.ElementsMatch(t, []string{"key0", "key1", "key2", "key10"}, otherKeys)
-	assert.ElementsMatch(t, []string{}, listKeys)
-}
+func Test_processStruct(t *testing.T) {
+	// TODO: create a more detailed struct val and a YANG Entry that can be passed to this
 
-func Test_orderKeysNoKeysButListIsError(t *testing.T) {
-	entriesMap := map[string]*yang.Entry{}
-	listKeysStr := "key1"
-	otherKeys, listKeys := orderKeys(entriesMap, listKeysStr)
-	assert.ElementsMatch(t, []string{}, otherKeys)
-	assert.ElementsMatch(t, []string{"key1"}, listKeys)
+	entry := &yang.Entry{
+		Name: "test1",
+	}
+
+	testStruct1 := &testStruct{
+		A: "test1",
+		B: 10,
+	}
+
+	testStructValue := reflect.ValueOf(testStruct1)
+	t.Skip()
+
+	result := processStruct(testStructValue, "test1", entry)
+	assert.NotNil(t, result)
+
 }
