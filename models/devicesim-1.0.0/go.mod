@@ -1,4 +1,4 @@
-module github.com/onosproject/models/{{ .Name }}-{{ .Version }}
+module github.com/onosproject/models/devicesim-1.0.0
 
 go 1.16
 

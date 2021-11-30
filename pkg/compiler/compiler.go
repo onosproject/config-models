@@ -35,7 +35,10 @@ import (
 var log = logging.GetLogger("config-model", "compiler")
 
 const (
-	mainTemplate = "main.go.tpl"
+	mainTemplate       = "main.go.tpl"
+	gomodTemplate      = "go.mod.tpl"
+	makefileTemplate   = "Makefile.tpl"
+	dockerfileTemplate = "Dockerfile.tpl"
 )
 
 // NewCompiler creates a new config model compiler
@@ -171,6 +174,16 @@ func (c *ModelCompiler) generatePluginArtifacts(path string) error {
 		return err
 	}
 
+	// Generate go.mod from template
+	if err := c.generateGoModule(path); err != nil {
+		return err
+	}
+
+	// Generate Makefile from template
+	if err := c.generateMakefile(path); err != nil {
+		return err
+	}
+
 	// Generate Dockerfile from template
 	if err := c.generateDockerfile(path); err != nil {
 		return err
@@ -187,6 +200,20 @@ func (c *ModelCompiler) generateMain(path string) error {
 	return applyTemplate(mainTemplate, c.getTemplatePath(mainTemplate), mainFile, c.modelInfo)
 }
 
+func (c *ModelCompiler) generateGoModule(path string) error {
+	gomodFile := filepath.Join(path, "go.mod")
+	log.Infof("Generating plugin Go module '%s'", gomodFile)
+	return applyTemplate(gomodTemplate, c.getTemplatePath(gomodTemplate), gomodFile, c.modelInfo)
+}
+
+func (c *ModelCompiler) generateMakefile(path string) error {
+	makefileFile := filepath.Join(path, "Makefile")
+	log.Infof("Generating plugin Makefile '%s'", makefileFile)
+	return applyTemplate(makefileTemplate, c.getTemplatePath(makefileTemplate), makefileFile, c.modelInfo)
+}
+
 func (c *ModelCompiler) generateDockerfile(path string) error {
-	return nil
+	dockerfileFile := filepath.Join(path, "Dockerfile")
+	log.Infof("Generating plugin Dockerfile '%s'", dockerfileFile)
+	return applyTemplate(dockerfileTemplate, c.getTemplatePath(dockerfileTemplate), dockerfileFile, c.modelInfo)
 }
