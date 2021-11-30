@@ -1,4 +1,4 @@
-module github.com/onosproject/models/{{ .Name }}-{{ .Version }}
+module github.com/onosproject/config-models/models/{{ .Name }}-{{ .Version }}
 
 go 1.16
 

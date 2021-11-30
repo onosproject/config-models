@@ -18,9 +18,12 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"github.com/onosproject/config-models/models/devicesim-1.0.0/api"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
+	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
 )
 
@@ -81,5 +84,34 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 }
 
 func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfigRequest) (*admin.ValidateConfigResponse, error) {
-	panic("implement me")
+	gostruct, err := s.UnmarshallConfigValues(request.Json)
+	if err != nil {
+		return nil, err
+	}
+	err = s.Validate(gostruct)
+	if err != nil {
+		return nil, err
+	}
+	return &admin.ValidateConfigResponse{Valid: true}, nil
+}
+
+// UnmarshallConfigValues allows Device to implement the Unmarshaller interface
+func (s server) UnmarshallConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
+	device := &api.Device{}
+	vgs := ygot.ValidatedGoStruct(device)
+
+	if err := api.Unmarshal([]byte(jsonTree), device); err != nil {
+		return nil, err
+	}
+
+	return &vgs, nil
+}
+
+func (s server) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.ValidationOption) error {
+	deviceDeref := *ygotModel
+	device, ok := deviceDeref.(*api.Device)
+	if !ok {
+		return fmt.Errorf("Unable to convert model devicesim-1.0.0")
+	}
+	return device.Validate()
 }
