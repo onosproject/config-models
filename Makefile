@@ -24,7 +24,8 @@ golang-ci: # @HELP install golang-ci if not present
 
 license_check: build-tools # @HELP examine and ensure license headers exist
 	@if [ ! -d "../build-tools" ]; then cd .. && git clone https://github.com/onosproject/build-tools.git; fi
-	./../build-tools/licensing/boilerplate.py -v --rootdir=${CURDIR}
+	./../build-tools/licensing/boilerplate.py -v --rootdir=${CURDIR}/cmd
+	./../build-tools/licensing/boilerplate.py -v --rootdir=${CURDIR}/pkg
 
 gofmt: # @HELP run the Go format validation
 	bash -c "diff -u <(echo -n) <(gofmt -d pkg/)"

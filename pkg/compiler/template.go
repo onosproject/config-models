@@ -61,4 +61,3 @@ func (c *ModelCompiler) createDir(dir string) {
 		}
 	}
 }
-
