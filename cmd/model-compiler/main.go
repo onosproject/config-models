@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	defaultModelPath = "/etc/onos/config-model"
+	defaultModelPath = "/config-model"
 )
 
 func main() {
@@ -33,15 +33,7 @@ func main() {
 
 func getCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "config-model",
-	}
-	cmd.AddCommand(getCompileCmd())
-	return cmd
-}
-
-func getCompileCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "compile",
+		Use:   "model-compiler",
 		Short: "Compiles the specified config model",
 		Args:  cobra.MaximumNArgs(1),
 		RunE:  func(cmd *cobra.Command, args []string) error {

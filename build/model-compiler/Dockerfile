@@ -1,15 +1,19 @@
-FROM golang:1.16-alpine3.13
+FROM onosproject/golang-build:v1.0 as build
 
-RUN apk upgrade --update --no-cache && apk add --update make gcc musl-dev git
+ENV GO111MODULE=on
+COPY . /go/src/github.com/onosproject/config-models
+RUN cd /go/src/github.com/onosproject/config-models && make build && \
+    go get github.com/openconfig/ygot/generator
 
-RUN mkdir -p /build/deps && \
-    cd /build/deps && \
-    echo "module deps" > go.mod && \
-    go get -u -d github.com/onosproject/onos-config && \
-    go get -u -d github.com/openconfig/ygot/generator && \
-    go mod download -x && \
-    rm -r /build/deps
+FROM alpine:3.11
+RUN apk add libc6-compat libc-dev gcc libxml2-dev libxslt-dev python3-dev py3-pip && pip3 install pyang
 
-WORKDIR /build
+USER nobody
 
-ENTRYPOINT ["make"]
+COPY --from=build /go/src/github.com/onosproject/config-models/build/_output/model-compiler /usr/local/bin/model-compiler
+COPY --from=build /go/src/github.com/onosproject/config-models/templates /var/model-compiler/templates
+COPY --from=build /go/bin/generator /usr/local/bin/generator
+
+WORKDIR /var/model-compiler
+
+ENTRYPOINT ["model-compiler"]

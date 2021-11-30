@@ -50,7 +50,7 @@ func main() {
 }
 
 func (p *modelPlugin) startNorthboundServer() error {
-	cfg := &northbound.ServerConfig{Port: 5152, Insecure: true, SecurityCfg: &northbound.SecurityConfig{}}
+	cfg := northbound.NewServerConfig("", "", "", 5152, false)
 	s := northbound.NewServer(cfg)
 
 	s.AddService(p)

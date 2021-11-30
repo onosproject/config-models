@@ -104,8 +104,6 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	log.Infof("Generating YANG bindings '%s'", apiFile)
 
 	args := []string{
-		"run",
-		"github.com/openconfig/ygot/generator",
 		fmt.Sprintf("-path=%s/yang", path),
 		fmt.Sprintf("-output_file=%s", apiFile),
 		"-package_name=api",
@@ -123,7 +121,7 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	}
 
 	log.Infof("Executing %s", path, strings.Join(args, " "))
-	cmd := exec.Command("go", args...)
+	cmd := exec.Command("generator", args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

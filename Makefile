@@ -4,7 +4,7 @@ export GO111MODULE=on
 .PHONY: build
 
 KIND_CLUSTER_NAME   ?= kind
-CONFIG_MODEL_VERSION ?= latest
+MODEL_COMPILER_VERSION ?= latest
 
 build: # @HELP build all libraries
 build:
@@ -37,12 +37,15 @@ jenkins-test:  # @HELP run the unit tests and source code validation producing a
 jenkins-test: build-tools deps license_check linters
 
 deps: # @HELP ensure that the required dependencies are in place
-	go build -v ./cmd/... ./pkg/...
+	go build -v ./cmd/...
 	bash -c "diff -u <(echo -n) <(git diff go.mod)"
 	bash -c "diff -u <(echo -n) <(git diff go.sum)"
 
 all: # @HELP build all libraries
 all: build
+
+model-compiler-docker: # @HELP build model-compiler Docker image
+	docker build . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 publish: # @HELP publish version on github, and PyPI
 	./../build-tools/publish-version ${VERSION}
