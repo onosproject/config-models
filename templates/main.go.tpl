@@ -23,6 +23,7 @@ import (
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
+	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
 )
@@ -33,6 +34,12 @@ type modelPlugin struct {
 }
 
 type server struct {
+}
+
+var modelData = []*gnmi.ModelData{
+    {{- range .ModelData }}
+	{Name: {{ .Name | quote }}, Organization: {{ .Organization | quote }}, Version: {{ .Version | quote }}},
+	{{- end }}
 }
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
@@ -76,9 +83,10 @@ func (p *modelPlugin) startNorthboundServer() error {
 func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoRequest) (*admin.ModelInfoResponse, error) {
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
-			Name:      {{ .Name | quote }},
-			Version:   {{ .Version | quote }},
-			ModelData: nil,
+			Name:           {{ .Name | quote }},
+			Version:        {{ .Version | quote }},
+			ModelData:      modelData,
+			GetStateMode:   {{ .GetStateMode }},
 		},
 	}, nil
 }

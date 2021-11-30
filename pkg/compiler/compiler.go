@@ -18,6 +18,7 @@ import (
 	"fmt"
 	api "github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
+	"github.com/openconfig/gnmi/proto/gnmi"
 	_ "github.com/openconfig/gnmi/proto/gnmi" // gnmi
 	_ "github.com/openconfig/goyang/pkg/yang" // yang
 	_ "github.com/openconfig/ygot/genutil"    // genutil
@@ -95,7 +96,20 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 	if err := LoadMetaData(path, c.metaData); err != nil {
 		return err
 	}
-	c.modelInfo = &api.ModelInfo{Name: c.metaData.Name, Version: c.metaData.Version}
+	modelData := make([]*gnmi.ModelData, 0, len(c.metaData.Modules))
+	for _, module := range c.metaData.Modules {
+		modelData = append(modelData, &gnmi.ModelData{
+			Name:         module.Name,
+			Version:      module.Revision,
+			Organization: module.Organization,
+		})
+	}
+	c.modelInfo = &api.ModelInfo{
+		Name:         c.metaData.Name,
+		Version:      c.metaData.Version,
+		ModelData:    modelData,
+		GetStateMode: c.metaData.GetStateMode,
+	}
 	return nil
 }
 
@@ -156,8 +170,8 @@ func (c *ModelCompiler) generateModelTree(path string) error {
 	args := []string{"-f", "tree", "-p", yangDir, "-o", treeFile}
 
 	// Append the root YANG files to the command-line arguments
-	for _, yangFile := range c.metaData.YangFiles {
-		args = append(args, filepath.Join(yangDir, yangFile))
+	for _, module := range c.metaData.Modules {
+		args = append(args, filepath.Join(yangDir, module.YangFile))
 	}
 
 	log.Infof("Executing %s", path, strings.Join(args, " "))

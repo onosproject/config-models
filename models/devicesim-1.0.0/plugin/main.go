@@ -23,6 +23,7 @@ import (
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
+	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
 )
@@ -33,6 +34,13 @@ type modelPlugin struct {
 }
 
 type server struct {
+}
+
+var modelData = []*gnmi.ModelData{
+	{Name: "openconfig-interfaces", Organization: "OpenConfig working group", Version: "2017-07-14"},
+	{Name: "openconfig-openflow", Organization: "OpenConfig working group", Version: "2017-06-01"},
+	{Name: "openconfig-platform", Organization: "OpenConfig working group", Version: "2016-12-22"},
+	{Name: "openconfig-system", Organization: "OpenConfig working group", Version: "2017-07-06"},
 }
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
@@ -76,9 +84,10 @@ func (p *modelPlugin) startNorthboundServer() error {
 func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoRequest) (*admin.ModelInfoResponse, error) {
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
-			Name:      "devicesim",
-			Version:   "1.0.0",
-			ModelData: nil,
+			Name:           "devicesim",
+			Version:        "1.0.0",
+			ModelData:      modelData,
+			GetStateMode:   0,
 		},
 	}, nil
 }
