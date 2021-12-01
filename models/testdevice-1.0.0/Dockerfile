@@ -14,3 +14,4 @@ USER nobody
 COPY --from=build /models/testdevice-1.0.0/_bin/testdevice-1.0.0 /usr/local/bin/testdevice-1.0.0
 
 ENTRYPOINT ["testdevice-1.0.0"]
+CMD ["5152"]

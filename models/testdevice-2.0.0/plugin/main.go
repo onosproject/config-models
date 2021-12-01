@@ -26,6 +26,8 @@ import (
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
+	"os"
+	"strconv"
 )
 
 var log = logging.GetLogger("plugin")
@@ -49,10 +51,22 @@ func (p *modelPlugin) Register(gs *grpc.Server) {
 func main() {
 	ready := make(chan bool)
 
+	if len(os.Args) < 2 {
+	    log.Fatal("gRPC port argument is required")
+	    os.Exit(1)
+	}
+
+    i, err := strconv.ParseInt(os.Args[1], 10, 16)
+    if err != nil {
+	    log.Fatal("specified gRPC port is invalid", err)
+	    os.Exit(1)
+    }
+    port := int16(i)
+
 	// Start gRPC server
 	log.Info("Starting model plugin")
 	p := modelPlugin{}
-	if err := p.startNorthboundServer(); err != nil {
+	if err := p.startNorthboundServer(port); err != nil {
 		log.Fatal("Unable to start model plugin service", err)
 	}
 
@@ -60,8 +74,8 @@ func main() {
 	<-ready
 }
 
-func (p *modelPlugin) startNorthboundServer() error {
-	cfg := northbound.NewServerConfig("", "", "", 5152, false)
+func (p *modelPlugin) startNorthboundServer(port int16) error {
+	cfg := northbound.NewServerConfig("", "", "", port, false)
 	s := northbound.NewServer(cfg)
 
 	s.AddService(p)

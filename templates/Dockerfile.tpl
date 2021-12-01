@@ -14,3 +14,4 @@ USER nobody
 COPY --from=build /models/{{ .Name }}-{{ .Version }}/_bin/{{ .Name }}-{{ .Version }} /usr/local/bin/{{ .Name }}-{{ .Version }}
 
 ENTRYPOINT ["{{ .Name }}-{{ .Version }}"]
+CMD ["5152"]

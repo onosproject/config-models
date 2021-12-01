@@ -14,3 +14,4 @@ USER nobody
 COPY --from=build /models/devicesim-1.0.0/_bin/devicesim-1.0.0 /usr/local/bin/devicesim-1.0.0
 
 ENTRYPOINT ["devicesim-1.0.0"]
+CMD ["5152"]
