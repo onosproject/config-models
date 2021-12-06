@@ -282,6 +282,19 @@ func (x *YangNodeNavigator) MoveToParent() bool {
 
 // MoveToNextAttribute moves the YangNodeNavigator to the next attribute on current node.
 func (x *YangNodeNavigator) MoveToNextAttribute() bool {
+	if x.curr.IsList() && x.curr.Key != "" {
+		keys := strings.Split(x.curr.Key, " ")
+		x.curr = x.curr.Dir[keys[0]]
+		return true
+	} else if x.curr.Parent != nil && x.curr.Parent.IsList() {
+		keys := strings.Split(x.curr.Parent.Key, " ")
+		for i, k := range keys {
+			if x.curr.Name == k && i < len(keys)-1 {
+				x.curr = x.curr.Parent.Dir[keys[i+1]]
+				return true
+			}
+		}
+	}
 	return false
 }
 
@@ -364,8 +377,14 @@ func (x *YangNodeNavigator) MoveToPrevious() bool {
 }
 
 // MoveTo moves the YangNodeNavigator to the same position as the specified YangNodeNavigator.
-func (x *YangNodeNavigator) MoveTo(dest xpath.NodeNavigator) bool {
-	return false
+func (x *YangNodeNavigator) MoveTo(other xpath.NodeNavigator) bool {
+	node, ok := other.(*YangNodeNavigator)
+	if !ok || node.root != x.root {
+		return false
+	}
+
+	x.curr = node.curr
+	return true
 }
 
 func getOrderedKeys(annotation map[string]interface{}) []string {
