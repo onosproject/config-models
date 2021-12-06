@@ -45,3 +45,43 @@ func Test_processStruct(t *testing.T) {
 	assert.NotNil(t, result)
 
 }
+
+func Test_getOrderedKeys(t *testing.T) {
+	annotation1 := make(map[string]interface{})
+	attribs := []string{"a", "b", "c", "d"}
+	annotation1[orderedAttrList] = attribs
+
+	orderedKeys := getOrderedKeys(annotation1)
+	assert.Equal(t, 4, len(orderedKeys))
+	assert.EqualValues(t, attribs, orderedKeys)
+}
+
+func Test_getNextKey(t *testing.T) {
+	key := "testKey"
+	selfAnnotation := make(map[string]interface{})
+	selfAnnotation[key] = "b"
+
+	parentAnnotation := make(map[string]interface{})
+	attribs := []string{"testKey__a", "testKey__b", "testKey__c", "testKey__d"}
+	parentAnnotation[orderedAttrList] = attribs
+
+	assert.Equal(t, "testKey__c", getNextKey(selfAnnotation, parentAnnotation, key))
+}
+
+func Test_getPreviousKey(t *testing.T) {
+	key := "b"
+
+	annotation := make(map[string]interface{})
+	attribs := []string{"a", "b", "c", "d"}
+	annotation[orderedAttrList] = attribs
+
+	assert.Equal(t, "a", getPreviousKey(annotation, key))
+}
+
+func Test_getGoStruct(t *testing.T) {
+	someValue := 32
+	annotation := make(map[string]interface{})
+	annotation[goStruct] = &someValue
+
+	assert.Equal(t, &someValue, getGoStruct(annotation))
+}

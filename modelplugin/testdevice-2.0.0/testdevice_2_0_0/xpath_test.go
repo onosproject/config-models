@@ -23,11 +23,13 @@ import (
 	"testing"
 )
 
-func Test_XPathQuery(t *testing.T) {
-	expr, err := xpath.Compile("/t1:cont1a/*")
-	assert.NoError(t, err)
-	assert.NotNil(t, expr)
+type xpath_test struct {
+	name     string
+	path     string
+	expected []string
+}
 
+func Test_XPathSelect(t *testing.T) {
 	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
 	if err != nil {
 		assert.NoError(t, err)
@@ -43,17 +45,95 @@ func Test_XPathQuery(t *testing.T) {
 	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
 	assert.NotNil(t, ynn)
 
-	//evaluated := expr.Evaluate(ynn)
-	//assert.NotNil(t, evaluated)
+	tests := []xpath_test{
+		{
+			name: "test leaf2a",
+			path: "/t1:cont1a/t1:cont2a/t1:leaf2a",
+			expected: []string{
+				"Iter Value: leaf2a: 1",
+			},
+		},
+		{
+			name: "test leaf2b",
+			path: "/t1:cont1a/t1:cont2a/t1:leaf2b",
+			expected: []string{
+				"Iter Value: leaf2b: 0.4321",
+			},
+		},
+		{
+			name:     "test leaf2c",
+			path:     "/t1:cont1a/t1:cont2a/t1:leaf2c",
+			expected: []string{}, // No value, so no response
+		},
+		{
+			name: "test leaf2g",
+			path: "/t1:cont1a/t1:cont2a/t1:leaf2g",
+			expected: []string{
+				"Iter Value: leaf2g: true",
+			},
+		},
+		{
+			name: "test leaf1a",
+			path: "/t1:cont1a/t1:leaf1a",
+			expected: []string{
+				"Iter Value: leaf1a: leaf1aval",
+			},
+		},
+		{
+			name: "test list2a all instances names",
+			path: "/t1:cont1a/t1:list2a/@t1:name", // List indices are always attributes - referred to with @
+			expected: []string{
+				"Iter Value: name: l2a1",
+				"Iter Value: name: l2a2",
+			},
+		},
+		{
+			name: "test list2a select 2nd instance rx-power",
+			path: "/t1:cont1a/t1:list2a[@t1:name='l2a2']/t1:rx-power", // select with []
+			expected: []string{
+				"Iter Value: rx-power: 26",
+			},
+		},
+		{
+			name: "test list2a select 1st instance tx-power",
+			path: "/t1:cont1a/t1:list2a[@t1:name='l2a1']/t1:tx-power", // select with []
+			expected: []string{
+				"Iter Value: tx-power: 5",
+			},
+		},
+		{
+			name: "test index 1 filter",
+			path: "/t1:cont1b-state/t1:list2b[@t1:index1=11]/t1:leaf3c",
+			expected: []string{
+				"Iter Value: leaf3c: 3c 11-20 test",
+			},
+		},
+		{
+			name: "test index 2 filter",
+			path: "/t1:cont1b-state/t1:list2b[@t1:index2=20]/@t1:index1",
+			expected: []string{
+				"Iter Value: index1: 10",
+				"Iter Value: index1: 11",
+			},
+		},
+	}
 
-	iter := expr.Select(ynn)
-	for iter.MoveNext() {
-		fmt.Printf("Iter Value: %s: %s\n",
-			iter.Current().LocalName(), iter.Current().Value())
+	for _, test := range tests {
+		expr, err := xpath.Compile(test.path)
+		assert.NoError(t, err, test.name)
+		assert.NotNil(t, expr, test.name)
+
+		iter := expr.Select(ynn)
+		resultCount := 0
+		for iter.MoveNext() {
+			assert.LessOrEqual(t, resultCount, len(test.expected)-1, test.name, ". More results than expected")
+			assert.Equal(t, test.expected[resultCount], fmt.Sprintf("Iter Value: %s: %s",
+				iter.Current().LocalName(), iter.Current().Value()), test.name)
+			resultCount++
+		}
+		assert.Equal(t, len(test.expected), resultCount, "%s. Did not receive all the expected results", test.name)
 	}
 }
-
-
 
 func Test_XPathNodeNavigation(t *testing.T) {
 
