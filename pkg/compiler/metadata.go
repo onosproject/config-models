@@ -24,6 +24,7 @@ type MetaData struct {
 	Version      string   `mapstructure:"version" yaml:"version"`
 	Modules      []Module `mapstructure:"modules" yaml:"modules"`
 	GetStateMode uint32   `mapstructure:"getStateMode" yaml:"getStateMode"`
+	LintModel    bool	  `mapstructure:"lintModel" yaml:"lintModel"`
 }
 
 type Module struct {

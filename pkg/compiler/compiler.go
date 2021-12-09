@@ -66,6 +66,15 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
+	// Lint YANG files if the model requests lint validation
+	if c.metaData.LintModel {
+		err = c.lintModel(path)
+		if err != nil {
+			log.Errorf("YANG files contain issues: %+v", err)
+			return err
+		}
+	}
+
 	// Generate Golang bindings for the YANG files
 	err = c.generateGolangBindings(path)
 	if err != nil {
@@ -111,6 +120,25 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 		GetStateMode: c.metaData.GetStateMode,
 	}
 	return nil
+}
+
+func (c *ModelCompiler) lintModel(path string) error {
+	log.Infof("Linting YANG files")
+
+	args := []string{"--lint", "--lint-ensure-hyphenated-names", "-W", "error"}
+
+	// Append the root YANG files to the command-line arguments
+	yangDir := filepath.Join(path, "yang")
+	for _, module := range c.metaData.Modules {
+		args = append(args, filepath.Join(yangDir, module.YangFile))
+	}
+
+	log.Infof("Executing %s", path, strings.Join(args, " "))
+	cmd := exec.Command("pyang", args...)
+	cmd.Env = os.Environ()
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 func (c *ModelCompiler) generateGolangBindings(path string) error {
