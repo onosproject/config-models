@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"github.com/antchfx/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/openconfig/ygot/ygot"
 	"reflect"
 	"sort"
 	"strings"
@@ -34,7 +35,7 @@ type YangNodeNavigator struct {
 	root, curr *yang.Entry
 }
 
-func NewYangNodeNavigator(root *yang.Entry, device interface{}) xpath.NodeNavigator {
+func NewYangNodeNavigator(root *yang.Entry, device ygot.ValidatedGoStruct) xpath.NodeNavigator {
 	nav := &YangNodeNavigator{
 		root: root,
 		curr: root,
@@ -45,10 +46,27 @@ func NewYangNodeNavigator(root *yang.Entry, device interface{}) xpath.NodeNaviga
 	return nav
 }
 
+// addGoStructToYangEntry - recursive function that walks the Abstract Syntax
+// Tree and matches up the GoStruct
+// Also extracts the "must" statements in to XPath queries
 func addGoStructToYangEntry(dir *yang.Entry, yangStruct interface{}) []string {
 	if dir.Annotation == nil {
 		dir.Annotation = make(map[string]interface{})
 	}
+
+	mustStmnt, ok := dir.Extra["must"]
+	if ok {
+		mustStruct := new(yang.Must)
+		for _, s := range mustStmnt {
+			sMap, mapOK := s.(map[string]interface{})
+			if mapOK {
+				mustStruct.Name = sMap["Name"].(string)
+
+			}
+		}
+		dir.Annotation["must"] = mustStruct
+	}
+
 	// Create a new entry per list index
 	if dir.IsList() {
 		listKeys := make([]string, 0)
@@ -97,6 +115,7 @@ func addGoStructToYangEntry(dir *yang.Entry, yangStruct interface{}) []string {
 	return []string{dir.Name}
 }
 
+// processStruct - part of the recursive function addGoStructToYangEntry
 func processStruct(structVal reflect.Value, dirName string, dirValue *yang.Entry) []string {
 	for i := 0; i < structVal.Elem().Type().NumField(); i++ {
 		fieldPathName := structVal.Elem().Type().Field(i).Tag.Get("path")
@@ -159,6 +178,38 @@ func deepCopyDir(dir *yang.Entry) *yang.Entry {
 	}
 
 	return newDir
+}
+
+// WalkAndValidateMust - walk through the YNN and validate any Must statements
+// This goes down first and then across
+func (x *YangNodeNavigator) WalkAndValidateMust() error {
+	for {
+		if x.MoveToChild() || x.MoveToNext() || (x.MoveToParent() && x.MoveToNext()) {
+			mustIf, ok := x.curr.Annotation["must"]
+			if ok {
+				mustStruct, okMustStruct := mustIf.(*yang.Must)
+				if okMustStruct {
+					mustExpr, err := xpath.Compile(mustStruct.Name)
+					if err != nil {
+						return err
+					}
+					result := mustExpr.Evaluate(x)
+					resultBool, resultOk := result.(bool)
+					if !resultOk {
+						return fmt.Errorf("result of %s cannot be evaluated as bool %v",
+							mustExpr.String(), result)
+					}
+					if resultBool != true {
+						return fmt.Errorf("must statement '%s' must evaluate to true",
+							mustExpr.String())
+					}
+					fmt.Printf("Must %s: %v", mustExpr.String(), resultBool)
+				}
+			}
+			continue
+		}
+		return nil
+	}
 }
 
 // NodeType returns the XPathNodeType of the current node.

@@ -8,3 +8,5 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	gotest.tools v2.2.0+incompatible
 )
+
+replace github.com/openconfig/ygot => ../../../../openconfig/ygot

@@ -29,6 +29,12 @@ type xpath_test struct {
 	expected []string
 }
 
+type xpath_evaluate struct {
+	name     string
+	path     string
+	expected interface{}
+}
+
 func Test_XPathSelect(t *testing.T) {
 	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
 	if err != nil {
@@ -133,6 +139,62 @@ func Test_XPathSelect(t *testing.T) {
 		}
 		assert.Equal(t, len(test.expected), resultCount, "%s. Did not receive all the expected results", test.name)
 	}
+}
+
+func Test_XPathEvaluate(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	device := new(Device)
+
+	schema, err := Schema()
+	if err := schema.Unmarshal(sampleConfig, device); err != nil {
+		assert.NoError(t, err)
+	}
+	schema.Root = device
+	assert.NotNil(t, device)
+	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	assert.NotNil(t, ynn)
+
+	tests := []xpath_evaluate{
+		{
+			name: "test leaf2a",
+			path: "/t1:cont1a/t1:cont2a/t1:leaf2a = true",
+			expected: true,
+		},
+	}
+
+	for _, test := range tests {
+		expr, testErr := xpath.Compile(test.path)
+		assert.NoError(t, testErr, test.name)
+		assert.NotNil(t, expr, test.name)
+
+		result := expr.Evaluate(ynn)
+		assert.Equal(t, test.expected, result)
+	}
+}
+
+func Test_WalkAndValidate(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	device := new(Device)
+
+	schema, err := Schema()
+	if err := schema.Unmarshal(sampleConfig, device); err != nil {
+		assert.NoError(t, err)
+	}
+	schema.Root = device
+	assert.NotNil(t, device)
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	assert.NotNil(t, nn)
+
+	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
+	assert.True(t, ynnOk)
+	validateErr := ynn.WalkAndValidateMust()
+	assert.NoError(t, validateErr)
 }
 
 func Test_XPathNodeNavigation(t *testing.T) {
