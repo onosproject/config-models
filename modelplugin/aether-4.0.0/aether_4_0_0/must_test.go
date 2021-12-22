@@ -1,4 +1,4 @@
-// Copyright 2021-present Open Networking Foundation.
+// Copyright 2022-present Open Networking Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package testdevice_2_0_0
+package aether_4_0_0
 
 import (
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
@@ -22,7 +22,7 @@ import (
 )
 
 func Test_WalkAndValidateMust(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-aether4-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}

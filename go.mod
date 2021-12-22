@@ -11,7 +11,3 @@ require (
 	github.com/stretchr/testify v1.5.1
 	gotest.tools v2.2.0+incompatible
 )
-
-replace github.com/openconfig/goyang => ../../openconfig/goyang
-
-replace github.com/openconfig/ygot => ../../openconfig/ygot

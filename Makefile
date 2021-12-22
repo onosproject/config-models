@@ -30,6 +30,7 @@ test: build linters license_check gofmt
 	go test ./...
 	cd modelplugin/testdevice-1.0.0/ && (go test ./... || cd ..)
 	cd modelplugin/testdevice-2.0.0/ && (go test ./... || cd ..)
+	cd modelplugin/aether-4.0.0/ && (go test ./... || cd ..)
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters

@@ -11,5 +11,3 @@ require (
 )
 
 replace github.com/onosproject/config-models => ../../
-
-replace github.com/openconfig/ygot => ../../../../openconfig/ygot
