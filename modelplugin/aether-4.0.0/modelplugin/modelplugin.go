@@ -19,7 +19,6 @@ package modelplugin
 
 import (
 	"fmt"
-
 	"github.com/onosproject/config-models/modelplugin/aether-4.0.0/aether_4_0_0"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"

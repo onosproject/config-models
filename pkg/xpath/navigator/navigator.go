@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"github.com/antchfx/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/openconfig/ygot/ygot"
 	"reflect"
 	"sort"
 	"strings"
@@ -29,12 +30,24 @@ const (
 	orderedAttrList = "orderedattrlist"
 )
 
+type XpathSelect struct {
+	Name     string
+	Path     string
+	Expected []string
+}
+
+type XpathEvaluate struct {
+	Name     string
+	Path     string
+	Expected interface{}
+}
+
 // YangNodeNavigator - implements xpath.NodeNavigator
 type YangNodeNavigator struct {
 	root, curr *yang.Entry
 }
 
-func NewYangNodeNavigator(root *yang.Entry, device interface{}) xpath.NodeNavigator {
+func NewYangNodeNavigator(root *yang.Entry, device ygot.ValidatedGoStruct) xpath.NodeNavigator {
 	nav := &YangNodeNavigator{
 		root: root,
 		curr: root,
@@ -45,59 +58,92 @@ func NewYangNodeNavigator(root *yang.Entry, device interface{}) xpath.NodeNaviga
 	return nav
 }
 
-func addGoStructToYangEntry(dir *yang.Entry, yangStruct interface{}) []string {
+// addGoStructToYangEntry - recursive function that walks the Abstract Syntax
+// Tree and matches up the GoStruct
+// Also extracts the "must" statements in to XPath queries
+func addGoStructToYangEntry(dir *yang.Entry, yangStruct interface{}) map[string]*yang.Entry {
+	resultMap := make(map[string]*yang.Entry)
+
 	if dir.Annotation == nil {
 		dir.Annotation = make(map[string]interface{})
 	}
+
+	mustStmnt, ok := dir.Extra["must"]
+	if ok {
+		dir.Annotation["must"] = extractMust(mustStmnt)
+	}
+
 	// Create a new entry per list index
 	if dir.IsList() {
-		listKeys := make([]string, 0)
+		//mapKeysAsValues := reflect.ValueOf(yangStruct).MapKeys()
 		mapIter := reflect.ValueOf(yangStruct).MapRange()
-		for mapIter.Next() {
+		//sort.SliceStable(mapKeysAsValues, func(i, j int) bool {
+		//	return mapKeysAsValues[i].String() < mapKeysAsValues[j].String()
+		//})
+		for {
+			if !mapIter.Next() {
+				break
+			}
 			orderedKeys := make([]string, 0, len(dir.Dir))
 			newDir := deepCopyDir(dir)
 			if newDir.Annotation == nil {
 				newDir.Annotation = make(map[string]interface{})
 			}
+			newListChildren := make(map[string]*yang.Entry)
 			for k, v := range newDir.Dir {
-				processStruct(mapIter.Value(), k, v)
 				v.Parent = newDir
-				orderedKeys = append(orderedKeys, k)
+				for childKey, childValue := range processStruct(mapIter.Value(), k, v) {
+					// Copy each one in to childEntries map
+					newListChildren[childKey] = childValue
+				}
 			}
-			newDir.Annotation[goStruct] = mapIter.Value().Interface()
-			listKey := fmt.Sprintf("%s__%v", dir.Name, mapIter.Key().Interface())
+			for newListKey, newListValue := range newListChildren {
+				newDir.Dir[newListKey] = newListValue
+				orderedKeys = append(orderedKeys, newListKey)
+			}
 			sort.Strings(orderedKeys)
 			newDir.Annotation[orderedAttrList] = orderedKeys
 			newDir.Annotation[dir.Name] = fmt.Sprint(mapIter.Key().Interface())
-			dir.Parent.Dir[listKey] = newDir
-			listKeys = append(listKeys, listKey)
+			newDir.Annotation[goStruct] = mapIter.Value().Interface()
+			listKey := fmt.Sprintf("%s__%v", dir.Name, mapIter.Key().Interface())
+			resultMap[listKey] = newDir
 		}
-		return listKeys
+		return resultMap
 	}
 	// Else is a struct
 	dir.Annotation[goStruct] = yangStruct
 	if dir.IsLeaf() {
-		return []string{dir.Name}
+		resultMap[dir.Name] = dir
+		return resultMap
 	}
-	orderedKeys := make([]string, 0, len(dir.Dir))
+	childMap := make(map[string]*yang.Entry)
 	for k, v := range dir.Dir {
 		structVal := reflect.ValueOf(yangStruct)
 		switch structVal.Kind() {
 		case reflect.Ptr:
-			keysAdded := processStruct(structVal, k, v)
-			orderedKeys = append(orderedKeys, keysAdded...)
+			for childKey, childValue := range processStruct(structVal, k, v) {
+				childMap[childKey] = childValue
+			}
 		default:
 			panic(fmt.Errorf("unhandled kind %s", structVal.Kind().String()))
 		}
 	}
-	if len(orderedKeys) > 0 {
+	if len(childMap) > 0 {
+		orderedKeys := make([]string, 0, len(childMap))
+		for k, v := range childMap {
+			v.Parent = dir
+			dir.Dir[k] = v
+			orderedKeys = append(orderedKeys, k)
+		}
 		sort.Strings(orderedKeys)
 		dir.Annotation[orderedAttrList] = orderedKeys
 	}
-	return []string{dir.Name}
+	resultMap[dir.Name] = dir
+	return resultMap
 }
 
-func processStruct(structVal reflect.Value, dirName string, dirValue *yang.Entry) []string {
+// processStruct - part of the recursive function addGoStructToYangEntry
+func processStruct(structVal reflect.Value, dirName string, dirValue *yang.Entry) map[string]*yang.Entry {
 	for i := 0; i < structVal.Elem().Type().NumField(); i++ {
 		fieldPathName := structVal.Elem().Type().Field(i).Tag.Get("path")
 		if fieldPathName != dirName {
@@ -111,6 +157,47 @@ func processStruct(structVal reflect.Value, dirName string, dirValue *yang.Entry
 		return nil
 	}
 	return nil
+}
+
+// extractMust - this is necessary since the Must statement is not
+// yet a first class citizen of the yang.Entry - for the moment it
+// is crammed in to the Extra field
+func extractMust(mustStmnt []interface{}) *yang.Must {
+	mustStruct := new(yang.Must)
+	for _, s := range mustStmnt {
+		sMap, mapOK := s.(map[string]interface{})
+		if mapOK {
+			mustStruct.Name = sMap["Name"].(string)
+			desc, descOK := sMap["Description"]
+			if descOK {
+				descMap, descMapOK := desc.(map[string]interface{})
+				if descMapOK {
+					mustStruct.Description = &yang.Value{
+						Name: descMap["Name"].(string),
+					}
+				}
+			}
+			err, errOK := sMap["ErrorMessage"]
+			if errOK {
+				errMap, errMapOK := err.(map[string]interface{})
+				if errMapOK {
+					mustStruct.ErrorMessage = &yang.Value{
+						Name: errMap["Name"].(string),
+					}
+				}
+			}
+			errAppTag, errAppTagOK := sMap["ErrorAppTag"]
+			if errAppTagOK {
+				errAppTagMap, errMapAppTagOK := errAppTag.(map[string]interface{})
+				if errMapAppTagOK {
+					mustStruct.ErrorAppTag = &yang.Value{
+						Name: errAppTagMap["Name"].(string),
+					}
+				}
+			}
+		}
+	}
+	return mustStruct
 }
 
 func deepCopyDir(dir *yang.Entry) *yang.Entry {
@@ -145,6 +232,9 @@ func deepCopyDir(dir *yang.Entry) *yang.Entry {
 	if dir.Dir != nil {
 		newDir.Dir = make(map[string]*yang.Entry)
 		for k, v := range dir.Dir {
+			if strings.Contains(k, "__") {
+				continue
+			}
 			newDir.Dir[k] = deepCopyDir(v)
 		}
 	}
@@ -159,6 +249,62 @@ func deepCopyDir(dir *yang.Entry) *yang.Entry {
 	}
 
 	return newDir
+}
+
+// WalkAndValidateMust - walk through the YNN and validate any Must statements
+// This goes down first and then across
+func (x *YangNodeNavigator) WalkAndValidateMust() error {
+	for {
+		if x.MoveToChild() ||
+			x.MoveToNext() ||
+			(x.MoveToParent() && x.MoveToNext()) ||
+			(x.MoveToParent() && x.MoveToNext()) ||
+			(x.MoveToParent() && x.MoveToNext()) ||
+			(x.MoveToParent() && x.MoveToNext()) ||
+			(x.MoveToParent() && x.MoveToNext()) {
+			mustIf, ok := x.curr.Annotation["must"]
+			if ok {
+				mustStruct, okMustStruct := mustIf.(*yang.Must)
+				if okMustStruct {
+					mustExpr, err := xpath.Compile(mustStruct.Name)
+					if err != nil {
+						return err
+					}
+					result := mustExpr.Evaluate(x)
+					resultBool, resultOk := result.(bool)
+					if !resultOk {
+						return fmt.Errorf("result of %s cannot be evaluated as bool %v",
+							mustExpr.String(), result)
+					}
+					if !resultBool {
+						items := x.generateMustError("@*")
+						if len(items) == 0 {
+							items = x.generateMustError("*")
+						}
+						return fmt.Errorf("%s. Must statement '%v' to true. Container(s): %v",
+							mustStruct.ErrorMessage.Name,
+							mustStruct.Name, items)
+					}
+					fmt.Printf("Must %s: %v\n", mustExpr.String(), resultBool)
+				}
+			}
+			continue
+		}
+		return nil
+	}
+}
+
+func (x *YangNodeNavigator) generateMustError(expr string) []string {
+	currentExpr, currentErr := xpath.Compile(expr)
+	if currentErr != nil {
+		return nil
+	}
+	currentIter := currentExpr.Select(x)
+	items := make([]string, 0)
+	for currentIter.MoveNext() {
+		items = append(items, fmt.Sprintf("%s=%s", currentIter.Current().LocalName(), currentIter.Current().Value()))
+	}
+	return items
 }
 
 // NodeType returns the XPathNodeType of the current node.
@@ -258,12 +404,12 @@ func (x *YangNodeNavigator) Value() string {
 
 // Copy does a deep copy of the YangNodeNavigator and all its components.
 func (x *YangNodeNavigator) Copy() xpath.NodeNavigator {
-	copy := YangNodeNavigator{
+	ynnCopy := YangNodeNavigator{
 		root: x.root,
 		curr: x.curr,
 	}
 
-	return &copy
+	return &ynnCopy
 }
 
 // MoveToRoot moves the YangNodeNavigator to the root node of the current node.
@@ -307,7 +453,7 @@ func (x *YangNodeNavigator) MoveToChild() bool {
 			if !ok {
 				continue
 			}
-			valueObject := getGoStruct(x.curr.Annotation)
+			valueObject := getGoStruct(curr.Annotation)
 			if valueObject == nil {
 				continue
 			}

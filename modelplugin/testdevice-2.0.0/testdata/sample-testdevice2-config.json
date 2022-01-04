@@ -24,6 +24,11 @@
         "name": "l2a2",
         "rx-power": 26,
         "tx-power": 6
+      },
+      {
+        "name": "l2a3",
+        "rx-power": 27,
+        "tx-power": 8
       }
     ]
   },
@@ -38,6 +43,18 @@
         "index1": 11,
         "index2": 20,
         "leaf3c": "3c 11-20 test",
+        "leaf3d":  "IDTYPE2"
+      },
+      {
+        "index1": 11,
+        "index2": 21,
+        "leaf3c": "3c 11-21 test",
+        "leaf3d":  "IDTYPE1"
+      },
+      {
+        "index1": 12,
+        "index2": 22,
+        "leaf3c": "3c 12-22 test",
         "leaf3d":  "IDTYPE2"
       }
     ]
