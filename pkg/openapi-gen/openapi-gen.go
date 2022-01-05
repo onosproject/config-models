@@ -22,6 +22,7 @@ import (
 	"github.com/openconfig/ygot/ytypes"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -391,6 +392,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				case "string", "boolean", "integer", "number": // leaf as a child of list
 					if v.Value.Required != nil {
 						schemaVal.Required = append(schemaVal.Required, v.Value.Required...)
+						sort.Strings(schemaVal.Required)
 						v.Value.Required = nil
 					}
 					schemaVal.Properties[v.Value.Title] = v
@@ -529,6 +531,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				case "string", "boolean", "integer", "number": // leaf as a child of list
 					if v.Value.Required != nil {
 						arr.Items.Value.Required = append(arr.Items.Value.Required, v.Value.Required...)
+						sort.Strings(arr.Items.Value.Required)
 						v.Value.Required = nil
 					}
 					arr.Items.Value.Properties[v.Value.Title] = v
