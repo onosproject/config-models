@@ -44,6 +44,7 @@ var modelData = []*gnmi.ModelData{
 }
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
+	log.Info("Registering model plugin service")
 	server := &server{}
 	admin.RegisterModelPluginServiceServer(gs, server)
 }
@@ -75,7 +76,7 @@ func main() {
 }
 
 func (p *modelPlugin) startNorthboundServer(port int16) error {
-	cfg := northbound.NewServerConfig("", "", "", port, false)
+	cfg := northbound.NewServerConfig("", "", "", port, true)
 	s := northbound.NewServer(cfg)
 
 	s.AddService(p)
@@ -94,6 +95,7 @@ func (p *modelPlugin) startNorthboundServer(port int16) error {
 }
 
 func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoRequest) (*admin.ModelInfoResponse, error) {
+	log.Infof("Received model info request: %+v", request)
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
 			Name:           "testdevice",
@@ -105,6 +107,7 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 }
 
 func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfigRequest) (*admin.ValidateConfigResponse, error) {
+	log.Infof("Received validate config request: %+v", request)
 	gostruct, err := s.UnmarshallConfigValues(request.Json)
 	if err != nil {
 		return nil, err
