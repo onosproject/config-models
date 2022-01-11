@@ -18,7 +18,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/onosproject/config-models/models/devicesim-1.0.0/api"
+	"github.com/onosproject/config-models/models/testdevice-1.0.0/api"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	devicechange "github.com/onosproject/onos-api/go/onos/config/change/device"
 	"github.com/onosproject/onos-lib-go/pkg/errors"

@@ -43,6 +43,9 @@ var modelData = []*gnmi.ModelData{
 	{Name: "onf-test1-extra", Organization: "Open Networking Foundation", Version: "2021-04-01"},
 }
 
+var roPaths []*admin.ReadOnlyPath
+var rwPaths []*admin.ReadWritePath
+
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
 	server := &server{}
@@ -63,6 +66,8 @@ func main() {
 	    os.Exit(1)
     }
     port := int16(i)
+
+    roPaths, rwPaths = ExtractPaths()
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -102,6 +107,8 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 			Version:        "1.0.0",
 			ModelData:      modelData,
 			GetStateMode:   0,
+			ReadOnlyPath:   roPaths,
+			ReadWritePath:  rwPaths,
 		},
 	}, nil
 }

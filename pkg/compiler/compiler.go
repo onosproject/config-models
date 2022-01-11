@@ -250,7 +250,7 @@ func (c *ModelCompiler) generatePathsExtraction(path string) error {
 	pathsFile := filepath.Join(mainDir, "paths.go")
 	log.Infof("Generating plugin paths extraction utility '%s'", pathsFile)
 	c.createDir(mainDir)
-	return applyTemplate(mainTemplate, c.getTemplatePath(pathsUtilsTemplate), pathsFile, c.modelInfo)
+	return applyTemplate(pathsUtilsTemplate, c.getTemplatePath(pathsUtilsTemplate), pathsFile, c.modelInfo)
 }
 
 func (c *ModelCompiler) generateGoModule(path string) error {
