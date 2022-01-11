@@ -44,6 +44,9 @@ var modelData = []*gnmi.ModelData{
 	{{- end }}
 }
 
+var roPaths []*admin.ReadOnlyPath
+var rwPaths []*admin.ReadWritePath
+
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
 	server := &server{}
@@ -64,6 +67,8 @@ func main() {
 	    os.Exit(1)
     }
     port := int16(i)
+
+    roPaths, rwPaths = ExtractPaths()
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -103,6 +108,8 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 			Version:        {{ .Version | quote }},
 			ModelData:      modelData,
 			GetStateMode:   {{ .GetStateMode }},
+			ReadOnlyPath:   roPaths,
+			ReadWritePath:  rwPaths,
 		},
 	}, nil
 }
