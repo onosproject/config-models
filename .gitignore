@@ -12,6 +12,7 @@
 *.out
 
 build/_output
+models/*/_bin
 
 # Jenkins report files
 coverage.xml
