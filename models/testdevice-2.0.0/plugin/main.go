@@ -43,9 +43,6 @@ var modelData = []*gnmi.ModelData{
 	{Name: "onf-test1-augmented", Organization: "Open Networking Foundation", Version: "2020-02-29"},
 }
 
-var roPaths []*admin.ReadOnlyPath
-var rwPaths []*admin.ReadWritePath
-
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
 	server := &server{}
@@ -124,6 +121,15 @@ func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfi
 		return nil, err
 	}
 	return &admin.ValidateConfigResponse{Valid: true}, nil
+}
+
+func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequest) (*admin.PathValuesResponse, error) {
+	log.Infof("Received path values request: %+v", request)
+	pathValues, err := getPathValues(request.PathPrefix, request.Json)
+	if err != nil {
+		return nil, err
+	}
+	return &admin.PathValuesResponse{PathValues: pathValues}, nil
 }
 
 // UnmarshallConfigValues allows Device to implement the Unmarshaller interface

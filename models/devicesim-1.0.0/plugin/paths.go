@@ -20,7 +20,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"encoding/json"
-	"github.com/onosproject/config-models/models/devicesim-1.0.0/api"
+    "github.com/onosproject/config-models/models/devicesim-1.0.0/api"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/onosproject/onos-lib-go/pkg/errors"
