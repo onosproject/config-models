@@ -13,5 +13,4 @@ require (
 	github.com/openconfig/ygot v0.12.5
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/grpc v1.41.0
-	gotest.tools v2.2.0+incompatible
 )

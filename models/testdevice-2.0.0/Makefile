@@ -10,7 +10,7 @@ build:
 	go mod tidy
 	go build -o _bin/testdevice-2.0.0 ./plugin
 
-test:
+test: build
 	go test ./...
 
 publish: image

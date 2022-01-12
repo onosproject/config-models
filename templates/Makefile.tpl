@@ -10,7 +10,7 @@ build:
 	go mod tidy
 	go build -o _bin/{{ .Name }}-{{ .Version }} ./plugin
 
-test:
+test: build
 	go test ./...
 
 publish: image

@@ -33,6 +33,14 @@ gofmt: # @HELP run the Go format validation
 test: # @HELP run go test on projects
 test: build linters license_check gofmt
 	go test ./pkg/...
+	@cd models && for model in *; do pushd $$model; make test; popd; done
+
+.PHONY: models
+models:
+	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; pushd $$model; make; popd; done
+
+publish-models:
+	@cd models && for model in *; do pushd $$model; make publish; popd; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
