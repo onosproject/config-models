@@ -76,7 +76,7 @@ module onf-test1 {
     }
 
     list list2a {
-      must "range-min < range-max" {
+      must "number(./t1:range-min) <= number(./t1:range-max)" {
         error-message "range-min must be less than or equal to range-max";
         error-app-tag "range must";
         description "this is a must statement";

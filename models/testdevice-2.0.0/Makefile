@@ -10,3 +10,8 @@ build:
 	go mod tidy
 	go build -o _bin/testdevice-2.0.0 ./plugin
 
+test:
+	go test ./...
+
+publish: image
+	docker push onosproject/testdevice:2.0.0

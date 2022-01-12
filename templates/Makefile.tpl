@@ -10,3 +10,8 @@ build:
 	go mod tidy
 	go build -o _bin/{{ .Name }}-{{ .Version }} ./plugin
 
+test:
+	go test ./...
+
+publish: image
+	docker push onosproject/{{ .Name }}:{{ .Version }}
