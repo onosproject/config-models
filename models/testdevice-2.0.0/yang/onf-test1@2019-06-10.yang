@@ -25,7 +25,7 @@ module onf-test1 {
     description "The top level container";
 
     container cont2a {
-      must "leaf2g or leaf2a < 4" {
+      must "string(t1:leaf2g) = 'true' or number(./t1:leaf2a) < 4" {
         error-message "If Leaf 2a is above 4 then leaf2g must be true for the validation to pass";
       }
       description "The 2nd level container";
@@ -86,7 +86,7 @@ module onf-test1 {
     }
 
     list list2a {
-      must "tx-power < rx-power" {
+      must "number(./t1:tx-power) < number(./t1:rx-power)" {
         error-message "tx-power is greater than or equal to rx-power";
         description "tx-power must be less than rx-power - the only value they can share is 20";
       }
@@ -134,7 +134,7 @@ module onf-test1 {
     list list2b {
       key "index1 index2";
       config false;
-      max-elements 3;
+      max-elements 8;
       description "A simple list of state items, with a double key";
 
       leaf index1 {
