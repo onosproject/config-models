@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/onosproject/config-models/models/{{ .Name }}-{{ .Version }}/api"
+	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
@@ -112,7 +113,7 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 }
 
 func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfigRequest) (*admin.ValidateConfigResponse, error) {
-	log.Infof("Received validate config request: %+v", request)
+	log.Infof("Received validate config request: %s", request.String())
 	gostruct, err := s.UnmarshallConfigValues(request.Json)
 	if err != nil {
 		return nil, err
@@ -121,6 +122,10 @@ func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfi
 	if err != nil {
 		return nil, err
 	}
+    err = s.ValidateMust(*gostruct)
+    if err != nil {
+            return nil, err
+    }
 	return &admin.ValidateConfigResponse{Valid: true}, nil
 }
 
@@ -153,3 +158,20 @@ func (s server) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.Validat
 	}
 	return device.Validate()
 }
+
+func (s server) ValidateMust(device ygot.ValidatedGoStruct) error {
+       log.Infof("Received validateMust request for device: %v", device)
+       schema, err := api.Schema()
+       if err != nil {
+               return err
+       }
+
+       nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+
+       ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
+       if !ynnOk {
+               return fmt.Errorf("Cannot cast NodeNavigator to YangNodeNavigator")
+       }
+       return ynn.WalkAndValidateMust()
+}
+
