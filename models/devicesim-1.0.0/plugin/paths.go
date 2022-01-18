@@ -617,10 +617,18 @@ func convertRoPath(path string, psm ReadOnlySubPathMap) *admin.ReadOnlyPath {
 	sm := make([]*admin.ReadOnlySubPath, 0, 0)
 
 	for k, s := range psm {
+		tos := make([]uint64, 0, len(s.TypeOpts))
+		for _, to := range s.TypeOpts {
+			tos = append(tos, uint64(to))
+		}
+
 		sm = append(sm, &admin.ReadOnlySubPath{
 			SubPath:              k,
 			ValueType:            s.ValueType,
-			// TODO: add other ReadOnlyAttrib fields to the API
+			Description:          s.Description,
+			TypeOpts:             tos,
+			IsAKey:               s.IsAKey,
+			AttrName:             s.AttrName,
 		})
 	}
 
@@ -631,6 +639,10 @@ func convertRoPath(path string, psm ReadOnlySubPathMap) *admin.ReadOnlyPath {
 }
 
 func convertRwPath(path string, pe ReadWritePathElem) *admin.ReadWritePath {
+	tos := make([]uint64, 0, len(pe.TypeOpts))
+	for _, to := range pe.TypeOpts {
+		tos = append(tos, uint64(to))
+	}
 	return &admin.ReadWritePath{
 		Path:                 path,
 		ValueType:            pe.ValueType,
@@ -640,7 +652,9 @@ func convertRwPath(path string, pe ReadWritePathElem) *admin.ReadWritePath {
 		Default:              pe.Default,
 		Range:                pe.Range,
 		Length:               pe.Length,
-		// TODO: add other ReadOnlyAttrib fields to the API
+		TypeOpts:             tos,
+		IsAKey:               pe.IsAKey,
+		AttrName:             pe.AttrName,
 	}
 }
 
