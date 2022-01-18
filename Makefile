@@ -36,8 +36,9 @@ test: build linters license_check gofmt
 	@cd models && for model in *; do pushd $$model; make test; popd; done
 
 .PHONY: models
+models: # @HELP make demo and test device models
 models:
-	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; pushd $$model; make; popd; done
+	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; pushd $$model; make image; popd; done
 
 publish-models:
 	@cd models && for model in *; do pushd $$model; make publish; popd; done

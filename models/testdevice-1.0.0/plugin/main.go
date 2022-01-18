@@ -44,6 +44,8 @@ var modelData = []*gnmi.ModelData{
 	{Name: "onf-test1-extra", Organization: "Open Networking Foundation", Version: "2021-04-01"},
 }
 
+var encodings = []gnmi.Encoding{gnmi.Encoding_JSON_IETF}
+
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
 	server := &server{}
@@ -54,18 +56,18 @@ func main() {
 	ready := make(chan bool)
 
 	if len(os.Args) < 2 {
-	    log.Fatal("gRPC port argument is required")
-	    os.Exit(1)
+		log.Fatal("gRPC port argument is required")
+		os.Exit(1)
 	}
 
-    i, err := strconv.ParseInt(os.Args[1], 10, 16)
-    if err != nil {
-	    log.Fatal("specified gRPC port is invalid", err)
-	    os.Exit(1)
-    }
-    port := int16(i)
+	i, err := strconv.ParseInt(os.Args[1], 10, 16)
+	if err != nil {
+		log.Fatal("specified gRPC port is invalid", err)
+		os.Exit(1)
+	}
+	port := int16(i)
 
-    roPaths, rwPaths = ExtractPaths()
+	roPaths, rwPaths = ExtractPaths()
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -101,12 +103,13 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 	log.Infof("Received model info request: %+v", request)
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
-			Name:           "testdevice",
-			Version:        "1.0.0",
-			ModelData:      modelData,
-			GetStateMode:   0,
-			ReadOnlyPath:   roPaths,
-			ReadWritePath:  rwPaths,
+			Name:               "testdevice",
+			Version:            "1.0.0",
+			ModelData:          modelData,
+			SupportedEncodings: encodings,
+			GetStateMode:       0,
+			ReadOnlyPath:       roPaths,
+			ReadWritePath:      rwPaths,
 		},
 	}, nil
 }

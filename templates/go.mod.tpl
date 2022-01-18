@@ -6,7 +6,7 @@ require (
 	github.com/antchfx/xpath v1.2.0
 	github.com/atomix/atomix-go-framework v0.10.1 // indirect
 	github.com/onosproject/config-models v0.9.1
-	github.com/onosproject/onos-api/go v0.8.14
+	github.com/onosproject/onos-api/go v0.8.23
 	github.com/onosproject/onos-lib-go v0.8.1
 	github.com/openconfig/gnmi v0.0.0-20210914185457-51254b657b7d
 	github.com/openconfig/goyang v0.3.1
