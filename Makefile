@@ -57,8 +57,8 @@ all: build
 model-compiler-docker: # @HELP build model-compiler Docker image
 	docker build . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
-publish: # @HELP publish version on github, and PyPI
-	./../build-tools/publish-version ${VERSION}
+publish: # @HELP publish version on github
+	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
 jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
 	../build-tools/release-merge-commit

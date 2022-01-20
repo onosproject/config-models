@@ -16,14 +16,13 @@ package compiler
 
 import (
 	"fmt"
-	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
 )
 
-func applyTemplate(name, tplPath, outPath string, data *admin.ModelInfo) error {
+func (c *ModelCompiler) applyTemplate(name, tplPath, outPath string) error {
 	var funcs template.FuncMap = map[string]interface{}{
 		"quote": func(value interface{}) string {
 			return fmt.Sprintf("\"%s\"", value)
@@ -46,7 +45,7 @@ func applyTemplate(name, tplPath, outPath string, data *admin.ModelInfo) error {
 	}
 	defer file.Close()
 
-	return tpl.Execute(file, data)
+	return tpl.Execute(file, c.dictionary)
 }
 
 func (c *ModelCompiler) getTemplatePath(name string) string {

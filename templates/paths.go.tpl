@@ -20,7 +20,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"encoding/json"
-    "github.com/onosproject/config-models/models/{{ .Name }}-{{ .Version }}/api"
+    "{{ .GoPackage }}/api"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/onosproject/onos-lib-go/pkg/errors"

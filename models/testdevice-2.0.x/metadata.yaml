@@ -1,0 +1,12 @@
+name: testdevice-2.0.x
+version: 2.0.0
+goPackage: github.com/onosproject/config-models/models/testdevice-2.0.x
+modules:
+  - name: onf-test1
+    organization: Open Networking Foundation
+    revision: 2019-06-10
+    file: onf-test1@2019-06-10.yang
+  - name: onf-test1-augmented
+    organization: Open Networking Foundation
+    revision: 2020-02-29
+    file: onf-test1-augmented@2020-02-29.yang

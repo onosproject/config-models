@@ -3,15 +3,15 @@
 FROM onosproject/golang-build:v1.0 as build
 
 ENV GO111MODULE=on
-COPY . /models/{{ .Name }}-{{ .Version }}
-RUN cd /models/{{ .Name }}-{{ .Version }} && make build
+COPY . /models/{{ .Name }}
+RUN cd /models/{{ .Name }} && make build
 
 FROM alpine:3.11
 RUN apk add libc6-compat
 
 USER nobody
 
-COPY --from=build /models/{{ .Name }}-{{ .Version }}/_bin/{{ .Name }}-{{ .Version }} /usr/local/bin/{{ .Name }}-{{ .Version }}
+COPY --from=build /models/{{ .Name }}/_bin/{{ .Name }} /usr/local/bin/{{ .Name }}
 
-ENTRYPOINT ["{{ .Name }}-{{ .Version }}"]
+ENTRYPOINT ["{{ .Name }}"]
 CMD ["5152"]

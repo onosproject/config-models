@@ -36,6 +36,7 @@ import (
 var log = logging.GetLogger("config-model", "compiler")
 
 const (
+	versionFile        = "VERSION"
 	mainTemplate       = "main.go.tpl"
 	pathsUtilsTemplate = "paths.go.tpl"
 	gomodTemplate      = "go.mod.tpl"
@@ -48,10 +49,24 @@ func NewCompiler() *ModelCompiler {
 	return &ModelCompiler{}
 }
 
+type Dictionary struct {
+	Name          string
+	Version       string
+	PluginVersion string
+	GoPackage     string
+	ModelData     []*gnmi.ModelData
+	Module        string
+	GetStateMode  uint32
+	ReadOnlyPath  []*api.ReadOnlyPath
+	ReadWritePath []*api.ReadWritePath
+}
+
 // ModelCompiler is a model plugin compiler
 type ModelCompiler struct {
-	metaData  *MetaData
-	modelInfo *api.ModelInfo
+	pluginVersion string
+	metaData      *MetaData
+	modelInfo     *api.ModelInfo
+	dictionary    Dictionary
 }
 
 // Compile compiles the config model
@@ -67,6 +82,11 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
+	err = c.loadPluginVersion(path)
+	if err != nil {
+		log.Errorf("Unable to load model plugin version; defaulting to %s: %+v", c.pluginVersion, err)
+	}
+
 	// Lint YANG files if the model requests lint validation
 	if c.metaData.LintModel {
 		err = c.lintModel(path)
@@ -74,6 +94,19 @@ func (c *ModelCompiler) Compile(path string) error {
 			log.Errorf("YANG files contain issues: %+v", err)
 			return err
 		}
+	}
+
+	// Create dictionary from metadata and model info
+	c.dictionary = Dictionary{
+		Name:          c.modelInfo.Name,
+		Version:       c.modelInfo.Version,
+		PluginVersion: c.pluginVersion,
+		GoPackage:     c.metaData.GoPackage,
+		ModelData:     c.modelInfo.ModelData,
+		Module:        c.modelInfo.Module,
+		GetStateMode:  c.modelInfo.GetStateMode,
+		ReadOnlyPath:  c.modelInfo.ReadOnlyPath,
+		ReadWritePath: c.modelInfo.ReadWritePath,
 	}
 
 	// Generate Golang bindings for the YANG files
@@ -121,6 +154,16 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 		GetStateMode: c.metaData.GetStateMode,
 	}
 	return nil
+}
+
+func (c *ModelCompiler) loadPluginVersion(path string) error {
+	data, err := ioutil.ReadFile(filepath.Join(path, versionFile))
+	if err != nil {
+		c.pluginVersion = "1.0.0"
+	}
+	v := string(data)
+	c.pluginVersion = strings.Split(strings.ReplaceAll(v, "\r\n", "\n"), "\n")[0]
+	return err
 }
 
 func (c *ModelCompiler) lintModel(path string) error {
@@ -192,7 +235,7 @@ func insertHeaderPrefix(file string) error {
 }
 
 func (c *ModelCompiler) generateModelTree(path string) error {
-	treeFile := filepath.Join(path, c.modelInfo.Name+"-"+c.modelInfo.Version+".tree")
+	treeFile := filepath.Join(path, c.modelInfo.Name+".tree")
 	log.Infof("Generating YANG tree '%s'", treeFile)
 
 	yangDir := filepath.Join(path, "yang")
@@ -242,7 +285,7 @@ func (c *ModelCompiler) generateMain(path string) error {
 	mainFile := filepath.Join(mainDir, "main.go")
 	log.Infof("Generating plugin main '%s'", mainFile)
 	c.createDir(mainDir)
-	return applyTemplate(mainTemplate, c.getTemplatePath(mainTemplate), mainFile, c.modelInfo)
+	return c.applyTemplate(mainTemplate, c.getTemplatePath(mainTemplate), mainFile)
 }
 
 func (c *ModelCompiler) generatePathsExtraction(path string) error {
@@ -250,23 +293,23 @@ func (c *ModelCompiler) generatePathsExtraction(path string) error {
 	pathsFile := filepath.Join(mainDir, "paths.go")
 	log.Infof("Generating plugin paths extraction utility '%s'", pathsFile)
 	c.createDir(mainDir)
-	return applyTemplate(pathsUtilsTemplate, c.getTemplatePath(pathsUtilsTemplate), pathsFile, c.modelInfo)
+	return c.applyTemplate(pathsUtilsTemplate, c.getTemplatePath(pathsUtilsTemplate), pathsFile)
 }
 
 func (c *ModelCompiler) generateGoModule(path string) error {
 	gomodFile := filepath.Join(path, "go.mod")
 	log.Infof("Generating plugin Go module '%s'", gomodFile)
-	return applyTemplate(gomodTemplate, c.getTemplatePath(gomodTemplate), gomodFile, c.modelInfo)
+	return c.applyTemplate(gomodTemplate, c.getTemplatePath(gomodTemplate), gomodFile)
 }
 
 func (c *ModelCompiler) generateMakefile(path string) error {
 	makefileFile := filepath.Join(path, "Makefile")
 	log.Infof("Generating plugin Makefile '%s'", makefileFile)
-	return applyTemplate(makefileTemplate, c.getTemplatePath(makefileTemplate), makefileFile, c.modelInfo)
+	return c.applyTemplate(makefileTemplate, c.getTemplatePath(makefileTemplate), makefileFile)
 }
 
 func (c *ModelCompiler) generateDockerfile(path string) error {
 	dockerfileFile := filepath.Join(path, "Dockerfile")
 	log.Infof("Generating plugin Dockerfile '%s'", dockerfileFile)
-	return applyTemplate(dockerfileTemplate, c.getTemplatePath(dockerfileTemplate), dockerfileFile, c.modelInfo)
+	return c.applyTemplate(dockerfileTemplate, c.getTemplatePath(dockerfileTemplate), dockerfileFile)
 }
