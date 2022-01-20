@@ -57,6 +57,8 @@ all: build
 model-compiler-docker: # @HELP build model-compiler Docker image
 	docker build . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
+images: model-compiler-docker
+
 publish: # @HELP publish version on github
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
