@@ -21,18 +21,18 @@ The above will compile and assemble the compiler docker image.
 The repository also include several sample configuration models located in the `models` directory
 and serving to demonstrate the structure of the configuration models.
 
-* `devicesim-1.0.0`
-* `testdevice-1.0.0`
-* `testdevice-2.0.0`
+* `devicesim-1.0.x`
+* `testdevice-1.0.x`
+* `testdevice-2.0.x`
 
 ## Building sample models
 Building configuration models is easy. For example, to generate the artifacts for the `devicesim-1.0.0` configuration 
 model, run the following:
 ```shell
-docker run -v $(pwd)/models/devicesim-1.0.0:/config-model onosproject/model-compiler:latest
+docker run -v $(pwd)/models/devicesim-1.0.x:/config-model onosproject/model-compiler:latest
 ```
 
 Afterwards, to compile and assemble the configuration model docker image, simply run:
 ```shell
-cd models/devicesim-1.0.0 && make
+cd models/devicesim-1.0.x && make
 ```
