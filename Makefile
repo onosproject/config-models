@@ -43,6 +43,9 @@ models:
 publish-models:
 	@cd models && for model in *; do pushd $$model; make publish; popd; done
 
+kind-models:
+	@cd models && for model in *; do pushd $$model; make kind; popd; done
+
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: build-tools deps license_check linters
 
@@ -58,6 +61,11 @@ model-compiler-docker: # @HELP build model-compiler Docker image
 	docker build . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 images: model-compiler-docker
+
+kind: # @HELP build Docker images and add them to the currently configured kind cluster
+kind: images
+	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
+	kind load docker-image onosproject/model-compiler:${MODEL_COMPILER_VERSION}
 
 publish: # @HELP publish version on github
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler

@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/onosproject/config-models/models/devicesim-1.0.x/api"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
+	"github.com/onosproject/onos-lib-go/pkg/errors"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
 	"github.com/openconfig/gnmi/proto/gnmi"
@@ -69,7 +69,7 @@ func main() {
 	}
 	port := int16(i)
 
-	roPaths, rwPaths = ExtractPaths()
+	roPaths, rwPaths = extractPaths()
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -118,18 +118,18 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 
 func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfigRequest) (*admin.ValidateConfigResponse, error) {
 	log.Infof("Received validate config request: %s", request.String())
-	gostruct, err := s.UnmarshallConfigValues(request.Json)
+	gostruct, err := s.unmarshallConfigValues(request.Json)
 	if err != nil {
-		return nil, err
+		return nil, errors.Status(err).Err()
 	}
-	err = s.Validate(gostruct)
-	if err != nil {
-		return nil, err
+
+	if err := s.validate(gostruct); err != nil {
+		return nil, errors.Status(err).Err()
 	}
-    err = s.ValidateMust(*gostruct)
-    if err != nil {
-            return nil, err
-    }
+
+	if err := s.validateMust(*gostruct); err != nil {
+		return nil, errors.Status(err).Err()
+	}
 	return &admin.ValidateConfigResponse{Valid: true}, nil
 }
 
@@ -137,45 +137,41 @@ func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequ
 	log.Infof("Received path values request: %+v", request)
 	pathValues, err := getPathValues(request.PathPrefix, request.Json)
 	if err != nil {
-		return nil, err
+		return nil, errors.Status(errors.NewInvalid("Unable to get path values: %+v", err)).Err()
 	}
 	return &admin.PathValuesResponse{PathValues: pathValues}, nil
 }
 
-// UnmarshallConfigValues allows Device to implement the Unmarshaller interface
-func (s server) UnmarshallConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
+func (s server) unmarshallConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
 	device := &api.Device{}
 	vgs := ygot.ValidatedGoStruct(device)
-
 	if err := api.Unmarshal([]byte(jsonTree), device); err != nil {
-		return nil, err
+		return nil, errors.NewInvalid("Unable to unmarshal JSON: %+v", err)
 	}
-
 	return &vgs, nil
 }
 
-func (s server) Validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.ValidationOption) error {
+func (s server) validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.ValidationOption) error {
 	deviceDeref := *ygotModel
 	device, ok := deviceDeref.(*api.Device)
 	if !ok {
-		return fmt.Errorf("Unable to convert model devicesim-1.0.x-1.0.0")
+		return errors.NewInvalid("Unable to convert model devicesim-1.0.x-1.0.0")
 	}
 	return device.Validate()
 }
 
-func (s server) ValidateMust(device ygot.ValidatedGoStruct) error {
-       log.Infof("Received validateMust request for device: %v", device)
-       schema, err := api.Schema()
-       if err != nil {
-               return err
-       }
+func (s server) validateMust(device ygot.ValidatedGoStruct) error {
+	log.Infof("Received validateMust request for device: %v", device)
+	schema, err := api.Schema()
+	if err != nil {
+		return errors.NewInvalid("Unable to get schema: %+v", err)
+	}
 
-       nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
-
-       ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
-       if !ynnOk {
-               return fmt.Errorf("Cannot cast NodeNavigator to YangNodeNavigator")
-       }
-       return ynn.WalkAndValidateMust()
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	ynn, ok := nn.(*navigator.YangNodeNavigator)
+	if !ok {
+		return errors.NewInvalid("Cannot cast NodeNavigator to YangNodeNavigator")
+	}
+	return ynn.WalkAndValidateMust()
 }
 

@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/antchfx/xpath v1.2.0
 	github.com/atomix/atomix-go-framework v0.10.1 // indirect
+	github.com/onosproject/onos-config v0.10.12
 	github.com/onosproject/config-models v0.9.1
 	github.com/onosproject/onos-api/go v0.8.23
 	github.com/onosproject/onos-lib-go v0.8.1
