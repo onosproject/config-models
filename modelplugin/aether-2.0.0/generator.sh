@@ -6,10 +6,7 @@ OPENCORD="${OPENCORD:-$HOME/git/opencord}"
 
 go run github.com/openconfig/ygot/generator -path=$OPENCORD/roc-helm-charts/config-models/aether-2.0.x/files/yang \
        -output_file=aether_2_0_0/generated.go -package_name=aether_2_0_0 -generate_fakeroot --include_descriptions\
-       onf-enterprise.yang onf-connectivity-service.yang \
-       onf-aether-types.yang onf-application.yang onf-device-group.yang onf-ip-domain.yang \
-       onf-site.yang onf-upf.yang onf-template.yang onf-vcs.yang \
-       onf-traffic-class.yang
+       onf-enterprise.yang onf-connectivity-service.yang
 
 
 sedi=(-i)
