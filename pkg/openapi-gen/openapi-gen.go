@@ -373,7 +373,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
 
-			if newPath.Post.RequestBody.Ref != "" {
+			if newPath.Post != nil && newPath.Post.RequestBody.Ref != "" {
 				newPath.Post.RequestBody.Value = rbRef.Value
 			}
 
