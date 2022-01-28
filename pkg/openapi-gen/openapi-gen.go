@@ -234,11 +234,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Extensions = make(map[string]interface{})
 				}
 				schemaVal.Extensions["x-leafref"] = dirEntry.Type.Path
-			case yang.Yidentityref:
+			case yang.Yidentityref, yang.Yenum:
 				schemaVal = openapi3.NewStringSchema()
-				schemaVal.Enum = make([]interface{}, 0)
-				for _, val := range dirEntry.Type.IdentityBase.Values {
-					schemaVal.Enum = append(schemaVal.Enum, val.Name)
+				if dirEntry.Type.IdentityBase != nil {
+					schemaVal.Enum = make([]interface{}, 0)
+					for _, val := range dirEntry.Type.IdentityBase.Values {
+						schemaVal.Enum = append(schemaVal.Enum, val.Name)
+					}
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
@@ -277,6 +279,28 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						schemaVal.Max = &endFloat
 					}
 				}
+			case yang.Ybinary:
+				schemaVal = openapi3.NewBytesSchema()
+				if dirEntry.Type.Length != nil {
+					min, max, err := yangRange(dirEntry.Type.Length)
+					if err != nil {
+						return nil, nil, err
+					}
+					if min != nil {
+						schemaVal.MinLength = uint64(*min)
+					}
+					if max != nil {
+						v := uint64(*max)
+						schemaVal.MaxLength = &v
+					}
+				}
+				if dirEntry.Type.Default != "" {
+					schemaVal.Default = dirEntry.Type.Default
+				}
+			case yang.Yempty:
+				schemaVal = openapi3.NewStringSchema()
+				var emptylen uint64 = 0
+				schemaVal.MaxLength = &emptylen
 			default:
 				return nil, nil, fmt.Errorf("unhandled leaf %v %s", dirEntry.Type.Kind, dirEntry.Type.Name)
 			}
@@ -486,7 +510,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
 
-			if openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Ref != "" {
+			if openapiPaths[pathWithPrefix(listItemPath)] != nil &&
+				openapiPaths[pathWithPrefix(listItemPath)].Post != nil &&
+				openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Ref != "" {
 				openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Value = rbRef.Value
 			}
 
@@ -567,9 +593,18 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 	}
 	parameters = append(parameters, &targetParameterRef)
 
+	parameterNames := make(map[string]interface{})
+
 	for _, pathKey := range pathKeys {
 		if strings.HasPrefix(pathKey, "{") && strings.HasSuffix(pathKey, "}") {
 			k := pathKey[1 : len(pathKey)-1]
+			pathKey := pathKey // pinning
+			if _, alreadyUsed := parameterNames[k]; alreadyUsed {
+				newK := fmt.Sprintf("%s_%d", k, len(parameterNames))
+				pathKey = fmt.Sprintf("{%s}", newK)
+				// TODO: add the changed parameter name back in to the stored path
+				k = newK
+			}
 			p := openapi3.ParameterRef{
 				//Ref: k,
 				Value: openapi3.NewPathParameter(k),
@@ -581,6 +616,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 				Value: openapi3.NewStringSchema(),
 			}
 			p.Value.Content["text/plain; charset=utf-8"] = mt
+			parameterNames[k] = struct{}{}
 			parameters = append(parameters, &p)
 		}
 	}
