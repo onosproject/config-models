@@ -20,7 +20,7 @@ help: # @HELP Print the command options
         {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}; \
     '
 
-image: # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+image: openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build . -t ${DOCKER_REPOSITORY}{{ .Name }}:${VERSION}
 
 build: # @HELP Build the executable (available parameters: VERSION)
