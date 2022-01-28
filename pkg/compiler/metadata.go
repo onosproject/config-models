@@ -25,7 +25,7 @@ type MetaData struct {
 	Modules      []Module `mapstructure:"modules" yaml:"modules"`
 	GetStateMode uint32   `mapstructure:"getStateMode" yaml:"getStateMode"`
 	LintModel    bool     `mapstructure:"lintModel" yaml:"lintModel"`
-	GenOpenAPI   bool 	  `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
+	GenOpenAPI   bool     `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
 	GoPackage    string   `mapstructure:"goPackage" yaml:"goPackage"`
 }
 
