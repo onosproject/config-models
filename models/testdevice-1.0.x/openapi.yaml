@@ -1,0 +1,634 @@
+# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+components:
+  parameters:
+    target:
+      content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: target (device in onos-config)
+      in: path
+      name: target
+      required: true
+  requestBodies:
+    RequestBody_Cont1a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a'
+    RequestBody_Cont1a_Cont2a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_Cont2a'
+    RequestBody_Cont1a_List2a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_List2a'
+    RequestBody_Cont1a_List4:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_List4'
+    RequestBody_Cont1a_List4_List4a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_List4_List4a'
+    RequestBody_Cont1a_List5:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_List5'
+    RequestBody_Cont1b-state:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1b-state'
+    RequestBody_Cont1b-state_List2b:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1b-state_List2b'
+  schemas:
+    AdditionalPropertyTarget:
+      description: Optionally specify a target other than the default (only on PATCH
+        method)
+      properties:
+        target:
+          description: an override of the target (device)
+          title: target
+          type: string
+      title: AdditionalPropertyTarget
+      type: object
+    AdditionalPropertyUnchanged:
+      description: To optionally omit 'required' properties, add them to 'unchanged'
+        list
+      properties:
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertyUnchanged
+      type: object
+    Cont1a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: The top level container
+      properties:
+        cont2a:
+          $ref: '#/components/schemas/Cont1a_Cont2a'
+        leaf1a:
+          description: Leaf inside Container 1a
+          maxLength: 10
+          minLength: 5
+          title: leaf1a
+          type: string
+        list2a:
+          description: A simple list of configuration items
+          items:
+            $ref: '#/components/schemas/Cont1a_List2a'
+          maxItems: 4
+          title: ItemCont1a_List2a
+          type: array
+          uniqueItems: true
+          x-keys:
+          - name
+          x-must:
+          - ErrorMessage:
+              Name: range-min must be less than or equal to range-max
+            Name: number(./t1:range-min) <= number(./t1:range-max)
+        list4:
+          description: A list with a leafref index
+          items:
+            $ref: '#/components/schemas/Cont1a_List4'
+          title: ItemCont1a_List4
+          type: array
+          uniqueItems: true
+          x-keys:
+          - id
+        list5:
+          description: A list with 2 keys
+          items:
+            $ref: '#/components/schemas/Cont1a_List5'
+          title: ItemCont1a_List5
+          type: array
+          uniqueItems: true
+          x-keys:
+          - key1
+          - key2
+          x-must:
+          - ErrorMessage:
+              Name: leaf5a must be formatted string like '5a <key1>-<key2>'
+            Name: concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)
+      title: Cont1a
+      type: object
+    Cont1a_Cont2a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: The 2nd level container
+      properties:
+        leaf-list-leaf2e:
+          items:
+            description: leaf list inside Container 2a
+            maximum: 200
+            minimum: 100
+            title: leaf2e
+            type: integer
+          title: leaf-list-leaf2e
+          type: array
+        leaf2a:
+          description: Numeric leaf inside Container 2a
+          maximum: 13
+          minimum: 1
+          title: leaf2a
+          type: integer
+        leaf2b:
+          description: Voltage leaf inside Container 2a
+          maximum: 2
+          minimum: 0.001
+          title: leaf2b
+          type: number
+        leaf2c:
+          description: Read only leaf inside Container 2a
+          title: leaf2c
+          type: string
+        leaf2d:
+          description: Another decimal inside Container 2a
+          maximum: 2
+          minimum: 0.001
+          title: leaf2d
+          type: number
+        leaf2f:
+          description: binary leaf inside container 2a
+          format: byte
+          maxLength: 20
+          minLength: 20
+          title: leaf2f
+          type: string
+        leaf2g:
+          description: Boolean leaf inside Container 2a
+          title: leaf2g
+          type: boolean
+      required:
+      - leaf2b
+      title: Cont1a_Cont2a
+      type: object
+    Cont1a_List2a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      properties:
+        name:
+          description: The list is keyed by name
+          maxLength: 8
+          minLength: 4
+          title: name
+          type: string
+        range-max:
+          description: A max value for the range
+          maximum: 255
+          minimum: 0
+          title: range-max
+          type: integer
+        range-min:
+          description: A simple range to test rules in YANG. Min must be <= max
+          maximum: 255
+          minimum: 0
+          title: range-min
+          type: integer
+        ref2d:
+          description: A reference to leaf2d in the 2a container
+          title: ref2d
+          type: string
+          x-leafref: /cont1a/cont2a/leaf2d
+        tx-power:
+          description: Transmit power
+          maximum: 20
+          minimum: 1
+          title: tx-power
+          type: integer
+      required:
+      - name
+      - range-min
+      type: object
+    Cont1a_List4:
+      properties:
+        id:
+          description: Link to list2a names
+          title: id
+          type: string
+          x-leafref: /t1:cont1a/t1:list2a/t1:name
+        leaf4b:
+          description: leaf 4a on list4a elements
+          maxLength: 20
+          minLength: 1
+          title: leaf4b
+          type: string
+        list4a:
+          description: A list within a list with 2 keys as leaf refs
+          items:
+            $ref: '#/components/schemas/Cont1a_List4_List4a'
+          title: List4a
+          type: array
+          uniqueItems: true
+          x-keys:
+          - fkey1
+          - fkey2
+          x-must:
+          - ErrorMessage:
+              Name: displayname must be formatted string like 'Value <../id>-<fkey1>-<fkey2>'
+            Name: concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1),
+              '-', string(./@t1e:fkey2)) = string(./t1e:displayname)
+      required:
+      - id
+      type: object
+    Cont1a_List4_List4a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      properties:
+        displayname:
+          description: an optional display name attribute with 2 different length
+            ranges
+          maxLength: 20
+          minLength: 1
+          title: displayname
+          type: string
+        fkey1:
+          description: foreign key 1 - ref to list5a/key1
+          title: fkey1
+          type: string
+          x-leafref: /t1:cont1a/t1e:list5/t1e:key1
+        fkey2:
+          description: foreign key 2 - ref to list5a/key2
+          title: fkey2
+          type: string
+          x-leafref: /t1:cont1a/t1e:list5/t1e:key2
+      required:
+      - fkey1
+      - fkey2
+      type: object
+    Cont1a_List5:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      properties:
+        key1:
+          description: key1 of list 5 - string
+          maxLength: 20
+          minLength: 1
+          title: key1
+          type: string
+        key2:
+          description: key2 of list 5 - number
+          maximum: 10
+          minimum: 2
+          title: key2
+          type: integer
+        leaf5a:
+          description: non key attribute of list 5 - string
+          maxLength: 20
+          minLength: 1
+          title: leaf5a
+          type: string
+      required:
+      - key1
+      - key2
+      type: object
+    Cont1b-state:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: A second top level container - this one for state attributes. Edit
+        symbol should not be visible
+      properties:
+        leaf2d:
+          description: A state attribute
+          maximum: 20000
+          minimum: 10000
+          title: leaf2d
+          type: integer
+        list2b:
+          description: A simple list of state items
+          items:
+            $ref: '#/components/schemas/Cont1b-state_List2b'
+          title: ItemCont1b-state_List2b
+          type: array
+          uniqueItems: true
+          x-keys:
+          - index
+      title: Cont1b-state
+      type: object
+    Cont1b-state_List2b:
+      properties:
+        index:
+          description: The list index
+          maximum: 255
+          minimum: 0
+          title: index
+          type: integer
+        leaf3c:
+          description: A string attribute in the list
+          maxLength: 20
+          minLength: 1
+          title: leaf3c
+          type: string
+      required:
+      - index
+      type: object
+    LeafAtTopLevel:
+      description: A leaf at the top level (not recommended but must be supported)
+      pattern: '[A-Z]{3}-[0-9]*'
+      title: leafAtTopLevel
+      type: string
+info:
+  contact:
+    email: info@opennetworking.org
+    name: Open Networking Foundation
+    url: https://opennetworking.org
+  description: TODO add a description field in Metadata.yaml?
+  license:
+    name: LicenseRef-ONF-Member-1.0
+    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
+  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+  title: testdevice-1.0.x-1.0.0
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a:
+    delete:
+      operationId: deleteCont1a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a
+    description: The top level container
+    get:
+      operationId: getCont1a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a'
+          description: GET OK 200
+      summary: GET /cont1a
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postCont1a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a/cont2a:
+    delete:
+      operationId: deleteCont1a_Cont2a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/cont2a
+    description: The 2nd level container
+    get:
+      operationId: getCont1a_Cont2a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_Cont2a'
+          description: GET OK 200
+      summary: GET /cont1a/cont2a
+      tags:
+      - Cont1a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postCont1a_Cont2a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_Cont2a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/cont2a
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a/list2a/{name}:
+    delete:
+      operationId: deleteCont1a_List2a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/list2a
+    description: A simple list of configuration items
+    get:
+      operationId: getCont1a_List2a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_List2a'
+          description: GET OK 200
+      summary: GET /cont1a/list2a
+      tags:
+      - Cont1a_List2a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    post:
+      operationId: postCont1a_List2a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_List2a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/list2a
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a/list4/{id}:
+    delete:
+      operationId: deleteCont1a_List4
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/list4
+    description: A list with a leafref index
+    get:
+      operationId: getCont1a_List4
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_List4'
+          description: GET OK 200
+      summary: GET /cont1a/list4
+      tags:
+      - Cont1a_List4
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    post:
+      operationId: postCont1a_List4
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_List4'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/list4
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}:
+    delete:
+      operationId: deleteCont1a_List4_List4a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/list4/{id}/list4a
+    description: A list within a list with 2 keys as leaf refs
+    get:
+      operationId: getCont1a_List4_List4a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_List4_List4a'
+          description: GET OK 200
+      summary: GET /cont1a/list4/{id}/list4a
+      tags:
+      - Cont1a_List4_List4a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey1}
+      in: path
+      name: fkey1
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey2}
+      in: path
+      name: fkey2
+      required: true
+    post:
+      operationId: postCont1a_List4_List4a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_List4_List4a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/list4/{id}/list4a
+  /testdevice-1.0.x/v1.0.0/{target}/cont1a/list5/{key1}/{key2}:
+    delete:
+      operationId: deleteCont1a_List5
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/list5
+    description: A list with 2 keys
+    get:
+      operationId: getCont1a_List5
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_List5'
+          description: GET OK 200
+      summary: GET /cont1a/list5
+      tags:
+      - Cont1a_List5
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {key1}
+      in: path
+      name: key1
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {key2}
+      in: path
+      name: key2
+      required: true
+    post:
+      operationId: postCont1a_List5
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_List5'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/list5
+  /testdevice-1.0.x/v1.0.0/{target}/cont1b-state:
+    description: A second top level container - this one for state attributes. Edit
+      symbol should not be visible
+    get:
+      operationId: getCont1b-state
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1b-state'
+          description: GET OK 200
+      summary: GET /cont1b-state
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice-1.0.x/v1.0.0/{target}/cont1b-state/list2b/{index}:
+    description: A simple list of state items
+    get:
+      operationId: getCont1b-state_List2b
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1b-state_List2b'
+          description: GET OK 200
+      summary: GET /cont1b-state/list2b
+      tags:
+      - Cont1b-state_List2b
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {index}
+      in: path
+      name: index
+      required: true

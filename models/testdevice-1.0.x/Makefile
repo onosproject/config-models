@@ -27,6 +27,12 @@ build: # @HELP Build the executable (available parameters: VERSION)
 	go mod tidy
 	go build -o _bin/testdevice-1.0.x ./plugin
 
+.PHONY: openapi
+openapi: # @HELP Generate OpenApi specs
+	go mod download
+	go mod tidy
+	go run openapi/openapi-gen.go -o openapi.yaml
+
 test: build # @HELP Run the unit tests
 	go test ./...
 

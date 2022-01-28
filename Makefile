@@ -1,3 +1,4 @@
+SHELL = bash -e -o pipefail
 export CGO_ENABLED=0
 export GO111MODULE=on
 
@@ -31,14 +32,21 @@ gofmt: # @HELP run the Go format validation
 	bash -c "diff -u <(echo -n) <(gofmt -d pkg/)"
 
 test: # @HELP run go test on projects
-test: build linters license_check gofmt
+test: build linters license_check gofmt models
 	go test ./pkg/...
+	@bash test/generated.sh
 	@cd models && for model in *; do pushd $$model; make test; popd; done
 
 .PHONY: models
 models: # @HELP make demo and test device models
 models:
-	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; pushd $$model; make image; popd; done
+	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
+
+models-openapi: # @HELP generates the openapi specs for the models
+	@cd models && for model in *; do echo -e "Buildind OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
+
+models-images: models openapi # @HELP Build Docker containers for all the models
+	@cd models && for model in *; do echo -e "Buildind container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 
 publish-models:
 	@cd models && for model in *; do pushd $$model; make publish; popd; done
