@@ -1,0 +1,488 @@
+# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+components:
+  parameters:
+    target:
+      content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: target (device in onos-config)
+      in: path
+      name: target
+      required: true
+  requestBodies:
+    RequestBody_Cont1a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a'
+    RequestBody_Cont1a_Cont2a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_Cont2a'
+    RequestBody_Cont1a_Cont2d:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_Cont2d'
+    RequestBody_Cont1a_List2a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1a_List2a'
+    RequestBody_Cont1b-state:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1b-state'
+    RequestBody_Cont1b-state_Cont2c:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1b-state_Cont2c'
+    RequestBody_Cont1b-state_List2b:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cont1b-state_List2b'
+  schemas:
+    AdditionalPropertyTarget:
+      description: Optionally specify a target other than the default (only on PATCH
+        method)
+      properties:
+        target:
+          description: an override of the target (device)
+          title: target
+          type: string
+      title: AdditionalPropertyTarget
+      type: object
+    AdditionalPropertyUnchanged:
+      description: To optionally omit 'required' properties, add them to 'unchanged'
+        list
+      properties:
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertyUnchanged
+      type: object
+    Cont1a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: The top level container
+      properties:
+        cont2a:
+          $ref: '#/components/schemas/Cont1a_Cont2a'
+        cont2d:
+          $ref: '#/components/schemas/Cont1a_Cont2d'
+        leaf1a:
+          description: Leaf inside Container 1a
+          maxLength: 10
+          minLength: 5
+          title: leaf1a
+          type: string
+        list2a:
+          description: A simple list of configuration items
+          items:
+            $ref: '#/components/schemas/Cont1a_List2a'
+          maxItems: 4
+          title: ItemCont1a_List2a
+          type: array
+          uniqueItems: true
+          x-keys:
+          - name
+          x-must:
+          - ErrorMessage:
+              Name: tx-power is greater than or equal to rx-power
+            Name: number(./t1:tx-power) < number(./t1:rx-power)
+      title: Cont1a
+      type: object
+    Cont1a_Cont2a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: The 2nd level container
+      properties:
+        leaf-list-leaf2e:
+          items:
+            description: leaf list inside Container 2a
+            maximum: 200
+            minimum: 100
+            title: leaf2e
+            type: integer
+          title: leaf-list-leaf2e
+          type: array
+        leaf2a:
+          description: Numeric leaf inside Container 2a
+          maximum: 13
+          minimum: 1
+          title: leaf2a
+          type: integer
+        leaf2b:
+          description: Voltage leaf inside Container 2a
+          maximum: 2
+          minimum: 0.001
+          title: leaf2b
+          type: number
+        leaf2c:
+          description: Read only leaf inside Container 2a
+          title: leaf2c
+          type: string
+        leaf2d:
+          description: Another decimal inside Container 2a
+          maximum: 2
+          minimum: 0.001
+          title: leaf2d
+          type: number
+        leaf2f:
+          description: binary leaf inside Container 2a
+          format: byte
+          maxLength: 20
+          minLength: 20
+          title: leaf2f
+          type: string
+        leaf2g:
+          description: Boolean leaf inside Container 2a
+          title: leaf2g
+          type: boolean
+      required:
+      - leaf2b
+      title: Cont1a_Cont2a
+      type: object
+    Cont1a_Cont2d:
+      description: Container 2d
+      properties:
+        beer:
+          description: For choice snack:sports-arena
+          maxLength: 0
+          title: beer
+          type: string
+        chocolate:
+          description: For choice snack:late-night
+          title: chocolate
+          type: string
+        leaf2d3c:
+          description: string leaf on Container 2d augmented to cont1a
+          title: leaf2d3c
+          type: string
+        pretzel:
+          description: For choice snack:sports-arena
+          maxLength: 0
+          title: pretzel
+          type: string
+      title: Cont1a_Cont2d
+      type: object
+    Cont1a_List2a:
+      properties:
+        name:
+          description: The list is keyed by name
+          maxLength: 8
+          minLength: 4
+          title: name
+          type: string
+        rx-power:
+          description: Receive power
+          maximum: 30
+          minimum: 20
+          title: rx-power
+          type: integer
+        tx-power:
+          description: Transmit power
+          maximum: 20
+          minimum: 1
+          title: tx-power
+          type: integer
+      required:
+      - name
+      type: object
+    Cont1b-state:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: A second top level container - this one for state attributes. Edit
+        symbol should not be visible
+      properties:
+        cont2c:
+          $ref: '#/components/schemas/Cont1b-state_Cont2c'
+        leaf2d:
+          description: A state attribute
+          maximum: 20000
+          minimum: 10000
+          title: leaf2d
+          type: integer
+        list2b:
+          description: A simple list of state items, with a double key
+          items:
+            $ref: '#/components/schemas/Cont1b-state_List2b'
+          maxItems: 8
+          title: ItemCont1b-state_List2b
+          type: array
+          uniqueItems: true
+          x-keys:
+          - index1
+          - index2
+      title: Cont1b-state
+      type: object
+    Cont1b-state_Cont2c:
+      description: This is a new container added in the 2019 version.  We don't have
+        to say it's 'config false' - implied by parent
+      properties:
+        leaf3a:
+          description: Another boolean variable
+          title: leaf3a
+          type: boolean
+        leaf3b:
+          description: Another string variable
+          maxLength: 10
+          minLength: 5
+          title: leaf3b
+          type: string
+      title: Cont1b-state_Cont2c
+      type: object
+    Cont1b-state_List2b:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      properties:
+        index1:
+          description: The list index
+          maximum: 255
+          minimum: 0
+          title: index1
+          type: integer
+        index2:
+          description: The list index
+          maximum: 255
+          minimum: 0
+          title: index2
+          type: integer
+        leaf3c:
+          description: A string attribute in the list
+          maxLength: 20
+          minLength: 1
+          title: leaf3c
+          type: string
+        leaf3d:
+          description: An identityref attribute in the list
+          enum:
+          - IDTYPE1
+          - IDTYPE2
+          title: leaf3d
+          type: string
+      required:
+      - index1
+      - index2
+      type: object
+    LeafAtTopLevel:
+      description: A leaf at the top level (not recommended but must be supported)
+      pattern: '[A-Z]{3}-[0-9]*'
+      title: leafAtTopLevel
+      type: string
+info:
+  contact:
+    email: info@opennetworking.org
+    name: Open Networking Foundation
+    url: https://opennetworking.org
+  description: TODO add a description field in Metadata.yaml?
+  license:
+    name: LicenseRef-ONF-Member-1.0
+    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
+  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+  title: testdevice-2.0.x-2.0.0
+  version: 2.0.0
+openapi: 3.0.0
+paths:
+  /testdevice-2.0.x/v2.0.0/{target}/cont1a:
+    delete:
+      operationId: deleteCont1a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a
+    description: The top level container
+    get:
+      operationId: getCont1a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a'
+          description: GET OK 200
+      summary: GET /cont1a
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postCont1a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a
+  /testdevice-2.0.x/v2.0.0/{target}/cont1a/cont2a:
+    delete:
+      operationId: deleteCont1a_Cont2a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/cont2a
+    description: The 2nd level container
+    get:
+      operationId: getCont1a_Cont2a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_Cont2a'
+          description: GET OK 200
+      summary: GET /cont1a/cont2a
+      tags:
+      - Cont1a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postCont1a_Cont2a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_Cont2a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/cont2a
+  /testdevice-2.0.x/v2.0.0/{target}/cont1a/cont2d:
+    delete:
+      operationId: deleteCont1a_Cont2d
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/cont2d
+    description: Container 2d
+    get:
+      operationId: getCont1a_Cont2d
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_Cont2d'
+          description: GET OK 200
+      summary: GET /cont1a/cont2d
+      tags:
+      - Cont1a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postCont1a_Cont2d
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_Cont2d'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/cont2d
+  /testdevice-2.0.x/v2.0.0/{target}/cont1a/list2a/{name}:
+    delete:
+      operationId: deleteCont1a_List2a
+      responses:
+        default:
+          description: ""
+      summary: DELETE /cont1a/list2a
+    description: A simple list of configuration items
+    get:
+      operationId: getCont1a_List2a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1a_List2a'
+          description: GET OK 200
+      summary: GET /cont1a/list2a
+      tags:
+      - Cont1a_List2a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    post:
+      operationId: postCont1a_List2a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Cont1a_List2a'
+      responses:
+        "201":
+          description: created
+      summary: POST /cont1a/list2a
+  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state:
+    description: A second top level container - this one for state attributes. Edit
+      symbol should not be visible
+    get:
+      operationId: getCont1b-state
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1b-state'
+          description: GET OK 200
+      summary: GET /cont1b-state
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state/cont2c:
+    description: This is a new container added in the 2019 version.  We don't have
+      to say it's 'config false' - implied by parent
+    get:
+      operationId: getCont1b-state_Cont2c
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1b-state_Cont2c'
+          description: GET OK 200
+      summary: GET /cont1b-state/cont2c
+      tags:
+      - Cont1b-state
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state/list2b/{index1}/{index2}:
+    description: A simple list of state items, with a double key
+    get:
+      operationId: getCont1b-state_List2b
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cont1b-state_List2b'
+          description: GET OK 200
+      summary: GET /cont1b-state/list2b
+      tags:
+      - Cont1b-state_List2b
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {index1}
+      in: path
+      name: index1
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {index2}
+      in: path
+      name: index2
+      required: true

@@ -42,6 +42,7 @@ const (
 	gomodTemplate      = "go.mod.tpl"
 	makefileTemplate   = "Makefile.tpl"
 	dockerfileTemplate = "Dockerfile.tpl"
+	openapiGenTemplate = "openapi-gen.go.tpl"
 )
 
 // NewCompiler creates a new config model compiler
@@ -130,7 +131,13 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
-	// TODO: Generate OpenAPI for RBAC
+	// Generate OpenAPI
+	err = c.generateOpenApi(path)
+	if err != nil {
+		log.Errorf("Unable to generate OpenApi specs: %+v", err)
+		return err
+	}
+
 	return nil
 }
 
@@ -312,4 +319,16 @@ func (c *ModelCompiler) generateDockerfile(path string) error {
 	dockerfileFile := filepath.Join(path, "Dockerfile")
 	log.Infof("Generating plugin Dockerfile '%s'", dockerfileFile)
 	return c.applyTemplate(dockerfileTemplate, c.getTemplatePath(dockerfileTemplate), dockerfileFile)
+}
+
+func (c *ModelCompiler) generateOpenApi(path string) error {
+	// the Schema we need to import is generated at runtime, so we need to generate the tool
+	// to import such schema and generate the OpenApi specs
+
+	dir := filepath.Join(path, "openapi")
+	openapiGenFile := filepath.Join(dir, "openapi-gen.go")
+	c.createDir(dir)
+
+	log.Infof("Generating plugin OpenApi Gen file '%s'", openapiGenFile)
+	return c.applyTemplate(openapiGenTemplate, c.getTemplatePath(openapiGenTemplate), openapiGenFile)
 }
