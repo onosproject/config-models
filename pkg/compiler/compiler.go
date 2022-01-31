@@ -216,7 +216,7 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 		args = append(args, file.Name())
 	}
 
-	log.Infof("Executing %s", path, strings.Join(args, " "))
+	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
 	cmd := exec.Command("generator", args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
