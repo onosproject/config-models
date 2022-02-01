@@ -26,8 +26,8 @@ RESET="\e[0m"
 
 function is_version_up_to_date() {
     # returns false if files for the model have changed but the version has not been updated
-    n_files_changed=$(git diff --name-only upstream/master . | wc -l)
-    version_changed=$(git diff --name-only upstream/master . | grep VERSION | wc -l)
+    n_files_changed=$(git diff --name-only origin/master . | wc -l)
+    version_changed=$(git diff --name-only origin/master . | grep VERSION | wc -l)
 
     if [[ $n_files_changed == 0 ]]; then
       # no files have changed, good to go
