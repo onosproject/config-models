@@ -64,7 +64,7 @@ func ValidateMetaData(metaData *MetaData) error {
 	if metaData.GoPackage == "" {
 		return fmt.Errorf("goPackage is mandatory")
 	}
-	if metaData.Modules == nil || len(metaData.Modules) == 0{
+	if metaData.Modules == nil || len(metaData.Modules) == 0 {
 		return fmt.Errorf("no modules are listed")
 	}
 	return nil

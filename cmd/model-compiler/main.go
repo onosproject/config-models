@@ -36,7 +36,7 @@ func getCmd() *cobra.Command {
 		Use:   "model-compiler",
 		Short: "Compiles the specified config model",
 		Args:  cobra.MaximumNArgs(1),
-		RunE:  func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			path := defaultModelPath
 			if len(args) > 0 {
 				path = args[0]
@@ -46,5 +46,3 @@ func getCmd() *cobra.Command {
 	}
 	return cmd
 }
-
-
