@@ -18,7 +18,7 @@ package main
 
 import (
 	"context"
-	"github.com/onosproject/config-models/models/testdevice-2.0.x/api"
+	"github.com/onosproject/config-models/models/testdevice/v2/api"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/errors"

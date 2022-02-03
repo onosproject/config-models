@@ -1,7 +1,7 @@
 name: testdevice
 version: 1.0.0
 artifactName: testdevice-1.0.x
-goPackage: github.com/onosproject/config-models/models/testdevice-1.0.x
+goPackage: github.com/onosproject/config-models/models/testdevice
 modules:
   - name: onf-test1
     organization: Open Networking Foundation
