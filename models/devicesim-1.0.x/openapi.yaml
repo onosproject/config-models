@@ -2187,9 +2187,9 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
+          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
           - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_ACCOUNTING_EVENT_COMMAND
           title: event-type
           type: string
@@ -2209,9 +2209,9 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
+          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
           - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_ACCOUNTING_EVENT_COMMAND
           title: event-type
           type: string
@@ -3277,24 +3277,24 @@ components:
           description: Specifies the facility, or class of messages to log
           enum:
           - LOCAL7
-          - SYSTEM_DAEMON
-          - AUTH
-          - LOCAL4
-          - LOCAL5
-          - LOCAL3
-          - AUTHPRIV
-          - ALL
-          - AUDIT
-          - CONSOLE
-          - LOCAL1
-          - MAIL
-          - USER
           - KERNEL
+          - MAIL
+          - LOCAL1
+          - LOCAL4
+          - SYSTEM_DAEMON
+          - SYSLOG
+          - USER
+          - LOCAL2
+          - LOCAL5
+          - AUTHPRIV
+          - CONSOLE
+          - LOCAL3
+          - ALL
+          - LOCAL0
+          - AUDIT
           - LOCAL6
           - NTP
-          - SYSLOG
-          - LOCAL2
-          - LOCAL0
+          - AUTH
           title: facility
           type: string
         severity:
@@ -3312,24 +3312,24 @@ components:
           description: Specifies the facility, or class of messages to log
           enum:
           - LOCAL7
-          - SYSTEM_DAEMON
-          - AUTH
-          - LOCAL4
-          - LOCAL5
-          - LOCAL3
-          - AUTHPRIV
-          - ALL
-          - AUDIT
-          - CONSOLE
-          - LOCAL1
-          - MAIL
-          - USER
           - KERNEL
+          - MAIL
+          - LOCAL1
+          - LOCAL4
+          - SYSTEM_DAEMON
+          - SYSLOG
+          - USER
+          - LOCAL2
+          - LOCAL5
+          - AUTHPRIV
+          - CONSOLE
+          - LOCAL3
+          - ALL
+          - LOCAL0
+          - AUDIT
           - LOCAL6
           - NTP
-          - SYSLOG
-          - LOCAL2
-          - LOCAL0
+          - AUTH
           title: facility
           type: string
         severity:
@@ -3439,24 +3439,24 @@ components:
           description: Specifies the facility, or class of messages to log
           enum:
           - LOCAL7
-          - SYSTEM_DAEMON
-          - AUTH
-          - LOCAL4
-          - LOCAL5
-          - LOCAL3
-          - AUTHPRIV
-          - ALL
-          - AUDIT
-          - CONSOLE
-          - LOCAL1
-          - MAIL
-          - USER
           - KERNEL
+          - MAIL
+          - LOCAL1
+          - LOCAL4
+          - SYSTEM_DAEMON
+          - SYSLOG
+          - USER
+          - LOCAL2
+          - LOCAL5
+          - AUTHPRIV
+          - CONSOLE
+          - LOCAL3
+          - ALL
+          - LOCAL0
+          - AUDIT
           - LOCAL6
           - NTP
-          - SYSLOG
-          - LOCAL2
-          - LOCAL0
+          - AUTH
           title: facility
           type: string
         severity:
@@ -3474,24 +3474,24 @@ components:
           description: Specifies the facility, or class of messages to log
           enum:
           - LOCAL7
-          - SYSTEM_DAEMON
-          - AUTH
-          - LOCAL4
-          - LOCAL5
-          - LOCAL3
-          - AUTHPRIV
-          - ALL
-          - AUDIT
-          - CONSOLE
-          - LOCAL1
-          - MAIL
-          - USER
           - KERNEL
+          - MAIL
+          - LOCAL1
+          - LOCAL4
+          - SYSTEM_DAEMON
+          - SYSLOG
+          - USER
+          - LOCAL2
+          - LOCAL5
+          - AUTHPRIV
+          - CONSOLE
+          - LOCAL3
+          - ALL
+          - LOCAL0
+          - AUDIT
           - LOCAL6
           - NTP
-          - SYSLOG
-          - LOCAL2
-          - LOCAL0
+          - AUTH
           title: facility
           type: string
         severity:
@@ -4483,11 +4483,11 @@ info:
     name: LicenseRef-ONF-Member-1.0
     url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
   termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
-  title: devicesim-1.0.x-1.0.0
+  title: devicesim-1.0.0
   version: 1.0.0
 openapi: 3.0.0
 paths:
-  /devicesim-1.0.x/v1.0.0/{target}/components:
+  /devicesim/v1.0.0/{target}/components:
     delete:
       operationId: deleteComponents
       responses:
@@ -4517,7 +4517,7 @@ paths:
         "201":
           description: created
       summary: POST /components
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}:
+  /devicesim/v1.0.0/{target}/components/component/{name}:
     delete:
       operationId: deleteComponents_Component
       responses:
@@ -4555,7 +4555,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/config:
+  /devicesim/v1.0.0/{target}/components/component/{name}/config:
     delete:
       operationId: deleteComponents_Component_Config
       responses:
@@ -4593,7 +4593,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/properties:
+  /devicesim/v1.0.0/{target}/components/component/{name}/properties:
     delete:
       operationId: deleteComponents_Component_Properties
       responses:
@@ -4631,7 +4631,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/properties/property/{name}:
+  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}:
     delete:
       operationId: deleteComponents_Component_Properties_Property
       responses:
@@ -4677,7 +4677,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/properties/property/{name}/config:
+  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/config:
     delete:
       operationId: deleteComponents_Component_Properties_Property_Config
       responses:
@@ -4723,7 +4723,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/properties/property/{name}/state:
+  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/state:
     description: Operational state data for each property
     get:
       operationId: getComponents_Component_Properties_Property_State
@@ -4755,7 +4755,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/state:
+  /devicesim/v1.0.0/{target}/components/component/{name}/state:
     description: Operational state data for each component
     get:
       operationId: getComponents_Component_State
@@ -4779,7 +4779,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/state/temperature:
+  /devicesim/v1.0.0/{target}/components/component/{name}/state/temperature:
     description: |-
       Temperature in degrees Celsius of the component. Values include
       the instantaneous, average, minimum, and maximum statistics. If
@@ -4807,7 +4807,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/subcomponents:
+  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents:
     delete:
       operationId: deleteComponents_Component_Subcomponents
       responses:
@@ -4845,7 +4845,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}:
+  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent
       responses:
@@ -4891,7 +4891,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/config:
+  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/config:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
       responses:
@@ -4937,7 +4937,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/state:
+  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/state:
     description: 'Operational state data '
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_State
@@ -4969,7 +4969,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces:
+  /devicesim/v1.0.0/{target}/interfaces:
     delete:
       operationId: deleteInterfaces
       responses:
@@ -5001,7 +5001,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}:
     delete:
       operationId: deleteInterfaces_Interface
       responses:
@@ -5039,7 +5039,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/config:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/config:
     delete:
       operationId: deleteInterfaces_Interface_Config
       responses:
@@ -5079,7 +5079,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/hold-time:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time
       responses:
@@ -5119,7 +5119,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/hold-time/config:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/config:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time_Config
       responses:
@@ -5157,7 +5157,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time/config
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/hold-time/state:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/state:
     description: Operational state data for interface hold-time.
     get:
       operationId: getInterfaces_Interface_Hold-time_State
@@ -5181,7 +5181,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/state:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state:
     description: Operational state data at the global interface level
     get:
       operationId: getInterfaces_Interface_State
@@ -5205,7 +5205,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/state/counters:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
       operationId: getInterfaces_Interface_State_Counters
@@ -5229,7 +5229,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces
       responses:
@@ -5269,7 +5269,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface
       responses:
@@ -5317,7 +5317,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config
       responses:
@@ -5363,7 +5363,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
     description: Operational state data for logical interfaces
     get:
       operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State
@@ -5395,7 +5395,7 @@ paths:
       in: path
       name: index
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
       operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters
@@ -5427,7 +5427,7 @@ paths:
       in: path
       name: index
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system:
+  /devicesim/v1.0.0/{target}/system:
     delete:
       operationId: deleteSystem
       responses:
@@ -5459,7 +5459,7 @@ paths:
         "201":
           description: created
       summary: POST /system
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa:
+  /devicesim/v1.0.0/{target}/system/aaa:
     delete:
       operationId: deleteSystem_Aaa
       responses:
@@ -5489,7 +5489,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting:
     delete:
       operationId: deleteSystem_Aaa_Accounting
       responses:
@@ -5519,7 +5519,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/config:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Config
       responses:
@@ -5549,7 +5549,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/events:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/events:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events
       responses:
@@ -5581,7 +5581,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events_Event
       responses:
@@ -5619,7 +5619,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/config:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events_Event_Config
       responses:
@@ -5657,7 +5657,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event/{event-type}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/state:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/state:
     description: Operational state data for accounting events
     get:
       operationId: getSystem_Aaa_Accounting_Events_Event_State
@@ -5681,7 +5681,7 @@ paths:
       in: path
       name: event-type
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/accounting/state:
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/state:
     description: Operational state data for user accounting.
     get:
       operationId: getSystem_Aaa_Accounting_State
@@ -5697,7 +5697,7 @@ paths:
       - System_Aaa_Accounting
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication:
     delete:
       operationId: deleteSystem_Aaa_Authentication
       responses:
@@ -5727,7 +5727,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/admin-user:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user
       responses:
@@ -5759,7 +5759,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/admin-user/config:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user_Config
       responses:
@@ -5789,7 +5789,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/admin-user/state:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/state:
     description: Operational state data for the root user account
     get:
       operationId: getSystem_Aaa_Authentication_Admin-user_State
@@ -5805,7 +5805,7 @@ paths:
       - System_Aaa_Authentication_Admin-user
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/config:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Config
       responses:
@@ -5835,7 +5835,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/state:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/state:
     description: |-
       Operational state data for global authentication
       services
@@ -5853,7 +5853,7 @@ paths:
       - System_Aaa_Authentication
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/users:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/users:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users
       responses:
@@ -5883,7 +5883,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users_User
       responses:
@@ -5921,7 +5921,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/config:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users_User_Config
       responses:
@@ -5959,7 +5959,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user/{username}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/state:
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/state:
     description: Operational state data for local users
     get:
       operationId: getSystem_Aaa_Authentication_Users_User_State
@@ -5983,7 +5983,7 @@ paths:
       in: path
       name: username
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization:
     delete:
       operationId: deleteSystem_Aaa_Authorization
       responses:
@@ -6015,7 +6015,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/config:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Config
       responses:
@@ -6047,7 +6047,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/events:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/events:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events
       responses:
@@ -6079,7 +6079,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events_Event
       responses:
@@ -6117,7 +6117,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/config:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events_Event_Config
       responses:
@@ -6155,7 +6155,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event/{event-type}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/state:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/state:
     description: Operational state data for each authorized activity
     get:
       operationId: getSystem_Aaa_Authorization_Events_Event_State
@@ -6179,7 +6179,7 @@ paths:
       in: path
       name: event-type
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/authorization/state:
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/state:
     description: Operational state data for authorization based on AAA
     get:
       operationId: getSystem_Aaa_Authorization_State
@@ -6195,7 +6195,7 @@ paths:
       - System_Aaa_Authorization
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/config:
+  /devicesim/v1.0.0/{target}/system/aaa/config:
     delete:
       operationId: deleteSystem_Aaa_Config
       responses:
@@ -6225,7 +6225,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups:
     delete:
       operationId: deleteSystem_Aaa_Server-groups
       responses:
@@ -6255,7 +6255,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group
       responses:
@@ -6296,7 +6296,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/config:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Config
       responses:
@@ -6334,7 +6334,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers
       responses:
@@ -6372,7 +6372,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server
       responses:
@@ -6418,7 +6418,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
       responses:
@@ -6464,7 +6464,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
       responses:
@@ -6510,7 +6510,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
       responses:
@@ -6556,7 +6556,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
     description: Operational state data for RADIUS servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
@@ -6588,7 +6588,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
     description: A collection of RADIUS related state objects.
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters
@@ -6620,7 +6620,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
     description: 'Operational state data '
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State
@@ -6652,7 +6652,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
       responses:
@@ -6698,7 +6698,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
       responses:
@@ -6744,7 +6744,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
     description: Operational state data for TACACS+ server
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State
@@ -6776,7 +6776,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/state:
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/state:
     description: Operational state data for each server group
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_State
@@ -6800,7 +6800,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/aaa/state:
+  /devicesim/v1.0.0/{target}/system/aaa/state:
     description: 'Operational state data for top level AAA services '
     get:
       operationId: getSystem_Aaa_State
@@ -6816,7 +6816,7 @@ paths:
       - System_Aaa
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/clock:
+  /devicesim/v1.0.0/{target}/system/clock:
     delete:
       operationId: deleteSystem_Clock
       responses:
@@ -6846,7 +6846,7 @@ paths:
         "201":
           description: created
       summary: POST /system/clock
-  /devicesim-1.0.x/v1.0.0/{target}/system/clock/config:
+  /devicesim/v1.0.0/{target}/system/clock/config:
     delete:
       operationId: deleteSystem_Clock_Config
       responses:
@@ -6876,7 +6876,7 @@ paths:
         "201":
           description: created
       summary: POST /system/clock/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/clock/state:
+  /devicesim/v1.0.0/{target}/system/clock/state:
     description: Operational state data for system clock
     get:
       operationId: getSystem_Clock_State
@@ -6892,7 +6892,7 @@ paths:
       - System_Clock
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/config:
+  /devicesim/v1.0.0/{target}/system/config:
     delete:
       operationId: deleteSystem_Config
       responses:
@@ -6922,7 +6922,7 @@ paths:
         "201":
           description: created
       summary: POST /system/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns:
+  /devicesim/v1.0.0/{target}/system/dns:
     delete:
       operationId: deleteSystem_Dns
       responses:
@@ -6952,7 +6952,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/config:
+  /devicesim/v1.0.0/{target}/system/dns/config:
     delete:
       operationId: deleteSystem_Dns_Config
       responses:
@@ -6982,7 +6982,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/host-entries:
+  /devicesim/v1.0.0/{target}/system/dns/host-entries:
     delete:
       operationId: deleteSystem_Dns_Host-entries
       responses:
@@ -7012,7 +7012,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
+  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
     delete:
       operationId: deleteSystem_Dns_Host-entries_Host-entry
       responses:
@@ -7050,7 +7050,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/config:
+  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/config:
     delete:
       operationId: deleteSystem_Dns_Host-entries_Host-entry_Config
       responses:
@@ -7088,7 +7088,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry/{hostname}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/state:
+  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/state:
     description: Operational state data for static host entries
     get:
       operationId: getSystem_Dns_Host-entries_Host-entry_State
@@ -7112,7 +7112,7 @@ paths:
       in: path
       name: hostname
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/servers:
+  /devicesim/v1.0.0/{target}/system/dns/servers:
     delete:
       operationId: deleteSystem_Dns_Servers
       responses:
@@ -7142,7 +7142,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/servers/server/{address}:
+  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}:
     delete:
       operationId: deleteSystem_Dns_Servers_Server
       responses:
@@ -7194,7 +7194,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/servers/server/{address}/config:
+  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Dns_Servers_Server_Config
       responses:
@@ -7232,7 +7232,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server/{address}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/servers/server/{address}/state:
+  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/state:
     description: Operational state data for each DNS resolver
     get:
       operationId: getSystem_Dns_Servers_Server_State
@@ -7256,7 +7256,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/dns/state:
+  /devicesim/v1.0.0/{target}/system/dns/state:
     description: Operational state data for the DNS resolver
     get:
       operationId: getSystem_Dns_State
@@ -7272,7 +7272,7 @@ paths:
       - System_Dns
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging:
+  /devicesim/v1.0.0/{target}/system/logging:
     delete:
       operationId: deleteSystem_Logging
       responses:
@@ -7302,7 +7302,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console:
+  /devicesim/v1.0.0/{target}/system/logging/console:
     delete:
       operationId: deleteSystem_Logging_Console
       responses:
@@ -7334,7 +7334,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/config:
+  /devicesim/v1.0.0/{target}/system/logging/console/config:
     delete:
       operationId: deleteSystem_Logging_Console_Config
       responses:
@@ -7364,7 +7364,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/selectors:
+  /devicesim/v1.0.0/{target}/system/logging/console/selectors:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors
       responses:
@@ -7394,7 +7394,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
+  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors_Selector
       responses:
@@ -7440,7 +7440,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/config:
+  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/config:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors_Selector_Config
       responses:
@@ -7486,7 +7486,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector/{facility}/{severity}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/state:
+  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
       operationId: getSystem_Logging_Console_Selectors_Selector_State
@@ -7518,7 +7518,7 @@ paths:
       in: path
       name: severity
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/console/state:
+  /devicesim/v1.0.0/{target}/system/logging/console/state:
     description: Operational state data for console logging
     get:
       operationId: getSystem_Logging_Console_State
@@ -7534,7 +7534,7 @@ paths:
       - System_Logging_Console
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers:
     delete:
       operationId: deleteSystem_Logging_Remote-servers
       responses:
@@ -7564,7 +7564,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server
       responses:
@@ -7602,7 +7602,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/config:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/config:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config
       responses:
@@ -7640,7 +7640,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors
       responses:
@@ -7678,7 +7678,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
       responses:
@@ -7732,8 +7732,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector
-  ? /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
-  : delete:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
+    delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       responses:
         default:
@@ -7786,8 +7786,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
-  ? /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state
-  : description: 'Operational state data '
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
+    description: 'Operational state data '
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State
       responses:
@@ -7826,7 +7826,7 @@ paths:
       in: path
       name: severity
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/state:
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/state:
     description: Operational state data for remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_State
@@ -7850,7 +7850,7 @@ paths:
       in: path
       name: host
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/memory:
+  /devicesim/v1.0.0/{target}/system/memory:
     delete:
       operationId: deleteSystem_Memory
       responses:
@@ -7880,7 +7880,7 @@ paths:
         "201":
           description: created
       summary: POST /system/memory
-  /devicesim-1.0.x/v1.0.0/{target}/system/memory/config:
+  /devicesim/v1.0.0/{target}/system/memory/config:
     delete:
       operationId: deleteSystem_Memory_Config
       responses:
@@ -7910,7 +7910,7 @@ paths:
         "201":
           description: created
       summary: POST /system/memory/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/memory/state:
+  /devicesim/v1.0.0/{target}/system/memory/state:
     description: Operational state data for system memory
     get:
       operationId: getSystem_Memory_State
@@ -7926,7 +7926,7 @@ paths:
       - System_Memory
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp:
+  /devicesim/v1.0.0/{target}/system/ntp:
     delete:
       operationId: deleteSystem_Ntp
       responses:
@@ -7956,7 +7956,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/config:
+  /devicesim/v1.0.0/{target}/system/ntp/config:
     delete:
       operationId: deleteSystem_Ntp_Config
       responses:
@@ -7986,7 +7986,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/ntp-keys:
+  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys
       responses:
@@ -8016,7 +8016,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
+  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key
       responses:
@@ -8054,7 +8054,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
+  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config
       responses:
@@ -8092,7 +8092,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key/{key-id}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
+  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
     description: Operational state data for NTP auth keys
     get:
       operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State
@@ -8116,7 +8116,7 @@ paths:
       in: path
       name: key-id
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/servers:
+  /devicesim/v1.0.0/{target}/system/ntp/servers:
     delete:
       operationId: deleteSystem_Ntp_Servers
       responses:
@@ -8146,7 +8146,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/servers/server/{address}:
+  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}:
     delete:
       operationId: deleteSystem_Ntp_Servers_Server
       responses:
@@ -8188,7 +8188,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/servers/server/{address}/config:
+  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Ntp_Servers_Server_Config
       responses:
@@ -8226,7 +8226,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server/{address}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/servers/server/{address}/state:
+  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/state:
     description: Operational state data for an NTP server.
     get:
       operationId: getSystem_Ntp_Servers_Server_State
@@ -8250,7 +8250,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/ntp/state:
+  /devicesim/v1.0.0/{target}/system/ntp/state:
     description: Operational state data for NTP services.
     get:
       operationId: getSystem_Ntp_State
@@ -8266,7 +8266,7 @@ paths:
       - System_Ntp
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow:
+  /devicesim/v1.0.0/{target}/system/openflow:
     delete:
       operationId: deleteSystem_Openflow
       responses:
@@ -8296,7 +8296,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/agent:
+  /devicesim/v1.0.0/{target}/system/openflow/agent:
     delete:
       operationId: deleteSystem_Openflow_Agent
       responses:
@@ -8326,7 +8326,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/agent/config:
+  /devicesim/v1.0.0/{target}/system/openflow/agent/config:
     delete:
       operationId: deleteSystem_Openflow_Agent_Config
       responses:
@@ -8356,7 +8356,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/agent/state:
+  /devicesim/v1.0.0/{target}/system/openflow/agent/state:
     description: Container for the Openflow agent state.
     get:
       operationId: getSystem_Openflow_Agent_State
@@ -8372,7 +8372,7 @@ paths:
       - System_Openflow_Agent
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers:
     delete:
       operationId: deleteSystem_Openflow_Controllers
       responses:
@@ -8402,7 +8402,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller
       responses:
@@ -8442,7 +8442,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/config:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Config
       responses:
@@ -8480,7 +8480,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections
       responses:
@@ -8518,7 +8518,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection
       responses:
@@ -8568,7 +8568,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config
       responses:
@@ -8614,7 +8614,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state:
     description: |-
       Operational state data for OpenFlow controller
       connections
@@ -8648,7 +8648,7 @@ paths:
       in: path
       name: aux-id
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/openflow/controllers/controller/{name}/state:
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/state:
     description: Container for the Openflow controller state.
     get:
       operationId: getSystem_Openflow_Controllers_Controller_State
@@ -8672,7 +8672,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/processes:
+  /devicesim/v1.0.0/{target}/system/processes:
     delete:
       operationId: deleteSystem_Processes
       responses:
@@ -8702,7 +8702,7 @@ paths:
         "201":
           description: created
       summary: POST /system/processes
-  /devicesim-1.0.x/v1.0.0/{target}/system/processes/process/{pid}:
+  /devicesim/v1.0.0/{target}/system/processes/process/{pid}:
     description: List of monitored processes
     get:
       operationId: getSystem_Processes_Process
@@ -8726,7 +8726,7 @@ paths:
       in: path
       name: pid
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/processes/process/{pid}/state:
+  /devicesim/v1.0.0/{target}/system/processes/process/{pid}/state:
     description: State parameters related to monitored processes
     get:
       operationId: getSystem_Processes_Process_State
@@ -8750,7 +8750,7 @@ paths:
       in: path
       name: pid
       required: true
-  /devicesim-1.0.x/v1.0.0/{target}/system/ssh-server:
+  /devicesim/v1.0.0/{target}/system/ssh-server:
     delete:
       operationId: deleteSystem_Ssh-server
       responses:
@@ -8780,7 +8780,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server
-  /devicesim-1.0.x/v1.0.0/{target}/system/ssh-server/config:
+  /devicesim/v1.0.0/{target}/system/ssh-server/config:
     delete:
       operationId: deleteSystem_Ssh-server_Config
       responses:
@@ -8810,7 +8810,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/ssh-server/state:
+  /devicesim/v1.0.0/{target}/system/ssh-server/state:
     description: Operational state data for the system ssh server
     get:
       operationId: getSystem_Ssh-server_State
@@ -8826,7 +8826,7 @@ paths:
       - System_Ssh-server
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/state:
+  /devicesim/v1.0.0/{target}/system/state:
     description: Global operational state data for the system
     get:
       operationId: getSystem_State
@@ -8842,7 +8842,7 @@ paths:
       - System
     parameters:
     - $ref: '#/components/parameters/target'
-  /devicesim-1.0.x/v1.0.0/{target}/system/telnet-server:
+  /devicesim/v1.0.0/{target}/system/telnet-server:
     delete:
       operationId: deleteSystem_Telnet-server
       responses:
@@ -8872,7 +8872,7 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server
-  /devicesim-1.0.x/v1.0.0/{target}/system/telnet-server/config:
+  /devicesim/v1.0.0/{target}/system/telnet-server/config:
     delete:
       operationId: deleteSystem_Telnet-server_Config
       responses:
@@ -8902,7 +8902,7 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server/config
-  /devicesim-1.0.x/v1.0.0/{target}/system/telnet-server/state:
+  /devicesim/v1.0.0/{target}/system/telnet-server/state:
     description: Operational state data for telnet
     get:
       operationId: getSystem_Telnet-server_State

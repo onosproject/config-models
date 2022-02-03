@@ -24,9 +24,9 @@ func main() {
 
 	description := "TODO add a description field in Metadata.yaml?"
 	settings := openapi_gen.ApiGenSettings{
-		ModelType:    "testdevice-1.0.x",
+		ModelType:    "testdevice",
 		ModelVersion: "1.0.0",
-		Title:        "testdevice-1.0.x-1.0.0",
+		Title:        "testdevice-1.0.0",
 		Description:  string(description),
 	}
 

@@ -1,5 +1,6 @@
-name: testdevice-2.0.x
+name: testdevice
 version: 2.0.0
+artifactName: testdevice-2.0.x
 goPackage: github.com/onosproject/config-models/models/testdevice-2.0.x
 modules:
   - name: onf-test1

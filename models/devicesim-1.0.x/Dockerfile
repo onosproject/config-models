@@ -3,15 +3,15 @@
 FROM onosproject/golang-build:v1.0 as build
 
 ENV GO111MODULE=on
-COPY . /models/devicesim-1.0.x
-RUN cd /models/devicesim-1.0.x && make build
+COPY . /models/devicesim
+RUN cd /models/devicesim && make build
 
 FROM alpine:3.11
 RUN apk add libc6-compat
 
 USER nobody
 
-COPY --from=build /models/devicesim-1.0.x/_bin/devicesim-1.0.x /usr/local/bin/devicesim-1.0.x
+COPY --from=build /models/devicesim/_bin/devicesim /usr/local/bin/devicesim
 
-ENTRYPOINT ["devicesim-1.0.x"]
+ENTRYPOINT ["devicesim"]
 CMD ["5152"]

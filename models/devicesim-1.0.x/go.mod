@@ -1,4 +1,4 @@
-module github.com/onosproject/config-models/models/devicesim-1.0.x
+module github.com/onosproject/config-models/models/devicesim
 
 go 1.16
 

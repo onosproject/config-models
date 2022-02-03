@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
-	"github.com/onosproject/config-models/models/devicesim-1.0.x/api"
+	"github.com/onosproject/config-models/models/devicesim/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
 	"io/ioutil"
 	"os"
@@ -24,9 +24,9 @@ func main() {
 
 	description := "TODO add a description field in Metadata.yaml?"
 	settings := openapi_gen.ApiGenSettings{
-		ModelType:    "devicesim-1.0.x",
+		ModelType:    "devicesim",
 		ModelVersion: "1.0.0",
-		Title:        "devicesim-1.0.x-1.0.0",
+		Title:        "devicesim-1.0.0",
 		Description:  string(description),
 	}
 

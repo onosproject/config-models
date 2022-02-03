@@ -288,11 +288,11 @@ info:
     name: LicenseRef-ONF-Member-1.0
     url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
   termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
-  title: testdevice-2.0.x-2.0.0
+  title: testdevice-2.0.0
   version: 2.0.0
 openapi: 3.0.0
 paths:
-  /testdevice-2.0.x/v2.0.0/{target}/cont1a:
+  /testdevice/v2.0.0/{target}/cont1a:
     delete:
       operationId: deleteCont1a
       responses:
@@ -322,7 +322,7 @@ paths:
         "201":
           description: created
       summary: POST /cont1a
-  /testdevice-2.0.x/v2.0.0/{target}/cont1a/cont2a:
+  /testdevice/v2.0.0/{target}/cont1a/cont2a:
     delete:
       operationId: deleteCont1a_Cont2a
       responses:
@@ -352,7 +352,7 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/cont2a
-  /testdevice-2.0.x/v2.0.0/{target}/cont1a/cont2d:
+  /testdevice/v2.0.0/{target}/cont1a/cont2d:
     delete:
       operationId: deleteCont1a_Cont2d
       responses:
@@ -382,7 +382,7 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/cont2d
-  /testdevice-2.0.x/v2.0.0/{target}/cont1a/list2a/{name}:
+  /testdevice/v2.0.0/{target}/cont1a/list2a/{name}:
     delete:
       operationId: deleteCont1a_List2a
       responses:
@@ -420,7 +420,7 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list2a
-  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state:
+  /testdevice/v2.0.0/{target}/cont1b-state:
     description: A second top level container - this one for state attributes. Edit
       symbol should not be visible
     get:
@@ -437,7 +437,7 @@ paths:
       - ""
     parameters:
     - $ref: '#/components/parameters/target'
-  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state/cont2c:
+  /testdevice/v2.0.0/{target}/cont1b-state/cont2c:
     description: This is a new container added in the 2019 version.  We don't have
       to say it's 'config false' - implied by parent
     get:
@@ -454,7 +454,7 @@ paths:
       - Cont1b-state
     parameters:
     - $ref: '#/components/parameters/target'
-  /testdevice-2.0.x/v2.0.0/{target}/cont1b-state/list2b/{index1}/{index2}:
+  /testdevice/v2.0.0/{target}/cont1b-state/list2b/{index1}/{index2}:
     description: A simple list of state items, with a double key
     get:
       operationId: getCont1b-state_List2b

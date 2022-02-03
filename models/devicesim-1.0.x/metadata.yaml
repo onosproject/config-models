@@ -1,6 +1,7 @@
-name: devicesim-1.0.x
+name: devicesim
 version: 1.0.0
-goPackage: github.com/onosproject/config-models/models/devicesim-1.0.x
+artifactName: devicesim-1.0.x
+goPackage: github.com/onosproject/config-models/models/devicesim
 modules:
   - name: openconfig-interfaces
     organization: OpenConfig working group
