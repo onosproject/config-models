@@ -35,7 +35,7 @@ test: build linters license_check gofmt
 	cd modelplugin/aether-4.0.0/ && (go test ./... || cd ..)
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: build-tools deps license_check linters
+jenkins-test: jenkins-tools build-tools deps license_check linters
 	cd modelplugin/testdevice-1.0.0  && CGO_ENABLED=1 TEST_PACKAGES=github.com/onosproject/config-models/modelplugin/testdevice-1.0.0/... ../../../build-tools/build/jenkins/make-unit
 	cp modelplugin/testdevice-1.0.0/*.xml .
 
