@@ -2187,10 +2187,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_LOGIN
-          - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_LOGIN
+          - AAA_ACCOUNTING_EVENT_COMMAND
           title: event-type
           type: string
         record:
@@ -2209,10 +2209,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_LOGIN
-          - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_LOGIN
+          - AAA_ACCOUNTING_EVENT_COMMAND
           title: event-type
           type: string
         record:
@@ -2592,8 +2592,8 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - TACACS
           - RADIUS
+          - TACACS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_Config
@@ -2913,8 +2913,8 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - TACACS
           - RADIUS
+          - TACACS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_State
@@ -3276,24 +3276,24 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - SYSTEM_DAEMON
-          - SYSLOG
-          - LOCAL3
-          - AUTH
-          - CONSOLE
-          - LOCAL2
-          - LOCAL6
           - LOCAL7
-          - NTP
-          - USER
-          - LOCAL5
-          - KERNEL
-          - MAIL
-          - AUTHPRIV
-          - AUDIT
+          - SYSTEM_DAEMON
+          - AUTH
           - LOCAL4
+          - LOCAL5
+          - LOCAL3
+          - AUTHPRIV
           - ALL
+          - AUDIT
+          - CONSOLE
           - LOCAL1
+          - MAIL
+          - USER
+          - KERNEL
+          - LOCAL6
+          - NTP
+          - SYSLOG
+          - LOCAL2
           - LOCAL0
           title: facility
           type: string
@@ -3311,24 +3311,24 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - SYSTEM_DAEMON
-          - SYSLOG
-          - LOCAL3
-          - AUTH
-          - CONSOLE
-          - LOCAL2
-          - LOCAL6
           - LOCAL7
-          - NTP
-          - USER
-          - LOCAL5
-          - KERNEL
-          - MAIL
-          - AUTHPRIV
-          - AUDIT
+          - SYSTEM_DAEMON
+          - AUTH
           - LOCAL4
+          - LOCAL5
+          - LOCAL3
+          - AUTHPRIV
           - ALL
+          - AUDIT
+          - CONSOLE
           - LOCAL1
+          - MAIL
+          - USER
+          - KERNEL
+          - LOCAL6
+          - NTP
+          - SYSLOG
+          - LOCAL2
           - LOCAL0
           title: facility
           type: string
@@ -3438,24 +3438,24 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - SYSTEM_DAEMON
-          - SYSLOG
-          - LOCAL3
-          - AUTH
-          - CONSOLE
-          - LOCAL2
-          - LOCAL6
           - LOCAL7
-          - NTP
-          - USER
-          - LOCAL5
-          - KERNEL
-          - MAIL
-          - AUTHPRIV
-          - AUDIT
+          - SYSTEM_DAEMON
+          - AUTH
           - LOCAL4
+          - LOCAL5
+          - LOCAL3
+          - AUTHPRIV
           - ALL
+          - AUDIT
+          - CONSOLE
           - LOCAL1
+          - MAIL
+          - USER
+          - KERNEL
+          - LOCAL6
+          - NTP
+          - SYSLOG
+          - LOCAL2
           - LOCAL0
           title: facility
           type: string
@@ -3473,24 +3473,24 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - SYSTEM_DAEMON
-          - SYSLOG
-          - LOCAL3
-          - AUTH
-          - CONSOLE
-          - LOCAL2
-          - LOCAL6
           - LOCAL7
-          - NTP
-          - USER
-          - LOCAL5
-          - KERNEL
-          - MAIL
-          - AUTHPRIV
-          - AUDIT
+          - SYSTEM_DAEMON
+          - AUTH
           - LOCAL4
+          - LOCAL5
+          - LOCAL3
+          - AUTHPRIV
           - ALL
+          - AUDIT
+          - CONSOLE
           - LOCAL1
+          - MAIL
+          - USER
+          - KERNEL
+          - LOCAL6
+          - NTP
+          - SYSLOG
+          - LOCAL2
           - LOCAL0
           title: facility
           type: string

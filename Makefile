@@ -32,7 +32,7 @@ gofmt: # @HELP run the Go format validation
 	bash -c "diff -u <(echo -n) <(gofmt -d pkg/)"
 
 test: # @HELP run go test on projects
-test: build linters license_check gofmt models
+test: build linters license_check gofmt images models models-version-check
 	go test ./pkg/...
 	@bash test/generated.sh
 	@cd models && for model in *; do pushd $$model; make test; popd; done
@@ -48,14 +48,20 @@ models-openapi: # @HELP generates the openapi specs for the models
 models-images: models openapi # @HELP Build Docker containers for all the models
 	@cd models && for model in *; do echo -e "Buildind container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 
-publish-models:
+models-version-check:
+	@cd models && for model in *; do echo -e "Validating VERSION for $$model:\n"; pushd $$model; bash ../../test/model-version.sh $$model; popd; echo -e "\n\n"; done
+
+publish-models: models-version-check
 	@cd models && for model in *; do pushd $$model; make publish; popd; done
 
 kind-models:
 	@cd models && for model in *; do pushd $$model; make kind; popd; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: build-tools deps license_check linters
+jenkins-test: build-tools deps build linters license_check gofmt images models models-version-check
+	go test ./pkg/...
+	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
+	@cd models && for model in *; do pushd $$model; make test; popd; done
 
 deps: # @HELP ensure that the required dependencies are in place
 	go build -v ./cmd/...
@@ -78,7 +84,7 @@ kind: images
 publish: # @HELP publish version on github
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
-jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
+jenkins-publish: build-tools jenkins-tools publish-models # @HELP Jenkins calls this to publish artifacts
 	../build-tools/release-merge-commit
 
 clean: # @HELP remove all the build artifacts
