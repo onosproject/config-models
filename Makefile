@@ -49,22 +49,22 @@ models-images: models openapi # @HELP Build Docker containers for all the models
 	@cd models && for model in *; do echo -e "Buildind container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 
 models-version-check:
+	# TODO this fails as the output of the ygot generation has some variablity (see https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do echo -e "Validating VERSION for $$model:\n"; pushd $$model; bash ../../test/model-version.sh $$model; popd; echo -e "\n\n"; done
 
-publish-models: models-version-check
+publish-models:
 	@cd models && for model in *; do pushd $$model; make publish; popd; done
 
 kind-models:
 	@cd models && for model in *; do pushd $$model; make kind; popd; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: build-tools deps build linters license_check gofmt images models models-version-check
+jenkins-test: build-tools deps build linters license_check gofmt images models
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do pushd $$model; make test; popd; done
 
-deps: # @HELP ensure that the required dependencies are in place
-	go build -v ./cmd/...
+deps: build # @HELP ensure that the required dependencies are in place
 	bash -c "diff -u <(echo -n) <(git diff go.mod)"
 	bash -c "diff -u <(echo -n) <(git diff go.sum)"
 
