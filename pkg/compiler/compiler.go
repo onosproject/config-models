@@ -54,6 +54,7 @@ type Dictionary struct {
 	Name          string
 	Version       string
 	PluginVersion string
+	ArtifactName  string
 	GoPackage     string
 	ModelData     []*gnmi.ModelData
 	Module        string
@@ -102,6 +103,7 @@ func (c *ModelCompiler) Compile(path string) error {
 		Name:          c.modelInfo.Name,
 		Version:       c.modelInfo.Version,
 		PluginVersion: c.pluginVersion,
+		ArtifactName:  c.metaData.ArtifactName,
 		GoPackage:     c.metaData.GoPackage,
 		ModelData:     c.modelInfo.ModelData,
 		Module:        c.modelInfo.Module,
@@ -143,7 +145,10 @@ func (c *ModelCompiler) Compile(path string) error {
 
 func (c *ModelCompiler) loadModelMetaData(path string) error {
 	c.metaData = &MetaData{}
-	if err := LoadMetaData(path, c.metaData); err != nil {
+	if err := LoadMetaData(path, "metadata", c.metaData); err != nil {
+		return err
+	}
+	if err := ValidateMetaData(c.metaData); err != nil {
 		return err
 	}
 	modelData := make([]*gnmi.ModelData, 0, len(c.metaData.Modules))

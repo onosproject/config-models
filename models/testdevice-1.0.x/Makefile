@@ -11,7 +11,7 @@ all: help
 
 help: # @HELP Print the command options
 	@echo
-	@echo "\033[0;31m    Model Plugin: testdevice-1.0.x \033[0m"
+	@echo "\033[0;31m    Model Plugin: testdevice \033[0m"
 	@echo
 	@grep -E '^.*: .* *# *@HELP' $(MAKEFILE_LIST) \
     | sort \
@@ -25,7 +25,7 @@ image: openapi # @HELP Build the docker image (available parameters: DOCKER_REPO
 
 build: # @HELP Build the executable (available parameters: VERSION)
 	go mod tidy
-	go build -o _bin/testdevice-1.0.x ./plugin
+	go build -o _bin/testdevice ./plugin
 
 .PHONY: openapi
 openapi: # @HELP Generate OpenApi specs

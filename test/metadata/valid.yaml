@@ -1,0 +1,9 @@
+name: test
+version: 1.0.0
+artifactName: test-1.0.x
+goPackage: github.com/onosproject/config-models/models/test
+modules:
+  - name: openconfig-interfaces
+    organization: OpenConfig working group
+    revision: 2017-07-14
+    file: openconfig-interfaces@2017-07-14.yang

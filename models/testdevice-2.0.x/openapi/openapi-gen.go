@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
-	"github.com/onosproject/config-models/models/testdevice-2.0.x/api"
+	"github.com/onosproject/config-models/models/testdevice/v2/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
 	"io/ioutil"
 	"os"
@@ -24,9 +24,9 @@ func main() {
 
 	description := "TODO add a description field in Metadata.yaml?"
 	settings := openapi_gen.ApiGenSettings{
-		ModelType:    "testdevice-2.0.x",
+		ModelType:    "testdevice",
 		ModelVersion: "2.0.0",
-		Title:        "testdevice-2.0.x-2.0.0",
+		Title:        "testdevice-2.0.0",
 		Description:  string(description),
 	}
 

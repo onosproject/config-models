@@ -15,6 +15,7 @@
 package compiler
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 )
 
@@ -27,6 +28,7 @@ type MetaData struct {
 	LintModel    bool     `mapstructure:"lintModel" yaml:"lintModel"`
 	GenOpenAPI   bool     `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
 	GoPackage    string   `mapstructure:"goPackage" yaml:"goPackage"`
+	ArtifactName string   `mapstructure:"artifactName" yaml:"artifactName"`
 }
 
 type Module struct {
@@ -37,13 +39,33 @@ type Module struct {
 }
 
 // LoadMetaData loads the metadata.yaml file
-func LoadMetaData(path string, metaData *MetaData) error {
+func LoadMetaData(path string, configFile string, metaData *MetaData) error {
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("metadata")
+	viper.SetConfigName(configFile)
 	viper.AddConfigPath(path)
 
 	if err := viper.ReadInConfig(); err != nil {
 		return err
 	}
 	return viper.Unmarshal(metaData)
+}
+
+// ValidateMetaData checks that required attributes are set
+func ValidateMetaData(metaData *MetaData) error {
+	if metaData.Name == "" {
+		return fmt.Errorf("name is mandatory")
+	}
+	if metaData.Version == "" {
+		return fmt.Errorf("version is mandatory")
+	}
+	if metaData.ArtifactName == "" {
+		return fmt.Errorf("artifactName is mandatory")
+	}
+	if metaData.GoPackage == "" {
+		return fmt.Errorf("goPackage is mandatory")
+	}
+	if metaData.Modules == nil || len(metaData.Modules) == 0 {
+		return fmt.Errorf("no modules are listed")
+	}
+	return nil
 }

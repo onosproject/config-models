@@ -21,7 +21,7 @@ help: # @HELP Print the command options
     '
 
 image: openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build . -t ${DOCKER_REPOSITORY}{{ .Name }}:${VERSION}
+	docker build . -t ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION}
 
 build: # @HELP Build the executable (available parameters: VERSION)
 	go mod tidy
@@ -37,11 +37,11 @@ test: build # @HELP Run the unit tests
 	go test ./...
 
 publish: image  # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker push ${DOCKER_REPOSITORY}{{ .Name }}:${VERSION}
+	docker push ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION}
 
 kind-only: # @HELP Loads the docker image into the kind cluster  (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}{{ .Name }}:${VERSION}
+	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION}
 
 kind: # @HELP build the docker image and loads it into the currently configured kind cluster (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 kind: image kind-only
