@@ -52,7 +52,17 @@ models-version-check:
 	# TODO this fails as the output of the ygot generation has some variablity (see https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do echo -e "Validating VERSION for $$model:\n"; pushd $$model; bash ../../test/model-version.sh $$model; popd; echo -e "\n\n"; done
 
-publish-models:
+docker-login:
+ifdef DOCKER_USER
+ifdef DOCKER_PASSWORD
+	echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin
+else
+	@echo "DOCKER_USER is specified but DOCKER_PASSWORD is missing"
+	@exit 1
+endif
+endif
+
+publish-models: docker-login
 	@cd models && for model in *; do pushd $$model; make publish; popd; done
 
 kind-models:
