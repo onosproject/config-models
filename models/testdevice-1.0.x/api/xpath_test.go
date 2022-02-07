@@ -68,17 +68,24 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test list4",
-			Path: "/t1:cont1a/t1e:list4[@t1e:id='l2a1']/t1e:leaf4b",
+			Name: "test list4 select REFERENCE by list 2a tx-power",
+			Path: "/t1:cont1a/t1e:list4[@t1e:id=/t1:cont1a/t1:list2a[t1:tx-power=6]/@t1:name]/t1e:leaf4b",
 			Expected: []string{
-				"Iter Value: leaf4b: this is list4-l2a1",
+				"Iter Value: leaf4b: this is list4-l2a2",
 			},
 		},
 		{
-			Name: "test list4",
-			Path: "/t1:cont1a/t1e:list4[@t1e:id='l2a2']/t1e:leaf4b",
+			Name: "test list4 select REFERENCE by list 2a tx-power relative path",
+			Path: "/t1:cont1a/t1e:list4[@t1e:id=../t1:list2a[t1:tx-power=6]/@t1:name]/t1e:leaf4b",
 			Expected: []string{
 				"Iter Value: leaf4b: this is list4-l2a2",
+			},
+		},
+		{
+			Name: "test list4 select REFERENCE by list 2a tx-power 5 relative path",
+			Path: "/t1:cont1a/t1e:list4[@t1e:id=../t1:list2a[t1:tx-power=5]/@t1:name]/t1e:leaf4b",
+			Expected: []string{
+				"Iter Value: leaf4b: this is list4-l2a1",
 			},
 		},
 		{
@@ -108,6 +115,13 @@ func Test_XPathSelect(t *testing.T) {
 		{
 			Name: "test list4 1 list4a 1 displayname",
 			Path: "/t1:cont1a/t1e:list4[@t1e:id='l2a1']/t1e:list4a[@t1e:fkey1='five'][@t1e:fkey2=7]/t1e:displayname",
+			Expected: []string{
+				"Iter Value: displayname: Value l2a1-five-7",
+			},
+		},
+		{
+			Name: "test list4 1 list4a 1 displayname by reference to list 5 entry 5a five-7",
+			Path: "/t1:cont1a/t1e:list4[@t1e:id=../t1:list2a[t1:tx-power=5]/@t1:name]/t1e:list4a[@t1e:fkey1=../../t1e:list5[t1e:leaf5a='5a five-7']/@t1e:key1][@t1e:fkey2=../../t1e:list5[t1e:leaf5a='5a five-7']/@t1e:key2]/t1e:displayname",
 			Expected: []string{
 				"Iter Value: displayname: Value l2a1-five-7",
 			},
@@ -173,6 +187,11 @@ func Test_XPathEvaluate(t *testing.T) {
 			Path: "concat(concat('5e ', string(/t1:cont1a/t1e:list5[@t1e:key1='five'][@t1e:key2=7]/@t1e:key1)), " +
 				"concat('-', string(/t1:cont1a/t1e:list5[@t1e:key1='five'][@t1e:key2=7]/@t1e:key2)))",
 			Expected: "5e five-7",
+		},
+		{
+			Name:     "test list2a entry name when tx-power=5",
+			Path:     "string(/t1:cont1a/t1:list2a[t1:tx-power=5]/@t1:name)",
+			Expected: "l2a1",
 		},
 	}
 
