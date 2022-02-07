@@ -43,14 +43,17 @@ models:
 	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
 
 models-openapi: # @HELP generates the openapi specs for the models
-	@cd models && for model in *; do echo -e "Buildind OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
+	@cd models && for model in *; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
 
 models-images: models openapi # @HELP Build Docker containers for all the models
-	@cd models && for model in *; do echo -e "Buildind container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
+	@cd models && for model in *; do echo -e "Building container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 
 models-version-check:
 	# TODO this fails as the output of the ygot generation has some variablity (see https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do echo -e "Validating VERSION for $$model:\n"; pushd $$model; bash ../../test/model-version.sh $$model; popd; echo -e "\n\n"; done
+
+models-version-tag:
+	cd models && for model in *; do echo -e "Tagging repo for $$model:\n"; pushd $$model; make repo-tag ; popd; echo -e "\n\n"; done
 
 docker-login:
 ifdef DOCKER_USER
@@ -94,7 +97,7 @@ kind: images
 publish: # @HELP publish version on github
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
-jenkins-publish: build-tools jenkins-tools publish-models # @HELP Jenkins calls this to publish artifacts
+jenkins-publish: build-tools jenkins-tools publish-models models-version-tag # @HELP Jenkins calls this to publish artifacts
 	../build-tools/release-merge-commit
 
 clean: # @HELP remove all the build artifacts
