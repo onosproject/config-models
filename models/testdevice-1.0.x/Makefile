@@ -50,7 +50,7 @@ repo-tag: # @HELP Tag the git repo with the appropriate version (Only jenkins sh
 	@if [ "`git remote -v | grep upstream | grep push | wc -l`" = 1 ]; then upstream="upstream"; else upstream="origin"; fi
 	@if [ "`git tag | grep ${GIT_TAG} | wc -l`" = 1 ]; then echo "Tag ${GIT_TAG} already exists" && exit 1; fi
 	git tag ${GIT_TAG}
-	git push $upstream ${GIT_TAG}
+	git push ${upstream} ${GIT_TAG}
 
 kind-only: # @HELP Loads the docker image into the kind cluster  (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
