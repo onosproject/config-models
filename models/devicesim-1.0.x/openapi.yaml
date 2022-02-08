@@ -2189,8 +2189,8 @@ components:
           enum:
           - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
           - AAA_ACCOUNTING_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
           title: event-type
           type: string
         record:
@@ -2211,8 +2211,8 @@ components:
           enum:
           - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
           - AAA_ACCOUNTING_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
           title: event-type
           type: string
         record:
@@ -3276,25 +3276,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL7
           - AUTH
-          - SYSLOG
-          - CONSOLE
-          - LOCAL1
-          - LOCAL4
-          - NTP
           - KERNEL
-          - MAIL
-          - LOCAL3
-          - AUDIT
-          - LOCAL5
-          - ALL
-          - USER
-          - LOCAL6
-          - LOCAL0
-          - SYSTEM_DAEMON
+          - LOCAL7
           - AUTHPRIV
+          - LOCAL1
+          - LOCAL6
+          - SYSLOG
+          - USER
+          - CONSOLE
+          - LOCAL5
           - LOCAL2
+          - LOCAL3
+          - LOCAL0
+          - LOCAL4
+          - ALL
+          - MAIL
+          - SYSTEM_DAEMON
+          - NTP
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3311,25 +3311,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL7
           - AUTH
-          - SYSLOG
-          - CONSOLE
-          - LOCAL1
-          - LOCAL4
-          - NTP
           - KERNEL
-          - MAIL
-          - LOCAL3
-          - AUDIT
-          - LOCAL5
-          - ALL
-          - USER
-          - LOCAL6
-          - LOCAL0
-          - SYSTEM_DAEMON
+          - LOCAL7
           - AUTHPRIV
+          - LOCAL1
+          - LOCAL6
+          - SYSLOG
+          - USER
+          - CONSOLE
+          - LOCAL5
           - LOCAL2
+          - LOCAL3
+          - LOCAL0
+          - LOCAL4
+          - ALL
+          - MAIL
+          - SYSTEM_DAEMON
+          - NTP
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3438,25 +3438,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL7
           - AUTH
-          - SYSLOG
-          - CONSOLE
-          - LOCAL1
-          - LOCAL4
-          - NTP
           - KERNEL
-          - MAIL
-          - LOCAL3
-          - AUDIT
-          - LOCAL5
-          - ALL
-          - USER
-          - LOCAL6
-          - LOCAL0
-          - SYSTEM_DAEMON
+          - LOCAL7
           - AUTHPRIV
+          - LOCAL1
+          - LOCAL6
+          - SYSLOG
+          - USER
+          - CONSOLE
+          - LOCAL5
           - LOCAL2
+          - LOCAL3
+          - LOCAL0
+          - LOCAL4
+          - ALL
+          - MAIL
+          - SYSTEM_DAEMON
+          - NTP
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3473,25 +3473,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL7
           - AUTH
-          - SYSLOG
-          - CONSOLE
-          - LOCAL1
-          - LOCAL4
-          - NTP
           - KERNEL
-          - MAIL
-          - LOCAL3
-          - AUDIT
-          - LOCAL5
-          - ALL
-          - USER
-          - LOCAL6
-          - LOCAL0
-          - SYSTEM_DAEMON
+          - LOCAL7
           - AUTHPRIV
+          - LOCAL1
+          - LOCAL6
+          - SYSLOG
+          - USER
+          - CONSOLE
+          - LOCAL5
           - LOCAL2
+          - LOCAL3
+          - LOCAL0
+          - LOCAL4
+          - ALL
+          - MAIL
+          - SYSTEM_DAEMON
+          - NTP
+          - AUDIT
           title: facility
           type: string
         severity:
