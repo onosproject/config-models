@@ -25,8 +25,8 @@ help: # @HELP Print the command options
     '
 
 image: openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build . -t ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION}
-	docker tag ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION} ${DOCKER_REPOSITORY}testdevice-1.0.x:${LATEST_VERSION}
+	docker build . -t ${DOCKER_REPOSITORY}testdevice:${VERSION}
+	docker tag ${DOCKER_REPOSITORY}testdevice:${VERSION} ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
 
 build: # @HELP Build the executable (available parameters: VERSION)
 	go mod tidy
@@ -42,8 +42,8 @@ test: build # @HELP Run the unit tests
 	go test ./...
 
 publish: image  # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker push ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION}
-	docker push ${DOCKER_REPOSITORY}testdevice-1.0.x:${LATEST_VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice:${VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
 
 repo-tag: # @HELP Tag the git repo with the appropriate version (Only jenkins should run this)
 	@if [ -z "${JENKINS_HOME}" ]; then echo "This should only run on Jenkins"; exit 1; fi
@@ -54,7 +54,7 @@ repo-tag: # @HELP Tag the git repo with the appropriate version (Only jenkins sh
 
 kind-only: # @HELP Loads the docker image into the kind cluster  (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION}
+	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}testdevice:${VERSION}
 
 kind: # @HELP build the docker image and loads it into the currently configured kind cluster (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 kind: image kind-only
