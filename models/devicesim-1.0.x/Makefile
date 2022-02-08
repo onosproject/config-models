@@ -4,9 +4,6 @@ DOCKER_REPOSITORY ?= onosproject/
 VERSION           ?= $(shell cat ./VERSION)-devicesim-1.0.0
 LATEST_VERSION           ?= $(shell cat ./VERSION)-devicesim-latest
 KIND_CLUSTER_NAME ?= kind
-GIT_ORG ?= onosproject
-GIT_REPO ?= config-models
-GIT_TAG ?= ${VERSION}
 
 export CGO_ENABLED=0
 export GO111MODULE=on
@@ -44,14 +41,6 @@ test: build # @HELP Run the unit tests
 publish: image  # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker push ${DOCKER_REPOSITORY}devicesim:${VERSION}
 	docker push ${DOCKER_REPOSITORY}devicesim:${LATEST_VERSION}
-
-repo-tag: # @HELP Tag the git repo with the appropriate version (Only jenkins should run this)
-#	@if [ -z "${JENKINS_HOME}" ]; then echo "This should only run on Jenkins"; exit 1; fi
-	upstream="origin"
-	@if [ "`git remote -v | grep upstream | grep push | wc -l`" = 1 ]; then upstream="upstream"; fi
-	@if [ "`git tag | grep ${GIT_TAG} | wc -l`" = 1 ]; then echo "Tag ${GIT_TAG} already exists" && exit 1; fi
-	git tag ${GIT_TAG}
-	git push ${upstream} ${GIT_TAG}
 
 kind-only: # @HELP Loads the docker image into the kind cluster  (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
