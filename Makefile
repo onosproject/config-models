@@ -91,11 +91,11 @@ kind: images
 publish: # @HELP publish version on github (called by release-merge-commit)
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
-jenkins-publish: build-tools jenkins-tools # @HELP Jenkins calls this to publish artifacts
-	../build-tools/release-merge-commit # release main image and tag for the repo
-	VERSIONFILE=models/devicesim-1.0.x/VERSION MAKEFILE_ROOT=models/devicesim-1.0.x ../build-tools/release-merge-commit
-	VERSIONFILE=models/testdevice-1.0.x/VERSION MAKEFILE_ROOT=models/testdevice-1.0.x ../build-tools/release-merge-commit
-	VERSIONFILE=models/testdevice-2.0.x/VERSION MAKEFILE_ROOT=models/testdevice-2.0.x ../build-tools/release-merge-commit
+jenkins-publish: build-tools jenkins-tools docker-login # @HELP Jenkins calls this to publish artifacts
+	make -C models/devicesim-1.0.x publish
+	make -C models/testdevice-1.0.x publish
+	make -C models/testdevice-2.0.x publish
+	../build-tools/release-merge-commit
 
 clean: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor
