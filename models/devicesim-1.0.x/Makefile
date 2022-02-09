@@ -5,7 +5,7 @@ DOCKER_REPOSITORY ?= onosproject/
 VERSION           ?= $(shell cat ./VERSION)-devicesim-1.0.0
 LATEST_VERSION           ?= $(shell cat ./VERSION)-devicesim-latest
 KIND_CLUSTER_NAME ?= kind
-HAS_CHANGED=$(shell eval git --no-pager diff HEAD^ HEAD . | wc -l) # check if the content of this folder is different than the parent commit
+HAS_CHANGED=$(shell git --no-pager diff HEAD~1 HEAD . | wc -l) # check if the content of this folder is different than the parent commit
 
 export CGO_ENABLED=0
 export GO111MODULE=on
@@ -39,7 +39,7 @@ test: mod-update # @HELP Run the unit tests
 	go test ./...
 
 repo-tag:
-ifeq ($(HAS_CHANGED),0)
+ifneq ($(HAS_CHANGED),0)
 	NEW_VERSION=${VERSION} ../../../build-tools/tag-collision-reject
 	git tag ${VERSION}
 	git push origin ${VERSION}
@@ -48,8 +48,8 @@ else
 endif
 
 
-publish: repo-tag image # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-ifeq ($(HAS_CHANGED),0)
+publish: image repo-tag # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+ifneq ($(HAS_CHANGED),0)
     docker push ${DOCKER_REPOSITORY}devicesim:${VERSION}
     docker push ${DOCKER_REPOSITORY}devicesim:${LATEST_VERSION}
 else

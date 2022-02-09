@@ -4,7 +4,7 @@ FROM onosproject/golang-build:v1.0 as build
 
 ENV GO111MODULE=on
 COPY . /models/{{ .Name }}
-RUN cd /models/{{ .Name }} && go build -o _bin/testdevice ./plugin
+RUN cd /models/{{ .Name }} && go build -o _bin/{{ .Name }} ./plugin
 
 FROM alpine:3.11
 RUN apk add libc6-compat
