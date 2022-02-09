@@ -50,8 +50,8 @@ endif
 
 publish: image repo-tag # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 ifneq ($(HAS_CHANGED),0)
-    docker push ${DOCKER_REPOSITORY}testdevice:${VERSION}
-    docker push ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice:${VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
 else
 	@echo "No changes, nothing to push"
 endif
