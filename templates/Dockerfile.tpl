@@ -3,7 +3,9 @@
 FROM onosproject/golang-build:v1.0 as build
 
 ENV GO111MODULE=on
-COPY . /models/{{ .Name }}
+COPY go.mod go.sum /models/{{ .Name }}/
+COPY api /models/{{ .Name }}/api
+COPY plugin /models/{{ .Name }}/plugin
 RUN cd /models/{{ .Name }} && go build -o _bin/{{ .Name }} ./plugin
 
 FROM alpine:3.11
