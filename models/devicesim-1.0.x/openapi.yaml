@@ -2187,9 +2187,9 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_ACCOUNTING_EVENT_LOGIN
           title: event-type
           type: string
@@ -2209,9 +2209,9 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_ACCOUNTING_EVENT_LOGIN
           title: event-type
           type: string
@@ -3276,25 +3276,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL3
-          - LOCAL4
-          - ALL
-          - AUTHPRIV
-          - LOCAL0
-          - LOCAL1
-          - LOCAL2
           - MAIL
-          - AUDIT
-          - CONSOLE
+          - AUTH
+          - LOCAL2
+          - SYSTEM_DAEMON
+          - LOCAL7
           - NTP
+          - LOCAL0
+          - LOCAL4
+          - LOCAL5
+          - USER
           - LOCAL6
           - KERNEL
-          - LOCAL5
-          - LOCAL7
-          - SYSTEM_DAEMON
-          - USER
-          - AUTH
+          - AUTHPRIV
+          - LOCAL1
+          - LOCAL3
+          - ALL
+          - CONSOLE
           - SYSLOG
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3311,25 +3311,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL3
-          - LOCAL4
-          - ALL
-          - AUTHPRIV
-          - LOCAL0
-          - LOCAL1
-          - LOCAL2
           - MAIL
-          - AUDIT
-          - CONSOLE
+          - AUTH
+          - LOCAL2
+          - SYSTEM_DAEMON
+          - LOCAL7
           - NTP
+          - LOCAL0
+          - LOCAL4
+          - LOCAL5
+          - USER
           - LOCAL6
           - KERNEL
-          - LOCAL5
-          - LOCAL7
-          - SYSTEM_DAEMON
-          - USER
-          - AUTH
+          - AUTHPRIV
+          - LOCAL1
+          - LOCAL3
+          - ALL
+          - CONSOLE
           - SYSLOG
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3438,25 +3438,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL3
-          - LOCAL4
-          - ALL
-          - AUTHPRIV
-          - LOCAL0
-          - LOCAL1
-          - LOCAL2
           - MAIL
-          - AUDIT
-          - CONSOLE
+          - AUTH
+          - LOCAL2
+          - SYSTEM_DAEMON
+          - LOCAL7
           - NTP
+          - LOCAL0
+          - LOCAL4
+          - LOCAL5
+          - USER
           - LOCAL6
           - KERNEL
-          - LOCAL5
-          - LOCAL7
-          - SYSTEM_DAEMON
-          - USER
-          - AUTH
+          - AUTHPRIV
+          - LOCAL1
+          - LOCAL3
+          - ALL
+          - CONSOLE
           - SYSLOG
+          - AUDIT
           title: facility
           type: string
         severity:
@@ -3473,25 +3473,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL3
-          - LOCAL4
-          - ALL
-          - AUTHPRIV
-          - LOCAL0
-          - LOCAL1
-          - LOCAL2
           - MAIL
-          - AUDIT
-          - CONSOLE
+          - AUTH
+          - LOCAL2
+          - SYSTEM_DAEMON
+          - LOCAL7
           - NTP
+          - LOCAL0
+          - LOCAL4
+          - LOCAL5
+          - USER
           - LOCAL6
           - KERNEL
-          - LOCAL5
-          - LOCAL7
-          - SYSTEM_DAEMON
-          - USER
-          - AUTH
+          - AUTHPRIV
+          - LOCAL1
+          - LOCAL3
+          - ALL
+          - CONSOLE
           - SYSLOG
+          - AUDIT
           title: facility
           type: string
         severity:

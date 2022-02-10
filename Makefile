@@ -45,7 +45,7 @@ models:
 models-openapi: # @HELP generates the openapi specs for the models
 	@cd models && for model in *; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
 
-models-images: models openapi # @HELP Build Docker containers for all the models
+models-images: models models-openapi # @HELP Build Docker containers for all the models
 	@cd models && for model in *; do echo -e "Building container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 
 models-version-check:

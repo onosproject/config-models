@@ -265,8 +265,8 @@ components:
         leaf3d:
           description: An identityref attribute in the list
           enum:
-          - IDTYPE2
           - IDTYPE1
+          - IDTYPE2
           title: leaf3d
           type: string
       required:
