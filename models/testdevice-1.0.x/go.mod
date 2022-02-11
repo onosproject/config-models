@@ -3,7 +3,7 @@ module github.com/onosproject/config-models/models/testdevice
 go 1.16
 
 require (
-	github.com/antchfx/xpath v1.2.0
+	github.com/SeanCondon/xpath v0.0.0-20220217125907-c2b75876708f
 	github.com/ghodss/yaml v1.0.0
 	github.com/onosproject/config-models v0.9.6
 	github.com/onosproject/onos-api/go v0.8.36

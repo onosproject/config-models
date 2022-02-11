@@ -13,5 +13,3 @@ require (
 	github.com/openconfig/ygot v0.12.4
 	google.golang.org/grpc v1.41.0
 )
-
-

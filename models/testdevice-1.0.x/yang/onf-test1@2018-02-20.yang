@@ -14,6 +14,11 @@ module onf-test1 {
   }
 
   container cont1a {
+    must "t1:list2a[set-contains(following-sibling::t1:list2a/t1:tx-power, t1:tx-power)]" {
+        error-message "tx-power must not be repeated in list2a";
+        error-app-tag "list2a must";
+        description "validation fails if tx-power is not unique within list2a";
+    }
     presence "Top level is present";
     description "The top level container";
 
