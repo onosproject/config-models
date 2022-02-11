@@ -1,0 +1,13 @@
+name: ric
+version: 1.0.0
+artifactName: ric
+goPackage: github.com/onosproject/config-models/models/ric
+modules:
+  - name: kpimon-xapp
+    organization: Open Networking Foundation
+    revision: 2020-12-04
+    file: kpimon-xapp.yang
+  - name: xapp
+    organization: Open Networking Foundation
+    revision: 2020-11-24
+    file: xapp.yang

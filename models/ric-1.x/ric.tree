@@ -1,0 +1,11 @@
+module: kpimon-xapp
+  +--rw report_period
+     +--rw interval?   uint32
+
+module: xapp
+  +--ro nodes
+     +--ro node* [id]
+        +--ro ip?        inet:ip-address
+        +--ro port?      inet:port-number
+        +--ro plmn-id?   string
+        +--ro id         string

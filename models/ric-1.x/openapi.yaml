@@ -1,0 +1,188 @@
+# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+components:
+  parameters:
+    target:
+      content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: target (device in onos-config)
+      in: path
+      name: target
+      required: true
+  requestBodies:
+    RequestBody_Nodes:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Nodes'
+    RequestBody_Nodes_Node:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Nodes_Node'
+    RequestBody_Report_period:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Report_period'
+  schemas:
+    AdditionalPropertyTarget:
+      description: Optionally specify a target other than the default (only on PATCH
+        method)
+      properties:
+        target:
+          description: an override of the target (device)
+          title: target
+          type: string
+      title: AdditionalPropertyTarget
+      type: object
+    AdditionalPropertyUnchanged:
+      description: To optionally omit 'required' properties, add them to 'unchanged'
+        list
+      properties:
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertyUnchanged
+      type: object
+    Nodes:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: The list of e2 nodes
+      properties:
+        node:
+          description: e2 node
+          items:
+            $ref: '#/components/schemas/Nodes_Node'
+          title: ItemNodes_Node
+          type: array
+          uniqueItems: true
+          x-keys:
+          - id
+      title: Nodes
+      type: object
+    Nodes_Node:
+      properties:
+        id:
+          description: eNB id
+          title: id
+          type: string
+        ip:
+          description: The IP address of the node
+          title: ip
+          type: string
+        plmn-id:
+          description: PLMN id
+          title: plmn-id
+          type: string
+        port:
+          description: The port of the node
+          maximum: 65535
+          minimum: 0
+          title: port
+          type: integer
+      required:
+      - id
+      type: object
+    Report_period:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: The kpimon-xapp report period container
+      properties:
+        interval:
+          description: Report interval for indication messages
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: interval
+          type: integer
+      title: Report_period
+      type: object
+info:
+  contact:
+    email: info@opennetworking.org
+    name: Open Networking Foundation
+    url: https://opennetworking.org
+  description: TODO add a description field in Metadata.yaml?
+  license:
+    name: LicenseRef-ONF-Member-1.0
+    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
+  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+  title: ric-1.0.0
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /ric/v1.0.0/{target}/nodes:
+    description: The list of e2 nodes
+    get:
+      operationId: getNodes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Nodes'
+          description: GET OK 200
+      summary: GET /nodes
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /ric/v1.0.0/{target}/nodes/node/{id}:
+    description: e2 node
+    get:
+      operationId: getNodes_Node
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Nodes_Node'
+          description: GET OK 200
+      summary: GET /nodes/node
+      tags:
+      - Nodes_Node
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+  /ric/v1.0.0/{target}/report_period:
+    delete:
+      operationId: deleteReport_period
+      responses:
+        default:
+          description: ""
+      summary: DELETE /report_period
+    description: The kpimon-xapp report period container
+    get:
+      operationId: getReport_period
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report_period'
+          description: GET OK 200
+      summary: GET /report_period
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postReport_period
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Report_period'
+      responses:
+        "201":
+          description: created
+      summary: POST /report_period

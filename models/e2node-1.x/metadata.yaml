@@ -1,0 +1,21 @@
+name: e2node
+version: 1.0.0
+artifactName: e2node
+goPackage: github.com/onosproject/config-models/models/e2node
+modules:
+  - name: e2-o-cu-cp
+    organization: Open Networking Foundation
+    revision: 2020-05-01
+    file: e2-o-cu-cp@2020-05-01.yang
+  - name: e2-o-cu-up
+    organization: Open Networking Foundation
+    revision: 2020-05-01
+    file: e2-o-cu-up@2020-05-01.yang
+  - name: e2-o-du
+    organization: Open Networking Foundation
+    revision: 2020-05-01
+    file: e2-o-du@2020-05-01.yang
+  - name: e2node
+    organization: Open Networking Foundation
+    revision: 2020-05-01
+    file: e2node@2020-05-01.yang
