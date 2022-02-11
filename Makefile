@@ -92,6 +92,8 @@ publish: # @HELP publish version on github (called by release-merge-commit)
 	./../build-tools/publish-version ${VERSION} onosproject/model-compiler
 
 jenkins-publish: build-tools jenkins-tools docker-login # @HELP Jenkins calls this to publish artifacts
+	make -C models/ric-1.x publish
+	make -C models/e2node-1.x publish
 	make -C models/devicesim-1.0.x publish
 	make -C models/testdevice-1.0.x publish
 	make -C models/testdevice-2.0.x publish
