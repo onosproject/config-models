@@ -1,0 +1,169 @@
+# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+components:
+  parameters:
+    target:
+      content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: target (device in onos-config)
+      in: path
+      name: target
+      required: true
+  requestBodies:
+    RequestBody_E2node:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/E2node'
+    RequestBody_E2node_Intervals:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/E2node_Intervals'
+  schemas:
+    AdditionalPropertyTarget:
+      description: Optionally specify a target other than the default (only on PATCH
+        method)
+      properties:
+        target:
+          description: an override of the target (device)
+          title: target
+          type: string
+      title: AdditionalPropertyTarget
+      type: object
+    AdditionalPropertyUnchanged:
+      description: To optionally omit 'required' properties, add them to 'unchanged'
+        list
+      properties:
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertyUnchanged
+      type: object
+    E2node:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: The top level container
+      properties:
+        intervals:
+          $ref: '#/components/schemas/E2node_Intervals'
+      title: E2node
+      type: object
+    E2node_Intervals:
+      description: Intervals for E2 services
+      properties:
+        PdcpMeasReportPerUe:
+          description: Interval for report of PdcpMeasReportPerUe
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: PdcpMeasReportPerUe
+          type: integer
+        RadioMeasReportPerCell:
+          description: Interval for report of RadioMeasReportPerUe
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: RadioMeasReportPerCell
+          type: integer
+        RadioMeasReportPerUe:
+          description: Interval for report of RadioMeasReportPerUe
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: RadioMeasReportPerUe
+          type: integer
+        SchedMeasReportPerCell:
+          description: Interval for report of SchedMeasReportPerCell
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: SchedMeasReportPerCell
+          type: integer
+        SchedMeasReportPerUe:
+          description: Interval for report of SchedMeasReportPerUe
+          format: int32
+          maximum: 4294967295
+          minimum: 0
+          title: SchedMeasReportPerUe
+          type: integer
+      title: E2node_Intervals
+      type: object
+info:
+  contact:
+    email: info@opennetworking.org
+    name: Open Networking Foundation
+    url: https://opennetworking.org
+  description: TODO add a description field in Metadata.yaml?
+  license:
+    name: LicenseRef-ONF-Member-1.0
+    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
+  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+  title: e2node-1.0.0
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /e2node/v1.0.0/{target}/e2node:
+    delete:
+      operationId: deleteE2node
+      responses:
+        default:
+          description: ""
+      summary: DELETE /e2node
+    description: The top level container
+    get:
+      operationId: getE2node
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/E2node'
+          description: GET OK 200
+      summary: GET /e2node
+      tags:
+      - ""
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postE2node
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_E2node'
+      responses:
+        "201":
+          description: created
+      summary: POST /e2node
+  /e2node/v1.0.0/{target}/e2node/intervals:
+    delete:
+      operationId: deleteE2node_Intervals
+      responses:
+        default:
+          description: ""
+      summary: DELETE /e2node/intervals
+    description: Intervals for E2 services
+    get:
+      operationId: getE2node_Intervals
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/E2node_Intervals'
+          description: GET OK 200
+      summary: GET /e2node/intervals
+      tags:
+      - E2node
+    parameters:
+    - $ref: '#/components/parameters/target'
+    post:
+      operationId: postE2node_Intervals
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_E2node_Intervals'
+      responses:
+        "201":
+          description: created
+      summary: POST /e2node/intervals
