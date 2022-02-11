@@ -39,7 +39,7 @@ test: mod-update # @HELP Run the unit tests
 	go test ./...
 
 repo-tag:
-ifneq ($(HAS_CHANGED),0)
+ifneq ("$(HAS_CHANGED)", "0 ")
 	NEW_VERSION=${VERSION} ../../../build-tools/tag-collision-reject
 	git tag ${VERSION}
 	git push origin ${VERSION}
@@ -49,7 +49,7 @@ endif
 
 
 publish: image repo-tag # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-ifneq ($(HAS_CHANGED),0)
+ifneq ("$(HAS_CHANGED)", "0 ")
 	docker push ${DOCKER_REPOSITORY}e2node:${VERSION}
 	docker push ${DOCKER_REPOSITORY}e2node:${LATEST_VERSION}
 else
