@@ -84,15 +84,14 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 		Info: &openapi3.Info{
 			Title:          settings.Title,
 			Version:        settings.ModelVersion,
-			TermsOfService: "https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf",
 			Contact: &openapi3.Contact{
 				Name:  "Open Networking Foundation",
 				URL:   "https://opennetworking.org",
 				Email: "info@opennetworking.org",
 			},
 			License: &openapi3.License{
-				Name: "LicenseRef-ONF-Member-1.0",
-				URL:  "https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf",
+				Name: "Apache-2.0",
+				URL:  "http://www.apache.org/licenses/LICENSE-2.0",
 			},
 			Description: settings.Description,
 		},
