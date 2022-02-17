@@ -15,7 +15,7 @@
 package navigator
 
 import (
-	"github.com/antchfx/xpath"
+	"github.com/SeanCondon/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"github.com/stretchr/testify/assert"

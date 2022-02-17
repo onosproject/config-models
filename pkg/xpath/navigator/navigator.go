@@ -17,7 +17,7 @@ package navigator
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/antchfx/xpath"
+	"github.com/SeanCondon/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"reflect"
