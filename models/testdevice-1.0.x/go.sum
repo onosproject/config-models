@@ -882,6 +882,8 @@ github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn
 github.com/olekukonko/tablewriter v0.0.0-20170122224234-a0225b3f23b5/go.mod h1:vsDQFd/mU46D+Z4whnwzcISnGGzXWMclvtLoiIKAKIo=
 github.com/olekukonko/tablewriter v0.0.4/go.mod h1:zq6QwlOf5SlnkVbMSr5EoBv3636FWnp+qbPhuoO21uA=
 github.com/olekukonko/tablewriter v0.0.5/go.mod h1:hPp6KlRPjbx+hW8ykQs1w3UBbZlj6HuIJcUGPhkA7kY=
+github.com/onosproject/config-models v0.9.12 h1:vviJMfaXW+OXdiXhDdBxmu1PL+UaQuQOwTosVpfFiUA=
+github.com/onosproject/config-models v0.9.12/go.mod h1:wx9Aiq1DuCR9U0ATSHYuep3HdeWuxnssk3iser+ND70=
 github.com/onosproject/config-models/modelplugin/devicesim-1.0.0 v0.8.8/go.mod h1:AGhBrLU9eQu0xoQ1GM0wI93/KNv33vmhTVWM8MQhKaw=
 github.com/onosproject/config-models/modelplugin/testdevice-1.0.0 v0.8.8/go.mod h1:qip+5nc2GBy/4nHTA1DXfQO0ibj+c0nURLtzS/Aus14=
 github.com/onosproject/config-models/modelplugin/testdevice-2.0.0 v0.8.8/go.mod h1:znr5lX3YnyyNstMb0D1fHH0yjMpJ3tu9LP9+qr6puMI=
@@ -934,9 +936,8 @@ github.com/openconfig/grpctunnel v0.0.0-20210610163803-fde4a9dc048d/go.mod h1:x9
 github.com/openconfig/ygot v0.6.0/go.mod h1:o30svNf7O0xK+R35tlx95odkDmZWS9JyWWQSmIhqwAs=
 github.com/openconfig/ygot v0.10.4/go.mod h1:oCQNdXnv7dWc8scTDgoFkauv1wwplJn5HspHcjlxSAQ=
 github.com/openconfig/ygot v0.12.0/go.mod h1:kJN0yCXIH07dOXvNBEFm3XxXdnDD5NI6K99tnD5x49c=
+github.com/openconfig/ygot v0.12.4 h1:r4sSaXuYfJGCVJvOrpRqAD/H1NFGC1iDfeDE7EMy78I=
 github.com/openconfig/ygot v0.12.4/go.mod h1:kJN0yCXIH07dOXvNBEFm3XxXdnDD5NI6K99tnD5x49c=
-github.com/openconfig/ygot v0.12.5 h1:J63zt59nnehyPPkI3/QG/eSnslyHFhwuuh0Gyl4uXBs=
-github.com/openconfig/ygot v0.12.5/go.mod h1:kJN0yCXIH07dOXvNBEFm3XxXdnDD5NI6K99tnD5x49c=
 github.com/opencontainers/go-digest v0.0.0-20170106003457-a6d0ee40d420/go.mod h1:cMLVZDEM3+U2I4VmLI6N8jQYUd2OVphdqWwCJHrFt2s=
 github.com/opencontainers/go-digest v0.0.0-20180430190053-c9281466c8b2/go.mod h1:cMLVZDEM3+U2I4VmLI6N8jQYUd2OVphdqWwCJHrFt2s=
 github.com/opencontainers/go-digest v1.0.0-rc1/go.mod h1:cMLVZDEM3+U2I4VmLI6N8jQYUd2OVphdqWwCJHrFt2s=

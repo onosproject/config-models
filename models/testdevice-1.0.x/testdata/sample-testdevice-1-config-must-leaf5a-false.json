@@ -1,0 +1,40 @@
+{
+  "cont1a": {
+    "cont2a": {
+      "leaf2a": 1,
+      "leaf2b": "0.4321",
+      "leaf2d": "1.54",
+      "leaf2e": [
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "leaf2f": "dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
+      "leaf2g": true
+    },
+    "list5": [
+      {
+        "key1": "five",
+        "key2": 6,
+        "leaf5a": "5a five-6"
+      },
+      {
+        "key1": "five",
+        "key2": 7,
+        "leaf5a": "5a five-7"
+      },
+      {
+        "key1": "eight",
+        "key2": 8,
+        "leaf5a": "this should cause error because of must rule"
+      },
+      {
+        "key1": "two",
+        "key2": 1,
+        "leaf5a": "5a two-1"
+      }
+    ]
+  }
+}

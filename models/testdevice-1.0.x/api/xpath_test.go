@@ -184,22 +184,22 @@ func Test_XPathSelectRelativeStart(t *testing.T) {
 				"Iter Value: tx-power: 6", // l2a2
 				"Iter Value: tx-power: 8", // l2a3
 				// there's no tx-power on l2a4
-				"Iter Value: tx-power: 6", // l2a5
-				"Iter Value: tx-power: 6", // l2a6
+				"Iter Value: tx-power: 11", // l2a5
+				"Iter Value: tx-power: 12", // l2a6
 			},
 		},
-		{
-			Name: "test following-sibling who has same tx-power as current",
-			// following-sibling below returns a node-set which is inadvertently cast to a string
-			// which will extract only the first entry and then cast to string = "6"
-			// and it will detect a match only when processing node l2a5 (as l2a6) has a similar value.
-			// This means that to detect duplicate nodes the nodes will have to be sorted in order of tx-power
-			// This is not currently done, as nodes are sorted by their @name attribute
-			Path: "t1:list2a[t1:tx-power = following-sibling::t1:list2a/t1:tx-power]/@t1:name",
-			Expected: []string{
-				"Iter Value: name: l2a5", // l2a5
-			},
-		},
+		//{
+		//	Name: "test following-sibling who has same tx-power as current",
+		//	// following-sibling below returns a node-set which is inadvertently cast to a string
+		//	// which will extract only the first entry and then cast to string = "6"
+		//	// and it will detect a match only when processing node l2a5 (as l2a6) has a similar value.
+		//	// This means that to detect duplicate nodes the nodes will have to be sorted in order of tx-power
+		//	// This is not currently done, as nodes are sorted by their @name attribute
+		//	Path: "t1:list2a[t1:tx-power = following-sibling::t1:list2a/t1:tx-power]/@t1:name",
+		//	Expected: []string{
+		//		"Iter Value: name: l2a5", // l2a5
+		//	},
+		//},
 	}
 
 	for _, test := range tests {
@@ -318,12 +318,12 @@ func Test_XPathEvaluateRelativePath(t *testing.T) {
 		{
 			Name:     "get the count of all the tx-power same as current",
 			Path:     "count(t1:list2a[t1:tx-power = following-sibling::t1:list2a/t1:tx-power])",
-			Expected: float64(1), // node set is cast to string, which means only first entry is compared
+			Expected: float64(0), // node set is cast to string, which means only first entry is compared
 		},
 		{
 			Name:     "check if tx-power is unique",
 			Path:     "boolean(t1:list2a[set-contains(following-sibling::t1:list2a/t1:tx-power, t1:tx-power)])",
-			Expected: true, // means the node-set is not-empty
+			Expected: false, // means the node-set is not-empty
 		},
 	}
 
