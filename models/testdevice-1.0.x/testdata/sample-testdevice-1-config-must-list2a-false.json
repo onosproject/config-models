@@ -42,13 +42,13 @@
       },
       {
         "name": "l2a5",
-        "tx-power": 11,
+        "tx-power": 6,
         "range-min": 20,
         "range-max": 21
       },
       {
         "name": "l2a6",
-        "tx-power": 12,
+        "tx-power": 6,
         "range-min": 20,
         "range-max": 21
       }

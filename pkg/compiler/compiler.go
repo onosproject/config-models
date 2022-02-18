@@ -181,7 +181,7 @@ func (c *ModelCompiler) loadPluginVersion(path string) error {
 func (c *ModelCompiler) lintModel(path string) error {
 	log.Infof("Linting YANG files")
 
-	args := []string{"--lint", "--lint-ensure-hyphenated-names", "-W", "error"}
+	args := []string{"--lint", "--lint-ensure-hyphenated-names", "-W", "error", "--ignore-error=XPATH_FUNCTION"}
 
 	// Append the root YANG files to the command-line arguments
 	yangDir := filepath.Join(path, "yang")
@@ -251,7 +251,7 @@ func (c *ModelCompiler) generateModelTree(path string) error {
 	log.Infof("Generating YANG tree '%s'", treeFile)
 
 	yangDir := filepath.Join(path, "yang")
-	args := []string{"-f", "tree", "-p", yangDir, "-o", treeFile}
+	args := []string{"-f", "tree", "--ignore-error=XPATH_FUNCTION", "-p", yangDir, "-o", treeFile}
 
 	// Append the root YANG files to the command-line arguments
 	for _, module := range c.metaData.Modules {

@@ -16,7 +16,7 @@ package api
 
 import (
 	"fmt"
-	"github.com/antchfx/xpath"
+	"github.com/SeanCondon/xpath"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -275,7 +275,7 @@ func Test_XPathEvaluate(t *testing.T) {
 	assert.NotNil(t, ynn)
 
 	tests := []navigator.XpathEvaluate{
-		// For leaf2a
+		//For leaf2a
 		{
 			Name:     "test check present",
 			Path:     "count(/t1:cont1a/t1:cont2a[t1:leaf2a])",
@@ -594,6 +594,16 @@ func Test_XPathEvaluate(t *testing.T) {
 		{
 			Name:     "test count list2b part1",
 			Path:     "/t1:cont1b-state/t1:list2b[@t1:index1=10]/t1:leaf3c = '3c 10-20 test'",
+			Expected: true,
+		},
+		{
+			Name:     "test count list2b part1",
+			Path:     "string(/t1:cont1a/t1:list2a/t1:tx-power)",
+			Expected: "5",
+		},
+		{
+			Name:     "test count list2b part1",
+			Path:     "set-contains(/t1:cont1a/t1:list2a/t1:tx-power, '5')",
 			Expected: true,
 		},
 	}
