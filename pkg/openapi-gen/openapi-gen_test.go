@@ -24,27 +24,23 @@ import (
 func Test_yangRangeDouble(t *testing.T) {
 	testRange1 := make(yang.YangRange, 0)
 	testRange1 = append(testRange1, yang.YRange{
-		Min: yang.Number{
-			Kind:  yang.MinNumber,
-			Value: 0,
-		},
 		Max: yang.Number{
-			Kind:  yang.Positive,
-			Value: 10,
+			Value:    10,
+			Negative: false,
 		},
 	})
 	testRange1 = append(testRange1, yang.YRange{
 		Min: yang.Number{
-			Kind:  yang.Positive,
-			Value: 20,
+			Negative: false,
+			Value:    20,
 		},
 		Max: yang.Number{
-			Kind:  yang.Positive,
-			Value: 100,
+			Negative: false,
+			Value:    100,
 		},
 	})
 
-	min, max, err := yangRange(testRange1)
+	min, max, err := yangRange(testRange1, yang.Yuint16)
 	assert.NilError(t, err)
 	assert.Assert(t, min == nil)
 	assert.Assert(t, max != nil)
@@ -53,23 +49,49 @@ func Test_yangRangeDouble(t *testing.T) {
 	}
 }
 
+// Test the range min..10 | 20..max of uint16
+func Test_yangRangeDoubleUint8(t *testing.T) {
+	testRange1 := make(yang.YangRange, 0)
+	testRange1 = append(testRange1, yang.YRange{
+		Max: yang.Number{
+			Value:    10,
+			Negative: false,
+		},
+	})
+	testRange1 = append(testRange1, yang.YRange{
+		Min: yang.Number{
+			Negative: false,
+			Value:    20,
+		},
+		Max: yang.Number{
+			Negative: false,
+			Value:    65535,
+		},
+	})
+
+	min, max, err := yangRange(testRange1, yang.Yuint16)
+	assert.NilError(t, err)
+	assert.Assert(t, min == nil)
+	assert.Assert(t, max == nil)
+}
+
 // Test the range -0.02..0.002
 func Test_yangRangeDecimal(t *testing.T) {
 	testRange1 := make(yang.YangRange, 0)
 	testRange1 = append(testRange1, yang.YRange{
 		Min: yang.Number{
-			Kind:           yang.Negative,
+			Negative:       true,
 			Value:          201,
 			FractionDigits: 2,
 		},
 		Max: yang.Number{
-			Kind:           yang.Positive,
+			Negative:       false,
 			Value:          2005,
 			FractionDigits: 2,
 		},
 	})
 
-	min, max, err := yangRange(testRange1)
+	min, max, err := yangRange(testRange1, yang.Ydecimal64)
 	assert.NilError(t, err)
 	assert.Assert(t, min != nil)
 	if min != nil {
@@ -148,12 +170,12 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 			Kind: yang.Yint16,
 			Range: []yang.YRange{
 				{Min: yang.Number{
-					Kind:  yang.Positive,
-					Value: 1,
+					Negative: false,
+					Value:    1,
 				},
 					Max: yang.Number{
-						Kind:  yang.Positive,
-						Value: 10,
+						Negative: false,
+						Value:    10,
 					},
 				},
 			},
@@ -171,12 +193,12 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 			Length: []yang.YRange{
 				{
 					Min: yang.Number{
-						Kind:  yang.Positive,
-						Value: 20,
+						Negative: false,
+						Value:    20,
 					},
 					Max: yang.Number{
-						Kind:  yang.Positive,
-						Value: 30,
+						Negative: false,
+						Value:    30,
 					},
 				},
 			},

@@ -201,7 +201,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			case yang.Ystring:
 				schemaVal = openapi3.NewStringSchema()
 				if dirEntry.Type.Length != nil {
-					min, max, err := yangRange(dirEntry.Type.Length)
+					min, max, err := yangRange(dirEntry.Type.Length, dirEntry.Type.Kind)
 					if err != nil {
 						return nil, nil, err
 					}
@@ -266,7 +266,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 				schemaVal.Default = def
 				if dirEntry.Type.Range != nil {
-					start, end, err := yangRange(dirEntry.Type.Range)
+					start, end, err := yangRange(dirEntry.Type.Range, dirEntry.Type.Kind)
 					if err != nil {
 						return nil, nil, err
 					}
@@ -282,7 +282,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			case yang.Ybinary:
 				schemaVal = openapi3.NewBytesSchema()
 				if dirEntry.Type.Length != nil {
-					min, max, err := yangRange(dirEntry.Type.Length)
+					min, max, err := yangRange(dirEntry.Type.Length, dirEntry.Type.Kind)
 					if err != nil {
 						return nil, nil, err
 					}
@@ -701,7 +701,7 @@ func pathToSchemaName(itemPath string) string {
 // If there is more than 1 range - try to find the overall min and max
 // If YANG uses min and max, then leave out any statement in OpenAPI 3
 // Leave it to the implementation handle the min and max for the type
-func yangRange(yangRange yang.YangRange) (*float64, *float64, error) {
+func yangRange(yangRange yang.YangRange, parentType yang.TypeKind) (*float64, *float64, error) {
 	var minVal *float64
 	var maxVal *float64
 	var hasMinMin, hasMaxMax bool
@@ -709,17 +709,40 @@ func yangRange(yangRange yang.YangRange) (*float64, *float64, error) {
 		return nil, nil, fmt.Errorf("unexpected nil range")
 	}
 	for i := 0; i < yangRange.Len(); i++ {
-		if yangRange[i].Min.Kind == yang.MinNumber {
-			minVal = nil
-			hasMinMin = true
-		} else if m := floatFromYnumber(yangRange[i].Min); (!hasMinMin && minVal == nil) || (minVal != nil && *m < *minVal) {
+		switch parentType {
+		case yang.Yuint8, yang.Yuint16, yang.Yuint32, yang.Yuint64:
+			if yangRange[i].Min.Value == 0 {
+				minVal = nil
+				hasMinMin = true
+			}
+		}
+		if m := floatFromYnumber(yangRange[i].Min); (!hasMinMin && minVal == nil) || (minVal != nil && *m < *minVal) {
 			minVal = m
 		}
 
-		if yangRange[i].Max.Kind == yang.MaxNumber {
-			maxVal = nil
-			hasMaxMax = true
-		} else if m := floatFromYnumber(yangRange[i].Max); (!hasMaxMax && maxVal == nil) || (maxVal != nil && *m > *maxVal) {
+		switch parentType {
+		case yang.Yuint8:
+			if yangRange[i].Max.Value == math.MaxUint8 {
+				maxVal = nil
+				hasMaxMax = true
+			}
+		case yang.Yuint16:
+			if yangRange[i].Max.Value == math.MaxUint16 {
+				maxVal = nil
+				hasMaxMax = true
+			}
+		case yang.Yuint32:
+			if yangRange[i].Max.Value == math.MaxUint32 {
+				maxVal = nil
+				hasMaxMax = true
+			}
+		case yang.Yuint64:
+			if yangRange[i].Max.Value == math.MaxUint64 {
+				maxVal = nil
+				hasMaxMax = true
+			}
+		}
+		if m := floatFromYnumber(yangRange[i].Max); (!hasMaxMax && maxVal == nil) || (maxVal != nil && *m > *maxVal) {
 			maxVal = m
 		}
 	}
@@ -762,7 +785,7 @@ func yangDefault(leaf *yang.Entry) (interface{}, error) {
 
 func floatFromYnumber(ynumber yang.Number) *float64 {
 	neg := 1.0
-	if ynumber.Kind == yang.Negative {
+	if ynumber.Negative {
 		neg = -1.0
 	}
 	if !ynumber.IsDecimal() {
