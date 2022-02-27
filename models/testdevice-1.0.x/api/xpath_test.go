@@ -188,18 +188,16 @@ func Test_XPathSelectRelativeStart(t *testing.T) {
 				"Iter Value: tx-power: 12", // l2a6
 			},
 		},
-		//{
-		//	Name: "test following-sibling who has same tx-power as current",
-		//	// following-sibling below returns a node-set which is inadvertently cast to a string
-		//	// which will extract only the first entry and then cast to string = "6"
-		//	// and it will detect a match only when processing node l2a5 (as l2a6) has a similar value.
-		//	// This means that to detect duplicate nodes the nodes will have to be sorted in order of tx-power
-		//	// This is not currently done, as nodes are sorted by their @name attribute
-		//	Path: "t1:list2a[t1:tx-power = following-sibling::t1:list2a/t1:tx-power]/@t1:name",
-		//	Expected: []string{
-		//		"Iter Value: name: l2a5", // l2a5
-		//	},
-		//},
+		{
+			Name: "test following-sibling who has same tx-power as current",
+			// following-sibling below returns a node-set which is inadvertently cast to a string
+			// which will extract only the first entry and then cast to string = "6"
+			// and it will detect a match only when processing node l2a5 (as l2a6) has a similar value.
+			// This means that to detect duplicate nodes the nodes will have to be sorted in order of tx-power
+			// This is not currently done, as nodes are sorted by their @name attribute
+			Path:     "t1:list2a[set-contains(following-sibling::t1:list2a/t1:tx-power, t1:tx-power)]/@t1:name",
+			Expected: []string{},
+		},
 	}
 
 	for _, test := range tests {
@@ -269,6 +267,36 @@ func Test_XPathEvaluate(t *testing.T) {
 			Name:     "test list2a entry name when tx-power=5",
 			Path:     "string(/t1:cont1a/t1:list2a[t1:tx-power=5]/@t1:name)",
 			Expected: "l2a1",
+		},
+		{
+			Name:     "test set-contains detects string in a set",
+			Path:     "set-contains(/t1:cont1a/t1:list2a[t1:tx-power>10]/@t1:name, 'l2a6')",
+			Expected: true,
+		},
+		{
+			Name:     "test set-contains detects string is missing from set",
+			Path:     "set-contains(/t1:cont1a/t1:list2a[t1:tx-power>10]/@t1:name, 'l2a3')",
+			Expected: false,
+		},
+		{
+			Name:     "test set-contains detects that some items from first set are in second set",
+			Path:     "set-contains(/t1:cont1a/t1:list2a[t1:tx-power>10]/@t1:name, /t1:cont1a/t1:list2a[t1:tx-power>11]/@t1:name)",
+			Expected: true,
+		},
+		{
+			Name:     "test set-contains detects that no items from first set are in second set",
+			Path:     "set-contains(/t1:cont1a/t1:list2a[t1:tx-power>8]/@t1:name, /t1:cont1a/t1:list2a[t1:tx-power<=8]/@t1:name)",
+			Expected: false,
+		},
+		{
+			Name:     "test set-equals detects that all items from first set are in second set",
+			Path:     "set-equals(/t1:cont1a/t1:list2a[t1:tx-power>8]/@t1:name, /t1:cont1a/t1:list2a[t1:tx-power>8]/@t1:name)",
+			Expected: true,
+		},
+		{
+			Name:     "test set-equals detects that all items from first set are not found in second set",
+			Path:     "set-equals(/t1:cont1a/t1:list2a[t1:tx-power>8]/@t1:name, /t1:cont1a/t1:list2a[t1:tx-power>=8]/@t1:name)",
+			Expected: false,
 		},
 	}
 
