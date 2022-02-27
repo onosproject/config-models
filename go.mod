@@ -3,7 +3,7 @@ module github.com/onosproject/config-models
 go 1.16
 
 require (
-	github.com/SeanCondon/xpath v0.0.0-20220221181849-c19b784b9842
+	github.com/SeanCondon/xpath v0.0.0-20220225125014-419de017925c
 	github.com/atomix/atomix-go-framework v0.10.1 // indirect
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/onosproject/onos-api/go v0.8.3
