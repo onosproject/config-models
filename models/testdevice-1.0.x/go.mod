@@ -16,3 +16,5 @@ require (
 	google.golang.org/grpc v1.41.0
 	gotest.tools v2.2.0+incompatible
 )
+
+replace github.com/onosproject/config-models v0.0.0-20220224180004-32567adb595a => ../../

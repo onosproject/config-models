@@ -15,6 +15,7 @@
 package navigator
 
 import (
+	"fmt"
 	"github.com/SeanCondon/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
@@ -24,7 +25,7 @@ import (
 )
 
 type testDevice struct {
-	TestStruct *testDevice_testStruct `path:"testStruct"`
+	TestStruct interface{} `path:"testStruct"`
 }
 
 func (td testDevice) IsYANGGoStruct() {
@@ -352,4 +353,144 @@ func Test_generateMustError(t *testing.T) {
 	assert.Equal(t, 2, len(parts))
 	assert.Equal(t, "a=test1", parts[0])
 	assert.Equal(t, "b=10", parts[1])
+}
+
+type testDeviceMust struct {
+	A int
+	B int
+	C string
+}
+
+func TestWalkMust(t *testing.T) {
+
+	testStruct1 := testDeviceMust{
+		A: 10,
+		B: 11,
+	}
+
+	td := testDevice{
+		TestStruct: &testStruct1,
+	}
+
+	entry := &yang.Entry{
+		Name: "testDevice",
+		Kind: yang.DirectoryEntry,
+		Dir: map[string]*yang.Entry{
+			"testStruct": {
+				Name: "testStruct",
+				Kind: yang.DirectoryEntry,
+				Annotation: map[string]interface{}{
+					"must": &yang.Must{
+						Name: "number(./t1:a) <= number(./t1:b)",
+						ErrorMessage: &yang.Value{Name: "a should be less than b"},
+						ErrorAppTag: &yang.Value{Name: "test-app"},
+					},
+				},
+				Dir: map[string]*yang.Entry{
+					"a": {
+						Name: "a",
+						Kind: yang.LeafEntry,
+					},
+					"b": {
+						Name: "b",
+						Kind: yang.LeafEntry,
+					},
+				},
+			},
+		},
+	}
+
+	nn := NewYangNodeNavigator(entry, &td)
+
+	ynn, ynnOk := nn.(*YangNodeNavigator)
+	assert.True(t, ynnOk)
+	ch := make(chan *yang.Entry)
+	go ynn.WalkMust(ch)
+
+	expected := 1
+	received := 0
+
+	musts := []*yang.Entry{}
+
+	for r := range ch {
+		received = received+1
+		musts = append(musts, r)
+	}
+	// check that the walker found all the expected musts
+	assert.Equal(t, expected, received)
+
+	// check that we have the correct must clause in the entry
+	mustStruct, okMustStruct := musts[0].Annotation["must"].(*yang.Must)
+	assert.True(t, okMustStruct)
+	assert.Equal(t, "number(./t1:a) <= number(./t1:b)", mustStruct.Name)
+}
+
+func TestWalkAndValidateMust(t *testing.T) {
+
+	schema := &yang.Entry{
+		Name: "testDevice",
+		Kind: yang.DirectoryEntry,
+		Prefix: &yang.Value{
+			Name: "t1",
+		},
+		Annotation: map[string]interface{}{
+			"must": &yang.Must{
+				Name: "number(A) <= 15",
+				ErrorMessage: &yang.Value{Name: "a should be less 15"},
+				ErrorAppTag: &yang.Value{Name: "test-app"},
+			},
+		},
+		Dir: map[string]*yang.Entry{
+			"TestStruct": {
+				Name: "TestStruct",
+				Kind: yang.DirectoryEntry,
+				Annotation: map[string]interface{}{
+					"must": &yang.Must{
+						Name: "number(A) <= number(B)",
+						ErrorMessage: &yang.Value{Name: "a should be less than b"},
+						ErrorAppTag: &yang.Value{Name: "test-app"},
+					},
+				},
+				Dir: map[string]*yang.Entry{
+					"A": {
+						Name: "A",
+						Kind: yang.LeafEntry,
+						Type: &yang.YangType{
+							Name: "uint8",
+							Kind: yang.Yint8,
+						},
+					},
+					"B": {
+						Name: "B",
+						Kind: yang.LeafEntry,
+						Type: &yang.YangType{
+							Name: "uint8",
+							Kind: yang.Yint8,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	tests := []struct {
+		name string
+		args testDevice
+		error error
+	}{
+		{"valid-tree", testDevice{&testDeviceMust{A: 10, B: 20}}, nil},
+		{"invalid-tree-must1", testDevice{&testDeviceMust{A: 20, B: 30}}, fmt.Errorf("a should be less 15. Must statement 'number(A) <= 15' to true. Container(s): []")},
+		{"invalid-tree-must2", testDevice{&testDeviceMust{A: 10, B: 5}}, fmt.Errorf("a should be less than b. Must statement 'number(A) <= number(B)' to true. Container(s): []")},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			nn := NewYangNodeNavigator(schema, &tt.args)
+
+			ynn, ynnOk := nn.(*YangNodeNavigator)
+			assert.True(t, ynnOk)
+			err := ynn.WalkAndValidateMust()
+			assert.Equal(t, tt.error, err)
+		})
+	}
 }

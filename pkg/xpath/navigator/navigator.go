@@ -254,43 +254,64 @@ func deepCopyDir(dir *yang.Entry) *yang.Entry {
 // WalkAndValidateMust - walk through the YNN and validate any Must statements
 // This goes down first and then across
 func (x *YangNodeNavigator) WalkAndValidateMust() error {
-	for {
-		if x.MoveToChild() ||
-			x.MoveToNext() ||
-			(x.MoveToParent() && x.MoveToNext()) ||
-			(x.MoveToParent() && x.MoveToNext()) ||
-			(x.MoveToParent() && x.MoveToNext()) ||
-			(x.MoveToParent() && x.MoveToNext()) ||
-			(x.MoveToParent() && x.MoveToNext()) {
-			mustIf, ok := x.curr.Annotation["must"]
-			if ok {
-				mustStruct, okMustStruct := mustIf.(*yang.Must)
-				if okMustStruct {
-					mustExpr, err := xpath.Compile(mustStruct.Name)
-					if err != nil {
-						return err
-					}
-					result := mustExpr.Evaluate(x)
-					resultBool, resultOk := result.(bool)
-					if !resultOk {
-						return fmt.Errorf("result of %s cannot be evaluated as bool %v",
-							mustExpr.String(), result)
-					}
-					if !resultBool {
-						items := x.generateMustError("@*")
-						if len(items) == 0 {
-							items = x.generateMustError("*")
-						}
-						return fmt.Errorf("%s. Must statement '%v' to true. Container(s): %v",
-							mustStruct.ErrorMessage.Name,
-							mustStruct.Name, items)
-					}
-					fmt.Printf("Must %s: %v\n", mustExpr.String(), resultBool)
-				}
-			}
-			continue
+
+	ch := make(chan *yang.Entry)
+
+	go x.WalkMust(ch)
+
+	for mustEntry := range ch {
+
+		mustAnnotation := mustEntry.Annotation["must"]
+		must, ok := mustAnnotation.(*yang.Must)
+		if !ok {
+			return fmt.Errorf("cannot-cast-must")
 		}
-		return nil
+		mustExpr, err := xpath.Compile(must.Name)
+		if err != nil {
+			return err
+		}
+
+		// we need to pass the entire tree to validate must rules
+		// as they can refer to parent items
+		result := mustExpr.Evaluate(x)
+		resultBool, resultOk := result.(bool)
+		if !resultOk {
+			return fmt.Errorf("result of %s cannot be evaluated as bool %v",
+				mustExpr.String(), result)
+		}
+		if !resultBool {
+			items := x.generateMustError("@*")
+			if len(items) == 0 {
+				items = x.generateMustError("*")
+			}
+			return fmt.Errorf("%s. Must statement '%v' to true. Container(s): %v",
+				must.ErrorMessage.Name,
+				must.Name, items)
+		}
+		fmt.Printf("Must %s: %v\n", mustExpr.String(), resultBool)
+	}
+
+	return nil
+}
+
+// Walk iterates over the tree and returns
+// every node that has a "must" clause
+// on the provided channel
+
+func (x YangNodeNavigator) WalkMust(ch chan *yang.Entry) {
+	walkMust(ch, x.root)
+	close(ch)
+}
+
+func walkMust(ch chan *yang.Entry, entry *yang.Entry)  {
+	_, hasMust := entry.Annotation["must"]
+	if hasMust {
+		ch <- entry
+	}
+	if (entry.IsDir()) {
+		for _, c := range entry.Dir {
+			walkMust(ch, c)
+		}
 	}
 }
 
