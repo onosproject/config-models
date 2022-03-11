@@ -46,6 +46,25 @@ type ApiGenSettings struct {
 	Description  string
 }
 
+type pathType uint8
+
+const (
+	Undefined pathType = iota
+	pathTypeListMultiple
+	pathTypeContainer
+)
+
+func (pt pathType) string() string {
+	switch pt {
+	case pathTypeListMultiple:
+		return "List"
+	case pathTypeContainer:
+		return "Container"
+	default:
+		return "undefined"
+	}
+}
+
 func (settings *ApiGenSettings) ApplyDefaults() {
 	if settings.ModelType == "" {
 		panic("ModelType not specified")
@@ -82,17 +101,16 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
 		Info: &openapi3.Info{
-			Title:          settings.Title,
-			Version:        settings.ModelVersion,
-			TermsOfService: "https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf",
+			Title:   settings.Title,
+			Version: settings.ModelVersion,
 			Contact: &openapi3.Contact{
 				Name:  "Open Networking Foundation",
 				URL:   "https://opennetworking.org",
 				Email: "info@opennetworking.org",
 			},
 			License: &openapi3.License{
-				Name: "LicenseRef-ONF-Member-1.0",
-				URL:  "https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf",
+				Name: "Apache-2.0",
+				URL:  "https://www.apache.org/licenses/LICENSE-2.0",
 			},
 			Description: settings.Description,
 		},
@@ -340,7 +358,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 
 		} else if dirEntry.IsContainer() {
-			newPath := newPathItem(dirEntry, itemPath, parentPath)
+			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
 			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath)
@@ -373,14 +391,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
 
-			if newPath.Post != nil && newPath.Post.RequestBody.Ref != "" {
+			if newPath.Post != nil && newPath.Post.RequestBody != nil && newPath.Post.RequestBody.Ref != "" {
 				newPath.Post.RequestBody.Value = rbRef.Value
 			}
 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
 				Value: asRef.Value,
 			})
 			newPath.Get.AddResponse(200, respGet200)
@@ -388,28 +406,36 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of container
-					arrayObj := openapi3.NewArraySchema()
-					arrayObj.Items = &openapi3.SchemaRef{
-						Ref:   fmt.Sprintf("#/components/schemas/%s", k),
-						Value: v.Value.Items.Value,
-					}
-					arrayObj.Title = v.Value.Title
-					arrayObj.MinItems = v.Value.MinItems
-					arrayObj.MaxItems = v.Value.MaxItems
-					arrayObj.UniqueItems = v.Value.UniqueItems
-					arrayObj.Extensions = v.Value.Extensions
-					arrayObj.Description = v.Value.Description
-					schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-						Value: arrayObj,
-					}
-					openapiComponents.Schemas[k] = v.Value.Items
-				case "object": // Container as a child of container
-					schemaPath := pathToSchemaName(itemPath)
-					root := k[len(schemaPath):]
-					if v.Value.Title != "" && !strings.Contains(root, "_") {
+					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+						arrayObj := openapi3.NewArraySchema()
+						arrayObj.Items = &openapi3.SchemaRef{
+							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
+							Value: v.Value.Items.Value,
+						}
+						arrayObj.Title = v.Value.Title
+						arrayObj.MinItems = v.Value.MinItems
+						arrayObj.MaxItems = v.Value.MaxItems
+						arrayObj.UniqueItems = v.Value.UniqueItems
+						arrayObj.Extensions = v.Value.Extensions
+						arrayObj.Description = v.Value.Description
 						schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
-							Value: v.Value,
+							Value: arrayObj,
+						}
+						openapiComponents.Schemas[k] = v.Value.Items
+					} else {
+						openapiComponents.Schemas[k] = v
+					}
+
+				case "object": // Container as a child of container
+					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+
+						schemaPath := pathToSchemaName(itemPath)
+						root := k[len(schemaPath):]
+						if v.Value.Title != "" && !strings.Contains(root, "_") {
+							schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
+								Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
+								Value: v.Value,
+							}
 						}
 					}
 					openapiComponents.Schemas[k] = v
@@ -424,7 +450,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					v.Value.Type = "array"
 					schemaVal.Properties[v.Value.Title] = v
 				default:
-					return nil, nil, fmt.Errorf("undhanled in container %s: %s", k, v.Value.Type)
+					return nil, nil, fmt.Errorf("unhandled in container %s: %s", k, v.Value.Type)
 				}
 			}
 			if len(schemaVal.Required) > 0 {
@@ -436,13 +462,18 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.IsList() {
 			keys := strings.Split(dirEntry.Key, " ")
-			listItemPath := itemPath
-			for _, k := range keys {
-				listItemPath += fmt.Sprintf("/{%s}", k)
-			}
-			openapiPaths[pathWithPrefix(listItemPath)] = newPathItem(dirEntry, itemPath, listItemPath)
+			listItemPathMultiple := itemPath
+			listItemPathSingle := itemPath
+			// Add a path for groups of items
+			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple)
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPath)
+			for _, k := range keys {
+				listItemPathSingle += fmt.Sprintf("/{%s}", k)
+			}
+			// Add a path for individual items
+			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer)
+
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -500,57 +531,87 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			openapiComponents.Schemas[toUnderScore(itemPath)] = asRef
 
-			rbRef := &openapi3.RequestBodyRef{
+			asMultiple := openapi3.NewArraySchema()
+			asMultiple.Items = &openapi3.SchemaRef{
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
+				Value: arr.Items.Value,
+			}
+			asMultiple.Extensions = make(map[string]interface{})
+			asMultiple.Extensions["x-list-multiple"] = true
+			openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)] = asMultiple.NewRef()
+
+			rbRefSingle := &openapi3.RequestBodyRef{
 				Value: openapi3.NewRequestBody().WithContent(
 					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
 						Value: asRef.Value,
-						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
 					}),
 				),
 			}
-			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderScore(itemPath))] = rbRef
+			openapiComponents.RequestBodies[fmt.Sprintf("RequestBody_%s", toUnderscoreWithPathType(itemPath, pathTypeContainer))] = rbRefSingle
 
-			if openapiPaths[pathWithPrefix(listItemPath)] != nil &&
-				openapiPaths[pathWithPrefix(listItemPath)].Post != nil &&
-				openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Ref != "" {
-				openapiPaths[pathWithPrefix(listItemPath)].Post.RequestBody.Value = rbRef.Value
+			if openapiPaths[pathWithPrefix(listItemPathSingle)] != nil &&
+				openapiPaths[pathWithPrefix(listItemPathSingle)].Post != nil &&
+				openapiPaths[pathWithPrefix(listItemPathSingle)].Post.RequestBody != nil &&
+				openapiPaths[pathWithPrefix(listItemPathSingle)].Post.RequestBody.Ref != "" {
+				openapiPaths[pathWithPrefix(listItemPathSingle)].Post.RequestBody.Value = rbRefSingle.Value
 			}
+
+			respGet200Multiple := openapi3.NewResponse()
+			respGet200Multiple.Description = &respGet200Desc
+			respGet200Multiple.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+				Value: &openapi3.Schema{
+					Type: "array",
+					Items: &openapi3.SchemaRef{
+						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeListMultiple)),
+						Value: openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)].Value,
+					},
+				},
+			})
+			openapiPaths[pathWithPrefix(listItemPathMultiple)].Get.AddResponse(200, respGet200Multiple)
 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
-				Value: openapiComponents.Schemas[toUnderScore(itemPath)].Value,
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
+				Value: openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeContainer)].Value,
 			})
-			openapiPaths[pathWithPrefix(listItemPath)].Get.AddResponse(200, respGet200)
+			openapiPaths[pathWithPrefix(listItemPathSingle)].Get.AddResponse(200, respGet200)
+
 			if len(strings.Split(itemPath, "/")) <= 2 {
 				addAdditionalProperties(arr.Items.Value, AdditionalPropertyTarget)
 			}
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
-					arrayObj := openapi3.NewArraySchema()
-					arrayObj.Items = &openapi3.SchemaRef{
-						Ref:   fmt.Sprintf("#/components/schemas/%s", k),
-						Value: v.Value.Items.Value,
-					}
-					arrayObj.UniqueItems = v.Value.UniqueItems
-					arrayObj.MinItems = v.Value.MinItems
-					arrayObj.MaxItems = v.Value.MaxItems
-					arrayObj.Extensions = v.Value.Extensions
-					arrayObj.Description = v.Value.Description
-					arrayObj.Title = lastPartOf(k)
-					arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-						Value: arrayObj,
-					}
-					openapiComponents.Schemas[k] = v.Value.Items
-				case "object": // Container as a child of list
-					schemaPath := pathToSchemaName(itemPath)
-					root := k[len(schemaPath):]
-					if v.Value.Title != "" && !strings.Contains(root, "_") {
+					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+						arrayObj := openapi3.NewArraySchema()
+						arrayObj.Items = &openapi3.SchemaRef{
+							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
+							Value: v.Value.Items.Value,
+						}
+						arrayObj.UniqueItems = v.Value.UniqueItems
+						arrayObj.MinItems = v.Value.MinItems
+						arrayObj.MaxItems = v.Value.MaxItems
+						arrayObj.Extensions = v.Value.Extensions
+						arrayObj.Description = v.Value.Description
+						arrayObj.Title = lastPartOf(k)
 						arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-							Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
-							Value: v.Value,
+							Value: arrayObj,
+						}
+						openapiComponents.Schemas[k] = v.Value.Items
+					} else {
+						openapiComponents.Schemas[k] = v
+					}
+				case "object": // Container as a child of list
+					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+						schemaPath := pathToSchemaName(itemPath)
+						root := k[len(schemaPath):]
+						if v.Value.Title != "" && !strings.Contains(root, "_") {
+							arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
+								Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
+								Value: v.Value,
+							}
 						}
 					}
 					openapiComponents.Schemas[k] = v
@@ -578,11 +639,12 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 	return openapiPaths, &openapiComponents, nil
 }
 
-func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *openapi3.PathItem {
+func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathType pathType) *openapi3.PathItem {
 	getOp := openapi3.NewOperation()
-	getOp.Summary = fmt.Sprintf("GET %s", itemPath)
-	getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
+	getOp.Summary = fmt.Sprintf("GET %s %s", itemPath, pathType.string())
+	getOp.OperationID = fmt.Sprintf("get%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
 	getOp.Tags = []string{toUnderScore(parentPath)}
+	getOp.Tags = append(getOp.Tags, pathType.string())
 	getOp.Responses = make(openapi3.Responses)
 
 	parameters := make(openapi3.Parameters, 0)
@@ -632,11 +694,17 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string) *open
 		newPath.Description = fmt.Sprintf("YANG Choice Case: %s", dirEntry.Name)
 	}
 
-	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse {
+	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse && pathType != pathTypeListMultiple {
 		deleteOp := openapi3.NewOperation()
 		deleteOp.Summary = fmt.Sprintf("DELETE %s", itemPath)
-		deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
-		deleteOp.Responses = openapi3.NewResponses()
+		deleteOp.OperationID = fmt.Sprintf("delete%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
+		del20Ok := "DELETE 200 OK"
+		deleteResp200 := &openapi3.Response{
+			Description: &del20Ok,
+		}
+		deleteOp.Responses = openapi3.Responses{"200": &openapi3.ResponseRef{
+			Value: deleteResp200,
+		}}
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
@@ -698,55 +766,65 @@ func pathToSchemaName(itemPath string) string {
 	return strings.ToLower(strings.Join(partsWoIdx, "/"))
 }
 
+func toUnderscoreWithPathType(itemPath string, pathType pathType) string {
+	if pathType == pathTypeListMultiple {
+		return fmt.Sprintf("%s_%s", toUnderScore(itemPath), uppercaseFirstCharacter(pathType.string()))
+	}
+	return toUnderScore(itemPath)
+}
+
 // If there is more than 1 range - try to find the overall min and max
 // If YANG uses min and max, then leave out any statement in OpenAPI 3
 // Leave it to the implementation handle the min and max for the type
 func yangRange(yangRange yang.YangRange, parentType yang.TypeKind) (*float64, *float64, error) {
-	var minVal *float64
-	var maxVal *float64
+	var minVal = math.MaxFloat64
+	var maxVal = -math.MaxFloat64
 	var hasMinMin, hasMaxMax bool
 	if yangRange.Len() == 0 {
 		return nil, nil, fmt.Errorf("unexpected nil range")
 	}
 	for i := 0; i < yangRange.Len(); i++ {
+		newMinVal := floatFromYnumber(yangRange[i].Min)
+		if newMinVal < minVal {
+			minVal = newMinVal
+		}
+		newMaxVal := floatFromYnumber(yangRange[i].Max)
+		if newMaxVal > maxVal {
+			maxVal = newMaxVal
+		}
 		switch parentType {
-		case yang.Yuint8, yang.Yuint16, yang.Yuint32, yang.Yuint64:
-			if yangRange[i].Min.Value == 0 {
-				minVal = nil
+		case yang.Yint32:
+			if floatFromYnumber(yangRange[i].Min) == math.MinInt32 {
 				hasMinMin = true
 			}
-		}
-		if m := floatFromYnumber(yangRange[i].Min); (!hasMinMin && minVal == nil) || (minVal != nil && *m < *minVal) {
-			minVal = m
-		}
-
-		switch parentType {
-		case yang.Yuint8:
-			if yangRange[i].Max.Value == math.MaxUint8 {
-				maxVal = nil
+			if floatFromYnumber(yangRange[i].Max) == math.MaxInt32 {
 				hasMaxMax = true
 			}
-		case yang.Yuint16:
-			if yangRange[i].Max.Value == math.MaxUint16 {
-				maxVal = nil
+		case yang.Yint64:
+			if floatFromYnumber(yangRange[i].Min) == math.MinInt64 {
+				hasMinMin = true
+			}
+			if floatFromYnumber(yangRange[i].Max) == math.MaxInt64 {
 				hasMaxMax = true
 			}
 		case yang.Yuint32:
-			if yangRange[i].Max.Value == math.MaxUint32 {
-				maxVal = nil
-				hasMaxMax = true
+			if floatFromYnumber(yangRange[i].Max) == math.MaxUint32 {
+				hasMaxMax = true // openapi will limit value to int32
 			}
 		case yang.Yuint64:
-			if yangRange[i].Max.Value == math.MaxUint64 {
-				maxVal = nil
+			if floatFromYnumber(yangRange[i].Max) == math.MaxUint64 {
 				hasMaxMax = true
 			}
 		}
-		if m := floatFromYnumber(yangRange[i].Max); (!hasMaxMax && maxVal == nil) || (maxVal != nil && *m > *maxVal) {
-			maxVal = m
-		}
 	}
-	return minVal, maxVal, nil
+	if hasMinMin && hasMaxMax {
+		return nil, nil, nil
+	} else if hasMinMin && !hasMaxMax {
+		return nil, &maxVal, nil
+	} else if !hasMinMin && hasMaxMax {
+		return &minVal, nil, nil
+	}
+	return &minVal, &maxVal, nil
 }
 
 func yangDefault(leaf *yang.Entry) (interface{}, error) {
@@ -783,15 +861,11 @@ func yangDefault(leaf *yang.Entry) (interface{}, error) {
 	return nil, nil
 }
 
-func floatFromYnumber(ynumber yang.Number) *float64 {
+func floatFromYnumber(ynumber yang.Number) float64 {
 	neg := 1.0
 	if ynumber.Negative {
 		neg = -1.0
 	}
-	if !ynumber.IsDecimal() {
-		v := float64(ynumber.Value) * neg
-		return &v
-	}
-	v := float64(ynumber.Value) * math.Pow(10, -1.0*float64(ynumber.FractionDigits))
-	return &v
+	v := float64(ynumber.Value) * neg * math.Pow(10, -1.0*float64(ynumber.FractionDigits))
+	return v
 }

@@ -17,8 +17,40 @@ package openapi_gen
 import (
 	"github.com/openconfig/goyang/pkg/yang"
 	"gotest.tools/assert"
+	"math"
 	"testing"
 )
+
+func Test_floatFromNumber(t *testing.T) {
+
+	n1 := floatFromYnumber(yang.Number{
+		Value:          12345,
+		FractionDigits: 0,
+		Negative:       false,
+	})
+	assert.Equal(t, 12345.0, n1)
+
+	n2 := floatFromYnumber(yang.Number{
+		Value:          12345,
+		FractionDigits: 2,
+		Negative:       false,
+	})
+	assert.Equal(t, 123.45, n2)
+
+	n3 := floatFromYnumber(yang.Number{
+		Value:          12345,
+		FractionDigits: 2,
+		Negative:       true,
+	})
+	assert.Equal(t, -123.45, n3)
+
+	n4 := floatFromYnumber(yang.Number{
+		Value:          12345,
+		FractionDigits: 0,
+		Negative:       true,
+	})
+	assert.Equal(t, -12345.0, n4)
+}
 
 // Test the range min..10 | 20..100
 func Test_yangRangeDouble(t *testing.T) {
@@ -42,7 +74,10 @@ func Test_yangRangeDouble(t *testing.T) {
 
 	min, max, err := yangRange(testRange1, yang.Yuint16)
 	assert.NilError(t, err)
-	assert.Assert(t, min == nil)
+	assert.Assert(t, min != nil)
+	if min != nil {
+		assert.Equal(t, 0.0, *min)
+	}
 	assert.Assert(t, max != nil)
 	if max != nil {
 		assert.Equal(t, 100.0, *max)
@@ -71,8 +106,14 @@ func Test_yangRangeDoubleUint8(t *testing.T) {
 
 	min, max, err := yangRange(testRange1, yang.Yuint16)
 	assert.NilError(t, err)
-	assert.Assert(t, min == nil)
-	assert.Assert(t, max == nil)
+	assert.Assert(t, min != nil)
+	if min != nil {
+		assert.Equal(t, 0.0, *min)
+	}
+	assert.Assert(t, max != nil)
+	if max != nil {
+		assert.Equal(t, 65535.0, *max)
+	}
 }
 
 // Test the range -0.02..0.002
@@ -95,12 +136,81 @@ func Test_yangRangeDecimal(t *testing.T) {
 	assert.NilError(t, err)
 	assert.Assert(t, min != nil)
 	if min != nil {
-		assert.Equal(t, 2.0100000000000002, *min)
+		assert.Equal(t, -2.0100000000000002, *min)
 	}
 	assert.Assert(t, max != nil)
 	if max != nil {
 		assert.Equal(t, 20.05, *max)
 	}
+}
+
+// Test the min and max of int32 - range is not needed then
+func Test_yangRangeMinMaxInt32(t *testing.T) {
+	testRange1 := make(yang.YangRange, 0)
+	testRange1 = append(testRange1, yang.YRange{
+		Min: yang.Number{
+			Negative:       true,
+			Value:          math.MinInt32 * -1,
+			FractionDigits: 0,
+		},
+		Max: yang.Number{
+			Negative:       false,
+			Value:          math.MaxInt32,
+			FractionDigits: 0,
+		},
+	})
+
+	min, max, err := yangRange(testRange1, yang.Yint32)
+	assert.NilError(t, err)
+	assert.Assert(t, min == nil)
+	assert.Assert(t, max == nil)
+}
+
+// Test the min and max of int64 - range is not needed
+func Test_yangRangeMinMaxInt64(t *testing.T) {
+	testRange1 := make(yang.YangRange, 0)
+	testRange1 = append(testRange1, yang.YRange{
+		Min: yang.Number{
+			Negative:       true,
+			Value:          math.MinInt64 * -1,
+			FractionDigits: 0,
+		},
+		Max: yang.Number{
+			Negative:       false,
+			Value:          math.MaxInt64,
+			FractionDigits: 0,
+		},
+	})
+
+	min, max, err := yangRange(testRange1, yang.Yint64)
+	assert.NilError(t, err)
+	assert.Assert(t, min == nil)
+	assert.Assert(t, max == nil)
+}
+
+// Test the min and max of uint32 - range is needed
+func Test_yangRangeMinMaxUint32(t *testing.T) {
+	testRange1 := make(yang.YangRange, 0)
+	testRange1 = append(testRange1, yang.YRange{
+		Min: yang.Number{
+			Negative:       false,
+			Value:          0,
+			FractionDigits: 0,
+		},
+		Max: yang.Number{
+			Negative:       false,
+			Value:          math.MaxUint32,
+			FractionDigits: 0,
+		},
+	})
+
+	min, max, err := yangRange(testRange1, yang.Yuint32)
+	assert.NilError(t, err)
+	assert.Assert(t, min != nil)
+	if min != nil {
+		assert.Equal(t, 0.0, *min)
+	}
+	assert.Assert(t, max == nil)
 }
 
 func Test_pathToSchemaName(t *testing.T) {
@@ -124,14 +234,14 @@ func Test_newPathItem(t *testing.T) {
 	}
 
 	pathItem := newPathItem(&testDirEntry, "/test-1/test-2/{id}/test-3/{id}/test-4",
-		"/parent-1/{parent1-name}/parent-2/{parent2-name}")
+		"/parent-1/{parent1-name}/parent-2/{parent2-name}", pathTypeContainer)
 	assert.Assert(t, pathItem != nil)
 	if pathItem != nil {
 		g := pathItem.Get
 		assert.Assert(t, g != nil)
 		if g != nil {
-			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4", g.Summary)
-			assert.DeepEqual(t, []string{"Parent-1_Parent-2"}, g.Tags)
+			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4 Container", g.Summary)
+			assert.DeepEqual(t, []string{"Parent-1_Parent-2", "Container"}, g.Tags)
 		}
 		assert.Assert(t, pathItem.Post != nil)
 		assert.Equal(t, "POST /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Post.Summary)
@@ -139,7 +249,7 @@ func Test_newPathItem(t *testing.T) {
 
 		assert.Assert(t, pathItem.Delete != nil)
 		assert.Equal(t, "DELETE /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Delete.Summary)
-		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4", pathItem.Delete.OperationID)
+		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4_Container", pathItem.Delete.OperationID)
 
 		assert.Equal(t, 3, len(pathItem.Parameters))
 		for _, p := range pathItem.Parameters {
