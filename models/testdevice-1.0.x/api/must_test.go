@@ -43,6 +43,28 @@ func Test_WalkAndValidateMustSucceed(t *testing.T) {
 	assert.NoError(t, validateErr)
 }
 
+func Test_WalkAndValidateMustMinMaxFailure(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-min-max.json")
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	device := new(Device)
+
+	schema, err := Schema()
+	if err := schema.Unmarshal(sampleConfig, device); err != nil {
+		assert.NoError(t, err)
+	}
+	schema.Root = device
+	assert.NotNil(t, device)
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	assert.NotNil(t, nn)
+
+	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
+	assert.True(t, ynnOk)
+	validateErr := ynn.WalkAndValidateMust()
+	assert.Error(t, validateErr)
+}
+
 func Test_WalkAndValidateMustFailureList2a(t *testing.T) {
 	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-must-list2a-false.json")
 	if err != nil {
