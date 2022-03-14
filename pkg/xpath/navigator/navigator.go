@@ -18,6 +18,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/SeanCondon/xpath"
+	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"reflect"
@@ -46,6 +47,8 @@ type XpathEvaluate struct {
 type YangNodeNavigator struct {
 	root, curr *yang.Entry
 }
+
+var log = logging.GetLogger("config-model", "navigator")
 
 func NewYangNodeNavigator(root *yang.Entry, device ygot.ValidatedGoStruct) xpath.NodeNavigator {
 	nav := &YangNodeNavigator{
@@ -262,6 +265,7 @@ func (x *YangNodeNavigator) WalkAndValidateMust() error {
 			(x.MoveToParent() && x.MoveToNext()) ||
 			(x.MoveToParent() && x.MoveToNext()) ||
 			(x.MoveToParent() && x.MoveToNext()) {
+			//fmt.Printf("node %s\n", x.curr.Name)
 			mustIf, ok := x.curr.Annotation["must"]
 			if ok {
 				mustStruct, okMustStruct := mustIf.(*yang.Must)
@@ -270,22 +274,23 @@ func (x *YangNodeNavigator) WalkAndValidateMust() error {
 					if err != nil {
 						return err
 					}
-					result := mustExpr.Evaluate(x)
+					x1 := x.Copy().(*YangNodeNavigator)
+					result := mustExpr.Evaluate(x1)
 					resultBool, resultOk := result.(bool)
 					if !resultOk {
 						return fmt.Errorf("result of %s cannot be evaluated as bool %v",
 							mustExpr.String(), result)
 					}
 					if !resultBool {
-						items := x.generateMustError("@*")
+						items := x1.generateMustError("@*")
 						if len(items) == 0 {
-							items = x.generateMustError("*")
+							items = x1.generateMustError("*")
 						}
 						return fmt.Errorf("%s. Must statement '%v' to true. Container(s): %v",
 							mustStruct.ErrorMessage.Name,
 							mustStruct.Name, items)
 					}
-					fmt.Printf("Must %s: %v\n", mustExpr.String(), resultBool)
+					log.Infof("Checking Must rule %s: %v", mustExpr.String(), resultBool)
 				}
 			}
 			continue
