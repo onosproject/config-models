@@ -62,7 +62,7 @@ func Test_WalkAndValidateMustMinMaxFailure(t *testing.T) {
 	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
 	assert.True(t, ynnOk)
 	validateErr := ynn.WalkAndValidateMust()
-	assert.Error(t, validateErr)
+	assert.EqualError(t, validateErr, "range-min must be less than or equal to range-max. Must statement 'number(./t1:range-min) <= number(./t1:range-max)' to true. Container(s): [name=l2a1]")
 }
 
 func Test_WalkAndValidateMustFailureList2a(t *testing.T) {

@@ -265,7 +265,7 @@ func (x *YangNodeNavigator) WalkAndValidateMust() error {
 			(x.MoveToParent() && x.MoveToNext()) ||
 			(x.MoveToParent() && x.MoveToNext()) ||
 			(x.MoveToParent() && x.MoveToNext()) {
-			//fmt.Printf("node %s\n", x.curr.Name)
+
 			mustIf, ok := x.curr.Annotation["must"]
 			if ok {
 				mustStruct, okMustStruct := mustIf.(*yang.Must)
