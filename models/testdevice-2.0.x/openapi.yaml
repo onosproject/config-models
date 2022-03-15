@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
 #
-# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+# SPDX-License-Identifier: Apache-2.0
 components:
   parameters:
     target:
@@ -109,7 +109,7 @@ components:
           items:
             description: leaf list inside Container 2a
             maximum: 200
-            minimum: 100
+            minimum: -100
             title: leaf2e
             type: integer
           title: leaf-list-leaf2e
@@ -123,7 +123,7 @@ components:
         leaf2b:
           description: Voltage leaf inside Container 2a
           maximum: 2
-          minimum: 0.001
+          minimum: -0.001
           title: leaf2b
           type: number
         leaf2c:
@@ -197,6 +197,11 @@ components:
       required:
       - name
       type: object
+    Cont1a_List2a_List:
+      items:
+        $ref: '#/components/schemas/Cont1a_List2a'
+      type: array
+      x-list-multiple: true
     Cont1b-state:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyTarget'
@@ -273,6 +278,11 @@ components:
       - index1
       - index2
       type: object
+    Cont1b-state_List2b_List:
+      items:
+        $ref: '#/components/schemas/Cont1b-state_List2b'
+      type: array
+      x-list-multiple: true
     LeafAtTopLevel:
       description: A leaf at the top level (not recommended but must be supported)
       pattern: '[A-Z]{3}-[0-9]*'
@@ -285,23 +295,22 @@ info:
     url: https://opennetworking.org
   description: TODO add a description field in Metadata.yaml?
   license:
-    name: LicenseRef-ONF-Member-1.0
-    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
-  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   title: testdevice-2.0.0
   version: 2.0.0
 openapi: 3.0.0
 paths:
   /testdevice/v2.0.0/{target}/cont1a:
     delete:
-      operationId: deleteCont1a
+      operationId: deleteCont1a_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /cont1a
     description: The top level container
     get:
-      operationId: getCont1a
+      operationId: getCont1a_Container
       responses:
         "200":
           content:
@@ -309,9 +318,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1a'
           description: GET OK 200
-      summary: GET /cont1a
+      summary: GET /cont1a Container
       tags:
       - ""
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -324,14 +334,14 @@ paths:
       summary: POST /cont1a
   /testdevice/v2.0.0/{target}/cont1a/cont2a:
     delete:
-      operationId: deleteCont1a_Cont2a
+      operationId: deleteCont1a_Cont2a_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /cont1a/cont2a
     description: The 2nd level container
     get:
-      operationId: getCont1a_Cont2a
+      operationId: getCont1a_Cont2a_Container
       responses:
         "200":
           content:
@@ -339,9 +349,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1a_Cont2a'
           description: GET OK 200
-      summary: GET /cont1a/cont2a
+      summary: GET /cont1a/cont2a Container
       tags:
       - Cont1a
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -354,14 +365,14 @@ paths:
       summary: POST /cont1a/cont2a
   /testdevice/v2.0.0/{target}/cont1a/cont2d:
     delete:
-      operationId: deleteCont1a_Cont2d
+      operationId: deleteCont1a_Cont2d_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /cont1a/cont2d
     description: Container 2d
     get:
-      operationId: getCont1a_Cont2d
+      operationId: getCont1a_Cont2d_Container
       responses:
         "200":
           content:
@@ -369,9 +380,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1a_Cont2d'
           description: GET OK 200
-      summary: GET /cont1a/cont2d
+      summary: GET /cont1a/cont2d Container
       tags:
       - Cont1a
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -382,16 +394,35 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/cont2d
+  /testdevice/v2.0.0/{target}/cont1a/list2a:
+    description: A simple list of configuration items
+    get:
+      operationId: getCont1a_List2a_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Cont1a_List2a_List'
+                type: array
+          description: GET OK 200
+      summary: GET /cont1a/list2a List
+      tags:
+      - Cont1a_List2a
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /testdevice/v2.0.0/{target}/cont1a/list2a/{name}:
     delete:
-      operationId: deleteCont1a_List2a
+      operationId: deleteCont1a_List2a_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /cont1a/list2a
     description: A simple list of configuration items
     get:
-      operationId: getCont1a_List2a
+      operationId: getCont1a_List2a_Container
       responses:
         "200":
           content:
@@ -399,9 +430,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1a_List2a'
           description: GET OK 200
-      summary: GET /cont1a/list2a
+      summary: GET /cont1a/list2a Container
       tags:
       - Cont1a_List2a
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -424,7 +456,7 @@ paths:
     description: A second top level container - this one for state attributes. Edit
       symbol should not be visible
     get:
-      operationId: getCont1b-state
+      operationId: getCont1b-state_Container
       responses:
         "200":
           content:
@@ -432,16 +464,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1b-state'
           description: GET OK 200
-      summary: GET /cont1b-state
+      summary: GET /cont1b-state Container
       tags:
       - ""
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.0/{target}/cont1b-state/cont2c:
     description: This is a new container added in the 2019 version.  We don't have
       to say it's 'config false' - implied by parent
     get:
-      operationId: getCont1b-state_Cont2c
+      operationId: getCont1b-state_Cont2c_Container
       responses:
         "200":
           content:
@@ -449,15 +482,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1b-state_Cont2c'
           description: GET OK 200
-      summary: GET /cont1b-state/cont2c
+      summary: GET /cont1b-state/cont2c Container
       tags:
       - Cont1b-state
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice/v2.0.0/{target}/cont1b-state/list2b:
+    description: A simple list of state items, with a double key
+    get:
+      operationId: getCont1b-state_List2b_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Cont1b-state_List2b_List'
+                type: array
+          description: GET OK 200
+      summary: GET /cont1b-state/list2b List
+      tags:
+      - Cont1b-state_List2b
+      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.0/{target}/cont1b-state/list2b/{index1}/{index2}:
     description: A simple list of state items, with a double key
     get:
-      operationId: getCont1b-state_List2b
+      operationId: getCont1b-state_List2b_Container
       responses:
         "200":
           content:
@@ -465,9 +518,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Cont1b-state_List2b'
           description: GET OK 200
-      summary: GET /cont1b-state/list2b
+      summary: GET /cont1b-state/list2b Container
       tags:
       - Cont1b-state_List2b
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:

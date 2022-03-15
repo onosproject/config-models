@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
 #
-# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+# SPDX-License-Identifier: Apache-2.0
 components:
   parameters:
     target:
@@ -759,6 +759,11 @@ components:
           type: string
       title: Components_Component_Config
       type: object
+    Components_Component_List:
+      items:
+        $ref: '#/components/schemas/Components_Component'
+      type: array
+      x-list-multiple: true
     Components_Component_Properties:
       description: 'Enclosing container '
       properties:
@@ -805,6 +810,11 @@ components:
           type: string
       title: Components_Component_Properties_Property_Config
       type: object
+    Components_Component_Properties_Property_List:
+      items:
+        $ref: '#/components/schemas/Components_Component_Properties_Property'
+      type: array
+      x-list-multiple: true
     Components_Component_Properties_Property_State:
       description: Operational state data for each property
       properties:
@@ -891,13 +901,13 @@ components:
             The arithmetic mean value of the statistic over the
             sampling period.
           maximum: 922337203685477600
-          minimum: 922337203685477600
+          minimum: -922337203685477600
           title: avg
           type: number
         instant:
           description: The instantaneous value of the statistic.
           maximum: 922337203685477600
-          minimum: 922337203685477600
+          minimum: -922337203685477600
           title: instant
           type: number
         max:
@@ -905,7 +915,7 @@ components:
             The maximum value of the statistic over the sampling
             period
           maximum: 922337203685477600
-          minimum: 922337203685477600
+          minimum: -922337203685477600
           title: max
           type: number
         min:
@@ -913,7 +923,7 @@ components:
             The minimum value of the statistic over the sampling
             period
           maximum: 922337203685477600
-          minimum: 922337203685477600
+          minimum: -922337203685477600
           title: min
           type: number
       title: Components_Component_State_Temperature
@@ -956,6 +966,11 @@ components:
           x-leafref: ../../../../../component/config/name
       title: Components_Component_Subcomponents_Subcomponent_Config
       type: object
+    Components_Component_Subcomponents_Subcomponent_List:
+      items:
+        $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
+      type: array
+      x-list-multiple: true
     Components_Component_Subcomponents_Subcomponent_State:
       description: 'Operational state data '
       properties:
@@ -1142,7 +1157,6 @@ components:
             up to down.  A zero value means dampening is turned off,
             i.e., immediate notification.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: down
           type: integer
@@ -1152,7 +1166,6 @@ components:
             transitions from down to up.  A zero value means dampening
             is turned off, i.e., immediate notification.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: up
           type: integer
@@ -1167,7 +1180,6 @@ components:
             up to down.  A zero value means dampening is turned off,
             i.e., immediate notification.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: down
           type: integer
@@ -1177,12 +1189,16 @@ components:
             transitions from down to up.  A zero value means dampening
             is turned off, i.e., immediate notification.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: up
           type: integer
       title: Interfaces_Interface_Hold-time_State
       type: object
+    Interfaces_Interface_List:
+      items:
+        $ref: '#/components/schemas/Interfaces_Interface'
+      type: array
+      x-list-multiple: true
     Interfaces_Interface_State:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
@@ -1254,7 +1270,6 @@ components:
             System assigned number for each interface.  Corresponds to
             ifIndex object in SNMP Interface MIB
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: ifindex
           type: integer
@@ -1268,7 +1283,6 @@ components:
             The value is the timestamp in nanoseconds relative to
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: last-change
           type: integer
@@ -1357,7 +1371,6 @@ components:
             between up and down since the time the device restarted
             or the last-clear time, whichever is most recent.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: carrier-transitions
           type: integer
@@ -1372,7 +1385,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-broadcast-pkts
           type: integer
@@ -1389,7 +1401,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-discards
           type: integer
@@ -1408,7 +1419,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-errors
           type: integer
@@ -1421,7 +1431,6 @@ components:
             when the device is re-initialization as indicated by the
             value of 'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-fcs-errors
           type: integer
@@ -1437,7 +1446,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-multicast-pkts
           type: integer
@@ -1451,7 +1459,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-octets
           type: integer
@@ -1466,7 +1473,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-unicast-pkts
           type: integer
@@ -1487,7 +1493,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-unknown-protos
           type: integer
@@ -1499,7 +1504,6 @@ components:
             The value is the timestamp in nanoseconds relative to
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: last-clear
           type: integer
@@ -1515,7 +1519,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-broadcast-pkts
           type: integer
@@ -1532,7 +1535,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-discards
           type: integer
@@ -1549,7 +1551,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-errors
           type: integer
@@ -1567,7 +1568,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-multicast-pkts
           type: integer
@@ -1581,7 +1581,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-octets
           type: integer
@@ -1597,7 +1596,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-unicast-pkts
           type: integer
@@ -1693,12 +1691,16 @@ components:
             subinterfaces, this value should default to 0, i.e., the
             default subinterface.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: index
           type: integer
       title: Interfaces_Interface_Subinterfaces_Subinterface_Config
       type: object
+    Interfaces_Interface_Subinterfaces_Subinterface_List:
+      items:
+        $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
+      type: array
+      x-list-multiple: true
     Interfaces_Interface_Subinterfaces_Subinterface_State:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
@@ -1765,7 +1767,6 @@ components:
             System assigned number for each interface.  Corresponds to
             ifIndex object in SNMP Interface MIB
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: ifindex
           type: integer
@@ -1776,7 +1777,6 @@ components:
             subinterfaces, this value should default to 0, i.e., the
             default subinterface.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: index
           type: integer
@@ -1790,7 +1790,6 @@ components:
             The value is the timestamp in nanoseconds relative to
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: last-change
           type: integer
@@ -1823,7 +1822,6 @@ components:
             between up and down since the time the device restarted
             or the last-clear time, whichever is most recent.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: carrier-transitions
           type: integer
@@ -1838,7 +1836,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-broadcast-pkts
           type: integer
@@ -1855,7 +1852,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-discards
           type: integer
@@ -1874,7 +1870,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-errors
           type: integer
@@ -1887,7 +1882,6 @@ components:
             when the device is re-initialization as indicated by the
             value of 'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-fcs-errors
           type: integer
@@ -1903,7 +1897,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-multicast-pkts
           type: integer
@@ -1917,7 +1910,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-octets
           type: integer
@@ -1932,7 +1924,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-unicast-pkts
           type: integer
@@ -1953,7 +1944,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: in-unknown-protos
           type: integer
@@ -1965,7 +1955,6 @@ components:
             The value is the timestamp in nanoseconds relative to
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: last-clear
           type: integer
@@ -1981,7 +1970,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-broadcast-pkts
           type: integer
@@ -1998,7 +1986,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-discards
           type: integer
@@ -2015,7 +2002,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-errors
           type: integer
@@ -2033,7 +2019,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-multicast-pkts
           type: integer
@@ -2047,7 +2032,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-octets
           type: integer
@@ -2063,7 +2047,6 @@ components:
             other times as indicated by the value of
             'last-clear'.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: out-unicast-pkts
           type: integer
@@ -2187,10 +2170,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_AUTHORIZATION_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_ACCOUNTING_EVENT_LOGIN
+          - AAA_ACCOUNTING_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_AUTHORIZATION_EVENT_COMMAND
           title: event-type
           type: string
         record:
@@ -2201,6 +2184,11 @@ components:
           type: string
       title: System_Aaa_Accounting_Events_Event_Config
       type: object
+    System_Aaa_Accounting_Events_Event_List:
+      items:
+        $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
+      type: array
+      x-list-multiple: true
     System_Aaa_Accounting_Events_Event_State:
       description: Operational state data for accounting events
       properties:
@@ -2209,10 +2197,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_AUTHORIZATION_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
-          - AAA_ACCOUNTING_EVENT_COMMAND
           - AAA_ACCOUNTING_EVENT_LOGIN
+          - AAA_ACCOUNTING_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_AUTHORIZATION_EVENT_COMMAND
           title: event-type
           type: string
         record:
@@ -2407,6 +2395,11 @@ components:
           type: string
       title: System_Aaa_Authentication_Users_User_Config
       type: object
+    System_Aaa_Authentication_Users_User_List:
+      items:
+        $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
+      type: array
+      x-list-multiple: true
     System_Aaa_Authentication_Users_User_State:
       description: Operational state data for local users
       properties:
@@ -2514,6 +2507,11 @@ components:
           type: string
       title: System_Aaa_Authorization_Events_Event_Config
       type: object
+    System_Aaa_Authorization_Events_Event_List:
+      items:
+        $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
+      type: array
+      x-list-multiple: true
     System_Aaa_Authorization_Events_Event_State:
       description: Operational state data for each authorized activity
       properties:
@@ -2592,12 +2590,17 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - RADIUS
           - TACACS
+          - RADIUS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_Config
       type: object
+    System_Aaa_Server-groups_Server-group_List:
+      items:
+        $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
+      type: array
+      x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Servers:
       description: Enclosing container the list of servers
       properties:
@@ -2651,6 +2654,11 @@ components:
           type: integer
       title: System_Aaa_Server-groups_Server-group_Servers_Server_Config
       type: object
+    System_Aaa_Server-groups_Server-group_Servers_Server_List:
+      items:
+        $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
+      type: array
+      x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Servers_Server_Radius:
       description: Top-level container for RADIUS server data
       properties:
@@ -2738,21 +2746,18 @@ components:
         access-accepts:
           description: Received Access-Accept messages.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: access-accepts
           type: integer
         access-rejects:
           description: Received Access-Reject messages.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: access-rejects
           type: integer
         retried-access-requests:
           description: Retransmitted Access-Request messages.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: retried-access-requests
           type: integer
@@ -2761,7 +2766,6 @@ components:
             Access-Request messages that have timed-out,
             requiring retransmission.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: timeout-access-requests
           type: integer
@@ -2779,7 +2783,6 @@ components:
             Number of aborted connections to the server.  These do
             not include connections that are close gracefully.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: connection-aborts
           type: integer
@@ -2788,14 +2791,12 @@ components:
             Number of connection close requests sent to the server, e.g.
             socket close
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: connection-closes
           type: integer
         connection-failures:
           description: Number of connection failures to the server
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: connection-failures
           type: integer
@@ -2804,35 +2805,30 @@ components:
             Number of new connection requests sent to the server, e.g.
             socket open
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: connection-opens
           type: integer
         connection-timeouts:
           description: Number of connection timeouts to the server
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: connection-timeouts
           type: integer
         errors-received:
           description: Number of error messages received from the server
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: errors-received
           type: integer
         messages-received:
           description: Number of messages received by the server
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: messages-received
           type: integer
         messages-sent:
           description: Number of messages sent to the server
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: messages-sent
           type: integer
@@ -2913,8 +2909,8 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - RADIUS
           - TACACS
+          - RADIUS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_State
@@ -3081,6 +3077,11 @@ components:
           type: array
       title: System_Dns_Host-entries_Host-entry_Config
       type: object
+    System_Dns_Host-entries_Host-entry_List:
+      items:
+        $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
+      type: array
+      x-list-multiple: true
     System_Dns_Host-entries_Host-entry_State:
       description: Operational state data for static host entries
       properties:
@@ -3173,6 +3174,11 @@ components:
           type: integer
       title: System_Dns_Servers_Server_Config
       type: object
+    System_Dns_Servers_Server_List:
+      items:
+        $ref: '#/components/schemas/System_Dns_Servers_Server'
+      type: array
+      x-list-multiple: true
     System_Dns_Servers_Server_State:
       description: Operational state data for each DNS resolver
       properties:
@@ -3276,25 +3282,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - MAIL
-          - AUTH
-          - LOCAL2
-          - SYSTEM_DAEMON
-          - LOCAL7
-          - NTP
-          - LOCAL0
           - LOCAL4
-          - LOCAL5
-          - USER
-          - LOCAL6
           - KERNEL
-          - AUTHPRIV
-          - LOCAL1
           - LOCAL3
-          - ALL
-          - CONSOLE
+          - SYSTEM_DAEMON
+          - LOCAL0
+          - LOCAL1
+          - LOCAL7
+          - AUTHPRIV
+          - USER
           - SYSLOG
+          - LOCAL5
+          - NTP
           - AUDIT
+          - MAIL
+          - LOCAL2
+          - AUTH
+          - CONSOLE
+          - LOCAL6
+          - ALL
           title: facility
           type: string
         severity:
@@ -3305,31 +3311,36 @@ components:
           type: string
       title: System_Logging_Console_Selectors_Selector_Config
       type: object
+    System_Logging_Console_Selectors_Selector_List:
+      items:
+        $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
+      type: array
+      x-list-multiple: true
     System_Logging_Console_Selectors_Selector_State:
       description: 'Operational state data '
       properties:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - MAIL
-          - AUTH
-          - LOCAL2
-          - SYSTEM_DAEMON
-          - LOCAL7
-          - NTP
-          - LOCAL0
           - LOCAL4
-          - LOCAL5
-          - USER
-          - LOCAL6
           - KERNEL
-          - AUTHPRIV
-          - LOCAL1
           - LOCAL3
-          - ALL
-          - CONSOLE
+          - SYSTEM_DAEMON
+          - LOCAL0
+          - LOCAL1
+          - LOCAL7
+          - AUTHPRIV
+          - USER
           - SYSLOG
+          - LOCAL5
+          - NTP
           - AUDIT
+          - MAIL
+          - LOCAL2
+          - AUTH
+          - CONSOLE
+          - LOCAL6
+          - ALL
           title: facility
           type: string
         severity:
@@ -3395,6 +3406,11 @@ components:
           type: string
       title: System_Logging_Remote-servers_Remote-server_Config
       type: object
+    System_Logging_Remote-servers_Remote-server_List:
+      items:
+        $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
+      type: array
+      x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Selectors:
       description: 'Enclosing container '
       properties:
@@ -3438,25 +3454,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - MAIL
-          - AUTH
-          - LOCAL2
-          - SYSTEM_DAEMON
-          - LOCAL7
-          - NTP
-          - LOCAL0
           - LOCAL4
-          - LOCAL5
-          - USER
-          - LOCAL6
           - KERNEL
-          - AUTHPRIV
-          - LOCAL1
           - LOCAL3
-          - ALL
-          - CONSOLE
+          - SYSTEM_DAEMON
+          - LOCAL0
+          - LOCAL1
+          - LOCAL7
+          - AUTHPRIV
+          - USER
           - SYSLOG
+          - LOCAL5
+          - NTP
           - AUDIT
+          - MAIL
+          - LOCAL2
+          - AUTH
+          - CONSOLE
+          - LOCAL6
+          - ALL
           title: facility
           type: string
         severity:
@@ -3467,31 +3483,36 @@ components:
           type: string
       title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       type: object
+    System_Logging_Remote-servers_Remote-server_Selectors_Selector_List:
+      items:
+        $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector'
+      type: array
+      x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Selectors_Selector_State:
       description: 'Operational state data '
       properties:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - MAIL
-          - AUTH
-          - LOCAL2
-          - SYSTEM_DAEMON
-          - LOCAL7
-          - NTP
-          - LOCAL0
           - LOCAL4
-          - LOCAL5
-          - USER
-          - LOCAL6
           - KERNEL
-          - AUTHPRIV
-          - LOCAL1
           - LOCAL3
-          - ALL
-          - CONSOLE
+          - SYSTEM_DAEMON
+          - LOCAL0
+          - LOCAL1
+          - LOCAL7
+          - AUTHPRIV
+          - USER
           - SYSLOG
+          - LOCAL5
+          - NTP
           - AUDIT
+          - MAIL
+          - LOCAL2
+          - AUTH
+          - CONSOLE
+          - LOCAL6
+          - ALL
           title: facility
           type: string
         severity:
@@ -3544,14 +3565,12 @@ components:
             Reports the total physical memory available on the
             system.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: physical
           type: integer
         reserved:
           description: Memory reserved for system use
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: reserved
           type: integer
@@ -3647,6 +3666,11 @@ components:
           type: string
       title: System_Ntp_Ntp-keys_Ntp-key_Config
       type: object
+    System_Ntp_Ntp-keys_Ntp-key_List:
+      items:
+        $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
+      type: array
+      x-list-multiple: true
     System_Ntp_Ntp-keys_Ntp-key_State:
       description: Operational state data for NTP auth keys
       properties:
@@ -3744,6 +3768,11 @@ components:
           type: integer
       title: System_Ntp_Servers_Server_Config
       type: object
+    System_Ntp_Servers_Server_List:
+      items:
+        $ref: '#/components/schemas/System_Ntp_Servers_Server'
+      type: array
+      x-list-multiple: true
     System_Ntp_Servers_Server_State:
       description: Operational state data for an NTP server.
       properties:
@@ -3767,14 +3796,12 @@ components:
             Estimate of the current time offset from the peer.  This is
             the time difference between the local and reference clock.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: offset
           type: integer
         poll-interval:
           description: Polling interval of the peer
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: poll-interval
           type: integer
@@ -3794,7 +3821,6 @@ components:
         root-delay:
           description: The round-trip delay to the server, in milliseconds.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: root-delay
           type: integer
@@ -3803,7 +3829,6 @@ components:
             Dispersion (epsilon) represents the maximum error inherent
             in the measurement
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: root-dispersion
           type: integer
@@ -3840,7 +3865,6 @@ components:
             Count of the number of NTP packets received that were not
             processed due to authentication mismatch.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: auth-mismatch
           type: integer
@@ -3890,7 +3914,6 @@ components:
         backoff-interval:
           description: Openflow agent connection backoff interval.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: backoff-interval
           type: integer
@@ -3909,14 +3932,12 @@ components:
         inactivity-probe:
           description: Openflow agent inactivity probe period.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: inactivity-probe
           type: integer
         max-backoff:
           description: Openflow agent max backoff time.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: max-backoff
           type: integer
@@ -3928,7 +3949,6 @@ components:
         backoff-interval:
           description: Openflow agent connection backoff interval.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: backoff-interval
           type: integer
@@ -3947,14 +3967,12 @@ components:
         inactivity-probe:
           description: Openflow agent inactivity probe period.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: inactivity-probe
           type: integer
         max-backoff:
           description: Openflow agent max backoff time.
           format: int32
-          maximum: 4294967295
           minimum: 0
           title: max-backoff
           type: integer
@@ -4082,6 +4100,11 @@ components:
           type: string
       title: System_Openflow_Controllers_Controller_Connections_Connection_Config
       type: object
+    System_Openflow_Controllers_Controller_Connections_Connection_List:
+      items:
+        $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection'
+      type: array
+      x-list-multiple: true
     System_Openflow_Controllers_Controller_Connections_Connection_State:
       description: |-
         Operational state data for OpenFlow controller
@@ -4137,6 +4160,11 @@ components:
           type: string
       title: System_Openflow_Controllers_Controller_Connections_Connection_State
       type: object
+    System_Openflow_Controllers_Controller_List:
+      items:
+        $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
+      type: array
+      x-list-multiple: true
     System_Openflow_Controllers_Controller_State:
       description: Container for the Openflow controller state.
       properties:
@@ -4174,20 +4202,23 @@ components:
       required:
       - pid
       type: object
+    System_Processes_Process_List:
+      items:
+        $ref: '#/components/schemas/System_Processes_Process'
+      type: array
+      x-list-multiple: true
     System_Processes_Process_State:
       description: State parameters related to monitored processes
       properties:
         cpu-usage-system:
           description: CPU time consumed by this process in kernel mode.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: cpu-usage-system
           type: integer
         cpu-usage-user:
           description: CPU time consumed by this process in user mode.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: cpu-usage-user
           type: integer
@@ -4213,7 +4244,6 @@ components:
         memory-usage:
           description: Bytes allocated and still in use by the process
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: memory-usage
           type: integer
@@ -4230,7 +4260,6 @@ components:
         pid:
           description: The process pid
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: pid
           type: integer
@@ -4242,14 +4271,12 @@ components:
             can be reported accurately, otherwise it should not be
             reported.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: start-time
           type: integer
         uptime:
           description: Amount of time elapsed since this process started.
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: uptime
           type: integer
@@ -4351,7 +4378,6 @@ components:
             restarted.  The value is the timestamp in seconds relative
             to the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
-          maximum: 1.8446744073709552e+19
           minimum: 0
           title: boot-time
           type: integer
@@ -4480,23 +4506,22 @@ info:
     url: https://opennetworking.org
   description: TODO add a description field in Metadata.yaml?
   license:
-    name: LicenseRef-ONF-Member-1.0
-    url: https://opennetworking.org/wp-content/uploads/2020/06/ONF-Member-Only-Software-License-v1.0.pdf
-  termsOfService: https://opennetworking.org/wp-content/uploads/2019/02/ONF-Licensing-and-IPR-FAQ-2020-06.pdf
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   title: devicesim-1.0.0
   version: 1.0.0
 openapi: 3.0.0
 paths:
   /devicesim/v1.0.0/{target}/components:
     delete:
-      operationId: deleteComponents
+      operationId: deleteComponents_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components
     description: Enclosing container for the components in the system.
     get:
-      operationId: getComponents
+      operationId: getComponents_Container
       responses:
         "200":
           content:
@@ -4504,9 +4529,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components'
           description: GET OK 200
-      summary: GET /components
+      summary: GET /components Container
       tags:
       - ""
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -4517,16 +4543,35 @@ paths:
         "201":
           description: created
       summary: POST /components
+  /devicesim/v1.0.0/{target}/components/component:
+    description: List of components, keyed by component name.
+    get:
+      operationId: getComponents_Component_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Components_Component_List'
+                type: array
+          description: GET OK 200
+      summary: GET /components/component List
+      tags:
+      - Components_Component
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/components/component/{name}:
     delete:
-      operationId: deleteComponents_Component
+      operationId: deleteComponents_Component_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component
     description: List of components, keyed by component name.
     get:
-      operationId: getComponents_Component
+      operationId: getComponents_Component_Container
       responses:
         "200":
           content:
@@ -4534,9 +4579,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component'
           description: GET OK 200
-      summary: GET /components/component
+      summary: GET /components/component Container
       tags:
       - Components_Component
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4557,14 +4603,14 @@ paths:
       summary: POST /components/component
   /devicesim/v1.0.0/{target}/components/component/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Config
+      operationId: deleteComponents_Component_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/config
     description: Configuration data for each component
     get:
-      operationId: getComponents_Component_Config
+      operationId: getComponents_Component_Config_Container
       responses:
         "200":
           content:
@@ -4572,9 +4618,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Config'
           description: GET OK 200
-      summary: GET /components/component/{name}/config
+      summary: GET /components/component/{name}/config Container
       tags:
       - Components_Component
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4595,14 +4642,14 @@ paths:
       summary: POST /components/component/{name}/config
   /devicesim/v1.0.0/{target}/components/component/{name}/properties:
     delete:
-      operationId: deleteComponents_Component_Properties
+      operationId: deleteComponents_Component_Properties_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties
     description: 'Enclosing container '
     get:
-      operationId: getComponents_Component_Properties
+      operationId: getComponents_Component_Properties_Container
       responses:
         "200":
           content:
@@ -4610,9 +4657,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Properties'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties
+      summary: GET /components/component/{name}/properties Container
       tags:
       - Components_Component
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4631,16 +4679,43 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties
+  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property:
+    description: List of system properties for the component
+    get:
+      operationId: getComponents_Component_Properties_Property_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Components_Component_Properties_Property_List'
+                type: array
+          description: GET OK 200
+      summary: GET /components/component/{name}/properties/property List
+      tags:
+      - Components_Component_Properties_Property
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}:
     delete:
-      operationId: deleteComponents_Component_Properties_Property
+      operationId: deleteComponents_Component_Properties_Property_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties/property
     description: List of system properties for the component
     get:
-      operationId: getComponents_Component_Properties_Property
+      operationId: getComponents_Component_Properties_Property_Container
       responses:
         "200":
           content:
@@ -4648,9 +4723,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Properties_Property'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties/property
+      summary: GET /components/component/{name}/properties/property Container
       tags:
       - Components_Component_Properties_Property
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4679,14 +4755,14 @@ paths:
       summary: POST /components/component/{name}/properties/property
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Properties_Property_Config
+      operationId: deleteComponents_Component_Properties_Property_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties/property/{name}/config
     description: Configuration data for each property
     get:
-      operationId: getComponents_Component_Properties_Property_Config
+      operationId: getComponents_Component_Properties_Property_Config_Container
       responses:
         "200":
           content:
@@ -4695,8 +4771,10 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_Config'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/config
+        Container
       tags:
       - Components_Component_Properties_Property
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4726,7 +4804,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/state:
     description: Operational state data for each property
     get:
-      operationId: getComponents_Component_Properties_Property_State
+      operationId: getComponents_Component_Properties_Property_State_Container
       responses:
         "200":
           content:
@@ -4734,9 +4812,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_State'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties/property/{name}/state
+      summary: GET /components/component/{name}/properties/property/{name}/state Container
       tags:
       - Components_Component_Properties_Property
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4758,7 +4837,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/state:
     description: Operational state data for each component
     get:
-      operationId: getComponents_Component_State
+      operationId: getComponents_Component_State_Container
       responses:
         "200":
           content:
@@ -4766,9 +4845,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_State'
           description: GET OK 200
-      summary: GET /components/component/{name}/state
+      summary: GET /components/component/{name}/state Container
       tags:
       - Components_Component
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4786,7 +4866,7 @@ paths:
       avg/min/max statistics are not supported, the target is expected
       to just supply the instant value
     get:
-      operationId: getComponents_Component_State_Temperature
+      operationId: getComponents_Component_State_Temperature_Container
       responses:
         "200":
           content:
@@ -4794,9 +4874,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_State_Temperature'
           description: GET OK 200
-      summary: GET /components/component/{name}/state/temperature
+      summary: GET /components/component/{name}/state/temperature Container
       tags:
       - Components_Component_State
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4809,14 +4890,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents:
     delete:
-      operationId: deleteComponents_Component_Subcomponents
+      operationId: deleteComponents_Component_Subcomponents_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents
     description: Enclosing container for subcomponent references
     get:
-      operationId: getComponents_Component_Subcomponents
+      operationId: getComponents_Component_Subcomponents_Container
       responses:
         "200":
           content:
@@ -4824,9 +4905,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Subcomponents'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents
+      summary: GET /components/component/{name}/subcomponents Container
       tags:
       - Components_Component
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4845,16 +4927,43 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents
+  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent:
+    description: List of subcomponent references
+    get:
+      operationId: getComponents_Component_Subcomponents_Subcomponent_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
+                type: array
+          description: GET OK 200
+      summary: GET /components/component/{name}/subcomponents/subcomponent List
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}:
     delete:
-      operationId: deleteComponents_Component_Subcomponents_Subcomponent
+      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents/subcomponent
     description: List of subcomponent references
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent
+      operationId: getComponents_Component_Subcomponents_Subcomponent_Container
       responses:
         "200":
           content:
@@ -4862,9 +4971,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent
+      summary: GET /components/component/{name}/subcomponents/subcomponent Container
       tags:
       - Components_Component_Subcomponents_Subcomponent
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4893,14 +5003,14 @@ paths:
       summary: POST /components/component/{name}/subcomponents/subcomponent
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
+      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents/subcomponent/{name}/config
     description: 'Configuration data '
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent_Config
+      operationId: getComponents_Component_Subcomponents_Subcomponent_Config_Container
       responses:
         "200":
           content:
@@ -4909,8 +5019,10 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_Config'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config
+        Container
       tags:
       - Components_Component_Subcomponents_Subcomponent
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4940,7 +5052,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/state:
     description: 'Operational state data '
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent_State
+      operationId: getComponents_Component_Subcomponents_Subcomponent_State_Container
       responses:
         "200":
           content:
@@ -4949,8 +5061,10 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
+        Container
       tags:
       - Components_Component_Subcomponents_Subcomponent
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4971,16 +5085,16 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/interfaces:
     delete:
-      operationId: deleteInterfaces
+      operationId: deleteInterfaces_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces
     description: |-
       Top level container for interfaces, including configuration
       and state data.
     get:
-      operationId: getInterfaces
+      operationId: getInterfaces_Container
       responses:
         "200":
           content:
@@ -4988,9 +5102,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces'
           description: GET OK 200
-      summary: GET /interfaces
+      summary: GET /interfaces Container
       tags:
       - ""
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5001,16 +5116,35 @@ paths:
         "201":
           description: created
       summary: POST /interfaces
+  /devicesim/v1.0.0/{target}/interfaces/interface:
+    description: The list of named interfaces on the device.
+    get:
+      operationId: getInterfaces_Interface_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Interfaces_Interface_List'
+                type: array
+          description: GET OK 200
+      summary: GET /interfaces/interface List
+      tags:
+      - Interfaces_Interface
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}:
     delete:
-      operationId: deleteInterfaces_Interface
+      operationId: deleteInterfaces_Interface_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface
     description: The list of named interfaces on the device.
     get:
-      operationId: getInterfaces_Interface
+      operationId: getInterfaces_Interface_Container
       responses:
         "200":
           content:
@@ -5018,9 +5152,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface'
           description: GET OK 200
-      summary: GET /interfaces/interface
+      summary: GET /interfaces/interface Container
       tags:
       - Interfaces_Interface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5041,16 +5176,16 @@ paths:
       summary: POST /interfaces/interface
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/config:
     delete:
-      operationId: deleteInterfaces_Interface_Config
+      operationId: deleteInterfaces_Interface_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/config
     description: |-
       Configurable items at the global, physical interface
       level
     get:
-      operationId: getInterfaces_Interface_Config
+      operationId: getInterfaces_Interface_Config_Container
       responses:
         "200":
           content:
@@ -5058,9 +5193,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Config'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/config
+      summary: GET /interfaces/interface/{name}/config Container
       tags:
       - Interfaces_Interface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5081,16 +5217,16 @@ paths:
       summary: POST /interfaces/interface/{name}/config
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time:
     delete:
-      operationId: deleteInterfaces_Interface_Hold-time
+      operationId: deleteInterfaces_Interface_Hold-time_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/hold-time
     description: |-
       Top-level container for hold-time settings to enable
       dampening advertisements of interface transitions.
     get:
-      operationId: getInterfaces_Interface_Hold-time
+      operationId: getInterfaces_Interface_Hold-time_Container
       responses:
         "200":
           content:
@@ -5098,9 +5234,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/hold-time
+      summary: GET /interfaces/interface/{name}/hold-time Container
       tags:
       - Interfaces_Interface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5121,14 +5258,14 @@ paths:
       summary: POST /interfaces/interface/{name}/hold-time
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/config:
     delete:
-      operationId: deleteInterfaces_Interface_Hold-time_Config
+      operationId: deleteInterfaces_Interface_Hold-time_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/hold-time/config
     description: Configuration data for interface hold-time settings.
     get:
-      operationId: getInterfaces_Interface_Hold-time_Config
+      operationId: getInterfaces_Interface_Hold-time_Config_Container
       responses:
         "200":
           content:
@@ -5136,9 +5273,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_Config'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/hold-time/config
+      summary: GET /interfaces/interface/{name}/hold-time/config Container
       tags:
       - Interfaces_Interface_Hold-time
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5160,7 +5298,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/state:
     description: Operational state data for interface hold-time.
     get:
-      operationId: getInterfaces_Interface_Hold-time_State
+      operationId: getInterfaces_Interface_Hold-time_State_Container
       responses:
         "200":
           content:
@@ -5168,9 +5306,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_State'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/hold-time/state
+      summary: GET /interfaces/interface/{name}/hold-time/state Container
       tags:
       - Interfaces_Interface_Hold-time
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5184,7 +5323,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state:
     description: Operational state data at the global interface level
     get:
-      operationId: getInterfaces_Interface_State
+      operationId: getInterfaces_Interface_State_Container
       responses:
         "200":
           content:
@@ -5192,9 +5331,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_State'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/state
+      summary: GET /interfaces/interface/{name}/state Container
       tags:
       - Interfaces_Interface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5208,7 +5348,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
-      operationId: getInterfaces_Interface_State_Counters
+      operationId: getInterfaces_Interface_State_Counters_Container
       responses:
         "200":
           content:
@@ -5216,9 +5356,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_State_Counters'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/state/counters
+      summary: GET /interfaces/interface/{name}/state/counters Container
       tags:
       - Interfaces_Interface_State
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5231,16 +5372,16 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces
+      operationId: deleteInterfaces_Interface_Subinterfaces_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces
     description: |-
       Enclosing container for the list of subinterfaces associated
       with a physical interface
     get:
-      operationId: getInterfaces_Interface_Subinterfaces
+      operationId: getInterfaces_Interface_Subinterfaces_Container
       responses:
         "200":
           content:
@@ -5248,9 +5389,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/subinterfaces
+      summary: GET /interfaces/interface/{name}/subinterfaces Container
       tags:
       - Interfaces_Interface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5269,18 +5411,47 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces
+  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface:
+    description: |-
+      The list of subinterfaces (logical interfaces) associated
+      with a physical interface
+    get:
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
+                type: array
+          description: GET OK 200
+      summary: GET /interfaces/interface/{name}/subinterfaces/subinterface List
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface
+      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces/subinterface
     description: |-
       The list of subinterfaces (logical interfaces) associated
       with a physical interface
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Container
       responses:
         "200":
           content:
@@ -5288,9 +5459,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
           description: GET OK 200
-      summary: GET /interfaces/interface/{name}/subinterfaces/subinterface
+      summary: GET /interfaces/interface/{name}/subinterfaces/subinterface Container
       tags:
       - Interfaces_Interface_Subinterfaces_Subinterface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5319,14 +5491,14 @@ paths:
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config
+      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
     description: Configurable items at the subinterface level
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Config
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Config_Container
       responses:
         "200":
           content:
@@ -5335,8 +5507,10 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_Config'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
+        Container
       tags:
       - Interfaces_Interface_Subinterfaces_Subinterface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5366,7 +5540,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
     description: Operational state data for logical interfaces
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Container
       responses:
         "200":
           content:
@@ -5375,8 +5549,10 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state
+        Container
       tags:
       - Interfaces_Interface_Subinterfaces_Subinterface
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5398,7 +5574,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters_Container
       responses:
         "200":
           content:
@@ -5407,8 +5583,10 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State_Counters'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters
+        Container
       tags:
       - Interfaces_Interface_Subinterfaces_Subinterface_State
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5429,16 +5607,16 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system:
     delete:
-      operationId: deleteSystem
+      operationId: deleteSystem_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system
     description: |-
       Enclosing container for system-related configuration and
       operational state data
     get:
-      operationId: getSystem
+      operationId: getSystem_Container
       responses:
         "200":
           content:
@@ -5446,9 +5624,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System'
           description: GET OK 200
-      summary: GET /system
+      summary: GET /system Container
       tags:
       - ""
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5461,14 +5640,14 @@ paths:
       summary: POST /system
   /devicesim/v1.0.0/{target}/system/aaa:
     delete:
-      operationId: deleteSystem_Aaa
+      operationId: deleteSystem_Aaa_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa
     description: Top-level container for AAA services
     get:
-      operationId: getSystem_Aaa
+      operationId: getSystem_Aaa_Container
       responses:
         "200":
           content:
@@ -5476,9 +5655,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa'
           description: GET OK 200
-      summary: GET /system/aaa
+      summary: GET /system/aaa Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5491,14 +5671,14 @@ paths:
       summary: POST /system/aaa
   /devicesim/v1.0.0/{target}/system/aaa/accounting:
     delete:
-      operationId: deleteSystem_Aaa_Accounting
+      operationId: deleteSystem_Aaa_Accounting_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting
     description: Top-level container for AAA accounting
     get:
-      operationId: getSystem_Aaa_Accounting
+      operationId: getSystem_Aaa_Accounting_Container
       responses:
         "200":
           content:
@@ -5506,9 +5686,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting'
           description: GET OK 200
-      summary: GET /system/aaa/accounting
+      summary: GET /system/aaa/accounting Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5521,14 +5702,14 @@ paths:
       summary: POST /system/aaa/accounting
   /devicesim/v1.0.0/{target}/system/aaa/accounting/config:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Config
+      operationId: deleteSystem_Aaa_Accounting_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/config
     description: Configuration data for user activity accounting.
     get:
-      operationId: getSystem_Aaa_Accounting_Config
+      operationId: getSystem_Aaa_Accounting_Config_Container
       responses:
         "200":
           content:
@@ -5536,9 +5717,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Config'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/config
+      summary: GET /system/aaa/accounting/config Container
       tags:
       - System_Aaa_Accounting
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5551,16 +5733,16 @@ paths:
       summary: POST /system/aaa/accounting/config
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events
+      operationId: deleteSystem_Aaa_Accounting_Events_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events
     description: |-
       Enclosing container for defining handling of events
       for accounting
     get:
-      operationId: getSystem_Aaa_Accounting_Events
+      operationId: getSystem_Aaa_Accounting_Events_Container
       responses:
         "200":
           content:
@@ -5568,9 +5750,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/events
+      summary: GET /system/aaa/accounting/events Container
       tags:
       - System_Aaa_Accounting
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5581,16 +5764,35 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events
+  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event:
+    description: List of events subject to accounting
+    get:
+      operationId: getSystem_Aaa_Accounting_Events_Event_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/aaa/accounting/events/event List
+      tags:
+      - System_Aaa_Accounting_Events_Event
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events_Event
+      operationId: deleteSystem_Aaa_Accounting_Events_Event_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events/event
     description: List of events subject to accounting
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event
+      operationId: getSystem_Aaa_Accounting_Events_Event_Container
       responses:
         "200":
           content:
@@ -5598,9 +5800,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/events/event
+      summary: GET /system/aaa/accounting/events/event Container
       tags:
       - System_Aaa_Accounting_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5621,14 +5824,14 @@ paths:
       summary: POST /system/aaa/accounting/events/event
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/config:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events_Event_Config
+      operationId: deleteSystem_Aaa_Accounting_Events_Event_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events/event/{event-type}/config
     description: Configuration data for accounting events
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event_Config
+      operationId: getSystem_Aaa_Accounting_Events_Event_Config_Container
       responses:
         "200":
           content:
@@ -5636,9 +5839,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_Config'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/events/event/{event-type}/config
+      summary: GET /system/aaa/accounting/events/event/{event-type}/config Container
       tags:
       - System_Aaa_Accounting_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5660,7 +5864,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/state:
     description: Operational state data for accounting events
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event_State
+      operationId: getSystem_Aaa_Accounting_Events_Event_State_Container
       responses:
         "200":
           content:
@@ -5668,9 +5872,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/events/event/{event-type}/state
+      summary: GET /system/aaa/accounting/events/event/{event-type}/state Container
       tags:
       - System_Aaa_Accounting_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5684,7 +5889,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/accounting/state:
     description: Operational state data for user accounting.
     get:
-      operationId: getSystem_Aaa_Accounting_State
+      operationId: getSystem_Aaa_Accounting_State_Container
       responses:
         "200":
           content:
@@ -5692,21 +5897,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Accounting_State'
           description: GET OK 200
-      summary: GET /system/aaa/accounting/state
+      summary: GET /system/aaa/accounting/state Container
       tags:
       - System_Aaa_Accounting
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication:
     delete:
-      operationId: deleteSystem_Aaa_Authentication
+      operationId: deleteSystem_Aaa_Authentication_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication
     description: Top-level container for global authentication data
     get:
-      operationId: getSystem_Aaa_Authentication
+      operationId: getSystem_Aaa_Authentication_Container
       responses:
         "200":
           content:
@@ -5714,9 +5920,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication'
           description: GET OK 200
-      summary: GET /system/aaa/authentication
+      summary: GET /system/aaa/authentication Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5729,16 +5936,16 @@ paths:
       summary: POST /system/aaa/authentication
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Admin-user
+      operationId: deleteSystem_Aaa_Authentication_Admin-user_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/admin-user
     description: |-
       Top-level container for the system root or admin user
       configuration and operational state
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user
+      operationId: getSystem_Aaa_Authentication_Admin-user_Container
       responses:
         "200":
           content:
@@ -5746,9 +5953,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/admin-user
+      summary: GET /system/aaa/authentication/admin-user Container
       tags:
       - System_Aaa_Authentication
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5761,14 +5969,14 @@ paths:
       summary: POST /system/aaa/authentication/admin-user
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Admin-user_Config
+      operationId: deleteSystem_Aaa_Authentication_Admin-user_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/admin-user/config
     description: Configuration data for the root user account
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user_Config
+      operationId: getSystem_Aaa_Authentication_Admin-user_Config_Container
       responses:
         "200":
           content:
@@ -5776,9 +5984,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_Config'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/admin-user/config
+      summary: GET /system/aaa/authentication/admin-user/config Container
       tags:
       - System_Aaa_Authentication_Admin-user
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5792,7 +6001,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/state:
     description: Operational state data for the root user account
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user_State
+      operationId: getSystem_Aaa_Authentication_Admin-user_State_Container
       responses:
         "200":
           content:
@@ -5800,21 +6009,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_State'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/admin-user/state
+      summary: GET /system/aaa/authentication/admin-user/state Container
       tags:
       - System_Aaa_Authentication_Admin-user
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Config
+      operationId: deleteSystem_Aaa_Authentication_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/config
     description: Configuration data for global authentication services
     get:
-      operationId: getSystem_Aaa_Authentication_Config
+      operationId: getSystem_Aaa_Authentication_Config_Container
       responses:
         "200":
           content:
@@ -5822,9 +6032,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Config'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/config
+      summary: GET /system/aaa/authentication/config Container
       tags:
       - System_Aaa_Authentication
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5840,7 +6051,7 @@ paths:
       Operational state data for global authentication
       services
     get:
-      operationId: getSystem_Aaa_Authentication_State
+      operationId: getSystem_Aaa_Authentication_State_Container
       responses:
         "200":
           content:
@@ -5848,21 +6059,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_State'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/state
+      summary: GET /system/aaa/authentication/state Container
       tags:
       - System_Aaa_Authentication
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users
+      operationId: deleteSystem_Aaa_Authentication_Users_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users
     description: Enclosing container list of local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users
+      operationId: getSystem_Aaa_Authentication_Users_Container
       responses:
         "200":
           content:
@@ -5870,9 +6082,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/users
+      summary: GET /system/aaa/authentication/users Container
       tags:
       - System_Aaa_Authentication
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5883,16 +6096,35 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users
+  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user:
+    description: List of local users on the system
+    get:
+      operationId: getSystem_Aaa_Authentication_Users_User_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/aaa/authentication/users/user List
+      tags:
+      - System_Aaa_Authentication_Users_User
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users_User
+      operationId: deleteSystem_Aaa_Authentication_Users_User_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users/user
     description: List of local users on the system
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User
+      operationId: getSystem_Aaa_Authentication_Users_User_Container
       responses:
         "200":
           content:
@@ -5900,9 +6132,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/users/user
+      summary: GET /system/aaa/authentication/users/user Container
       tags:
       - System_Aaa_Authentication_Users_User
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5923,14 +6156,14 @@ paths:
       summary: POST /system/aaa/authentication/users/user
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users_User_Config
+      operationId: deleteSystem_Aaa_Authentication_Users_User_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users/user/{username}/config
     description: Configuration data for local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User_Config
+      operationId: getSystem_Aaa_Authentication_Users_User_Config_Container
       responses:
         "200":
           content:
@@ -5938,9 +6171,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_Config'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/users/user/{username}/config
+      summary: GET /system/aaa/authentication/users/user/{username}/config Container
       tags:
       - System_Aaa_Authentication_Users_User
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5962,7 +6196,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/state:
     description: Operational state data for local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User_State
+      operationId: getSystem_Aaa_Authentication_Users_User_State_Container
       responses:
         "200":
           content:
@@ -5970,9 +6204,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_State'
           description: GET OK 200
-      summary: GET /system/aaa/authentication/users/user/{username}/state
+      summary: GET /system/aaa/authentication/users/user/{username}/state Container
       tags:
       - System_Aaa_Authentication_Users_User
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5985,16 +6220,16 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/aaa/authorization:
     delete:
-      operationId: deleteSystem_Aaa_Authorization
+      operationId: deleteSystem_Aaa_Authorization_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization
     description: |-
       Top-level container for AAA authorization configuration
       and operational state data
     get:
-      operationId: getSystem_Aaa_Authorization
+      operationId: getSystem_Aaa_Authorization_Container
       responses:
         "200":
           content:
@@ -6002,9 +6237,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization'
           description: GET OK 200
-      summary: GET /system/aaa/authorization
+      summary: GET /system/aaa/authorization Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6017,16 +6253,16 @@ paths:
       summary: POST /system/aaa/authorization
   /devicesim/v1.0.0/{target}/system/aaa/authorization/config:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Config
+      operationId: deleteSystem_Aaa_Authorization_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/config
     description: |-
       Configuration data for authorization based on AAA
       methods
     get:
-      operationId: getSystem_Aaa_Authorization_Config
+      operationId: getSystem_Aaa_Authorization_Config_Container
       responses:
         "200":
           content:
@@ -6034,9 +6270,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Config'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/config
+      summary: GET /system/aaa/authorization/config Container
       tags:
       - System_Aaa_Authorization
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6049,16 +6286,16 @@ paths:
       summary: POST /system/aaa/authorization/config
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events
+      operationId: deleteSystem_Aaa_Authorization_Events_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events
     description: |-
       Enclosing container for the set of events subject
       to authorization
     get:
-      operationId: getSystem_Aaa_Authorization_Events
+      operationId: getSystem_Aaa_Authorization_Events_Container
       responses:
         "200":
           content:
@@ -6066,9 +6303,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/events
+      summary: GET /system/aaa/authorization/events Container
       tags:
       - System_Aaa_Authorization
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6079,16 +6317,35 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events
+  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event:
+    description: List of events subject to AAA authorization
+    get:
+      operationId: getSystem_Aaa_Authorization_Events_Event_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/aaa/authorization/events/event List
+      tags:
+      - System_Aaa_Authorization_Events_Event
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events_Event
+      operationId: deleteSystem_Aaa_Authorization_Events_Event_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events/event
     description: List of events subject to AAA authorization
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event
+      operationId: getSystem_Aaa_Authorization_Events_Event_Container
       responses:
         "200":
           content:
@@ -6096,9 +6353,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/events/event
+      summary: GET /system/aaa/authorization/events/event Container
       tags:
       - System_Aaa_Authorization_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6119,14 +6377,14 @@ paths:
       summary: POST /system/aaa/authorization/events/event
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/config:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events_Event_Config
+      operationId: deleteSystem_Aaa_Authorization_Events_Event_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events/event/{event-type}/config
     description: Configuration data for each authorized event
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event_Config
+      operationId: getSystem_Aaa_Authorization_Events_Event_Config_Container
       responses:
         "200":
           content:
@@ -6134,9 +6392,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_Config'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/events/event/{event-type}/config
+      summary: GET /system/aaa/authorization/events/event/{event-type}/config Container
       tags:
       - System_Aaa_Authorization_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6158,7 +6417,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/state:
     description: Operational state data for each authorized activity
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event_State
+      operationId: getSystem_Aaa_Authorization_Events_Event_State_Container
       responses:
         "200":
           content:
@@ -6166,9 +6425,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/events/event/{event-type}/state
+      summary: GET /system/aaa/authorization/events/event/{event-type}/state Container
       tags:
       - System_Aaa_Authorization_Events_Event
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6182,7 +6442,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authorization/state:
     description: Operational state data for authorization based on AAA
     get:
-      operationId: getSystem_Aaa_Authorization_State
+      operationId: getSystem_Aaa_Authorization_State_Container
       responses:
         "200":
           content:
@@ -6190,21 +6450,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Authorization_State'
           description: GET OK 200
-      summary: GET /system/aaa/authorization/state
+      summary: GET /system/aaa/authorization/state Container
       tags:
       - System_Aaa_Authorization
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/config:
     delete:
-      operationId: deleteSystem_Aaa_Config
+      operationId: deleteSystem_Aaa_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/config
     description: Configuration data for top level AAA services
     get:
-      operationId: getSystem_Aaa_Config
+      operationId: getSystem_Aaa_Config_Container
       responses:
         "200":
           content:
@@ -6212,9 +6473,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Config'
           description: GET OK 200
-      summary: GET /system/aaa/config
+      summary: GET /system/aaa/config Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6227,14 +6489,14 @@ paths:
       summary: POST /system/aaa/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups
+      operationId: deleteSystem_Aaa_Server-groups_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups
     description: Enclosing container for AAA server groups
     get:
-      operationId: getSystem_Aaa_Server-groups
+      operationId: getSystem_Aaa_Server-groups_Container
       responses:
         "200":
           content:
@@ -6242,9 +6504,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups
+      summary: GET /system/aaa/server-groups Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6255,19 +6518,41 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group:
+    description: |-
+      List of AAA server groups.  All servers in a group
+      must have the same type as indicated by the server
+      type.
+    get:
+      operationId: getSystem_Aaa_Server-groups_Server-group_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/aaa/server-groups/server-group List
+      tags:
+      - System_Aaa_Server-groups_Server-group
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group
     description: |-
       List of AAA server groups.  All servers in a group
       must have the same type as indicated by the server
       type.
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group
+      operationId: getSystem_Aaa_Server-groups_Server-group_Container
       responses:
         "200":
           content:
@@ -6275,9 +6560,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups/server-group
+      summary: GET /system/aaa/server-groups/server-group Container
       tags:
       - System_Aaa_Server-groups_Server-group
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6298,14 +6584,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Config
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/config
     description: Configuration data for each server group
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Config
+      operationId: getSystem_Aaa_Server-groups_Server-group_Config_Container
       responses:
         "200":
           content:
@@ -6313,9 +6599,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Config'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups/server-group/{name}/config
+      summary: GET /system/aaa/server-groups/server-group/{name}/config Container
       tags:
       - System_Aaa_Server-groups_Server-group
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6336,14 +6623,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers
     description: Enclosing container the list of servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Container
       responses:
         "200":
           content:
@@ -6351,9 +6638,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups/server-group/{name}/servers
+      summary: GET /system/aaa/server-groups/server-group/{name}/servers Container
       tags:
       - System_Aaa_Server-groups_Server-group
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6372,16 +6660,43 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers
+  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server:
+    description: List of AAA servers
+    get:
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/aaa/server-groups/server-group/{name}/servers/server List
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server
     description: List of AAA servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Container
       responses:
         "200":
           content:
@@ -6389,9 +6704,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups/server-group/{name}/servers/server
+      summary: GET /system/aaa/server-groups/server-group/{name}/servers/server Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6420,14 +6736,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Config_Container
       responses:
         "200":
           content:
@@ -6436,8 +6752,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Config'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6466,14 +6784,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
     description: Top-level container for RADIUS server data
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Container
       responses:
         "200":
           content:
@@ -6482,8 +6800,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Radius'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6512,14 +6832,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
     description: Configuration data for RADIUS servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config_Container
       responses:
         "200":
           content:
@@ -6528,8 +6848,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6559,7 +6881,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
     description: Operational state data for RADIUS servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Container
       responses:
         "200":
           content:
@@ -6568,8 +6890,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6591,7 +6915,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
     description: A collection of RADIUS related state objects.
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters_Container
       responses:
         "200":
           content:
@@ -6600,8 +6924,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6623,7 +6949,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State_Container
       responses:
         "200":
           content:
@@ -6632,8 +6958,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_State'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/state
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6654,14 +6982,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
     description: Top-level container for TACACS+ server data
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Container
       responses:
         "200":
           content:
@@ -6670,8 +6998,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6700,14 +7030,14 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
     description: Configuration data for TACACS+ server
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config_Container
       responses:
         "200":
           content:
@@ -6716,8 +7046,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6747,7 +7079,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
     description: Operational state data for TACACS+ server
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State_Container
       responses:
         "200":
           content:
@@ -6756,8 +7088,10 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state
+        Container
       tags:
       - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6779,7 +7113,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/state:
     description: Operational state data for each server group
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_State
+      operationId: getSystem_Aaa_Server-groups_Server-group_State_Container
       responses:
         "200":
           content:
@@ -6787,9 +7121,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_State'
           description: GET OK 200
-      summary: GET /system/aaa/server-groups/server-group/{name}/state
+      summary: GET /system/aaa/server-groups/server-group/{name}/state Container
       tags:
       - System_Aaa_Server-groups_Server-group
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6803,7 +7138,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/state:
     description: 'Operational state data for top level AAA services '
     get:
-      operationId: getSystem_Aaa_State
+      operationId: getSystem_Aaa_State_Container
       responses:
         "200":
           content:
@@ -6811,21 +7146,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Aaa_State'
           description: GET OK 200
-      summary: GET /system/aaa/state
+      summary: GET /system/aaa/state Container
       tags:
       - System_Aaa
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/clock:
     delete:
-      operationId: deleteSystem_Clock
+      operationId: deleteSystem_Clock_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/clock
     description: Top-level container for clock configuration data
     get:
-      operationId: getSystem_Clock
+      operationId: getSystem_Clock_Container
       responses:
         "200":
           content:
@@ -6833,9 +7169,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Clock'
           description: GET OK 200
-      summary: GET /system/clock
+      summary: GET /system/clock Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6848,14 +7185,14 @@ paths:
       summary: POST /system/clock
   /devicesim/v1.0.0/{target}/system/clock/config:
     delete:
-      operationId: deleteSystem_Clock_Config
+      operationId: deleteSystem_Clock_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/clock/config
     description: Configuration data for system clock
     get:
-      operationId: getSystem_Clock_Config
+      operationId: getSystem_Clock_Config_Container
       responses:
         "200":
           content:
@@ -6863,9 +7200,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Clock_Config'
           description: GET OK 200
-      summary: GET /system/clock/config
+      summary: GET /system/clock/config Container
       tags:
       - System_Clock
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6879,7 +7217,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/clock/state:
     description: Operational state data for system clock
     get:
-      operationId: getSystem_Clock_State
+      operationId: getSystem_Clock_State_Container
       responses:
         "200":
           content:
@@ -6887,21 +7225,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Clock_State'
           description: GET OK 200
-      summary: GET /system/clock/state
+      summary: GET /system/clock/state Container
       tags:
       - System_Clock
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/config:
     delete:
-      operationId: deleteSystem_Config
+      operationId: deleteSystem_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/config
     description: Global configuration data for the system
     get:
-      operationId: getSystem_Config
+      operationId: getSystem_Config_Container
       responses:
         "200":
           content:
@@ -6909,9 +7248,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Config'
           description: GET OK 200
-      summary: GET /system/config
+      summary: GET /system/config Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6924,14 +7264,14 @@ paths:
       summary: POST /system/config
   /devicesim/v1.0.0/{target}/system/dns:
     delete:
-      operationId: deleteSystem_Dns
+      operationId: deleteSystem_Dns_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns
     description: Enclosing container for DNS resolver data
     get:
-      operationId: getSystem_Dns
+      operationId: getSystem_Dns_Container
       responses:
         "200":
           content:
@@ -6939,9 +7279,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns'
           description: GET OK 200
-      summary: GET /system/dns
+      summary: GET /system/dns Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6954,14 +7295,14 @@ paths:
       summary: POST /system/dns
   /devicesim/v1.0.0/{target}/system/dns/config:
     delete:
-      operationId: deleteSystem_Dns_Config
+      operationId: deleteSystem_Dns_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/config
     description: Configuration data for the DNS resolver
     get:
-      operationId: getSystem_Dns_Config
+      operationId: getSystem_Dns_Config_Container
       responses:
         "200":
           content:
@@ -6969,9 +7310,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Config'
           description: GET OK 200
-      summary: GET /system/dns/config
+      summary: GET /system/dns/config Container
       tags:
       - System_Dns
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6984,14 +7326,14 @@ paths:
       summary: POST /system/dns/config
   /devicesim/v1.0.0/{target}/system/dns/host-entries:
     delete:
-      operationId: deleteSystem_Dns_Host-entries
+      operationId: deleteSystem_Dns_Host-entries_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries
     description: Enclosing container for list of static host entries
     get:
-      operationId: getSystem_Dns_Host-entries
+      operationId: getSystem_Dns_Host-entries_Container
       responses:
         "200":
           content:
@@ -6999,9 +7341,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Host-entries'
           description: GET OK 200
-      summary: GET /system/dns/host-entries
+      summary: GET /system/dns/host-entries Container
       tags:
       - System_Dns
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7012,16 +7355,35 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries
+  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry:
+    description: List of static host entries
+    get:
+      operationId: getSystem_Dns_Host-entries_Host-entry_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/dns/host-entries/host-entry List
+      tags:
+      - System_Dns_Host-entries_Host-entry
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
     delete:
-      operationId: deleteSystem_Dns_Host-entries_Host-entry
+      operationId: deleteSystem_Dns_Host-entries_Host-entry_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries/host-entry
     description: List of static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry
+      operationId: getSystem_Dns_Host-entries_Host-entry_Container
       responses:
         "200":
           content:
@@ -7029,9 +7391,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
           description: GET OK 200
-      summary: GET /system/dns/host-entries/host-entry
+      summary: GET /system/dns/host-entries/host-entry Container
       tags:
       - System_Dns_Host-entries_Host-entry
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7052,14 +7415,14 @@ paths:
       summary: POST /system/dns/host-entries/host-entry
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/config:
     delete:
-      operationId: deleteSystem_Dns_Host-entries_Host-entry_Config
+      operationId: deleteSystem_Dns_Host-entries_Host-entry_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries/host-entry/{hostname}/config
     description: Configuration data for static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry_Config
+      operationId: getSystem_Dns_Host-entries_Host-entry_Config_Container
       responses:
         "200":
           content:
@@ -7067,9 +7430,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config'
           description: GET OK 200
-      summary: GET /system/dns/host-entries/host-entry/{hostname}/config
+      summary: GET /system/dns/host-entries/host-entry/{hostname}/config Container
       tags:
       - System_Dns_Host-entries_Host-entry
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7091,7 +7455,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/state:
     description: Operational state data for static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry_State
+      operationId: getSystem_Dns_Host-entries_Host-entry_State_Container
       responses:
         "200":
           content:
@@ -7099,9 +7463,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
           description: GET OK 200
-      summary: GET /system/dns/host-entries/host-entry/{hostname}/state
+      summary: GET /system/dns/host-entries/host-entry/{hostname}/state Container
       tags:
       - System_Dns_Host-entries_Host-entry
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7114,14 +7479,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/dns/servers:
     delete:
-      operationId: deleteSystem_Dns_Servers
+      operationId: deleteSystem_Dns_Servers_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/servers
     description: Enclosing container for DNS resolver list
     get:
-      operationId: getSystem_Dns_Servers
+      operationId: getSystem_Dns_Servers_Container
       responses:
         "200":
           content:
@@ -7129,9 +7494,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Servers'
           description: GET OK 200
-      summary: GET /system/dns/servers
+      summary: GET /system/dns/servers Container
       tags:
       - System_Dns
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7142,12 +7508,45 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers
+  /devicesim/v1.0.0/{target}/system/dns/servers/server:
+    description: |-
+      List of the DNS servers that the resolver should query.
+
+      When the resolver is invoked by a calling application, it
+      sends the query to the first name server in this list.  If
+      no response has been received within 'timeout' seconds,
+      the resolver continues with the next server in the list.
+      If no response is received from any server, the resolver
+      continues with the first server again.  When the resolver
+      has traversed the list 'attempts' times without receiving
+      any response, it gives up and returns an error to the
+      calling application.
+
+      Implementations MAY limit the number of entries in this
+      list.
+    get:
+      operationId: getSystem_Dns_Servers_Server_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Dns_Servers_Server_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/dns/servers/server List
+      tags:
+      - System_Dns_Servers_Server
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Dns_Servers_Server
+      operationId: deleteSystem_Dns_Servers_Server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/servers/server
     description: |-
       List of the DNS servers that the resolver should query.
@@ -7165,7 +7564,7 @@ paths:
       Implementations MAY limit the number of entries in this
       list.
     get:
-      operationId: getSystem_Dns_Servers_Server
+      operationId: getSystem_Dns_Servers_Server_Container
       responses:
         "200":
           content:
@@ -7173,9 +7572,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Servers_Server'
           description: GET OK 200
-      summary: GET /system/dns/servers/server
+      summary: GET /system/dns/servers/server Container
       tags:
       - System_Dns_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7196,14 +7596,14 @@ paths:
       summary: POST /system/dns/servers/server
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Dns_Servers_Server_Config
+      operationId: deleteSystem_Dns_Servers_Server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/dns/servers/server/{address}/config
     description: Configuration data for each DNS resolver
     get:
-      operationId: getSystem_Dns_Servers_Server_Config
+      operationId: getSystem_Dns_Servers_Server_Config_Container
       responses:
         "200":
           content:
@@ -7211,9 +7611,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_Config'
           description: GET OK 200
-      summary: GET /system/dns/servers/server/{address}/config
+      summary: GET /system/dns/servers/server/{address}/config Container
       tags:
       - System_Dns_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7235,7 +7636,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/state:
     description: Operational state data for each DNS resolver
     get:
-      operationId: getSystem_Dns_Servers_Server_State
+      operationId: getSystem_Dns_Servers_Server_State_Container
       responses:
         "200":
           content:
@@ -7243,9 +7644,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_State'
           description: GET OK 200
-      summary: GET /system/dns/servers/server/{address}/state
+      summary: GET /system/dns/servers/server/{address}/state Container
       tags:
       - System_Dns_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7259,7 +7661,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/state:
     description: Operational state data for the DNS resolver
     get:
-      operationId: getSystem_Dns_State
+      operationId: getSystem_Dns_State_Container
       responses:
         "200":
           content:
@@ -7267,21 +7669,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Dns_State'
           description: GET OK 200
-      summary: GET /system/dns/state
+      summary: GET /system/dns/state Container
       tags:
       - System_Dns
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging:
     delete:
-      operationId: deleteSystem_Logging
+      operationId: deleteSystem_Logging_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging
     description: Top-level container for data related to logging / syslog
     get:
-      operationId: getSystem_Logging
+      operationId: getSystem_Logging_Container
       responses:
         "200":
           content:
@@ -7289,9 +7692,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging'
           description: GET OK 200
-      summary: GET /system/logging
+      summary: GET /system/logging Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7304,16 +7708,16 @@ paths:
       summary: POST /system/logging
   /devicesim/v1.0.0/{target}/system/logging/console:
     delete:
-      operationId: deleteSystem_Logging_Console
+      operationId: deleteSystem_Logging_Console_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/console
     description: |-
       Top-level container for data related to console-based
       logging
     get:
-      operationId: getSystem_Logging_Console
+      operationId: getSystem_Logging_Console_Container
       responses:
         "200":
           content:
@@ -7321,9 +7725,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Console'
           description: GET OK 200
-      summary: GET /system/logging/console
+      summary: GET /system/logging/console Container
       tags:
       - System_Logging
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7336,14 +7741,14 @@ paths:
       summary: POST /system/logging/console
   /devicesim/v1.0.0/{target}/system/logging/console/config:
     delete:
-      operationId: deleteSystem_Logging_Console_Config
+      operationId: deleteSystem_Logging_Console_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/console/config
     description: Configuration data for console logging
     get:
-      operationId: getSystem_Logging_Console_Config
+      operationId: getSystem_Logging_Console_Config_Container
       responses:
         "200":
           content:
@@ -7351,9 +7756,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Console_Config'
           description: GET OK 200
-      summary: GET /system/logging/console/config
+      summary: GET /system/logging/console/config Container
       tags:
       - System_Logging_Console
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7366,14 +7772,14 @@ paths:
       summary: POST /system/logging/console/config
   /devicesim/v1.0.0/{target}/system/logging/console/selectors:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors
+      operationId: deleteSystem_Logging_Console_Selectors_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors
     description: 'Enclosing container '
     get:
-      operationId: getSystem_Logging_Console_Selectors
+      operationId: getSystem_Logging_Console_Selectors_Container
       responses:
         "200":
           content:
@@ -7381,9 +7787,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors'
           description: GET OK 200
-      summary: GET /system/logging/console/selectors
+      summary: GET /system/logging/console/selectors Container
       tags:
       - System_Logging_Console
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7394,16 +7801,35 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors
+  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector:
+    description: List of selectors for log messages
+    get:
+      operationId: getSystem_Logging_Console_Selectors_Selector_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/logging/console/selectors/selector List
+      tags:
+      - System_Logging_Console_Selectors_Selector
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors_Selector
+      operationId: deleteSystem_Logging_Console_Selectors_Selector_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors/selector
     description: List of selectors for log messages
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector
+      operationId: getSystem_Logging_Console_Selectors_Selector_Container
       responses:
         "200":
           content:
@@ -7411,9 +7837,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
           description: GET OK 200
-      summary: GET /system/logging/console/selectors/selector
+      summary: GET /system/logging/console/selectors/selector Container
       tags:
       - System_Logging_Console_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7442,14 +7869,14 @@ paths:
       summary: POST /system/logging/console/selectors/selector
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/config:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors_Selector_Config
+      operationId: deleteSystem_Logging_Console_Selectors_Selector_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors/selector/{facility}/{severity}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector_Config
+      operationId: getSystem_Logging_Console_Selectors_Selector_Config_Container
       responses:
         "200":
           content:
@@ -7458,8 +7885,10 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_Config'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/config
+        Container
       tags:
       - System_Logging_Console_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7489,7 +7918,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector_State
+      operationId: getSystem_Logging_Console_Selectors_Selector_State_Container
       responses:
         "200":
           content:
@@ -7498,8 +7927,10 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_State'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/state
+        Container
       tags:
       - System_Logging_Console_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7521,7 +7952,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/console/state:
     description: Operational state data for console logging
     get:
-      operationId: getSystem_Logging_Console_State
+      operationId: getSystem_Logging_Console_State_Container
       responses:
         "200":
           content:
@@ -7529,21 +7960,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Console_State'
           description: GET OK 200
-      summary: GET /system/logging/console/state
+      summary: GET /system/logging/console/state Container
       tags:
       - System_Logging_Console
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers
+      operationId: deleteSystem_Logging_Remote-servers_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers
     description: Enclosing container for the list of remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers
+      operationId: getSystem_Logging_Remote-servers_Container
       responses:
         "200":
           content:
@@ -7551,9 +7983,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Remote-servers'
           description: GET OK 200
-      summary: GET /system/logging/remote-servers
+      summary: GET /system/logging/remote-servers Container
       tags:
       - System_Logging
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7564,16 +7997,35 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server:
+    description: List of remote log servers
+    get:
+      operationId: getSystem_Logging_Remote-servers_Remote-server_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/logging/remote-servers/remote-server List
+      tags:
+      - System_Logging_Remote-servers_Remote-server
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server
     description: List of remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Container
       responses:
         "200":
           content:
@@ -7581,9 +8033,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
           description: GET OK 200
-      summary: GET /system/logging/remote-servers/remote-server
+      summary: GET /system/logging/remote-servers/remote-server Container
       tags:
       - System_Logging_Remote-servers_Remote-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7604,14 +8057,14 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/config:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/config
     description: Configuration data for remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Config
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Config_Container
       responses:
         "200":
           content:
@@ -7619,9 +8072,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Config'
           description: GET OK 200
-      summary: GET /system/logging/remote-servers/remote-server/{host}/config
+      summary: GET /system/logging/remote-servers/remote-server/{host}/config Container
       tags:
       - System_Logging_Remote-servers_Remote-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7642,14 +8096,14 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors
     description: 'Enclosing container '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Container
       responses:
         "200":
           content:
@@ -7657,9 +8111,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors'
           description: GET OK 200
-      summary: GET /system/logging/remote-servers/remote-server/{host}/selectors
+      summary: GET /system/logging/remote-servers/remote-server/{host}/selectors Container
       tags:
       - System_Logging_Remote-servers_Remote-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7678,16 +8133,44 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors
+  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector:
+    description: List of selectors for log messages
+    get:
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
+        List
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {host}
+      in: path
+      name: host
+      required: true
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector
     description: List of selectors for log messages
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Container
       responses:
         "200":
           content:
@@ -7696,8 +8179,10 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
+        Container
       tags:
       - System_Logging_Remote-servers_Remote-server_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7734,14 +8219,14 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config_Container
       responses:
         "200":
           content:
@@ -7750,8 +8235,10 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
+        Container
       tags:
       - System_Logging_Remote-servers_Remote-server_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7789,7 +8276,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State_Container
       responses:
         "200":
           content:
@@ -7798,8 +8285,10 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_State'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state
+        Container
       tags:
       - System_Logging_Remote-servers_Remote-server_Selectors_Selector
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7829,7 +8318,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/state:
     description: Operational state data for remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_State
+      operationId: getSystem_Logging_Remote-servers_Remote-server_State_Container
       responses:
         "200":
           content:
@@ -7837,9 +8326,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_State'
           description: GET OK 200
-      summary: GET /system/logging/remote-servers/remote-server/{host}/state
+      summary: GET /system/logging/remote-servers/remote-server/{host}/state Container
       tags:
       - System_Logging_Remote-servers_Remote-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7852,14 +8342,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/memory:
     delete:
-      operationId: deleteSystem_Memory
+      operationId: deleteSystem_Memory_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/memory
     description: Top-level container for system memory data
     get:
-      operationId: getSystem_Memory
+      operationId: getSystem_Memory_Container
       responses:
         "200":
           content:
@@ -7867,9 +8357,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Memory'
           description: GET OK 200
-      summary: GET /system/memory
+      summary: GET /system/memory Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7882,14 +8373,14 @@ paths:
       summary: POST /system/memory
   /devicesim/v1.0.0/{target}/system/memory/config:
     delete:
-      operationId: deleteSystem_Memory_Config
+      operationId: deleteSystem_Memory_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/memory/config
     description: Configuration data for system memory
     get:
-      operationId: getSystem_Memory_Config
+      operationId: getSystem_Memory_Config_Container
       responses:
         "200":
           content:
@@ -7897,9 +8388,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Memory_Config'
           description: GET OK 200
-      summary: GET /system/memory/config
+      summary: GET /system/memory/config Container
       tags:
       - System_Memory
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7913,7 +8405,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/memory/state:
     description: Operational state data for system memory
     get:
-      operationId: getSystem_Memory_State
+      operationId: getSystem_Memory_State_Container
       responses:
         "200":
           content:
@@ -7921,21 +8413,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Memory_State'
           description: GET OK 200
-      summary: GET /system/memory/state
+      summary: GET /system/memory/state Container
       tags:
       - System_Memory
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp:
     delete:
-      operationId: deleteSystem_Ntp
+      operationId: deleteSystem_Ntp_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp
     description: Top-level container for NTP configuration and state
     get:
-      operationId: getSystem_Ntp
+      operationId: getSystem_Ntp_Container
       responses:
         "200":
           content:
@@ -7943,9 +8436,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp'
           description: GET OK 200
-      summary: GET /system/ntp
+      summary: GET /system/ntp Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7958,14 +8452,14 @@ paths:
       summary: POST /system/ntp
   /devicesim/v1.0.0/{target}/system/ntp/config:
     delete:
-      operationId: deleteSystem_Ntp_Config
+      operationId: deleteSystem_Ntp_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/config
     description: Configuration data for NTP client.
     get:
-      operationId: getSystem_Ntp_Config
+      operationId: getSystem_Ntp_Config_Container
       responses:
         "200":
           content:
@@ -7973,9 +8467,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Config'
           description: GET OK 200
-      summary: GET /system/ntp/config
+      summary: GET /system/ntp/config Container
       tags:
       - System_Ntp
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7988,14 +8483,14 @@ paths:
       summary: POST /system/ntp/config
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys
+      operationId: deleteSystem_Ntp_Ntp-keys_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys
     description: Enclosing container for list of NTP authentication keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys
+      operationId: getSystem_Ntp_Ntp-keys_Container
       responses:
         "200":
           content:
@@ -8003,9 +8498,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys'
           description: GET OK 200
-      summary: GET /system/ntp/ntp-keys
+      summary: GET /system/ntp/ntp-keys Container
       tags:
       - System_Ntp
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8016,16 +8512,35 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys
+  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key:
+    description: List of NTP authentication keys
+    get:
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/ntp/ntp-keys/ntp-key List
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key
+      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys/ntp-key
     description: List of NTP authentication keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Container
       responses:
         "200":
           content:
@@ -8033,9 +8548,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
           description: GET OK 200
-      summary: GET /system/ntp/ntp-keys/ntp-key
+      summary: GET /system/ntp/ntp-keys/ntp-key Container
       tags:
       - System_Ntp_Ntp-keys_Ntp-key
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8056,14 +8572,14 @@ paths:
       summary: POST /system/ntp/ntp-keys/ntp-key
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config
+      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys/ntp-key/{key-id}/config
     description: Configuration data for NTP auth keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Config
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Config_Container
       responses:
         "200":
           content:
@@ -8071,9 +8587,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_Config'
           description: GET OK 200
-      summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/config
+      summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/config Container
       tags:
       - System_Ntp_Ntp-keys_Ntp-key
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8095,7 +8612,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
     description: Operational state data for NTP auth keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State_Container
       responses:
         "200":
           content:
@@ -8103,9 +8620,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
           description: GET OK 200
-      summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/state
+      summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/state Container
       tags:
       - System_Ntp_Ntp-keys_Ntp-key
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8118,14 +8636,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/ntp/servers:
     delete:
-      operationId: deleteSystem_Ntp_Servers
+      operationId: deleteSystem_Ntp_Servers_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/servers
     description: Enclosing container for the list of NTP servers
     get:
-      operationId: getSystem_Ntp_Servers
+      operationId: getSystem_Ntp_Servers_Container
       responses:
         "200":
           content:
@@ -8133,9 +8651,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Servers'
           description: GET OK 200
-      summary: GET /system/ntp/servers
+      summary: GET /system/ntp/servers Container
       tags:
       - System_Ntp
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8146,12 +8665,35 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers
+  /devicesim/v1.0.0/{target}/system/ntp/servers/server:
+    description: |-
+      List of NTP servers to use for system clock
+      synchronization.  If '/system/ntp/enabled'
+      is 'true', then the system will attempt to
+      contact and utilize the specified NTP servers.
+    get:
+      operationId: getSystem_Ntp_Servers_Server_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/ntp/servers/server List
+      tags:
+      - System_Ntp_Servers_Server
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Ntp_Servers_Server
+      operationId: deleteSystem_Ntp_Servers_Server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/servers/server
     description: |-
       List of NTP servers to use for system clock
@@ -8159,7 +8701,7 @@ paths:
       is 'true', then the system will attempt to
       contact and utilize the specified NTP servers.
     get:
-      operationId: getSystem_Ntp_Servers_Server
+      operationId: getSystem_Ntp_Servers_Server_Container
       responses:
         "200":
           content:
@@ -8167,9 +8709,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server'
           description: GET OK 200
-      summary: GET /system/ntp/servers/server
+      summary: GET /system/ntp/servers/server Container
       tags:
       - System_Ntp_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8190,14 +8733,14 @@ paths:
       summary: POST /system/ntp/servers/server
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Ntp_Servers_Server_Config
+      operationId: deleteSystem_Ntp_Servers_Server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ntp/servers/server/{address}/config
     description: Configuration data for an NTP server.
     get:
-      operationId: getSystem_Ntp_Servers_Server_Config
+      operationId: getSystem_Ntp_Servers_Server_Config_Container
       responses:
         "200":
           content:
@@ -8205,9 +8748,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_Config'
           description: GET OK 200
-      summary: GET /system/ntp/servers/server/{address}/config
+      summary: GET /system/ntp/servers/server/{address}/config Container
       tags:
       - System_Ntp_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8229,7 +8773,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/state:
     description: Operational state data for an NTP server.
     get:
-      operationId: getSystem_Ntp_Servers_Server_State
+      operationId: getSystem_Ntp_Servers_Server_State_Container
       responses:
         "200":
           content:
@@ -8237,9 +8781,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_State'
           description: GET OK 200
-      summary: GET /system/ntp/servers/server/{address}/state
+      summary: GET /system/ntp/servers/server/{address}/state Container
       tags:
       - System_Ntp_Servers_Server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8253,7 +8798,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/state:
     description: Operational state data for NTP services.
     get:
-      operationId: getSystem_Ntp_State
+      operationId: getSystem_Ntp_State_Container
       responses:
         "200":
           content:
@@ -8261,21 +8806,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ntp_State'
           description: GET OK 200
-      summary: GET /system/ntp/state
+      summary: GET /system/ntp/state Container
       tags:
       - System_Ntp
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow:
     delete:
-      operationId: deleteSystem_Openflow
+      operationId: deleteSystem_Openflow_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow
     description: Container for Openflow model
     get:
-      operationId: getSystem_Openflow
+      operationId: getSystem_Openflow_Container
       responses:
         "200":
           content:
@@ -8283,9 +8829,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow'
           description: GET OK 200
-      summary: GET /system/openflow
+      summary: GET /system/openflow Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8298,14 +8845,14 @@ paths:
       summary: POST /system/openflow
   /devicesim/v1.0.0/{target}/system/openflow/agent:
     delete:
-      operationId: deleteSystem_Openflow_Agent
+      operationId: deleteSystem_Openflow_Agent_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/agent
     description: Container for the Openflow agent model.
     get:
-      operationId: getSystem_Openflow_Agent
+      operationId: getSystem_Openflow_Agent_Container
       responses:
         "200":
           content:
@@ -8313,9 +8860,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Agent'
           description: GET OK 200
-      summary: GET /system/openflow/agent
+      summary: GET /system/openflow/agent Container
       tags:
       - System_Openflow
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8328,14 +8876,14 @@ paths:
       summary: POST /system/openflow/agent
   /devicesim/v1.0.0/{target}/system/openflow/agent/config:
     delete:
-      operationId: deleteSystem_Openflow_Agent_Config
+      operationId: deleteSystem_Openflow_Agent_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/agent/config
     description: Container for the Openflow agent config.
     get:
-      operationId: getSystem_Openflow_Agent_Config
+      operationId: getSystem_Openflow_Agent_Config_Container
       responses:
         "200":
           content:
@@ -8343,9 +8891,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Agent_Config'
           description: GET OK 200
-      summary: GET /system/openflow/agent/config
+      summary: GET /system/openflow/agent/config Container
       tags:
       - System_Openflow_Agent
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8359,7 +8908,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/openflow/agent/state:
     description: Container for the Openflow agent state.
     get:
-      operationId: getSystem_Openflow_Agent_State
+      operationId: getSystem_Openflow_Agent_State_Container
       responses:
         "200":
           content:
@@ -8367,21 +8916,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Agent_State'
           description: GET OK 200
-      summary: GET /system/openflow/agent/state
+      summary: GET /system/openflow/agent/state Container
       tags:
       - System_Openflow_Agent
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers:
     delete:
-      operationId: deleteSystem_Openflow_Controllers
+      operationId: deleteSystem_Openflow_Controllers_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers
     description: Container for the Openflow controllers model
     get:
-      operationId: getSystem_Openflow_Controllers
+      operationId: getSystem_Openflow_Controllers_Container
       responses:
         "200":
           content:
@@ -8389,9 +8939,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Controllers'
           description: GET OK 200
-      summary: GET /system/openflow/controllers
+      summary: GET /system/openflow/controllers Container
       tags:
       - System_Openflow
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8402,18 +8953,39 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller:
+    description: |-
+      The Openflow Switch connects to all Openflow controllers
+      configured
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller List
+      tags:
+      - System_Openflow_Controllers_Controller
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller
+      operationId: deleteSystem_Openflow_Controllers_Controller_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller
     description: |-
       The Openflow Switch connects to all Openflow controllers
       configured
     get:
-      operationId: getSystem_Openflow_Controllers_Controller
+      operationId: getSystem_Openflow_Controllers_Controller_Container
       responses:
         "200":
           content:
@@ -8421,9 +8993,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
           description: GET OK 200
-      summary: GET /system/openflow/controllers/controller
+      summary: GET /system/openflow/controllers/controller Container
       tags:
       - System_Openflow_Controllers_Controller
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8444,14 +9017,14 @@ paths:
       summary: POST /system/openflow/controllers/controller
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/config:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Config
+      operationId: deleteSystem_Openflow_Controllers_Controller_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/config
     description: Container for the Openflow controller config.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Config
+      operationId: getSystem_Openflow_Controllers_Controller_Config_Container
       responses:
         "200":
           content:
@@ -8459,9 +9032,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Config'
           description: GET OK 200
-      summary: GET /system/openflow/controllers/controller/{name}/config
+      summary: GET /system/openflow/controllers/controller/{name}/config Container
       tags:
       - System_Openflow_Controllers_Controller
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8482,14 +9056,14 @@ paths:
       summary: POST /system/openflow/controllers/controller/{name}/config
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections
     description: Enclosing container for list of controller connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Container
       responses:
         "200":
           content:
@@ -8497,9 +9071,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections'
           description: GET OK 200
-      summary: GET /system/openflow/controllers/controller/{name}/connections
+      summary: GET /system/openflow/controllers/controller/{name}/connections Container
       tags:
       - System_Openflow_Controllers_Controller
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8518,12 +9093,44 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections
+  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection:
+    description: |-
+      List of connections to the OpenFlow controller.
+      The Openflow switch always connects to configured Openflow
+      controllers. Each controller can have more than one
+      connection, called auxiliary Openflow connections.
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller/{name}/connections/connection
+        List
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections/connection
     description: |-
       List of connections to the OpenFlow controller.
@@ -8531,7 +9138,7 @@ paths:
       controllers. Each controller can have more than one
       connection, called auxiliary Openflow connections.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Container
       responses:
         "200":
           content:
@@ -8540,8 +9147,10 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
+        Container
       tags:
       - System_Openflow_Controllers_Controller_Connections_Connection
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8570,14 +9179,14 @@ paths:
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
     description: Configuration data for OpenFlow controller connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config_Container
       responses:
         "200":
           content:
@@ -8586,8 +9195,10 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_Config'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
+        Container
       tags:
       - System_Openflow_Controllers_Controller_Connections_Connection
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8619,7 +9230,7 @@ paths:
       Operational state data for OpenFlow controller
       connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_State
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_State_Container
       responses:
         "200":
           content:
@@ -8628,8 +9239,10 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_State'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state
+        Container
       tags:
       - System_Openflow_Controllers_Controller_Connections_Connection
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8651,7 +9264,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/state:
     description: Container for the Openflow controller state.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_State
+      operationId: getSystem_Openflow_Controllers_Controller_State_Container
       responses:
         "200":
           content:
@@ -8659,9 +9272,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
           description: GET OK 200
-      summary: GET /system/openflow/controllers/controller/{name}/state
+      summary: GET /system/openflow/controllers/controller/{name}/state Container
       tags:
       - System_Openflow_Controllers_Controller
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8674,14 +9288,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/processes:
     delete:
-      operationId: deleteSystem_Processes
+      operationId: deleteSystem_Processes_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/processes
     description: Parameters related to all monitored processes
     get:
-      operationId: getSystem_Processes
+      operationId: getSystem_Processes_Container
       responses:
         "200":
           content:
@@ -8689,9 +9303,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Processes'
           description: GET OK 200
-      summary: GET /system/processes
+      summary: GET /system/processes Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8702,10 +9317,29 @@ paths:
         "201":
           description: created
       summary: POST /system/processes
+  /devicesim/v1.0.0/{target}/system/processes/process:
+    description: List of monitored processes
+    get:
+      operationId: getSystem_Processes_Process_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/System_Processes_Process_List'
+                type: array
+          description: GET OK 200
+      summary: GET /system/processes/process List
+      tags:
+      - System_Processes_Process
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/processes/process/{pid}:
     description: List of monitored processes
     get:
-      operationId: getSystem_Processes_Process
+      operationId: getSystem_Processes_Process_Container
       responses:
         "200":
           content:
@@ -8713,9 +9347,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Processes_Process'
           description: GET OK 200
-      summary: GET /system/processes/process
+      summary: GET /system/processes/process Container
       tags:
       - System_Processes_Process
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8729,7 +9364,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/processes/process/{pid}/state:
     description: State parameters related to monitored processes
     get:
-      operationId: getSystem_Processes_Process_State
+      operationId: getSystem_Processes_Process_State_Container
       responses:
         "200":
           content:
@@ -8737,9 +9372,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Processes_Process_State'
           description: GET OK 200
-      summary: GET /system/processes/process/{pid}/state
+      summary: GET /system/processes/process/{pid}/state Container
       tags:
       - System_Processes_Process
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8752,14 +9388,14 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/ssh-server:
     delete:
-      operationId: deleteSystem_Ssh-server
+      operationId: deleteSystem_Ssh-server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ssh-server
     description: Top-level container for ssh server
     get:
-      operationId: getSystem_Ssh-server
+      operationId: getSystem_Ssh-server_Container
       responses:
         "200":
           content:
@@ -8767,9 +9403,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ssh-server'
           description: GET OK 200
-      summary: GET /system/ssh-server
+      summary: GET /system/ssh-server Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8782,14 +9419,14 @@ paths:
       summary: POST /system/ssh-server
   /devicesim/v1.0.0/{target}/system/ssh-server/config:
     delete:
-      operationId: deleteSystem_Ssh-server_Config
+      operationId: deleteSystem_Ssh-server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/ssh-server/config
     description: Configuration data for the system ssh server
     get:
-      operationId: getSystem_Ssh-server_Config
+      operationId: getSystem_Ssh-server_Config_Container
       responses:
         "200":
           content:
@@ -8797,9 +9434,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ssh-server_Config'
           description: GET OK 200
-      summary: GET /system/ssh-server/config
+      summary: GET /system/ssh-server/config Container
       tags:
       - System_Ssh-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8813,7 +9451,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ssh-server/state:
     description: Operational state data for the system ssh server
     get:
-      operationId: getSystem_Ssh-server_State
+      operationId: getSystem_Ssh-server_State_Container
       responses:
         "200":
           content:
@@ -8821,15 +9459,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Ssh-server_State'
           description: GET OK 200
-      summary: GET /system/ssh-server/state
+      summary: GET /system/ssh-server/state Container
       tags:
       - System_Ssh-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/state:
     description: Global operational state data for the system
     get:
-      operationId: getSystem_State
+      operationId: getSystem_State_Container
       responses:
         "200":
           content:
@@ -8837,21 +9476,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_State'
           description: GET OK 200
-      summary: GET /system/state
+      summary: GET /system/state Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/telnet-server:
     delete:
-      operationId: deleteSystem_Telnet-server
+      operationId: deleteSystem_Telnet-server_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/telnet-server
     description: Top-level container for telnet terminal servers
     get:
-      operationId: getSystem_Telnet-server
+      operationId: getSystem_Telnet-server_Container
       responses:
         "200":
           content:
@@ -8859,9 +9499,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Telnet-server'
           description: GET OK 200
-      summary: GET /system/telnet-server
+      summary: GET /system/telnet-server Container
       tags:
       - System
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8874,14 +9515,14 @@ paths:
       summary: POST /system/telnet-server
   /devicesim/v1.0.0/{target}/system/telnet-server/config:
     delete:
-      operationId: deleteSystem_Telnet-server_Config
+      operationId: deleteSystem_Telnet-server_Config_Container
       responses:
-        default:
-          description: ""
+        "200":
+          description: DELETE 200 OK
       summary: DELETE /system/telnet-server/config
     description: Configuration data for telnet
     get:
-      operationId: getSystem_Telnet-server_Config
+      operationId: getSystem_Telnet-server_Config_Container
       responses:
         "200":
           content:
@@ -8889,9 +9530,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Telnet-server_Config'
           description: GET OK 200
-      summary: GET /system/telnet-server/config
+      summary: GET /system/telnet-server/config Container
       tags:
       - System_Telnet-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8905,7 +9547,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/telnet-server/state:
     description: Operational state data for telnet
     get:
-      operationId: getSystem_Telnet-server_State
+      operationId: getSystem_Telnet-server_State_Container
       responses:
         "200":
           content:
@@ -8913,8 +9555,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/System_Telnet-server_State'
           description: GET OK 200
-      summary: GET /system/telnet-server/state
+      summary: GET /system/telnet-server/state Container
       tags:
       - System_Telnet-server
+      - Container
     parameters:
     - $ref: '#/components/parameters/target'
