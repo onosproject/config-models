@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 2020-present Open Networking Foundation <info@opennetworking.org>
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # XPath support with YANG
 
 [XPath 1.0] is a referenced standard as part of the [YANG] specification. It is
