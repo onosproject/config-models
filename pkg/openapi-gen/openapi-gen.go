@@ -249,6 +249,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					for _, val := range dirEntry.Type.IdentityBase.Values {
 						schemaVal.Enum = append(schemaVal.Enum, val.Name)
 					}
+					sort.Slice(schemaVal.Enum, func(i, j int) bool {
+						return schemaVal.Enum[i].(string) < schemaVal.Enum[j].(string)
+					})
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
