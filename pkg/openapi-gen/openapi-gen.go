@@ -633,6 +633,9 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	getOp := openapi3.NewOperation()
 	getOp.Summary = fmt.Sprintf("GET %s %s", itemPath, pathType.string())
 	getOp.OperationID = fmt.Sprintf("get%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
+	if pathType == pathTypeContainer {
+		getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
+	}
 	getOp.Tags = []string{toUnderScore(parentPath)}
 	getOp.Tags = append(getOp.Tags, pathType.string())
 	getOp.Responses = make(openapi3.Responses)
