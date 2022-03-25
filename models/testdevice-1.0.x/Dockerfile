@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 2020-present Open Networking Foundation <info@opennetworking.org>
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -12,7 +12,7 @@ COPY api /models/testdevice/api
 COPY plugin /models/testdevice/plugin
 RUN cd /models/testdevice && go build -o _bin/testdevice ./plugin
 
-FROM alpine:3.11
+FROM alpine:3.14
 RUN apk add libc6-compat
 
 # Label image

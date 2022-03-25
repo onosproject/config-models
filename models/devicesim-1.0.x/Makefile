@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 2020-present Open Networking Foundation <info@opennetworking.org>
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -60,7 +60,7 @@ test: mod-update # @HELP Run the unit tests
 repo-tag:
 ifeq ($(IS_RELEASED_VERSION), true)
 ifneq ("$(HAS_CHANGED)", "0 ")
-	NEW_VERSION=${VERSION} ../../build/build-tools/tag-collision-reject
+	NEW_VERSION=${VERSION} ../../../build-tools/tag-collision-reject
 	git tag ${VERSION}
 	git push origin ${VERSION}
 else

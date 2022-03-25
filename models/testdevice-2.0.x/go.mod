@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/SeanCondon/xpath v0.0.0-20220225125014-419de017925c
 	github.com/ghodss/yaml v1.0.0
-	github.com/onosproject/config-models v0.9.17
+	github.com/onosproject/config-models v0.9.20
 	github.com/onosproject/onos-api/go v0.9.8
 	github.com/onosproject/onos-config v0.10.23
 	github.com/onosproject/onos-lib-go v0.8.13
