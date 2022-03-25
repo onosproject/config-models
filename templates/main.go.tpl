@@ -14,7 +14,6 @@ import (
 	"github.com/onosproject/onos-lib-go/pkg/errors"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
-	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
 	"os"
@@ -28,14 +27,6 @@ type modelPlugin struct {
 
 type server struct {
 }
-
-var modelData = []*gnmi.ModelData{
-	{{- range .ModelData }}
-	{Name: {{ .Name | quote }}, Organization: {{ .Organization | quote }}, Version: {{ .Version | quote }}},
-	{{- end }}
-}
-
-var encodings = []gnmi.Encoding{gnmi.Encoding_JSON_IETF}
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
@@ -96,8 +87,8 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 		ModelInfo: &admin.ModelInfo{
 			Name:               {{ .Name | quote }},
 			Version:            {{ .Version | quote }},
-			ModelData:          modelData,
-			SupportedEncodings: encodings,
+			ModelData:          api.ModelData(),
+			SupportedEncodings: api.Encodings(),
 			GetStateMode:       {{ .GetStateMode }},
 			ReadOnlyPath:       roPaths,
 			ReadWritePath:      rwPaths,
