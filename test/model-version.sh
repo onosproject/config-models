@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright 2018 the original author or authors.
-# SPDX-FileCopyrightText: 2022 2020-present Open Networking Foundation <info@opennetworking.org>
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: Apache-2.0
 

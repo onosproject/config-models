@@ -110,7 +110,7 @@ paths:
       summary: DELETE /e2node
     description: The top level container
     get:
-      operationId: getE2node_Container
+      operationId: getE2node
       responses:
         "200":
           content:
@@ -141,7 +141,7 @@ paths:
       summary: DELETE /e2node/intervals
     description: Intervals for E2 services
     get:
-      operationId: getE2node_Intervals_Container
+      operationId: getE2node_Intervals
       responses:
         "200":
           content:

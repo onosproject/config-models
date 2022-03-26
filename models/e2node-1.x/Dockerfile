@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 2020-present Open Networking Foundation <info@opennetworking.org>
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -12,7 +12,7 @@ COPY api /models/e2node/api
 COPY plugin /models/e2node/plugin
 RUN cd /models/e2node && go build -o _bin/e2node ./plugin
 
-FROM alpine:3.11
+FROM alpine:3.14
 RUN apk add libc6-compat
 
 # Label image

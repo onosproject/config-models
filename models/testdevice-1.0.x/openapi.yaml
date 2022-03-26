@@ -388,7 +388,7 @@ paths:
       summary: DELETE /cont1a
     description: The top level container
     get:
-      operationId: getCont1a_Container
+      operationId: getCont1a
       responses:
         "200":
           content:
@@ -419,7 +419,7 @@ paths:
       summary: DELETE /cont1a/cont2a
     description: The 2nd level container
     get:
-      operationId: getCont1a_Cont2a_Container
+      operationId: getCont1a_Cont2a
       responses:
         "200":
           content:
@@ -469,7 +469,7 @@ paths:
       summary: DELETE /cont1a/list2a
     description: A simple list of configuration items
     get:
-      operationId: getCont1a_List2a_Container
+      operationId: getCont1a_List2a
       responses:
         "200":
           content:
@@ -527,7 +527,7 @@ paths:
       summary: DELETE /cont1a/list4
     description: A list with a leafref index
     get:
-      operationId: getCont1a_List4_Container
+      operationId: getCont1a_List4
       responses:
         "200":
           content:
@@ -593,7 +593,7 @@ paths:
       summary: DELETE /cont1a/list4/{id}/list4a
     description: A list within a list with 2 keys as leaf refs
     get:
-      operationId: getCont1a_List4_List4a_Container
+      operationId: getCont1a_List4_List4a
       responses:
         "200":
           content:
@@ -667,7 +667,7 @@ paths:
       summary: DELETE /cont1a/list5
     description: A list with 2 keys
     get:
-      operationId: getCont1a_List5_Container
+      operationId: getCont1a_List5
       responses:
         "200":
           content:
@@ -709,7 +709,7 @@ paths:
     description: A second top level container - this one for state attributes. Edit
       symbol should not be visible
     get:
-      operationId: getCont1b-state_Container
+      operationId: getCont1b-state
       responses:
         "200":
           content:
@@ -745,7 +745,7 @@ paths:
   /testdevice/v1.0.0/{target}/cont1b-state/list2b/{index}:
     description: A simple list of state items
     get:
-      operationId: getCont1b-state_List2b_Container
+      operationId: getCont1b-state_List2b
       responses:
         "200":
           content:

@@ -2170,10 +2170,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_ACCOUNTING_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
           title: event-type
           type: string
         record:
@@ -2197,10 +2197,10 @@ components:
             The type of activity to record at the AAA accounting
             server
           enum:
-          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_ACCOUNTING_EVENT_COMMAND
-          - AAA_AUTHORIZATION_EVENT_CONFIG
+          - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
+          - AAA_AUTHORIZATION_EVENT_CONFIG
           title: event-type
           type: string
         record:
@@ -2590,8 +2590,8 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - TACACS
           - RADIUS
+          - TACACS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_Config
@@ -2909,8 +2909,8 @@ components:
             AAA server type -- all servers in the group must be of this
             type
           enum:
-          - TACACS
           - RADIUS
+          - TACACS
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_State
@@ -3282,25 +3282,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL4
+          - ALL
+          - AUDIT
+          - AUTH
+          - AUTHPRIV
+          - CONSOLE
           - KERNEL
-          - LOCAL3
-          - SYSTEM_DAEMON
           - LOCAL0
           - LOCAL1
-          - LOCAL7
-          - AUTHPRIV
-          - USER
-          - SYSLOG
-          - LOCAL5
-          - NTP
-          - AUDIT
-          - MAIL
           - LOCAL2
-          - AUTH
-          - CONSOLE
+          - LOCAL3
+          - LOCAL4
+          - LOCAL5
           - LOCAL6
-          - ALL
+          - LOCAL7
+          - MAIL
+          - NTP
+          - SYSLOG
+          - SYSTEM_DAEMON
+          - USER
           title: facility
           type: string
         severity:
@@ -3322,25 +3322,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL4
+          - ALL
+          - AUDIT
+          - AUTH
+          - AUTHPRIV
+          - CONSOLE
           - KERNEL
-          - LOCAL3
-          - SYSTEM_DAEMON
           - LOCAL0
           - LOCAL1
-          - LOCAL7
-          - AUTHPRIV
-          - USER
-          - SYSLOG
-          - LOCAL5
-          - NTP
-          - AUDIT
-          - MAIL
           - LOCAL2
-          - AUTH
-          - CONSOLE
+          - LOCAL3
+          - LOCAL4
+          - LOCAL5
           - LOCAL6
-          - ALL
+          - LOCAL7
+          - MAIL
+          - NTP
+          - SYSLOG
+          - SYSTEM_DAEMON
+          - USER
           title: facility
           type: string
         severity:
@@ -3454,25 +3454,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL4
+          - ALL
+          - AUDIT
+          - AUTH
+          - AUTHPRIV
+          - CONSOLE
           - KERNEL
-          - LOCAL3
-          - SYSTEM_DAEMON
           - LOCAL0
           - LOCAL1
-          - LOCAL7
-          - AUTHPRIV
-          - USER
-          - SYSLOG
-          - LOCAL5
-          - NTP
-          - AUDIT
-          - MAIL
           - LOCAL2
-          - AUTH
-          - CONSOLE
+          - LOCAL3
+          - LOCAL4
+          - LOCAL5
           - LOCAL6
-          - ALL
+          - LOCAL7
+          - MAIL
+          - NTP
+          - SYSLOG
+          - SYSTEM_DAEMON
+          - USER
           title: facility
           type: string
         severity:
@@ -3494,25 +3494,25 @@ components:
         facility:
           description: Specifies the facility, or class of messages to log
           enum:
-          - LOCAL4
+          - ALL
+          - AUDIT
+          - AUTH
+          - AUTHPRIV
+          - CONSOLE
           - KERNEL
-          - LOCAL3
-          - SYSTEM_DAEMON
           - LOCAL0
           - LOCAL1
-          - LOCAL7
-          - AUTHPRIV
-          - USER
-          - SYSLOG
-          - LOCAL5
-          - NTP
-          - AUDIT
-          - MAIL
           - LOCAL2
-          - AUTH
-          - CONSOLE
+          - LOCAL3
+          - LOCAL4
+          - LOCAL5
           - LOCAL6
-          - ALL
+          - LOCAL7
+          - MAIL
+          - NTP
+          - SYSLOG
+          - SYSTEM_DAEMON
+          - USER
           title: facility
           type: string
         severity:
@@ -4521,7 +4521,7 @@ paths:
       summary: DELETE /components
     description: Enclosing container for the components in the system.
     get:
-      operationId: getComponents_Container
+      operationId: getComponents
       responses:
         "200":
           content:
@@ -4571,7 +4571,7 @@ paths:
       summary: DELETE /components/component
     description: List of components, keyed by component name.
     get:
-      operationId: getComponents_Component_Container
+      operationId: getComponents_Component
       responses:
         "200":
           content:
@@ -4610,7 +4610,7 @@ paths:
       summary: DELETE /components/component/{name}/config
     description: Configuration data for each component
     get:
-      operationId: getComponents_Component_Config_Container
+      operationId: getComponents_Component_Config
       responses:
         "200":
           content:
@@ -4649,7 +4649,7 @@ paths:
       summary: DELETE /components/component/{name}/properties
     description: 'Enclosing container '
     get:
-      operationId: getComponents_Component_Properties_Container
+      operationId: getComponents_Component_Properties
       responses:
         "200":
           content:
@@ -4715,7 +4715,7 @@ paths:
       summary: DELETE /components/component/{name}/properties/property
     description: List of system properties for the component
     get:
-      operationId: getComponents_Component_Properties_Property_Container
+      operationId: getComponents_Component_Properties_Property
       responses:
         "200":
           content:
@@ -4762,7 +4762,7 @@ paths:
       summary: DELETE /components/component/{name}/properties/property/{name}/config
     description: Configuration data for each property
     get:
-      operationId: getComponents_Component_Properties_Property_Config_Container
+      operationId: getComponents_Component_Properties_Property_Config
       responses:
         "200":
           content:
@@ -4804,7 +4804,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/state:
     description: Operational state data for each property
     get:
-      operationId: getComponents_Component_Properties_Property_State_Container
+      operationId: getComponents_Component_Properties_Property_State
       responses:
         "200":
           content:
@@ -4837,7 +4837,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/state:
     description: Operational state data for each component
     get:
-      operationId: getComponents_Component_State_Container
+      operationId: getComponents_Component_State
       responses:
         "200":
           content:
@@ -4866,7 +4866,7 @@ paths:
       avg/min/max statistics are not supported, the target is expected
       to just supply the instant value
     get:
-      operationId: getComponents_Component_State_Temperature_Container
+      operationId: getComponents_Component_State_Temperature
       responses:
         "200":
           content:
@@ -4897,7 +4897,7 @@ paths:
       summary: DELETE /components/component/{name}/subcomponents
     description: Enclosing container for subcomponent references
     get:
-      operationId: getComponents_Component_Subcomponents_Container
+      operationId: getComponents_Component_Subcomponents
       responses:
         "200":
           content:
@@ -4963,7 +4963,7 @@ paths:
       summary: DELETE /components/component/{name}/subcomponents/subcomponent
     description: List of subcomponent references
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent_Container
+      operationId: getComponents_Component_Subcomponents_Subcomponent
       responses:
         "200":
           content:
@@ -5010,7 +5010,7 @@ paths:
       summary: DELETE /components/component/{name}/subcomponents/subcomponent/{name}/config
     description: 'Configuration data '
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent_Config_Container
+      operationId: getComponents_Component_Subcomponents_Subcomponent_Config
       responses:
         "200":
           content:
@@ -5052,7 +5052,7 @@ paths:
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/state:
     description: 'Operational state data '
     get:
-      operationId: getComponents_Component_Subcomponents_Subcomponent_State_Container
+      operationId: getComponents_Component_Subcomponents_Subcomponent_State
       responses:
         "200":
           content:
@@ -5094,7 +5094,7 @@ paths:
       Top level container for interfaces, including configuration
       and state data.
     get:
-      operationId: getInterfaces_Container
+      operationId: getInterfaces
       responses:
         "200":
           content:
@@ -5144,7 +5144,7 @@ paths:
       summary: DELETE /interfaces/interface
     description: The list of named interfaces on the device.
     get:
-      operationId: getInterfaces_Interface_Container
+      operationId: getInterfaces_Interface
       responses:
         "200":
           content:
@@ -5185,7 +5185,7 @@ paths:
       Configurable items at the global, physical interface
       level
     get:
-      operationId: getInterfaces_Interface_Config_Container
+      operationId: getInterfaces_Interface_Config
       responses:
         "200":
           content:
@@ -5226,7 +5226,7 @@ paths:
       Top-level container for hold-time settings to enable
       dampening advertisements of interface transitions.
     get:
-      operationId: getInterfaces_Interface_Hold-time_Container
+      operationId: getInterfaces_Interface_Hold-time
       responses:
         "200":
           content:
@@ -5265,7 +5265,7 @@ paths:
       summary: DELETE /interfaces/interface/{name}/hold-time/config
     description: Configuration data for interface hold-time settings.
     get:
-      operationId: getInterfaces_Interface_Hold-time_Config_Container
+      operationId: getInterfaces_Interface_Hold-time_Config
       responses:
         "200":
           content:
@@ -5298,7 +5298,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/state:
     description: Operational state data for interface hold-time.
     get:
-      operationId: getInterfaces_Interface_Hold-time_State_Container
+      operationId: getInterfaces_Interface_Hold-time_State
       responses:
         "200":
           content:
@@ -5323,7 +5323,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state:
     description: Operational state data at the global interface level
     get:
-      operationId: getInterfaces_Interface_State_Container
+      operationId: getInterfaces_Interface_State
       responses:
         "200":
           content:
@@ -5348,7 +5348,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
-      operationId: getInterfaces_Interface_State_Counters_Container
+      operationId: getInterfaces_Interface_State_Counters
       responses:
         "200":
           content:
@@ -5381,7 +5381,7 @@ paths:
       Enclosing container for the list of subinterfaces associated
       with a physical interface
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Container
+      operationId: getInterfaces_Interface_Subinterfaces
       responses:
         "200":
           content:
@@ -5451,7 +5451,7 @@ paths:
       The list of subinterfaces (logical interfaces) associated
       with a physical interface
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Container
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface
       responses:
         "200":
           content:
@@ -5498,7 +5498,7 @@ paths:
       summary: DELETE /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
     description: Configurable items at the subinterface level
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Config_Container
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Config
       responses:
         "200":
           content:
@@ -5540,7 +5540,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
     description: Operational state data for logical interfaces
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Container
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State
       responses:
         "200":
           content:
@@ -5574,7 +5574,7 @@ paths:
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
-      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters_Container
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters
       responses:
         "200":
           content:
@@ -5616,7 +5616,7 @@ paths:
       Enclosing container for system-related configuration and
       operational state data
     get:
-      operationId: getSystem_Container
+      operationId: getSystem
       responses:
         "200":
           content:
@@ -5647,7 +5647,7 @@ paths:
       summary: DELETE /system/aaa
     description: Top-level container for AAA services
     get:
-      operationId: getSystem_Aaa_Container
+      operationId: getSystem_Aaa
       responses:
         "200":
           content:
@@ -5678,7 +5678,7 @@ paths:
       summary: DELETE /system/aaa/accounting
     description: Top-level container for AAA accounting
     get:
-      operationId: getSystem_Aaa_Accounting_Container
+      operationId: getSystem_Aaa_Accounting
       responses:
         "200":
           content:
@@ -5709,7 +5709,7 @@ paths:
       summary: DELETE /system/aaa/accounting/config
     description: Configuration data for user activity accounting.
     get:
-      operationId: getSystem_Aaa_Accounting_Config_Container
+      operationId: getSystem_Aaa_Accounting_Config
       responses:
         "200":
           content:
@@ -5742,7 +5742,7 @@ paths:
       Enclosing container for defining handling of events
       for accounting
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Container
+      operationId: getSystem_Aaa_Accounting_Events
       responses:
         "200":
           content:
@@ -5792,7 +5792,7 @@ paths:
       summary: DELETE /system/aaa/accounting/events/event
     description: List of events subject to accounting
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event_Container
+      operationId: getSystem_Aaa_Accounting_Events_Event
       responses:
         "200":
           content:
@@ -5831,7 +5831,7 @@ paths:
       summary: DELETE /system/aaa/accounting/events/event/{event-type}/config
     description: Configuration data for accounting events
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event_Config_Container
+      operationId: getSystem_Aaa_Accounting_Events_Event_Config
       responses:
         "200":
           content:
@@ -5864,7 +5864,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/state:
     description: Operational state data for accounting events
     get:
-      operationId: getSystem_Aaa_Accounting_Events_Event_State_Container
+      operationId: getSystem_Aaa_Accounting_Events_Event_State
       responses:
         "200":
           content:
@@ -5889,7 +5889,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/accounting/state:
     description: Operational state data for user accounting.
     get:
-      operationId: getSystem_Aaa_Accounting_State_Container
+      operationId: getSystem_Aaa_Accounting_State
       responses:
         "200":
           content:
@@ -5912,7 +5912,7 @@ paths:
       summary: DELETE /system/aaa/authentication
     description: Top-level container for global authentication data
     get:
-      operationId: getSystem_Aaa_Authentication_Container
+      operationId: getSystem_Aaa_Authentication
       responses:
         "200":
           content:
@@ -5945,7 +5945,7 @@ paths:
       Top-level container for the system root or admin user
       configuration and operational state
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user_Container
+      operationId: getSystem_Aaa_Authentication_Admin-user
       responses:
         "200":
           content:
@@ -5976,7 +5976,7 @@ paths:
       summary: DELETE /system/aaa/authentication/admin-user/config
     description: Configuration data for the root user account
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user_Config_Container
+      operationId: getSystem_Aaa_Authentication_Admin-user_Config
       responses:
         "200":
           content:
@@ -6001,7 +6001,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/state:
     description: Operational state data for the root user account
     get:
-      operationId: getSystem_Aaa_Authentication_Admin-user_State_Container
+      operationId: getSystem_Aaa_Authentication_Admin-user_State
       responses:
         "200":
           content:
@@ -6024,7 +6024,7 @@ paths:
       summary: DELETE /system/aaa/authentication/config
     description: Configuration data for global authentication services
     get:
-      operationId: getSystem_Aaa_Authentication_Config_Container
+      operationId: getSystem_Aaa_Authentication_Config
       responses:
         "200":
           content:
@@ -6051,7 +6051,7 @@ paths:
       Operational state data for global authentication
       services
     get:
-      operationId: getSystem_Aaa_Authentication_State_Container
+      operationId: getSystem_Aaa_Authentication_State
       responses:
         "200":
           content:
@@ -6074,7 +6074,7 @@ paths:
       summary: DELETE /system/aaa/authentication/users
     description: Enclosing container list of local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users_Container
+      operationId: getSystem_Aaa_Authentication_Users
       responses:
         "200":
           content:
@@ -6124,7 +6124,7 @@ paths:
       summary: DELETE /system/aaa/authentication/users/user
     description: List of local users on the system
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User_Container
+      operationId: getSystem_Aaa_Authentication_Users_User
       responses:
         "200":
           content:
@@ -6163,7 +6163,7 @@ paths:
       summary: DELETE /system/aaa/authentication/users/user/{username}/config
     description: Configuration data for local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User_Config_Container
+      operationId: getSystem_Aaa_Authentication_Users_User_Config
       responses:
         "200":
           content:
@@ -6196,7 +6196,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/state:
     description: Operational state data for local users
     get:
-      operationId: getSystem_Aaa_Authentication_Users_User_State_Container
+      operationId: getSystem_Aaa_Authentication_Users_User_State
       responses:
         "200":
           content:
@@ -6229,7 +6229,7 @@ paths:
       Top-level container for AAA authorization configuration
       and operational state data
     get:
-      operationId: getSystem_Aaa_Authorization_Container
+      operationId: getSystem_Aaa_Authorization
       responses:
         "200":
           content:
@@ -6262,7 +6262,7 @@ paths:
       Configuration data for authorization based on AAA
       methods
     get:
-      operationId: getSystem_Aaa_Authorization_Config_Container
+      operationId: getSystem_Aaa_Authorization_Config
       responses:
         "200":
           content:
@@ -6295,7 +6295,7 @@ paths:
       Enclosing container for the set of events subject
       to authorization
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Container
+      operationId: getSystem_Aaa_Authorization_Events
       responses:
         "200":
           content:
@@ -6345,7 +6345,7 @@ paths:
       summary: DELETE /system/aaa/authorization/events/event
     description: List of events subject to AAA authorization
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event_Container
+      operationId: getSystem_Aaa_Authorization_Events_Event
       responses:
         "200":
           content:
@@ -6384,7 +6384,7 @@ paths:
       summary: DELETE /system/aaa/authorization/events/event/{event-type}/config
     description: Configuration data for each authorized event
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event_Config_Container
+      operationId: getSystem_Aaa_Authorization_Events_Event_Config
       responses:
         "200":
           content:
@@ -6417,7 +6417,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/state:
     description: Operational state data for each authorized activity
     get:
-      operationId: getSystem_Aaa_Authorization_Events_Event_State_Container
+      operationId: getSystem_Aaa_Authorization_Events_Event_State
       responses:
         "200":
           content:
@@ -6442,7 +6442,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/authorization/state:
     description: Operational state data for authorization based on AAA
     get:
-      operationId: getSystem_Aaa_Authorization_State_Container
+      operationId: getSystem_Aaa_Authorization_State
       responses:
         "200":
           content:
@@ -6465,7 +6465,7 @@ paths:
       summary: DELETE /system/aaa/config
     description: Configuration data for top level AAA services
     get:
-      operationId: getSystem_Aaa_Config_Container
+      operationId: getSystem_Aaa_Config
       responses:
         "200":
           content:
@@ -6496,7 +6496,7 @@ paths:
       summary: DELETE /system/aaa/server-groups
     description: Enclosing container for AAA server groups
     get:
-      operationId: getSystem_Aaa_Server-groups_Container
+      operationId: getSystem_Aaa_Server-groups
       responses:
         "200":
           content:
@@ -6552,7 +6552,7 @@ paths:
       must have the same type as indicated by the server
       type.
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group
       responses:
         "200":
           content:
@@ -6591,7 +6591,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/config
     description: Configuration data for each server group
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Config_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Config
       responses:
         "200":
           content:
@@ -6630,7 +6630,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers
     description: Enclosing container the list of servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers
       responses:
         "200":
           content:
@@ -6696,7 +6696,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server
     description: List of AAA servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server
       responses:
         "200":
           content:
@@ -6743,7 +6743,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Config_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
       responses:
         "200":
           content:
@@ -6791,7 +6791,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
     description: Top-level container for RADIUS server data
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
       responses:
         "200":
           content:
@@ -6839,7 +6839,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
     description: Configuration data for RADIUS servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
       responses:
         "200":
           content:
@@ -6881,7 +6881,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
     description: Operational state data for RADIUS servers
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
       responses:
         "200":
           content:
@@ -6915,7 +6915,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
     description: A collection of RADIUS related state objects.
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters
       responses:
         "200":
           content:
@@ -6949,7 +6949,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State
       responses:
         "200":
           content:
@@ -6989,7 +6989,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
     description: Top-level container for TACACS+ server data
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
       responses:
         "200":
           content:
@@ -7037,7 +7037,7 @@ paths:
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
     description: Configuration data for TACACS+ server
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
       responses:
         "200":
           content:
@@ -7079,7 +7079,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
     description: Operational state data for TACACS+ server
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State
       responses:
         "200":
           content:
@@ -7113,7 +7113,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/state:
     description: Operational state data for each server group
     get:
-      operationId: getSystem_Aaa_Server-groups_Server-group_State_Container
+      operationId: getSystem_Aaa_Server-groups_Server-group_State
       responses:
         "200":
           content:
@@ -7138,7 +7138,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/aaa/state:
     description: 'Operational state data for top level AAA services '
     get:
-      operationId: getSystem_Aaa_State_Container
+      operationId: getSystem_Aaa_State
       responses:
         "200":
           content:
@@ -7161,7 +7161,7 @@ paths:
       summary: DELETE /system/clock
     description: Top-level container for clock configuration data
     get:
-      operationId: getSystem_Clock_Container
+      operationId: getSystem_Clock
       responses:
         "200":
           content:
@@ -7192,7 +7192,7 @@ paths:
       summary: DELETE /system/clock/config
     description: Configuration data for system clock
     get:
-      operationId: getSystem_Clock_Config_Container
+      operationId: getSystem_Clock_Config
       responses:
         "200":
           content:
@@ -7217,7 +7217,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/clock/state:
     description: Operational state data for system clock
     get:
-      operationId: getSystem_Clock_State_Container
+      operationId: getSystem_Clock_State
       responses:
         "200":
           content:
@@ -7240,7 +7240,7 @@ paths:
       summary: DELETE /system/config
     description: Global configuration data for the system
     get:
-      operationId: getSystem_Config_Container
+      operationId: getSystem_Config
       responses:
         "200":
           content:
@@ -7271,7 +7271,7 @@ paths:
       summary: DELETE /system/dns
     description: Enclosing container for DNS resolver data
     get:
-      operationId: getSystem_Dns_Container
+      operationId: getSystem_Dns
       responses:
         "200":
           content:
@@ -7302,7 +7302,7 @@ paths:
       summary: DELETE /system/dns/config
     description: Configuration data for the DNS resolver
     get:
-      operationId: getSystem_Dns_Config_Container
+      operationId: getSystem_Dns_Config
       responses:
         "200":
           content:
@@ -7333,7 +7333,7 @@ paths:
       summary: DELETE /system/dns/host-entries
     description: Enclosing container for list of static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Container
+      operationId: getSystem_Dns_Host-entries
       responses:
         "200":
           content:
@@ -7383,7 +7383,7 @@ paths:
       summary: DELETE /system/dns/host-entries/host-entry
     description: List of static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry_Container
+      operationId: getSystem_Dns_Host-entries_Host-entry
       responses:
         "200":
           content:
@@ -7422,7 +7422,7 @@ paths:
       summary: DELETE /system/dns/host-entries/host-entry/{hostname}/config
     description: Configuration data for static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry_Config_Container
+      operationId: getSystem_Dns_Host-entries_Host-entry_Config
       responses:
         "200":
           content:
@@ -7455,7 +7455,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/state:
     description: Operational state data for static host entries
     get:
-      operationId: getSystem_Dns_Host-entries_Host-entry_State_Container
+      operationId: getSystem_Dns_Host-entries_Host-entry_State
       responses:
         "200":
           content:
@@ -7486,7 +7486,7 @@ paths:
       summary: DELETE /system/dns/servers
     description: Enclosing container for DNS resolver list
     get:
-      operationId: getSystem_Dns_Servers_Container
+      operationId: getSystem_Dns_Servers
       responses:
         "200":
           content:
@@ -7564,7 +7564,7 @@ paths:
       Implementations MAY limit the number of entries in this
       list.
     get:
-      operationId: getSystem_Dns_Servers_Server_Container
+      operationId: getSystem_Dns_Servers_Server
       responses:
         "200":
           content:
@@ -7603,7 +7603,7 @@ paths:
       summary: DELETE /system/dns/servers/server/{address}/config
     description: Configuration data for each DNS resolver
     get:
-      operationId: getSystem_Dns_Servers_Server_Config_Container
+      operationId: getSystem_Dns_Servers_Server_Config
       responses:
         "200":
           content:
@@ -7636,7 +7636,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/state:
     description: Operational state data for each DNS resolver
     get:
-      operationId: getSystem_Dns_Servers_Server_State_Container
+      operationId: getSystem_Dns_Servers_Server_State
       responses:
         "200":
           content:
@@ -7661,7 +7661,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/dns/state:
     description: Operational state data for the DNS resolver
     get:
-      operationId: getSystem_Dns_State_Container
+      operationId: getSystem_Dns_State
       responses:
         "200":
           content:
@@ -7684,7 +7684,7 @@ paths:
       summary: DELETE /system/logging
     description: Top-level container for data related to logging / syslog
     get:
-      operationId: getSystem_Logging_Container
+      operationId: getSystem_Logging
       responses:
         "200":
           content:
@@ -7717,7 +7717,7 @@ paths:
       Top-level container for data related to console-based
       logging
     get:
-      operationId: getSystem_Logging_Console_Container
+      operationId: getSystem_Logging_Console
       responses:
         "200":
           content:
@@ -7748,7 +7748,7 @@ paths:
       summary: DELETE /system/logging/console/config
     description: Configuration data for console logging
     get:
-      operationId: getSystem_Logging_Console_Config_Container
+      operationId: getSystem_Logging_Console_Config
       responses:
         "200":
           content:
@@ -7779,7 +7779,7 @@ paths:
       summary: DELETE /system/logging/console/selectors
     description: 'Enclosing container '
     get:
-      operationId: getSystem_Logging_Console_Selectors_Container
+      operationId: getSystem_Logging_Console_Selectors
       responses:
         "200":
           content:
@@ -7829,7 +7829,7 @@ paths:
       summary: DELETE /system/logging/console/selectors/selector
     description: List of selectors for log messages
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector_Container
+      operationId: getSystem_Logging_Console_Selectors_Selector
       responses:
         "200":
           content:
@@ -7876,7 +7876,7 @@ paths:
       summary: DELETE /system/logging/console/selectors/selector/{facility}/{severity}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector_Config_Container
+      operationId: getSystem_Logging_Console_Selectors_Selector_Config
       responses:
         "200":
           content:
@@ -7918,7 +7918,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Logging_Console_Selectors_Selector_State_Container
+      operationId: getSystem_Logging_Console_Selectors_Selector_State
       responses:
         "200":
           content:
@@ -7952,7 +7952,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/console/state:
     description: Operational state data for console logging
     get:
-      operationId: getSystem_Logging_Console_State_Container
+      operationId: getSystem_Logging_Console_State
       responses:
         "200":
           content:
@@ -7975,7 +7975,7 @@ paths:
       summary: DELETE /system/logging/remote-servers
     description: Enclosing container for the list of remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Container
+      operationId: getSystem_Logging_Remote-servers
       responses:
         "200":
           content:
@@ -8025,7 +8025,7 @@ paths:
       summary: DELETE /system/logging/remote-servers/remote-server
     description: List of remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server
       responses:
         "200":
           content:
@@ -8064,7 +8064,7 @@ paths:
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/config
     description: Configuration data for remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Config_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Config
       responses:
         "200":
           content:
@@ -8103,7 +8103,7 @@ paths:
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors
     description: 'Enclosing container '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors
       responses:
         "200":
           content:
@@ -8170,7 +8170,7 @@ paths:
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector
     description: List of selectors for log messages
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
       responses:
         "200":
           content:
@@ -8226,7 +8226,7 @@ paths:
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
     description: 'Configuration data '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       responses:
         "200":
           content:
@@ -8276,7 +8276,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State
       responses:
         "200":
           content:
@@ -8318,7 +8318,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/state:
     description: Operational state data for remote log servers
     get:
-      operationId: getSystem_Logging_Remote-servers_Remote-server_State_Container
+      operationId: getSystem_Logging_Remote-servers_Remote-server_State
       responses:
         "200":
           content:
@@ -8349,7 +8349,7 @@ paths:
       summary: DELETE /system/memory
     description: Top-level container for system memory data
     get:
-      operationId: getSystem_Memory_Container
+      operationId: getSystem_Memory
       responses:
         "200":
           content:
@@ -8380,7 +8380,7 @@ paths:
       summary: DELETE /system/memory/config
     description: Configuration data for system memory
     get:
-      operationId: getSystem_Memory_Config_Container
+      operationId: getSystem_Memory_Config
       responses:
         "200":
           content:
@@ -8405,7 +8405,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/memory/state:
     description: Operational state data for system memory
     get:
-      operationId: getSystem_Memory_State_Container
+      operationId: getSystem_Memory_State
       responses:
         "200":
           content:
@@ -8428,7 +8428,7 @@ paths:
       summary: DELETE /system/ntp
     description: Top-level container for NTP configuration and state
     get:
-      operationId: getSystem_Ntp_Container
+      operationId: getSystem_Ntp
       responses:
         "200":
           content:
@@ -8459,7 +8459,7 @@ paths:
       summary: DELETE /system/ntp/config
     description: Configuration data for NTP client.
     get:
-      operationId: getSystem_Ntp_Config_Container
+      operationId: getSystem_Ntp_Config
       responses:
         "200":
           content:
@@ -8490,7 +8490,7 @@ paths:
       summary: DELETE /system/ntp/ntp-keys
     description: Enclosing container for list of NTP authentication keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Container
+      operationId: getSystem_Ntp_Ntp-keys
       responses:
         "200":
           content:
@@ -8540,7 +8540,7 @@ paths:
       summary: DELETE /system/ntp/ntp-keys/ntp-key
     description: List of NTP authentication keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Container
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key
       responses:
         "200":
           content:
@@ -8579,7 +8579,7 @@ paths:
       summary: DELETE /system/ntp/ntp-keys/ntp-key/{key-id}/config
     description: Configuration data for NTP auth keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Config_Container
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Config
       responses:
         "200":
           content:
@@ -8612,7 +8612,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
     description: Operational state data for NTP auth keys
     get:
-      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State_Container
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State
       responses:
         "200":
           content:
@@ -8643,7 +8643,7 @@ paths:
       summary: DELETE /system/ntp/servers
     description: Enclosing container for the list of NTP servers
     get:
-      operationId: getSystem_Ntp_Servers_Container
+      operationId: getSystem_Ntp_Servers
       responses:
         "200":
           content:
@@ -8701,7 +8701,7 @@ paths:
       is 'true', then the system will attempt to
       contact and utilize the specified NTP servers.
     get:
-      operationId: getSystem_Ntp_Servers_Server_Container
+      operationId: getSystem_Ntp_Servers_Server
       responses:
         "200":
           content:
@@ -8740,7 +8740,7 @@ paths:
       summary: DELETE /system/ntp/servers/server/{address}/config
     description: Configuration data for an NTP server.
     get:
-      operationId: getSystem_Ntp_Servers_Server_Config_Container
+      operationId: getSystem_Ntp_Servers_Server_Config
       responses:
         "200":
           content:
@@ -8773,7 +8773,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/state:
     description: Operational state data for an NTP server.
     get:
-      operationId: getSystem_Ntp_Servers_Server_State_Container
+      operationId: getSystem_Ntp_Servers_Server_State
       responses:
         "200":
           content:
@@ -8798,7 +8798,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ntp/state:
     description: Operational state data for NTP services.
     get:
-      operationId: getSystem_Ntp_State_Container
+      operationId: getSystem_Ntp_State
       responses:
         "200":
           content:
@@ -8821,7 +8821,7 @@ paths:
       summary: DELETE /system/openflow
     description: Container for Openflow model
     get:
-      operationId: getSystem_Openflow_Container
+      operationId: getSystem_Openflow
       responses:
         "200":
           content:
@@ -8852,7 +8852,7 @@ paths:
       summary: DELETE /system/openflow/agent
     description: Container for the Openflow agent model.
     get:
-      operationId: getSystem_Openflow_Agent_Container
+      operationId: getSystem_Openflow_Agent
       responses:
         "200":
           content:
@@ -8883,7 +8883,7 @@ paths:
       summary: DELETE /system/openflow/agent/config
     description: Container for the Openflow agent config.
     get:
-      operationId: getSystem_Openflow_Agent_Config_Container
+      operationId: getSystem_Openflow_Agent_Config
       responses:
         "200":
           content:
@@ -8908,7 +8908,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/openflow/agent/state:
     description: Container for the Openflow agent state.
     get:
-      operationId: getSystem_Openflow_Agent_State_Container
+      operationId: getSystem_Openflow_Agent_State
       responses:
         "200":
           content:
@@ -8931,7 +8931,7 @@ paths:
       summary: DELETE /system/openflow/controllers
     description: Container for the Openflow controllers model
     get:
-      operationId: getSystem_Openflow_Controllers_Container
+      operationId: getSystem_Openflow_Controllers
       responses:
         "200":
           content:
@@ -8985,7 +8985,7 @@ paths:
       The Openflow Switch connects to all Openflow controllers
       configured
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Container
+      operationId: getSystem_Openflow_Controllers_Controller
       responses:
         "200":
           content:
@@ -9024,7 +9024,7 @@ paths:
       summary: DELETE /system/openflow/controllers/controller/{name}/config
     description: Container for the Openflow controller config.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Config_Container
+      operationId: getSystem_Openflow_Controllers_Controller_Config
       responses:
         "200":
           content:
@@ -9063,7 +9063,7 @@ paths:
       summary: DELETE /system/openflow/controllers/controller/{name}/connections
     description: Enclosing container for list of controller connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Container
+      operationId: getSystem_Openflow_Controllers_Controller_Connections
       responses:
         "200":
           content:
@@ -9138,7 +9138,7 @@ paths:
       controllers. Each controller can have more than one
       connection, called auxiliary Openflow connections.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Container
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection
       responses:
         "200":
           content:
@@ -9186,7 +9186,7 @@ paths:
       summary: DELETE /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
     description: Configuration data for OpenFlow controller connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config_Container
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config
       responses:
         "200":
           content:
@@ -9230,7 +9230,7 @@ paths:
       Operational state data for OpenFlow controller
       connections
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_State_Container
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_State
       responses:
         "200":
           content:
@@ -9264,7 +9264,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/state:
     description: Container for the Openflow controller state.
     get:
-      operationId: getSystem_Openflow_Controllers_Controller_State_Container
+      operationId: getSystem_Openflow_Controllers_Controller_State
       responses:
         "200":
           content:
@@ -9295,7 +9295,7 @@ paths:
       summary: DELETE /system/processes
     description: Parameters related to all monitored processes
     get:
-      operationId: getSystem_Processes_Container
+      operationId: getSystem_Processes
       responses:
         "200":
           content:
@@ -9339,7 +9339,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/processes/process/{pid}:
     description: List of monitored processes
     get:
-      operationId: getSystem_Processes_Process_Container
+      operationId: getSystem_Processes_Process
       responses:
         "200":
           content:
@@ -9364,7 +9364,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/processes/process/{pid}/state:
     description: State parameters related to monitored processes
     get:
-      operationId: getSystem_Processes_Process_State_Container
+      operationId: getSystem_Processes_Process_State
       responses:
         "200":
           content:
@@ -9395,7 +9395,7 @@ paths:
       summary: DELETE /system/ssh-server
     description: Top-level container for ssh server
     get:
-      operationId: getSystem_Ssh-server_Container
+      operationId: getSystem_Ssh-server
       responses:
         "200":
           content:
@@ -9426,7 +9426,7 @@ paths:
       summary: DELETE /system/ssh-server/config
     description: Configuration data for the system ssh server
     get:
-      operationId: getSystem_Ssh-server_Config_Container
+      operationId: getSystem_Ssh-server_Config
       responses:
         "200":
           content:
@@ -9451,7 +9451,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/ssh-server/state:
     description: Operational state data for the system ssh server
     get:
-      operationId: getSystem_Ssh-server_State_Container
+      operationId: getSystem_Ssh-server_State
       responses:
         "200":
           content:
@@ -9468,7 +9468,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/state:
     description: Global operational state data for the system
     get:
-      operationId: getSystem_State_Container
+      operationId: getSystem_State
       responses:
         "200":
           content:
@@ -9491,7 +9491,7 @@ paths:
       summary: DELETE /system/telnet-server
     description: Top-level container for telnet terminal servers
     get:
-      operationId: getSystem_Telnet-server_Container
+      operationId: getSystem_Telnet-server
       responses:
         "200":
           content:
@@ -9522,7 +9522,7 @@ paths:
       summary: DELETE /system/telnet-server/config
     description: Configuration data for telnet
     get:
-      operationId: getSystem_Telnet-server_Config_Container
+      operationId: getSystem_Telnet-server_Config
       responses:
         "200":
           content:
@@ -9547,7 +9547,7 @@ paths:
   /devicesim/v1.0.0/{target}/system/telnet-server/state:
     description: Operational state data for telnet
     get:
-      operationId: getSystem_Telnet-server_State_Container
+      operationId: getSystem_Telnet-server_State
       responses:
         "200":
           content:

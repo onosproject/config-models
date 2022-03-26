@@ -28,6 +28,7 @@ var log = logging.GetLogger("config-model", "compiler")
 const (
 	versionFile        = "VERSION"
 	mainTemplate       = "main.go.tpl"
+	modelTemplate      = "model.go.tpl"
 	pathsUtilsTemplate = "paths.go.tpl"
 	gomodTemplate      = "go.mod.tpl"
 	makefileTemplate   = "Makefile.tpl"
@@ -261,6 +262,9 @@ func (c *ModelCompiler) generatePluginArtifacts(path string) error {
 	if err := c.generateMain(path); err != nil {
 		return err
 	}
+	if err := c.generateModel(path); err != nil {
+		return err
+	}
 	if err := c.generatePathsExtraction(path); err != nil {
 		return err
 	}
@@ -288,6 +292,14 @@ func (c *ModelCompiler) generateMain(path string) error {
 	log.Infof("Generating plugin main '%s'", mainFile)
 	c.createDir(mainDir)
 	return c.applyTemplate(mainTemplate, c.getTemplatePath(mainTemplate), mainFile)
+}
+
+func (c *ModelCompiler) generateModel(path string) error {
+	modelDir := filepath.Join(path, "api")
+	modelFile := filepath.Join(modelDir, "model.go")
+	log.Infof("Generating plugin model '%s'", modelFile)
+	c.createDir(modelDir)
+	return c.applyTemplate(modelTemplate, c.getTemplatePath(modelTemplate), modelFile)
 }
 
 func (c *ModelCompiler) generatePathsExtraction(path string) error {
