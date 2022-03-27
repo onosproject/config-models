@@ -8,7 +8,7 @@ package main
 
 import (
 	"context"
-	"github.com/onosproject/config-models/models/testdevice/v2/api"
+	"github.com/onosproject/config-models/models/testdevice-2.0.x/api"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/errors"
@@ -86,7 +86,7 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
 			Name:               "testdevice",
-			Version:            "2.0.0",
+			Version:            "2.0.x",
 			ModelData:          api.ModelData(),
 			SupportedEncodings: api.Encodings(),
 			GetStateMode:       0,
@@ -135,7 +135,7 @@ func (s server) validate(ygotModel *ygot.ValidatedGoStruct, opts ...ygot.Validat
 	deviceDeref := *ygotModel
 	device, ok := deviceDeref.(*api.Device)
 	if !ok {
-		return errors.NewInvalid("Unable to convert model testdevice-2.0.0")
+		return errors.NewInvalid("Unable to convert model testdevice-2.0.x")
 	}
 	return device.Validate()
 }

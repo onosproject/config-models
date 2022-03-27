@@ -1,4 +1,4 @@
-module github.com/onosproject/config-models/models/testdevice
+module github.com/onosproject/config-models/models/testdevice-1.0.x
 
 go 1.16
 

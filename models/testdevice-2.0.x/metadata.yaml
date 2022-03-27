@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: testdevice
-version: 2.0.0
-artifactName: testdevice
-goPackage: github.com/onosproject/config-models/models/testdevice/v2
+version: 2.0.x
+artifactName: testdevice-2.0.x
+goPackage: github.com/onosproject/config-models/models/testdevice-2.0.x
 modules:
   - name: onf-test1
     organization: Open Networking Foundation
