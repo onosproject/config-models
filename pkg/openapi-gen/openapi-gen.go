@@ -20,6 +20,7 @@ import (
 
 const (
 	AdditionalPropertyUnchanged = "AdditionalPropertyUnchanged"
+	AdditionalPropertiesUnchEnt = "AdditionalPropertiesUnchEnt"
 )
 
 var swagger openapi3.Swagger
@@ -33,7 +34,7 @@ type ApiGenSettings struct {
 	ModelVersion string
 	Title        string
 	Description  string
-	TargetWord   string
+	TargetAlias  string
 }
 
 type pathType uint8
@@ -76,17 +77,52 @@ func (settings *ApiGenSettings) ApplyDefaults() {
 func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.Swagger, error) {
 	settings.ApplyDefaults()
 
-	pathPrefix = fmt.Sprintf("/%s/v%s/{%s}", strings.ToLower(settings.ModelType), settings.ModelVersion, settings.TargetWord)
-	targetParameter = targetParam(settings.TargetWord)
+	pathPrefix = fmt.Sprintf("/%s/v%s/{%s}", strings.ToLower(settings.ModelType), settings.ModelVersion, settings.TargetAlias)
+	targetParameter = targetParam(settings.TargetAlias)
 
 	topEntry := yangSchema.SchemaTree["Device"]
-	paths, components, err := buildSchema(topEntry, yang.TSFalse, "", settings.TargetWord)
+	paths, components, err := buildSchema(topEntry, yang.TSFalse, "", settings.TargetAlias)
 	if err != nil {
 		return nil, err
 	}
 
 	components.Parameters = make(map[string]*openapi3.ParameterRef)
-	components.Parameters[settings.TargetWord] = targetParameter
+	components.Parameters[settings.TargetAlias] = targetParameter
+
+	// At the root of the API, add in the definition of "additionalPropertyTarget"
+	schemaValTarget := openapi3.NewObjectSchema()
+	schemaValTarget.Title = settings.TargetAlias
+	schemaValTarget.Type = "string"
+	schemaValTarget.Description = fmt.Sprintf("an override of the %s (target)", settings.TargetAlias)
+
+	schemaValAddTarget := openapi3.NewObjectSchema()
+	schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValAddTarget.Title = additionalPropertyTarget(settings.TargetAlias)
+	schemaValAddTarget.Description = fmt.Sprintf("Optionally specify a %s other than the default (only on PATCH method)", settings.TargetAlias)
+	schemaValAddTargetRef := schemaValAddTarget.NewRef()
+	schemaValAddTarget.Properties["enterprise"] = schemaValTarget.NewRef()
+	components.Schemas[additionalPropertyTarget(settings.TargetAlias)] = schemaValAddTargetRef
+
+	schemaValUnchanged := openapi3.NewObjectSchema()
+	schemaValUnchanged.Title = "unchanged"
+	schemaValUnchanged.Type = "string"
+	schemaValUnchanged.Description = "A comma seperated list of unchanged mandatory attribute names"
+
+	schemaValAddUnchanged := openapi3.NewObjectSchema()
+	schemaValAddUnchanged.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValAddUnchanged.Title = AdditionalPropertyUnchanged
+	schemaValAddUnchanged.Description = "To optionally omit 'required' properties, add them to 'unchanged' list"
+
+	schemaValAddUnchanged.Properties["unchanged"] = schemaValUnchanged.NewRef()
+	components.Schemas[AdditionalPropertyUnchanged] = schemaValAddUnchanged.NewRef()
+
+	schemaValAddBoth := openapi3.NewObjectSchema()
+	schemaValAddBoth.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValAddBoth.Title = AdditionalPropertiesUnchEnt
+	schemaValAddBoth.Description = fmt.Sprintf("both the additional property 'unchanged' and the '%s'", settings.TargetAlias)
+	schemaValAddBoth.Properties["unchanged"] = schemaValUnchanged.NewRef()
+	schemaValAddBoth.Properties[settings.TargetAlias] = schemaValTarget.NewRef()
+	components.Schemas[AdditionalPropertiesUnchEnt] = schemaValAddBoth.NewRef()
 
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
@@ -120,7 +156,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	return &swagger, nil
 }
 
-func targetParam(targetWord string) *openapi3.ParameterRef {
+func targetParam(targetAlias string) *openapi3.ParameterRef {
 
 	stringContent := openapi3.NewContent()
 	mt := openapi3.NewMediaType()
@@ -131,9 +167,9 @@ func targetParam(targetWord string) *openapi3.ParameterRef {
 
 	targetParam := openapi3.ParameterRef{
 		Value: &openapi3.Parameter{
-			Name:        targetWord,
+			Name:        targetAlias,
 			In:          "path",
-			Description: fmt.Sprintf("%s (target in onos-config)", targetWord),
+			Description: fmt.Sprintf("%s (target in onos-config)", targetAlias),
 			Required:    true,
 			Content:     stringContent,
 		},
@@ -144,6 +180,9 @@ func targetParam(targetWord string) *openapi3.ParameterRef {
 
 // add AdditionalProperties reference to target to a particular schema
 func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
+	if schemaVal.AdditionalProperties != nil {
+		name = AdditionalPropertiesUnchEnt
+	}
 	schemaValAdditionalRef := openapi3.NewObjectSchema()
 	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)
 	schemaValAdditionalRef.Title = "ref"
@@ -151,53 +190,15 @@ func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
 		Value: schemaValAdditionalRef,
 		Ref:   fmt.Sprintf("#/components/schemas/%s", name),
 	}
+
 }
 
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
-func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string, targetWord string) (openapi3.Paths, *openapi3.Components, error) {
+func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string, targetAlias string) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
 	openapiComponents := openapi3.Components{
 		Schemas:       make(map[string]*openapi3.SchemaRef),
 		RequestBodies: make(map[string]*openapi3.RequestBodyRef),
-	}
-
-	// At the root of the API, add in the definition of "additionalPropertyTarget"
-	if parentPath == "" {
-		schemaValTarget := openapi3.NewObjectSchema()
-		schemaValTarget.Title = targetWord
-		schemaValTarget.Type = "string"
-		schemaValTarget.Description = fmt.Sprintf("an override of the %s (target)", targetWord)
-		schemaValTargetRef := &openapi3.SchemaRef{
-			Value: schemaValTarget,
-		}
-
-		schemaValAddTarget := openapi3.NewObjectSchema()
-		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
-		schemaValAddTarget.Title = additionalPropertyTarget(targetWord)
-		schemaValAddTarget.Description = fmt.Sprintf("Optionally specify a %s other than the default (only on PATCH method)", targetWord)
-		schemaValAddTargetRef := &openapi3.SchemaRef{
-			Value: schemaValAddTarget,
-		}
-		schemaValAddTarget.Properties["enterprise"] = schemaValTargetRef
-		openapiComponents.Schemas[additionalPropertyTarget(targetWord)] = schemaValAddTargetRef
-
-		schemaValUnchanged := openapi3.NewObjectSchema()
-		schemaValUnchanged.Title = "unchanged"
-		schemaValUnchanged.Type = "string"
-		schemaValUnchanged.Description = "A comma seperated list of unchanged mandatory attribute names"
-		schemaValUnchangedRef := &openapi3.SchemaRef{
-			Value: schemaValUnchanged,
-		}
-
-		schemaValAddUnchanged := openapi3.NewObjectSchema()
-		schemaValAddUnchanged.Properties = make(map[string]*openapi3.SchemaRef)
-		schemaValAddUnchanged.Title = AdditionalPropertyUnchanged
-		schemaValAddUnchanged.Description = "To optionally omit 'required' properties, add them to 'unchanged' list"
-		schemaValAddUnchangedRef := &openapi3.SchemaRef{
-			Value: schemaValAddUnchanged,
-		}
-		schemaValAddUnchanged.Properties["unchanged"] = schemaValUnchangedRef
-		openapiComponents.Schemas[AdditionalPropertyUnchanged] = schemaValAddUnchangedRef
 	}
 
 	for _, dirEntry := range deviceEntry.Dir {
@@ -340,7 +341,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
 			for name, dir := range dirEntry.Dir {
-				_, components, err := buildSchema(dir, dir.Config, parentPath, targetWord)
+				_, components, err := buildSchema(dir, dir.Config, parentPath, targetAlias)
 				if err != nil {
 					return nil, nil, err
 				}
@@ -351,10 +352,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 
 		} else if dirEntry.IsContainer() {
-			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer, targetWord)
+			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer, targetAlias)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath, targetWord)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath, targetAlias)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -367,7 +368,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal.Title = toUnderScore(itemPath)
 			schemaVal.Description = dirEntry.Description
 			if len(strings.Split(itemPath, "/")) <= 2 {
-				addAdditionalProperties(schemaVal, additionalPropertyTarget(targetWord))
+				addAdditionalProperties(schemaVal, additionalPropertyTarget(targetAlias))
 			}
 			openapiComponents.Schemas[toUnderScore(itemPath)] = schemaVal.NewRef()
 
@@ -444,15 +445,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			listItemPathMultiple := itemPath
 			listItemPathSingle := itemPath
 			// Add a path for groups of items
-			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple, targetWord)
+			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple, targetAlias)
 
 			for _, k := range keys {
 				listItemPathSingle += fmt.Sprintf("/{%s}", k)
 			}
 			// Add a path for individual items
-			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer, targetWord)
+			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer, targetAlias)
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle, targetWord)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle, targetAlias)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -463,7 +464,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			asSingle := openapi3.NewObjectSchema()
 			asSingle.Extensions = make(map[string]interface{})
 			asSingle.Title = toUnderScore(itemPath)
-			asSingle.Description = dirEntry.Description
+			asSingle.Description = fmt.Sprintf("%s (single)", dirEntry.Description)
 
 			if dirEntry.Extra != nil {
 				mustArgs := make([]yang.Must, 0)
@@ -511,6 +512,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				asMultiple.MaxItems = &dirEntry.ListAttr.MaxElements
 			}
 			asMultiple.UniqueItems = true
+			asMultiple.Description = fmt.Sprintf("%s (list)", dirEntry.Description)
 
 			openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)] = asMultiple.NewRef()
 
@@ -548,7 +550,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			openapiPaths[pathWithPrefix(listItemPathSingle)].Get.AddResponse(200, respGet200)
 
 			if len(strings.Split(itemPath, "/")) <= 2 {
-				addAdditionalProperties(asSingle, additionalPropertyTarget(targetWord))
+				addAdditionalProperties(asSingle, additionalPropertyTarget(targetAlias))
 			}
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
@@ -608,7 +610,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 	return openapiPaths, &openapiComponents, nil
 }
 
-func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathType pathType, targetWord string) *openapi3.PathItem {
+func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathType pathType, targetAlias string) *openapi3.PathItem {
 	getOp := openapi3.NewOperation()
 	getOp.Summary = fmt.Sprintf("GET %s %s", itemPath, pathType.string())
 	getOp.OperationID = fmt.Sprintf("get%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
@@ -622,7 +624,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
 	targetParameterRef := openapi3.ParameterRef{
-		Ref:   fmt.Sprintf("#/components/parameters/%s", targetWord),
+		Ref:   fmt.Sprintf("#/components/parameters/%s", targetAlias),
 		Value: targetParameter.Value,
 	}
 	parameters = append(parameters, &targetParameterRef)
@@ -842,6 +844,6 @@ func floatFromYnumber(ynumber yang.Number) float64 {
 	return v
 }
 
-func additionalPropertyTarget(targetWord string) string {
-	return fmt.Sprintf("AdditionalProperty%s", strings.Title(targetWord))
+func additionalPropertyTarget(targetAlias string) string {
+	return fmt.Sprintf("AdditionalProperty%s", strings.Title(targetAlias))
 }
