@@ -19,7 +19,6 @@ import (
 )
 
 const (
-	AdditionalPropertyTarget    = "AdditionalPropertyTarget"
 	AdditionalPropertyUnchanged = "AdditionalPropertyUnchanged"
 )
 
@@ -34,6 +33,7 @@ type ApiGenSettings struct {
 	ModelVersion string
 	Title        string
 	Description  string
+	TargetWord   string
 }
 
 type pathType uint8
@@ -76,17 +76,17 @@ func (settings *ApiGenSettings) ApplyDefaults() {
 func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.Swagger, error) {
 	settings.ApplyDefaults()
 
-	pathPrefix = fmt.Sprintf("/%s/v%s/{target}", strings.ToLower(settings.ModelType), settings.ModelVersion)
-	targetParameter = targetParam()
+	pathPrefix = fmt.Sprintf("/%s/v%s/{%s}", strings.ToLower(settings.ModelType), settings.ModelVersion, settings.TargetWord)
+	targetParameter = targetParam(settings.TargetWord)
 
 	topEntry := yangSchema.SchemaTree["Device"]
-	paths, components, err := buildSchema(topEntry, yang.TSFalse, "")
+	paths, components, err := buildSchema(topEntry, yang.TSFalse, "", settings.TargetWord)
 	if err != nil {
 		return nil, err
 	}
 
 	components.Parameters = make(map[string]*openapi3.ParameterRef)
-	components.Parameters["target"] = targetParameter
+	components.Parameters[settings.TargetWord] = targetParameter
 
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
@@ -120,7 +120,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	return &swagger, nil
 }
 
-func targetParam() *openapi3.ParameterRef {
+func targetParam(targetWord string) *openapi3.ParameterRef {
 
 	stringContent := openapi3.NewContent()
 	mt := openapi3.NewMediaType()
@@ -131,9 +131,9 @@ func targetParam() *openapi3.ParameterRef {
 
 	targetParam := openapi3.ParameterRef{
 		Value: &openapi3.Parameter{
-			Name:        "target",
+			Name:        targetWord,
 			In:          "path",
-			Description: "target (device in onos-config)",
+			Description: fmt.Sprintf("%s (target in onos-config)", targetWord),
 			Required:    true,
 			Content:     stringContent,
 		},
@@ -154,7 +154,7 @@ func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
 }
 
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
-func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string) (openapi3.Paths, *openapi3.Components, error) {
+func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string, targetWord string) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
 	openapiComponents := openapi3.Components{
 		Schemas:       make(map[string]*openapi3.SchemaRef),
@@ -164,22 +164,22 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 	// At the root of the API, add in the definition of "additionalPropertyTarget"
 	if parentPath == "" {
 		schemaValTarget := openapi3.NewObjectSchema()
-		schemaValTarget.Title = "target"
+		schemaValTarget.Title = targetWord
 		schemaValTarget.Type = "string"
-		schemaValTarget.Description = "an override of the target (device)"
+		schemaValTarget.Description = fmt.Sprintf("an override of the %s (target)", targetWord)
 		schemaValTargetRef := &openapi3.SchemaRef{
 			Value: schemaValTarget,
 		}
 
 		schemaValAddTarget := openapi3.NewObjectSchema()
 		schemaValAddTarget.Properties = make(map[string]*openapi3.SchemaRef)
-		schemaValAddTarget.Title = AdditionalPropertyTarget
-		schemaValAddTarget.Description = "Optionally specify a target other than the default (only on PATCH method)"
+		schemaValAddTarget.Title = additionalPropertyTarget(targetWord)
+		schemaValAddTarget.Description = fmt.Sprintf("Optionally specify a %s other than the default (only on PATCH method)", targetWord)
 		schemaValAddTargetRef := &openapi3.SchemaRef{
 			Value: schemaValAddTarget,
 		}
-		schemaValAddTarget.Properties["target"] = schemaValTargetRef
-		openapiComponents.Schemas[AdditionalPropertyTarget] = schemaValAddTargetRef
+		schemaValAddTarget.Properties["enterprise"] = schemaValTargetRef
+		openapiComponents.Schemas[additionalPropertyTarget(targetWord)] = schemaValAddTargetRef
 
 		schemaValUnchanged := openapi3.NewObjectSchema()
 		schemaValUnchanged.Title = "unchanged"
@@ -340,7 +340,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
 			for name, dir := range dirEntry.Dir {
-				_, components, err := buildSchema(dir, dir.Config, parentPath)
+				_, components, err := buildSchema(dir, dir.Config, parentPath, targetWord)
 				if err != nil {
 					return nil, nil, err
 				}
@@ -351,10 +351,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 
 		} else if dirEntry.IsContainer() {
-			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer)
+			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer, targetWord)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath, targetWord)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -367,17 +367,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			schemaVal.Title = toUnderScore(itemPath)
 			schemaVal.Description = dirEntry.Description
 			if len(strings.Split(itemPath, "/")) <= 2 {
-				addAdditionalProperties(schemaVal, AdditionalPropertyTarget)
+				addAdditionalProperties(schemaVal, additionalPropertyTarget(targetWord))
 			}
-			asRef := &openapi3.SchemaRef{
-				Value: schemaVal,
-			}
-			openapiComponents.Schemas[toUnderScore(itemPath)] = asRef
+			openapiComponents.Schemas[toUnderScore(itemPath)] = schemaVal.NewRef()
 
 			rbRef := &openapi3.RequestBodyRef{
 				Value: openapi3.NewRequestBody().WithContent(
 					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-						Value: asRef.Value,
+						Value: schemaVal,
 						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
 					}),
 				),
@@ -392,36 +389,25 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
 				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
-				Value: asRef.Value,
+				Value: schemaVal,
 			})
 			newPath.Get.AddResponse(200, respGet200)
 
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of container
-					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
-						arrayObj := openapi3.NewArraySchema()
-						arrayObj.Items = &openapi3.SchemaRef{
+					schemaPath := pathToSchemaName(itemPath)
+					root := k[len(schemaPath) : len(k)-5] // Remove the _List
+					if strings.Count(root, "_") == 0 {
+						schemaVal.Properties[strings.ToLower(root)] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
-							Value: v.Value.Items.Value,
+							Value: v.Value,
 						}
-						arrayObj.Title = v.Value.Title
-						arrayObj.MinItems = v.Value.MinItems
-						arrayObj.MaxItems = v.Value.MaxItems
-						arrayObj.UniqueItems = v.Value.UniqueItems
-						arrayObj.Extensions = v.Value.Extensions
-						arrayObj.Description = v.Value.Description
-						schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-							Value: arrayObj,
-						}
-						openapiComponents.Schemas[k] = v.Value.Items
-					} else {
-						openapiComponents.Schemas[k] = v
 					}
+					openapiComponents.Schemas[k] = v
 
 				case "object": // Container as a child of container
 					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
-
 						schemaPath := pathToSchemaName(itemPath)
 						root := k[len(schemaPath):]
 						if v.Value.Title != "" && !strings.Contains(root, "_") {
@@ -458,15 +444,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			listItemPathMultiple := itemPath
 			listItemPathSingle := itemPath
 			// Add a path for groups of items
-			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple)
+			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple, targetWord)
 
 			for _, k := range keys {
 				listItemPathSingle += fmt.Sprintf("/{%s}", k)
 			}
 			// Add a path for individual items
-			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer)
+			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer, targetWord)
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle, targetWord)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -474,19 +460,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				openapiPaths[k] = v
 			}
 
-			arr := openapi3.NewArraySchema()
-			arr.Extensions = make(map[string]interface{})
-			arr.Extensions["x-keys"] = keys
-			arr.Items = &openapi3.SchemaRef{
-				Value: openapi3.NewObjectSchema(),
-			}
-			arr.MinItems = dirEntry.ListAttr.MinElements
-			if dirEntry.ListAttr.MaxElements != math.MaxUint64 {
-				arr.MaxItems = &dirEntry.ListAttr.MaxElements
-			}
-			arr.UniqueItems = true
-			arr.Title = fmt.Sprintf("Item%s", toUnderScore(itemPath))
-			arr.Description = dirEntry.Description
+			asSingle := openapi3.NewObjectSchema()
+			asSingle.Extensions = make(map[string]interface{})
+			asSingle.Title = toUnderScore(itemPath)
+			asSingle.Description = dirEntry.Description
 
 			if dirEntry.Extra != nil {
 				mustArgs := make([]yang.Must, 0)
@@ -516,27 +493,31 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						}
 					}
 				}
-				arr.Extensions["x-must"] = mustArgs
+				asSingle.Extensions["x-must"] = mustArgs
 			}
 
-			asRef := &openapi3.SchemaRef{
-				Value: arr,
-			}
-			openapiComponents.Schemas[toUnderScore(itemPath)] = asRef
+			openapiComponents.Schemas[toUnderScore(itemPath)] = asSingle.NewRef()
 
 			asMultiple := openapi3.NewArraySchema()
 			asMultiple.Items = &openapi3.SchemaRef{
 				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
-				Value: arr.Items.Value,
+				Value: asSingle,
 			}
 			asMultiple.Extensions = make(map[string]interface{})
 			asMultiple.Extensions["x-list-multiple"] = true
+			asMultiple.Extensions["x-keys"] = keys
+			asMultiple.MinItems = dirEntry.ListAttr.MinElements
+			if dirEntry.ListAttr.MaxElements != math.MaxUint64 {
+				asMultiple.MaxItems = &dirEntry.ListAttr.MaxElements
+			}
+			asMultiple.UniqueItems = true
+
 			openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)] = asMultiple.NewRef()
 
 			rbRefSingle := &openapi3.RequestBodyRef{
 				Value: openapi3.NewRequestBody().WithContent(
 					openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-						Value: asRef.Value,
+						Value: asSingle,
 						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
 					}),
 				),
@@ -553,26 +534,21 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			respGet200Multiple := openapi3.NewResponse()
 			respGet200Multiple.Description = &respGet200Desc
 			respGet200Multiple.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
-				Value: &openapi3.Schema{
-					Type: "array",
-					Items: &openapi3.SchemaRef{
-						Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeListMultiple)),
-						Value: openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)].Value,
-					},
-				},
+				Value: asMultiple,
+				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeListMultiple)),
 			})
 			openapiPaths[pathWithPrefix(listItemPathMultiple)].Get.AddResponse(200, respGet200Multiple)
 
 			respGet200 := openapi3.NewResponse()
 			respGet200.Description = &respGet200Desc
 			respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+				Value: asSingle,
 				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderscoreWithPathType(itemPath, pathTypeContainer)),
-				Value: openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeContainer)].Value,
 			})
 			openapiPaths[pathWithPrefix(listItemPathSingle)].Get.AddResponse(200, respGet200)
 
 			if len(strings.Split(itemPath, "/")) <= 2 {
-				addAdditionalProperties(arr.Items.Value, AdditionalPropertyTarget)
+				addAdditionalProperties(asSingle, additionalPropertyTarget(targetWord))
 			}
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
@@ -589,7 +565,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						arrayObj.Extensions = v.Value.Extensions
 						arrayObj.Description = v.Value.Description
 						arrayObj.Title = lastPartOf(k)
-						arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
+						asSingle.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 							Value: arrayObj,
 						}
 						openapiComponents.Schemas[k] = v.Value.Items
@@ -601,7 +577,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						schemaPath := pathToSchemaName(itemPath)
 						root := k[len(schemaPath):]
 						if v.Value.Title != "" && !strings.Contains(root, "_") {
-							arr.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
+							asSingle.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 								Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 								Value: v.Value,
 							}
@@ -610,17 +586,17 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					openapiComponents.Schemas[k] = v
 				case "string", "boolean", "integer", "number": // leaf as a child of list
 					if v.Value.Required != nil {
-						arr.Items.Value.Required = append(arr.Items.Value.Required, v.Value.Required...)
-						sort.Strings(arr.Items.Value.Required)
+						asSingle.Required = append(asSingle.Required, v.Value.Required...)
+						sort.Strings(asSingle.Required)
 						v.Value.Required = nil
 					}
-					arr.Items.Value.Properties[v.Value.Title] = v
+					asSingle.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 				}
 			}
-			if len(arr.Items.Value.Required) > 1 {
-				addAdditionalProperties(arr.Items.Value, AdditionalPropertyUnchanged)
+			if len(asSingle.Required) > 1 {
+				addAdditionalProperties(asSingle, AdditionalPropertyUnchanged)
 			}
 			for k, v := range components.RequestBodies {
 				openapiComponents.RequestBodies[k] = v
@@ -632,7 +608,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 	return openapiPaths, &openapiComponents, nil
 }
 
-func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathType pathType) *openapi3.PathItem {
+func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathType pathType, targetWord string) *openapi3.PathItem {
 	getOp := openapi3.NewOperation()
 	getOp.Summary = fmt.Sprintf("GET %s %s", itemPath, pathType.string())
 	getOp.OperationID = fmt.Sprintf("get%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
@@ -646,7 +622,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
 	targetParameterRef := openapi3.ParameterRef{
-		Ref:   "#/components/parameters/target",
+		Ref:   fmt.Sprintf("#/components/parameters/%s", targetWord),
 		Value: targetParameter.Value,
 	}
 	parameters = append(parameters, &targetParameterRef)
@@ -864,4 +840,8 @@ func floatFromYnumber(ynumber yang.Number) float64 {
 	}
 	v := float64(ynumber.Value) * neg * math.Pow(10, -1.0*float64(ynumber.FractionDigits))
 	return v
+}
+
+func additionalPropertyTarget(targetWord string) string {
+	return fmt.Sprintf("AdditionalProperty%s", strings.Title(targetWord))
 }

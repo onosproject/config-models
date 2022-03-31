@@ -213,7 +213,7 @@ func Test_pathToSchemaName(t *testing.T) {
 
 func Test_newPathItem(t *testing.T) {
 
-	targetParameter = targetParam()
+	targetParameter = targetParam("targettest")
 
 	testDirEntry := yang.Entry{
 		Config: yang.TSTrue,
@@ -224,7 +224,7 @@ func Test_newPathItem(t *testing.T) {
 	}
 
 	pathItem := newPathItem(&testDirEntry, "/test-1/test-2/{id}/test-3/{id}/test-4",
-		"/parent-1/{parent1-name}/parent-2/{parent2-name}", pathTypeContainer)
+		"/parent-1/{parent1-name}/parent-2/{parent2-name}", pathTypeContainer, "targettest")
 	assert.Assert(t, pathItem != nil)
 	if pathItem != nil {
 		g := pathItem.Get
@@ -244,8 +244,8 @@ func Test_newPathItem(t *testing.T) {
 		assert.Equal(t, 3, len(pathItem.Parameters))
 		for _, p := range pathItem.Parameters {
 			switch name := p.Value.Name; name {
-			case "target":
-				assert.Equal(t, "target (device in onos-config)", p.Value.Description)
+			case "targettest":
+				assert.Equal(t, "targettest (target in onos-config)", p.Value.Description)
 			case "parent1-name":
 				assert.Equal(t, "key {parent1-name}", p.Value.Description)
 			case "parent2-name":
@@ -259,7 +259,7 @@ func Test_newPathItem(t *testing.T) {
 
 func Test_buildSchemaIntegerLeaf(t *testing.T) {
 
-	targetParameter = targetParam()
+	targetParameter = targetParam("targettest")
 
 	testLeaf1 := yang.Entry{
 		Name:        "Leaf1",
@@ -320,7 +320,7 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	testDirEntry.Dir["leaf1"] = &testLeaf1
 	testDirEntry.Dir["leaf2"] = &testLeaf2
 
-	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test")
+	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest")
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 0)
 	assert.Equal(t, len(components.Schemas), 2)
