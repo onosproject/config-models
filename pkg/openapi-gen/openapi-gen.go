@@ -103,7 +103,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	schemaValAddTarget.Title = additionalPropertyTarget(settings.TargetAlias)
 	schemaValAddTarget.Description = fmt.Sprintf("Optionally specify a %s other than the default (only on PATCH method)", settings.TargetAlias)
 	schemaValAddTargetRef := schemaValAddTarget.NewRef()
-	schemaValAddTarget.Properties[additionalPropertyTarget(settings.TargetAlias)] = schemaValTarget.NewRef()
+	schemaValAddTarget.Properties[settings.TargetAlias] = schemaValTarget.NewRef()
 	components.Schemas[additionalPropertyTarget(settings.TargetAlias)] = schemaValAddTargetRef
 
 	schemaValUnchanged := openapi3.NewObjectSchema()
@@ -468,6 +468,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			asSingle.Extensions = make(map[string]interface{})
 			asSingle.Title = toUnderScore(itemPath)
 			asSingle.Description = fmt.Sprintf("%s (single)", dirEntry.Description)
+			asSingle.Extensions["x-list-multiple"] = true
 
 			if dirEntry.Extra != nil {
 				mustArgs := make([]yang.Must, 0)
@@ -558,25 +559,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			for k, v := range components.Schemas {
 				switch v.Value.Type {
 				case "array": // List as a child of list
-					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
-						arrayObj := openapi3.NewArraySchema()
-						arrayObj.Items = &openapi3.SchemaRef{
+					schemaPath := pathToSchemaName(itemPath)
+					root := k[len(schemaPath) : len(k)-5] // Remove the _List
+					if strings.Count(root, "_") == 0 {
+						asSingle.Properties[strings.ToLower(root)] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
-							Value: v.Value.Items.Value,
+							Value: v.Value,
 						}
-						arrayObj.UniqueItems = v.Value.UniqueItems
-						arrayObj.MinItems = v.Value.MinItems
-						arrayObj.MaxItems = v.Value.MaxItems
-						arrayObj.Extensions = v.Value.Extensions
-						arrayObj.Description = v.Value.Description
-						arrayObj.Title = lastPartOf(k)
-						asSingle.Items.Value.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
-							Value: arrayObj,
-						}
-						openapiComponents.Schemas[k] = v.Value.Items
-					} else {
-						openapiComponents.Schemas[k] = v
 					}
+					openapiComponents.Schemas[k] = v
 				case "object": // Container as a child of list
 					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
 						schemaPath := pathToSchemaName(itemPath)
