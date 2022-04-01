@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/onosproject/config-models v0.9.20
+	github.com/onosproject/config-models v0.9.22
 	github.com/onosproject/onos-api/go v0.9.8
 	github.com/onosproject/onos-config v0.10.23
 	github.com/onosproject/onos-lib-go v0.8.13

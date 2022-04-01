@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	AdditionalPropertyUnchanged = "AdditionalPropertyUnchanged"
-	AdditionalPropertiesUnchEnt = "AdditionalPropertiesUnchEnt"
+	AdditionalPropertyUnchanged    = "AdditionalPropertyUnchanged"
+	AdditionalPropertiesUnchTarget = "AdditionalPropertiesUnchTarget"
 )
 
 var swagger openapi3.Swagger
@@ -72,6 +72,9 @@ func (settings *ApiGenSettings) ApplyDefaults() {
 		settings.Description = fmt.Sprintf("This OpenAPI 3 specification is generated from"+
 			"%s onos-config model plugin", settings.ModelType)
 	}
+	if settings.TargetAlias == "" {
+		settings.TargetAlias = "target"
+	}
 }
 
 func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.Swagger, error) {
@@ -100,7 +103,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	schemaValAddTarget.Title = additionalPropertyTarget(settings.TargetAlias)
 	schemaValAddTarget.Description = fmt.Sprintf("Optionally specify a %s other than the default (only on PATCH method)", settings.TargetAlias)
 	schemaValAddTargetRef := schemaValAddTarget.NewRef()
-	schemaValAddTarget.Properties["enterprise"] = schemaValTarget.NewRef()
+	schemaValAddTarget.Properties[additionalPropertyTarget(settings.TargetAlias)] = schemaValTarget.NewRef()
 	components.Schemas[additionalPropertyTarget(settings.TargetAlias)] = schemaValAddTargetRef
 
 	schemaValUnchanged := openapi3.NewObjectSchema()
@@ -118,11 +121,11 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 
 	schemaValAddBoth := openapi3.NewObjectSchema()
 	schemaValAddBoth.Properties = make(map[string]*openapi3.SchemaRef)
-	schemaValAddBoth.Title = AdditionalPropertiesUnchEnt
+	schemaValAddBoth.Title = AdditionalPropertiesUnchTarget
 	schemaValAddBoth.Description = fmt.Sprintf("both the additional property 'unchanged' and the '%s'", settings.TargetAlias)
 	schemaValAddBoth.Properties["unchanged"] = schemaValUnchanged.NewRef()
 	schemaValAddBoth.Properties[settings.TargetAlias] = schemaValTarget.NewRef()
-	components.Schemas[AdditionalPropertiesUnchEnt] = schemaValAddBoth.NewRef()
+	components.Schemas[AdditionalPropertiesUnchTarget] = schemaValAddBoth.NewRef()
 
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
@@ -181,7 +184,7 @@ func targetParam(targetAlias string) *openapi3.ParameterRef {
 // add AdditionalProperties reference to target to a particular schema
 func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
 	if schemaVal.AdditionalProperties != nil {
-		name = AdditionalPropertiesUnchEnt
+		name = AdditionalPropertiesUnchTarget
 	}
 	schemaValAdditionalRef := openapi3.NewObjectSchema()
 	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)

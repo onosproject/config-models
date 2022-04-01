@@ -11,14 +11,15 @@ import (
 
 // MetaData plugin meta-data
 type MetaData struct {
-	Name         string   `mapstructure:"name" yaml:"name"`
-	Version      string   `mapstructure:"version" yaml:"version"`
-	Modules      []Module `mapstructure:"modules" yaml:"modules"`
-	GetStateMode uint32   `mapstructure:"getStateMode" yaml:"getStateMode"`
-	LintModel    bool     `mapstructure:"lintModel" yaml:"lintModel"`
-	GenOpenAPI   bool     `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
-	GoPackage    string   `mapstructure:"goPackage" yaml:"goPackage"`
-	ArtifactName string   `mapstructure:"artifactName" yaml:"artifactName"`
+	Name               string   `mapstructure:"name" yaml:"name"`
+	Version            string   `mapstructure:"version" yaml:"version"`
+	Modules            []Module `mapstructure:"modules" yaml:"modules"`
+	GetStateMode       uint32   `mapstructure:"getStateMode" yaml:"getStateMode"`
+	LintModel          bool     `mapstructure:"lintModel" yaml:"lintModel"`
+	GenOpenAPI         bool     `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
+	OpenAPITargetAlias string   `mapstructure:"openAPITargetAlias" yaml:"openAPITargetAlias"`
+	GoPackage          string   `mapstructure:"goPackage" yaml:"goPackage"`
+	ArtifactName       string   `mapstructure:"artifactName" yaml:"artifactName"`
 }
 
 type Module struct {

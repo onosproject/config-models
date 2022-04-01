@@ -42,16 +42,17 @@ func NewCompiler() *ModelCompiler {
 }
 
 type Dictionary struct {
-	Name          string
-	Version       string
-	PluginVersion string
-	ArtifactName  string
-	GoPackage     string
-	ModelData     []*gnmi.ModelData
-	Module        string
-	GetStateMode  uint32
-	ReadOnlyPath  []*api.ReadOnlyPath
-	ReadWritePath []*api.ReadWritePath
+	Name               string
+	Version            string
+	PluginVersion      string
+	ArtifactName       string
+	GoPackage          string
+	ModelData          []*gnmi.ModelData
+	Module             string
+	GetStateMode       uint32
+	ReadOnlyPath       []*api.ReadOnlyPath
+	ReadWritePath      []*api.ReadWritePath
+	OpenAPITargetAlias string
 }
 
 // ModelCompiler is a model plugin compiler
@@ -91,16 +92,17 @@ func (c *ModelCompiler) Compile(path string) error {
 
 	// Create dictionary from metadata and model info
 	c.dictionary = Dictionary{
-		Name:          c.modelInfo.Name,
-		Version:       c.modelInfo.Version,
-		PluginVersion: c.pluginVersion,
-		ArtifactName:  c.metaData.ArtifactName,
-		GoPackage:     c.metaData.GoPackage,
-		ModelData:     c.modelInfo.ModelData,
-		Module:        c.modelInfo.Module,
-		GetStateMode:  c.modelInfo.GetStateMode,
-		ReadOnlyPath:  c.modelInfo.ReadOnlyPath,
-		ReadWritePath: c.modelInfo.ReadWritePath,
+		Name:               c.modelInfo.Name,
+		Version:            c.modelInfo.Version,
+		PluginVersion:      c.pluginVersion,
+		ArtifactName:       c.metaData.ArtifactName,
+		GoPackage:          c.metaData.GoPackage,
+		ModelData:          c.modelInfo.ModelData,
+		Module:             c.modelInfo.Module,
+		GetStateMode:       c.modelInfo.GetStateMode,
+		ReadOnlyPath:       c.modelInfo.ReadOnlyPath,
+		ReadWritePath:      c.modelInfo.ReadWritePath,
+		OpenAPITargetAlias: c.metaData.OpenAPITargetAlias,
 	}
 
 	// Generate Golang bindings for the YANG files
