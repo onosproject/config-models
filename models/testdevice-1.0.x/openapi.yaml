@@ -8,7 +8,7 @@ components:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (device in onos-config)
+      description: target (target in onos-config)
       in: path
       name: target
       required: true
@@ -54,12 +54,25 @@ components:
           schema:
             $ref: '#/components/schemas/Cont1b-state_List2b'
   schemas:
+    AdditionalPropertiesUnchTarget:
+      description: both the additional property 'unchanged' and the 'target'
+      properties:
+        target:
+          description: an override of the target (target)
+          title: target
+          type: string
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertiesUnchTarget
+      type: object
     AdditionalPropertyTarget:
       description: Optionally specify a target other than the default (only on PATCH
         method)
       properties:
         target:
-          description: an override of the target (device)
+          description: an override of the target (target)
           title: target
           type: string
       title: AdditionalPropertyTarget
@@ -88,42 +101,11 @@ components:
           title: leaf1a
           type: string
         list2a:
-          description: A simple list of configuration items
-          items:
-            $ref: '#/components/schemas/Cont1a_List2a'
-          maxItems: 4
-          title: ItemCont1a_List2a
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
-          x-must:
-          - ErrorMessage:
-              Name: range-min must be less than or equal to range-max
-            Name: number(./t1:range-min) <= number(./t1:range-max)
+          $ref: '#/components/schemas/Cont1a_List2a_List'
         list4:
-          description: A list with a leafref index
-          items:
-            $ref: '#/components/schemas/Cont1a_List4'
-          title: ItemCont1a_List4
-          type: array
-          uniqueItems: true
-          x-keys:
-          - id
+          $ref: '#/components/schemas/Cont1a_List4_List'
         list5:
-          description: A list with 2 keys
-          items:
-            $ref: '#/components/schemas/Cont1a_List5'
-          title: ItemCont1a_List5
-          type: array
-          uniqueItems: true
-          x-keys:
-          - key1
-          - key2
-          x-must:
-          - ErrorMessage:
-              Name: leaf5a must be formatted string like '5a <key1>-<key2>'
-            Name: concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)
+          $ref: '#/components/schemas/Cont1a_List5_List'
       title: Cont1a
       type: object
     Cont1a_Cont2a:
@@ -180,6 +162,7 @@ components:
     Cont1a_List2a:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: A simple list of configuration items (single)
       properties:
         name:
           description: The list is keyed by name
@@ -213,13 +196,25 @@ components:
       required:
       - name
       - range-min
+      title: Cont1a_List2a
       type: object
+      x-list-multiple: true
+      x-must:
+      - ErrorMessage:
+          Name: range-min must be less than or equal to range-max
+        Name: number(./t1:range-min) <= number(./t1:range-max)
     Cont1a_List2a_List:
+      description: A simple list of configuration items (list)
       items:
         $ref: '#/components/schemas/Cont1a_List2a'
+      maxItems: 4
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Cont1a_List4:
+      description: A list with a leafref index (single)
       properties:
         id:
           description: Link to list2a names
@@ -233,31 +228,25 @@ components:
           title: leaf4b
           type: string
         list4a:
-          description: A list within a list with 2 keys as leaf refs
-          items:
-            $ref: '#/components/schemas/Cont1a_List4_List4a'
-          title: List4a
-          type: array
-          uniqueItems: true
-          x-keys:
-          - fkey1
-          - fkey2
-          x-must:
-          - ErrorMessage:
-              Name: displayname must be formatted string like 'Value <../id>-<fkey1>-<fkey2>'
-            Name: concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1),
-              '-', string(./@t1e:fkey2)) = string(./t1e:displayname)
+          $ref: '#/components/schemas/Cont1a_List4_List4a_List'
       required:
       - id
+      title: Cont1a_List4
       type: object
+      x-list-multiple: true
     Cont1a_List4_List:
+      description: A list with a leafref index (list)
       items:
         $ref: '#/components/schemas/Cont1a_List4'
       type: array
+      uniqueItems: true
+      x-keys:
+      - id
       x-list-multiple: true
     Cont1a_List4_List4a:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: A list within a list with 2 keys as leaf refs (single)
       properties:
         displayname:
           description: an optional display name attribute with 2 different length
@@ -279,15 +268,28 @@ components:
       required:
       - fkey1
       - fkey2
+      title: Cont1a_List4_List4a
       type: object
+      x-list-multiple: true
+      x-must:
+      - ErrorMessage:
+          Name: displayname must be formatted string like 'Value <../id>-<fkey1>-<fkey2>'
+        Name: concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1), '-',
+          string(./@t1e:fkey2)) = string(./t1e:displayname)
     Cont1a_List4_List4a_List:
+      description: A list within a list with 2 keys as leaf refs (list)
       items:
         $ref: '#/components/schemas/Cont1a_List4_List4a'
       type: array
+      uniqueItems: true
+      x-keys:
+      - fkey1
+      - fkey2
       x-list-multiple: true
     Cont1a_List5:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: A list with 2 keys (single)
       properties:
         key1:
           description: key1 of list 5 - string
@@ -310,11 +312,22 @@ components:
       required:
       - key1
       - key2
+      title: Cont1a_List5
       type: object
+      x-list-multiple: true
+      x-must:
+      - ErrorMessage:
+          Name: leaf5a must be formatted string like '5a <key1>-<key2>'
+        Name: concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)
     Cont1a_List5_List:
+      description: A list with 2 keys (list)
       items:
         $ref: '#/components/schemas/Cont1a_List5'
       type: array
+      uniqueItems: true
+      x-keys:
+      - key1
+      - key2
       x-list-multiple: true
     Cont1b-state:
       additionalProperties:
@@ -329,17 +342,11 @@ components:
           title: leaf2d
           type: integer
         list2b:
-          description: A simple list of state items
-          items:
-            $ref: '#/components/schemas/Cont1b-state_List2b'
-          title: ItemCont1b-state_List2b
-          type: array
-          uniqueItems: true
-          x-keys:
-          - index
+          $ref: '#/components/schemas/Cont1b-state_List2b_List'
       title: Cont1b-state
       type: object
     Cont1b-state_List2b:
+      description: A simple list of state items (single)
       properties:
         index:
           description: The list index
@@ -355,11 +362,17 @@ components:
           type: string
       required:
       - index
+      title: Cont1b-state_List2b
       type: object
+      x-list-multiple: true
     Cont1b-state_List2b_List:
+      description: A simple list of state items (list)
       items:
         $ref: '#/components/schemas/Cont1b-state_List2b'
       type: array
+      uniqueItems: true
+      x-keys:
+      - index
       x-list-multiple: true
     LeafAtTopLevel:
       description: A leaf at the top level (not recommended but must be supported)
@@ -371,7 +384,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: TODO add a description field in Metadata.yaml?
+  description: This OpenAPI 3 specification is generated fromtestdevice onos-config
+    model plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -450,9 +464,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1a_List2a_List'
-                type: array
+                $ref: '#/components/schemas/Cont1a_List2a_List'
           description: GET OK 200
       summary: GET /cont1a/list2a List
       tags:
@@ -508,9 +520,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1a_List4_List'
-                type: array
+                $ref: '#/components/schemas/Cont1a_List4_List'
           description: GET OK 200
       summary: GET /cont1a/list4 List
       tags:
@@ -566,9 +576,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1a_List4_List4a_List'
-                type: array
+                $ref: '#/components/schemas/Cont1a_List4_List4a_List'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a List
       tags:
@@ -648,9 +656,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1a_List5_List'
-                type: array
+                $ref: '#/components/schemas/Cont1a_List5_List'
           description: GET OK 200
       summary: GET /cont1a/list5 List
       tags:
@@ -732,9 +738,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1b-state_List2b_List'
-                type: array
+                $ref: '#/components/schemas/Cont1b-state_List2b_List'
           description: GET OK 200
       summary: GET /cont1b-state/list2b List
       tags:

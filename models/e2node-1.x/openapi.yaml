@@ -8,7 +8,7 @@ components:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (device in onos-config)
+      description: target (target in onos-config)
       in: path
       name: target
       required: true
@@ -24,12 +24,25 @@ components:
           schema:
             $ref: '#/components/schemas/E2node_Intervals'
   schemas:
+    AdditionalPropertiesUnchTarget:
+      description: both the additional property 'unchanged' and the 'target'
+      properties:
+        target:
+          description: an override of the target (target)
+          title: target
+          type: string
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertiesUnchTarget
+      type: object
     AdditionalPropertyTarget:
       description: Optionally specify a target other than the default (only on PATCH
         method)
       properties:
         target:
-          description: an override of the target (device)
+          description: an override of the target (target)
           title: target
           type: string
       title: AdditionalPropertyTarget
@@ -93,7 +106,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: TODO add a description field in Metadata.yaml?
+  description: This OpenAPI 3 specification is generated frome2node onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0

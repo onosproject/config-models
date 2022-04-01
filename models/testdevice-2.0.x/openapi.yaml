@@ -8,7 +8,7 @@ components:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (device in onos-config)
+      description: target (target in onos-config)
       in: path
       name: target
       required: true
@@ -49,12 +49,25 @@ components:
           schema:
             $ref: '#/components/schemas/Cont1b-state_List2b'
   schemas:
+    AdditionalPropertiesUnchTarget:
+      description: both the additional property 'unchanged' and the 'target'
+      properties:
+        target:
+          description: an override of the target (target)
+          title: target
+          type: string
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertiesUnchTarget
+      type: object
     AdditionalPropertyTarget:
       description: Optionally specify a target other than the default (only on PATCH
         method)
       properties:
         target:
-          description: an override of the target (device)
+          description: an override of the target (target)
           title: target
           type: string
       title: AdditionalPropertyTarget
@@ -85,19 +98,7 @@ components:
           title: leaf1a
           type: string
         list2a:
-          description: A simple list of configuration items
-          items:
-            $ref: '#/components/schemas/Cont1a_List2a'
-          maxItems: 4
-          title: ItemCont1a_List2a
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
-          x-must:
-          - ErrorMessage:
-              Name: tx-power is greater than or equal to rx-power
-            Name: number(./t1:tx-power) < number(./t1:rx-power)
+          $ref: '#/components/schemas/Cont1a_List2a_List'
       title: Cont1a
       type: object
     Cont1a_Cont2a:
@@ -175,6 +176,7 @@ components:
       title: Cont1a_Cont2d
       type: object
     Cont1a_List2a:
+      description: A simple list of configuration items (single)
       properties:
         name:
           description: The list is keyed by name
@@ -196,11 +198,22 @@ components:
           type: integer
       required:
       - name
+      title: Cont1a_List2a
       type: object
+      x-list-multiple: true
+      x-must:
+      - ErrorMessage:
+          Name: tx-power is greater than or equal to rx-power
+        Name: number(./t1:tx-power) < number(./t1:rx-power)
     Cont1a_List2a_List:
+      description: A simple list of configuration items (list)
       items:
         $ref: '#/components/schemas/Cont1a_List2a'
+      maxItems: 4
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Cont1b-state:
       additionalProperties:
@@ -217,16 +230,7 @@ components:
           title: leaf2d
           type: integer
         list2b:
-          description: A simple list of state items, with a double key
-          items:
-            $ref: '#/components/schemas/Cont1b-state_List2b'
-          maxItems: 8
-          title: ItemCont1b-state_List2b
-          type: array
-          uniqueItems: true
-          x-keys:
-          - index1
-          - index2
+          $ref: '#/components/schemas/Cont1b-state_List2b_List'
       title: Cont1b-state
       type: object
     Cont1b-state_Cont2c:
@@ -248,6 +252,7 @@ components:
     Cont1b-state_List2b:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: A simple list of state items, with a double key (single)
       properties:
         index1:
           description: The list index
@@ -277,11 +282,19 @@ components:
       required:
       - index1
       - index2
+      title: Cont1b-state_List2b
       type: object
+      x-list-multiple: true
     Cont1b-state_List2b_List:
+      description: A simple list of state items, with a double key (list)
       items:
         $ref: '#/components/schemas/Cont1b-state_List2b'
+      maxItems: 8
       type: array
+      uniqueItems: true
+      x-keys:
+      - index1
+      - index2
       x-list-multiple: true
     LeafAtTopLevel:
       description: A leaf at the top level (not recommended but must be supported)
@@ -293,7 +306,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: TODO add a description field in Metadata.yaml?
+  description: This OpenAPI 3 specification is generated fromtestdevice onos-config
+    model plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -403,9 +417,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1a_List2a_List'
-                type: array
+                $ref: '#/components/schemas/Cont1a_List2a_List'
           description: GET OK 200
       summary: GET /cont1a/list2a List
       tags:
@@ -497,9 +509,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Cont1b-state_List2b_List'
-                type: array
+                $ref: '#/components/schemas/Cont1b-state_List2b_List'
           description: GET OK 200
       summary: GET /cont1b-state/list2b List
       tags:

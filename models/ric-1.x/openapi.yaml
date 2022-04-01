@@ -8,7 +8,7 @@ components:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (device in onos-config)
+      description: target (target in onos-config)
       in: path
       name: target
       required: true
@@ -29,12 +29,25 @@ components:
           schema:
             $ref: '#/components/schemas/Report_period'
   schemas:
+    AdditionalPropertiesUnchTarget:
+      description: both the additional property 'unchanged' and the 'target'
+      properties:
+        target:
+          description: an override of the target (target)
+          title: target
+          type: string
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertiesUnchTarget
+      type: object
     AdditionalPropertyTarget:
       description: Optionally specify a target other than the default (only on PATCH
         method)
       properties:
         target:
-          description: an override of the target (device)
+          description: an override of the target (target)
           title: target
           type: string
       title: AdditionalPropertyTarget
@@ -55,17 +68,11 @@ components:
       description: The list of e2 nodes
       properties:
         node:
-          description: e2 node
-          items:
-            $ref: '#/components/schemas/Nodes_Node'
-          title: ItemNodes_Node
-          type: array
-          uniqueItems: true
-          x-keys:
-          - id
+          $ref: '#/components/schemas/Nodes_Node_List'
       title: Nodes
       type: object
     Nodes_Node:
+      description: e2 node (single)
       properties:
         id:
           description: eNB id
@@ -87,11 +94,17 @@ components:
           type: integer
       required:
       - id
+      title: Nodes_Node
       type: object
+      x-list-multiple: true
     Nodes_Node_List:
+      description: e2 node (list)
       items:
         $ref: '#/components/schemas/Nodes_Node'
       type: array
+      uniqueItems: true
+      x-keys:
+      - id
       x-list-multiple: true
     Report_period:
       additionalProperties:
@@ -111,7 +124,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: TODO add a description field in Metadata.yaml?
+  description: This OpenAPI 3 specification is generated fromric onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -145,9 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Nodes_Node_List'
-                type: array
+                $ref: '#/components/schemas/Nodes_Node_List'
           description: GET OK 200
       summary: GET /nodes/node List
       tags:
