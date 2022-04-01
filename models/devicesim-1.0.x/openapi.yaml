@@ -8,7 +8,7 @@ components:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (device in onos-config)
+      description: target (target in onos-config)
       in: path
       name: target
       required: true
@@ -694,12 +694,25 @@ components:
           schema:
             $ref: '#/components/schemas/System_Telnet-server_State'
   schemas:
+    AdditionalPropertiesUnchTarget:
+      description: both the additional property 'unchanged' and the 'target'
+      properties:
+        target:
+          description: an override of the target (target)
+          title: target
+          type: string
+        unchanged:
+          description: A comma seperated list of unchanged mandatory attribute names
+          title: unchanged
+          type: string
+      title: AdditionalPropertiesUnchTarget
+      type: object
     AdditionalPropertyTarget:
       description: Optionally specify a target other than the default (only on PATCH
         method)
       properties:
         target:
-          description: an override of the target (device)
+          description: an override of the target (target)
           title: target
           type: string
       title: AdditionalPropertyTarget
@@ -720,17 +733,11 @@ components:
       description: Enclosing container for the components in the system.
       properties:
         component:
-          description: List of components, keyed by component name.
-          items:
-            $ref: '#/components/schemas/Components_Component'
-          title: ItemComponents_Component
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/Components_Component_List'
       title: Components
       type: object
     Components_Component:
+      description: List of components, keyed by component name. (single)
       properties:
         config:
           $ref: '#/components/schemas/Components_Component_Config'
@@ -747,7 +754,9 @@ components:
           $ref: '#/components/schemas/Components_Component_Subcomponents'
       required:
       - name
+      title: Components_Component
       type: object
+      x-list-multiple: true
     Components_Component_Config:
       description: Configuration data for each component
       properties:
@@ -760,25 +769,23 @@ components:
       title: Components_Component_Config
       type: object
     Components_Component_List:
+      description: List of components, keyed by component name. (list)
       items:
         $ref: '#/components/schemas/Components_Component'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Components_Component_Properties:
       description: 'Enclosing container '
       properties:
         property:
-          description: List of system properties for the component
-          items:
-            $ref: '#/components/schemas/Components_Component_Properties_Property'
-          title: ItemComponents_Component_Properties_Property
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/Components_Component_Properties_Property_List'
       title: Components_Component_Properties
       type: object
     Components_Component_Properties_Property:
+      description: List of system properties for the component (single)
       properties:
         config:
           $ref: '#/components/schemas/Components_Component_Properties_Property_Config'
@@ -791,7 +798,9 @@ components:
           $ref: '#/components/schemas/Components_Component_Properties_Property_State'
       required:
       - name
+      title: Components_Component_Properties_Property
       type: object
+      x-list-multiple: true
     Components_Component_Properties_Property_Config:
       description: Configuration data for each property
       properties:
@@ -811,9 +820,13 @@ components:
       title: Components_Component_Properties_Property_Config
       type: object
     Components_Component_Properties_Property_List:
+      description: List of system properties for the component (list)
       items:
         $ref: '#/components/schemas/Components_Component_Properties_Property'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Components_Component_Properties_Property_State:
       description: Operational state data for each property
@@ -932,17 +945,11 @@ components:
       description: Enclosing container for subcomponent references
       properties:
         subcomponent:
-          description: List of subcomponent references
-          items:
-            $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
-          title: ItemComponents_Component_Subcomponents_Subcomponent
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
       title: Components_Component_Subcomponents
       type: object
     Components_Component_Subcomponents_Subcomponent:
+      description: List of subcomponent references (single)
       properties:
         config:
           $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_Config'
@@ -955,7 +962,9 @@ components:
           $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
       required:
       - name
+      title: Components_Component_Subcomponents_Subcomponent
       type: object
+      x-list-multiple: true
     Components_Component_Subcomponents_Subcomponent_Config:
       description: 'Configuration data '
       properties:
@@ -967,9 +976,13 @@ components:
       title: Components_Component_Subcomponents_Subcomponent_Config
       type: object
     Components_Component_Subcomponents_Subcomponent_List:
+      description: List of subcomponent references (list)
       items:
         $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Components_Component_Subcomponents_Subcomponent_State:
       description: 'Operational state data '
@@ -989,17 +1002,11 @@ components:
         and state data.
       properties:
         interface:
-          description: The list of named interfaces on the device.
-          items:
-            $ref: '#/components/schemas/Interfaces_Interface'
-          title: ItemInterfaces_Interface
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/Interfaces_Interface_List'
       title: Interfaces
       type: object
     Interfaces_Interface:
+      description: The list of named interfaces on the device. (single)
       properties:
         config:
           $ref: '#/components/schemas/Interfaces_Interface_Config'
@@ -1016,7 +1023,9 @@ components:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces'
       required:
       - name
+      title: Interfaces_Interface
       type: object
+      x-list-multiple: true
     Interfaces_Interface_Config:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
@@ -1195,9 +1204,13 @@ components:
       title: Interfaces_Interface_Hold-time_State
       type: object
     Interfaces_Interface_List:
+      description: The list of named interfaces on the device. (list)
       items:
         $ref: '#/components/schemas/Interfaces_Interface'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     Interfaces_Interface_State:
       additionalProperties:
@@ -1607,19 +1620,13 @@ components:
         with a physical interface
       properties:
         subinterface:
-          description: |-
-            The list of subinterfaces (logical interfaces) associated
-            with a physical interface
-          items:
-            $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
-          title: ItemInterfaces_Interface_Subinterfaces_Subinterface
-          type: array
-          uniqueItems: true
-          x-keys:
-          - index
+          $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
       title: Interfaces_Interface_Subinterfaces
       type: object
     Interfaces_Interface_Subinterfaces_Subinterface:
+      description: |-
+        The list of subinterfaces (logical interfaces) associated
+        with a physical interface (single)
       properties:
         config:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_Config'
@@ -1634,7 +1641,9 @@ components:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State'
       required:
       - index
+      title: Interfaces_Interface_Subinterfaces_Subinterface
       type: object
+      x-list-multiple: true
     Interfaces_Interface_Subinterfaces_Subinterface_Config:
       description: Configurable items at the subinterface level
       properties:
@@ -1697,9 +1706,15 @@ components:
       title: Interfaces_Interface_Subinterfaces_Subinterface_Config
       type: object
     Interfaces_Interface_Subinterfaces_Subinterface_List:
+      description: |-
+        The list of subinterfaces (logical interfaces) associated
+        with a physical interface (list)
       items:
         $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
       type: array
+      uniqueItems: true
+      x-keys:
+      - index
       x-list-multiple: true
     Interfaces_Interface_Subinterfaces_Subinterface_State:
       additionalProperties:
@@ -2136,17 +2151,11 @@ components:
         for accounting
       properties:
         event:
-          description: List of events subject to accounting
-          items:
-            $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
-          title: ItemSystem_Aaa_Accounting_Events_Event
-          type: array
-          uniqueItems: true
-          x-keys:
-          - event-type
+          $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
       title: System_Aaa_Accounting_Events
       type: object
     System_Aaa_Accounting_Events_Event:
+      description: List of events subject to accounting (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_Config'
@@ -2161,7 +2170,9 @@ components:
           $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
       required:
       - event-type
+      title: System_Aaa_Accounting_Events_Event
       type: object
+      x-list-multiple: true
     System_Aaa_Accounting_Events_Event_Config:
       description: Configuration data for accounting events
       properties:
@@ -2185,9 +2196,13 @@ components:
       title: System_Aaa_Accounting_Events_Event_Config
       type: object
     System_Aaa_Accounting_Events_Event_List:
+      description: List of events subject to accounting (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
       type: array
+      uniqueItems: true
+      x-keys:
+      - event-type
       x-list-multiple: true
     System_Aaa_Accounting_Events_Event_State:
       description: Operational state data for accounting events
@@ -2338,17 +2353,11 @@ components:
       description: Enclosing container list of local users
       properties:
         user:
-          description: List of local users on the system
-          items:
-            $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
-          title: ItemSystem_Aaa_Authentication_Users_User
-          type: array
-          uniqueItems: true
-          x-keys:
-          - username
+          $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
       title: System_Aaa_Authentication_Users
       type: object
     System_Aaa_Authentication_Users_User:
+      description: List of local users on the system (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_Config'
@@ -2361,7 +2370,9 @@ components:
           x-leafref: ../config/username
       required:
       - username
+      title: System_Aaa_Authentication_Users_User
       type: object
+      x-list-multiple: true
     System_Aaa_Authentication_Users_User_Config:
       description: Configuration data for local users
       properties:
@@ -2396,9 +2407,13 @@ components:
       title: System_Aaa_Authentication_Users_User_Config
       type: object
     System_Aaa_Authentication_Users_User_List:
+      description: List of local users on the system (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
       type: array
+      uniqueItems: true
+      x-keys:
+      - username
       x-list-multiple: true
     System_Aaa_Authentication_Users_User_State:
       description: Operational state data for local users
@@ -2472,17 +2487,11 @@ components:
         to authorization
       properties:
         event:
-          description: List of events subject to AAA authorization
-          items:
-            $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
-          title: ItemSystem_Aaa_Authorization_Events_Event
-          type: array
-          uniqueItems: true
-          x-keys:
-          - event-type
+          $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
       title: System_Aaa_Authorization_Events
       type: object
     System_Aaa_Authorization_Events_Event:
+      description: List of events subject to AAA authorization (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_Config'
@@ -2495,7 +2504,9 @@ components:
           $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
       required:
       - event-type
+      title: System_Aaa_Authorization_Events_Event
       type: object
+      x-list-multiple: true
     System_Aaa_Authorization_Events_Event_Config:
       description: Configuration data for each authorized event
       properties:
@@ -2508,9 +2519,13 @@ components:
       title: System_Aaa_Authorization_Events_Event_Config
       type: object
     System_Aaa_Authorization_Events_Event_List:
+      description: List of events subject to AAA authorization (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
       type: array
+      uniqueItems: true
+      x-keys:
+      - event-type
       x-list-multiple: true
     System_Aaa_Authorization_Events_Event_State:
       description: Operational state data for each authorized activity
@@ -2549,20 +2564,14 @@ components:
       description: Enclosing container for AAA server groups
       properties:
         server-group:
-          description: |-
-            List of AAA server groups.  All servers in a group
-            must have the same type as indicated by the server
-            type.
-          items:
-            $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
-          title: ItemSystem_Aaa_Server-groups_Server-group
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
       title: System_Aaa_Server-groups
       type: object
     System_Aaa_Server-groups_Server-group:
+      description: |-
+        List of AAA server groups.  All servers in a group
+        must have the same type as indicated by the server
+        type. (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Config'
@@ -2577,7 +2586,9 @@ components:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_State'
       required:
       - name
+      title: System_Aaa_Server-groups_Server-group
       type: object
+      x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Config:
       description: Configuration data for each server group
       properties:
@@ -2597,25 +2608,26 @@ components:
       title: System_Aaa_Server-groups_Server-group_Config
       type: object
     System_Aaa_Server-groups_Server-group_List:
+      description: |-
+        List of AAA server groups.  All servers in a group
+        must have the same type as indicated by the server
+        type. (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Servers:
       description: Enclosing container the list of servers
       properties:
         server:
-          description: List of AAA servers
-          items:
-            $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
-          title: ItemSystem_Aaa_Server-groups_Server-group_Servers_Server
-          type: array
-          uniqueItems: true
-          x-keys:
-          - address
+          $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
       title: System_Aaa_Server-groups_Server-group_Servers
       type: object
     System_Aaa_Server-groups_Server-group_Servers_Server:
+      description: List of AAA servers (single)
       properties:
         address:
           description: Reference to the configured address of the AAA server
@@ -2632,7 +2644,9 @@ components:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs'
       required:
       - address
+      title: System_Aaa_Server-groups_Server-group_Servers_Server
       type: object
+      x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Servers_Server_Config:
       description: 'Configuration data '
       properties:
@@ -2655,9 +2669,13 @@ components:
       title: System_Aaa_Server-groups_Server-group_Servers_Server_Config
       type: object
     System_Aaa_Server-groups_Server-group_Servers_Server_List:
+      description: List of AAA servers (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
       type: array
+      uniqueItems: true
+      x-keys:
+      - address
       x-list-multiple: true
     System_Aaa_Server-groups_Server-group_Servers_Server_Radius:
       description: Top-level container for RADIUS server data
@@ -3021,17 +3039,11 @@ components:
       description: Enclosing container for list of static host entries
       properties:
         host-entry:
-          description: List of static host entries
-          items:
-            $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
-          title: ItemSystem_Dns_Host-entries_Host-entry
-          type: array
-          uniqueItems: true
-          x-keys:
-          - hostname
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
       title: System_Dns_Host-entries
       type: object
     System_Dns_Host-entries_Host-entry:
+      description: List of static host entries (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config'
@@ -3044,7 +3056,9 @@ components:
           $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
       required:
       - hostname
+      title: System_Dns_Host-entries_Host-entry
       type: object
+      x-list-multiple: true
     System_Dns_Host-entries_Host-entry_Config:
       description: Configuration data for static host entries
       properties:
@@ -3078,9 +3092,13 @@ components:
       title: System_Dns_Host-entries_Host-entry_Config
       type: object
     System_Dns_Host-entries_Host-entry_List:
+      description: List of static host entries (list)
       items:
         $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
       type: array
+      uniqueItems: true
+      x-keys:
+      - hostname
       x-list-multiple: true
     System_Dns_Host-entries_Host-entry_State:
       description: Operational state data for static host entries
@@ -3118,32 +3136,25 @@ components:
       description: Enclosing container for DNS resolver list
       properties:
         server:
-          description: |-
-            List of the DNS servers that the resolver should query.
-
-            When the resolver is invoked by a calling application, it
-            sends the query to the first name server in this list.  If
-            no response has been received within 'timeout' seconds,
-            the resolver continues with the next server in the list.
-            If no response is received from any server, the resolver
-            continues with the first server again.  When the resolver
-            has traversed the list 'attempts' times without receiving
-            any response, it gives up and returns an error to the
-            calling application.
-
-            Implementations MAY limit the number of entries in this
-            list.
-          items:
-            $ref: '#/components/schemas/System_Dns_Servers_Server'
-          title: ItemSystem_Dns_Servers_Server
-          type: array
-          uniqueItems: true
-          x-keys:
-          - address
-          x-must: []
+          $ref: '#/components/schemas/System_Dns_Servers_Server_List'
       title: System_Dns_Servers
       type: object
     System_Dns_Servers_Server:
+      description: |-
+        List of the DNS servers that the resolver should query.
+
+        When the resolver is invoked by a calling application, it
+        sends the query to the first name server in this list.  If
+        no response has been received within 'timeout' seconds,
+        the resolver continues with the next server in the list.
+        If no response is received from any server, the resolver
+        continues with the first server again.  When the resolver
+        has traversed the list 'attempts' times without receiving
+        any response, it gives up and returns an error to the
+        calling application.
+
+        Implementations MAY limit the number of entries in this
+        list. (single)
       properties:
         address:
           description: References the configured address of the DNS server
@@ -3156,7 +3167,10 @@ components:
           $ref: '#/components/schemas/System_Dns_Servers_Server_State'
       required:
       - address
+      title: System_Dns_Servers_Server
       type: object
+      x-list-multiple: true
+      x-must: []
     System_Dns_Servers_Server_Config:
       description: Configuration data for each DNS resolver
       properties:
@@ -3175,9 +3189,27 @@ components:
       title: System_Dns_Servers_Server_Config
       type: object
     System_Dns_Servers_Server_List:
+      description: |-
+        List of the DNS servers that the resolver should query.
+
+        When the resolver is invoked by a calling application, it
+        sends the query to the first name server in this list.  If
+        no response has been received within 'timeout' seconds,
+        the resolver continues with the next server in the list.
+        If no response is received from any server, the resolver
+        continues with the first server again.  When the resolver
+        has traversed the list 'attempts' times without receiving
+        any response, it gives up and returns an error to the
+        calling application.
+
+        Implementations MAY limit the number of entries in this
+        list. (list)
       items:
         $ref: '#/components/schemas/System_Dns_Servers_Server'
       type: array
+      uniqueItems: true
+      x-keys:
+      - address
       x-list-multiple: true
     System_Dns_Servers_Server_State:
       description: Operational state data for each DNS resolver
@@ -3243,20 +3275,13 @@ components:
       description: 'Enclosing container '
       properties:
         selector:
-          description: List of selectors for log messages
-          items:
-            $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
-          title: ItemSystem_Logging_Console_Selectors_Selector
-          type: array
-          uniqueItems: true
-          x-keys:
-          - facility
-          - severity
+          $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
       title: System_Logging_Console_Selectors
       type: object
     System_Logging_Console_Selectors_Selector:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: List of selectors for log messages (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_Config'
@@ -3275,7 +3300,9 @@ components:
       required:
       - facility
       - severity
+      title: System_Logging_Console_Selectors_Selector
       type: object
+      x-list-multiple: true
     System_Logging_Console_Selectors_Selector_Config:
       description: 'Configuration data '
       properties:
@@ -3312,9 +3339,14 @@ components:
       title: System_Logging_Console_Selectors_Selector_Config
       type: object
     System_Logging_Console_Selectors_Selector_List:
+      description: List of selectors for log messages (list)
       items:
         $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
       type: array
+      uniqueItems: true
+      x-keys:
+      - facility
+      - severity
       x-list-multiple: true
     System_Logging_Console_Selectors_Selector_State:
       description: 'Operational state data '
@@ -3359,17 +3391,11 @@ components:
       description: Enclosing container for the list of remote log servers
       properties:
         remote-server:
-          description: List of remote log servers
-          items:
-            $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
-          title: ItemSystem_Logging_Remote-servers_Remote-server
-          type: array
-          uniqueItems: true
-          x-keys:
-          - host
+          $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
       title: System_Logging_Remote-servers
       type: object
     System_Logging_Remote-servers_Remote-server:
+      description: List of remote log servers (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Config'
@@ -3384,7 +3410,9 @@ components:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_State'
       required:
       - host
+      title: System_Logging_Remote-servers_Remote-server
       type: object
+      x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Config:
       description: Configuration data for remote log servers
       properties:
@@ -3407,28 +3435,25 @@ components:
       title: System_Logging_Remote-servers_Remote-server_Config
       type: object
     System_Logging_Remote-servers_Remote-server_List:
+      description: List of remote log servers (list)
       items:
         $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
       type: array
+      uniqueItems: true
+      x-keys:
+      - host
       x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Selectors:
       description: 'Enclosing container '
       properties:
         selector:
-          description: List of selectors for log messages
-          items:
-            $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector'
-          title: ItemSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
-          type: array
-          uniqueItems: true
-          x-keys:
-          - facility
-          - severity
+          $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_List'
       title: System_Logging_Remote-servers_Remote-server_Selectors
       type: object
     System_Logging_Remote-servers_Remote-server_Selectors_Selector:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: List of selectors for log messages (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config'
@@ -3447,7 +3472,9 @@ components:
       required:
       - facility
       - severity
+      title: System_Logging_Remote-servers_Remote-server_Selectors_Selector
       type: object
+      x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config:
       description: 'Configuration data '
       properties:
@@ -3484,9 +3511,14 @@ components:
       title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       type: object
     System_Logging_Remote-servers_Remote-server_Selectors_Selector_List:
+      description: List of selectors for log messages (list)
       items:
         $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector'
       type: array
+      uniqueItems: true
+      x-keys:
+      - facility
+      - severity
       x-list-multiple: true
     System_Logging_Remote-servers_Remote-server_Selectors_Selector_State:
       description: 'Operational state data '
@@ -3618,17 +3650,11 @@ components:
       description: Enclosing container for list of NTP authentication keys
       properties:
         ntp-key:
-          description: List of NTP authentication keys
-          items:
-            $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
-          title: ItemSystem_Ntp_Ntp-keys_Ntp-key
-          type: array
-          uniqueItems: true
-          x-keys:
-          - key-id
+          $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
       title: System_Ntp_Ntp-keys
       type: object
     System_Ntp_Ntp-keys_Ntp-key:
+      description: List of NTP authentication keys (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_Config'
@@ -3641,7 +3667,9 @@ components:
           $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
       required:
       - key-id
+      title: System_Ntp_Ntp-keys_Ntp-key
       type: object
+      x-list-multiple: true
     System_Ntp_Ntp-keys_Ntp-key_Config:
       description: Configuration data for NTP auth keys
       properties:
@@ -3667,9 +3695,13 @@ components:
       title: System_Ntp_Ntp-keys_Ntp-key_Config
       type: object
     System_Ntp_Ntp-keys_Ntp-key_List:
+      description: List of NTP authentication keys (list)
       items:
         $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
       type: array
+      uniqueItems: true
+      x-keys:
+      - key-id
       x-list-multiple: true
     System_Ntp_Ntp-keys_Ntp-key_State:
       description: Operational state data for NTP auth keys
@@ -3699,21 +3731,15 @@ components:
       description: Enclosing container for the list of NTP servers
       properties:
         server:
-          description: |-
-            List of NTP servers to use for system clock
-            synchronization.  If '/system/ntp/enabled'
-            is 'true', then the system will attempt to
-            contact and utilize the specified NTP servers.
-          items:
-            $ref: '#/components/schemas/System_Ntp_Servers_Server'
-          title: ItemSystem_Ntp_Servers_Server
-          type: array
-          uniqueItems: true
-          x-keys:
-          - address
+          $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
       title: System_Ntp_Servers
       type: object
     System_Ntp_Servers_Server:
+      description: |-
+        List of NTP servers to use for system clock
+        synchronization.  If '/system/ntp/enabled'
+        is 'true', then the system will attempt to
+        contact and utilize the specified NTP servers. (single)
       properties:
         address:
           description: |-
@@ -3728,7 +3754,9 @@ components:
           $ref: '#/components/schemas/System_Ntp_Servers_Server_State'
       required:
       - address
+      title: System_Ntp_Servers_Server
       type: object
+      x-list-multiple: true
     System_Ntp_Servers_Server_Config:
       description: Configuration data for an NTP server.
       properties:
@@ -3769,9 +3797,17 @@ components:
       title: System_Ntp_Servers_Server_Config
       type: object
     System_Ntp_Servers_Server_List:
+      description: |-
+        List of NTP servers to use for system clock
+        synchronization.  If '/system/ntp/enabled'
+        is 'true', then the system will attempt to
+        contact and utilize the specified NTP servers. (list)
       items:
         $ref: '#/components/schemas/System_Ntp_Servers_Server'
       type: array
+      uniqueItems: true
+      x-keys:
+      - address
       x-list-multiple: true
     System_Ntp_Servers_Server_State:
       description: Operational state data for an NTP server.
@@ -3982,19 +4018,13 @@ components:
       description: Container for the Openflow controllers model
       properties:
         controller:
-          description: |-
-            The Openflow Switch connects to all Openflow controllers
-            configured
-          items:
-            $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
-          title: ItemSystem_Openflow_Controllers_Controller
-          type: array
-          uniqueItems: true
-          x-keys:
-          - name
+          $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
       title: System_Openflow_Controllers
       type: object
     System_Openflow_Controllers_Controller:
+      description: |-
+        The Openflow Switch connects to all Openflow controllers
+        configured (single)
       properties:
         config:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Config'
@@ -4009,7 +4039,9 @@ components:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
       required:
       - name
+      title: System_Openflow_Controllers_Controller
       type: object
+      x-list-multiple: true
     System_Openflow_Controllers_Controller_Config:
       description: Container for the Openflow controller config.
       properties:
@@ -4025,21 +4057,15 @@ components:
       description: Enclosing container for list of controller connections
       properties:
         connection:
-          description: |-
-            List of connections to the OpenFlow controller.
-            The Openflow switch always connects to configured Openflow
-            controllers. Each controller can have more than one
-            connection, called auxiliary Openflow connections.
-          items:
-            $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection'
-          title: ItemSystem_Openflow_Controllers_Controller_Connections_Connection
-          type: array
-          uniqueItems: true
-          x-keys:
-          - aux-id
+          $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_List'
       title: System_Openflow_Controllers_Controller_Connections
       type: object
     System_Openflow_Controllers_Controller_Connections_Connection:
+      description: |-
+        List of connections to the OpenFlow controller.
+        The Openflow switch always connects to configured Openflow
+        controllers. Each controller can have more than one
+        connection, called auxiliary Openflow connections. (single)
       properties:
         aux-id:
           description: Reference to auxiliary id list key
@@ -4052,7 +4078,9 @@ components:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_State'
       required:
       - aux-id
+      title: System_Openflow_Controllers_Controller_Connections_Connection
       type: object
+      x-list-multiple: true
     System_Openflow_Controllers_Controller_Connections_Connection_Config:
       description: Configuration data for OpenFlow controller connections
       properties:
@@ -4101,9 +4129,17 @@ components:
       title: System_Openflow_Controllers_Controller_Connections_Connection_Config
       type: object
     System_Openflow_Controllers_Controller_Connections_Connection_List:
+      description: |-
+        List of connections to the OpenFlow controller.
+        The Openflow switch always connects to configured Openflow
+        controllers. Each controller can have more than one
+        connection, called auxiliary Openflow connections. (list)
       items:
         $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection'
       type: array
+      uniqueItems: true
+      x-keys:
+      - aux-id
       x-list-multiple: true
     System_Openflow_Controllers_Controller_Connections_Connection_State:
       description: |-
@@ -4161,9 +4197,15 @@ components:
       title: System_Openflow_Controllers_Controller_Connections_Connection_State
       type: object
     System_Openflow_Controllers_Controller_List:
+      description: |-
+        The Openflow Switch connects to all Openflow controllers
+        configured (list)
       items:
         $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
       type: array
+      uniqueItems: true
+      x-keys:
+      - name
       x-list-multiple: true
     System_Openflow_Controllers_Controller_State:
       description: Container for the Openflow controller state.
@@ -4180,17 +4222,11 @@ components:
       description: Parameters related to all monitored processes
       properties:
         process:
-          description: List of monitored processes
-          items:
-            $ref: '#/components/schemas/System_Processes_Process'
-          title: ItemSystem_Processes_Process
-          type: array
-          uniqueItems: true
-          x-keys:
-          - pid
+          $ref: '#/components/schemas/System_Processes_Process_List'
       title: System_Processes
       type: object
     System_Processes_Process:
+      description: List of monitored processes (single)
       properties:
         pid:
           description: Reference to the process pid key
@@ -4201,11 +4237,17 @@ components:
           $ref: '#/components/schemas/System_Processes_Process_State'
       required:
       - pid
+      title: System_Processes_Process
       type: object
+      x-list-multiple: true
     System_Processes_Process_List:
+      description: List of monitored processes (list)
       items:
         $ref: '#/components/schemas/System_Processes_Process'
       type: array
+      uniqueItems: true
+      x-keys:
+      - pid
       x-list-multiple: true
     System_Processes_Process_State:
       description: State parameters related to monitored processes
@@ -4504,7 +4546,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: TODO add a description field in Metadata.yaml?
+  description: This OpenAPI 3 specification is generated fromdevicesim onos-config
+    model plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -4552,9 +4595,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Components_Component_List'
-                type: array
+                $ref: '#/components/schemas/Components_Component_List'
           description: GET OK 200
       summary: GET /components/component List
       tags:
@@ -4688,9 +4729,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Components_Component_Properties_Property_List'
-                type: array
+                $ref: '#/components/schemas/Components_Component_Properties_Property_List'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property List
       tags:
@@ -4936,9 +4975,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
-                type: array
+                $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent List
       tags:
@@ -5125,9 +5162,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Interfaces_Interface_List'
-                type: array
+                $ref: '#/components/schemas/Interfaces_Interface_List'
           description: GET OK 200
       summary: GET /interfaces/interface List
       tags:
@@ -5422,9 +5457,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
-                type: array
+                $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface List
       tags:
@@ -5773,9 +5806,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
-                type: array
+                $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event List
       tags:
@@ -6105,9 +6136,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
-                type: array
+                $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user List
       tags:
@@ -6326,9 +6355,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
-                type: array
+                $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event List
       tags:
@@ -6530,9 +6557,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
-                type: array
+                $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group List
       tags:
@@ -6669,9 +6694,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
-                type: array
+                $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server List
       tags:
@@ -7364,9 +7387,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
-                type: array
+                $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry List
       tags:
@@ -7531,9 +7552,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Dns_Servers_Server_List'
-                type: array
+                $ref: '#/components/schemas/System_Dns_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/dns/servers/server List
       tags:
@@ -7810,9 +7829,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
-                type: array
+                $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector List
       tags:
@@ -8006,9 +8023,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
-                type: array
+                $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server List
       tags:
@@ -8142,9 +8157,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_List'
-                type: array
+                $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_List'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         List
@@ -8521,9 +8534,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
-                type: array
+                $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key List
       tags:
@@ -8678,9 +8689,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
-                type: array
+                $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/ntp/servers/server List
       tags:
@@ -8964,9 +8973,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
-                type: array
+                $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller List
       tags:
@@ -9106,9 +9113,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_List'
-                type: array
+                $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_List'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         List
@@ -9326,9 +9331,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/System_Processes_Process_List'
-                type: array
+                $ref: '#/components/schemas/System_Processes_Process_List'
           description: GET OK 200
       summary: GET /system/processes/process List
       tags:
