@@ -7,7 +7,7 @@
 SHELL = bash -e -o pipefail
 DOCKER_REPOSITORY ?= onosproject/
 BASE_VERSION ?= $(shell cat ./VERSION)
-VERSION           ?= ${BASE_VERSION}-testdevice-2.0.0
+VERSION           ?= ${BASE_VERSION}-testdevice-2.0.x
 LATEST_VERSION           ?= ${BASE_VERSION}-testdevice-latest
 KIND_CLUSTER_NAME ?= kind
 HAS_CHANGED=$(shell git --no-pager diff HEAD~1 HEAD . | wc -l) # check if the content of this folder is different than the parent commit
@@ -47,8 +47,8 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod vendor
 
 image: mod-update openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice:${VERSION} .
-	docker tag ${DOCKER_REPOSITORY}testdevice:${VERSION} ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
+	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION} .
+	docker tag ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION} ${DOCKER_REPOSITORY}testdevice-2.0.x:${LATEST_VERSION}
 
 .PHONY: openapi
 openapi: mod-update # @HELP Generate OpenApi specs
@@ -73,15 +73,15 @@ endif
 
 publish: image repo-tag # @HELP Builds and publish the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 ifneq ("$(HAS_CHANGED)", "0 ")
-	docker push ${DOCKER_REPOSITORY}testdevice:${VERSION}
-	docker push ${DOCKER_REPOSITORY}testdevice:${LATEST_VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION}
+	docker push ${DOCKER_REPOSITORY}testdevice-2.0.x:${LATEST_VERSION}
 else
 	@echo "No changes, nothing to push"
 endif
 
 kind-only: # @HELP Loads the docker image into the kind cluster  (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}testdevice:${VERSION}
+	kind load docker-image --name ${KIND_CLUSTER_NAME} ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION}
 
 kind: # @HELP build the docker image and loads it into the currently configured kind cluster (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 kind: image kind-only

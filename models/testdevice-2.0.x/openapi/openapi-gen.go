@@ -8,7 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
-	"github.com/onosproject/config-models/models/testdevice/v2/api"
+	"github.com/onosproject/config-models/models/testdevice-2.0.x/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
 	"io/ioutil"
 	"os"
@@ -27,8 +27,8 @@ func main() {
 
 	settings := openapi_gen.ApiGenSettings{
 		ModelType:    "testdevice",
-		ModelVersion: "2.0.0",
-		Title:        "testdevice-2.0.0",
+		ModelVersion: "2.0.x",
+		Title:        "testdevice-2.0.x",
 		TargetAlias:  "",
 	}
 
