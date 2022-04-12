@@ -33,3 +33,4 @@ modelplugin/plproxy-*/plproxy-*-openapi3.yaml
 models/*/vendor
 
 build/build-tools
+.idea
