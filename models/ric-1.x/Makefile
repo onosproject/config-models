@@ -60,7 +60,7 @@ test: mod-update # @HELP Run the unit tests
 repo-tag:
 ifeq ($(IS_RELEASED_VERSION), true)
 ifneq ("$(HAS_CHANGED)", "0 ")
-	NEW_VERSION=${VERSION} ../../../build-tools/tag-collision-reject
+	NEW_VERSION=${VERSION} ../../build/build-tools/tag-collision-reject
 	git tag ${VERSION}
 	git push origin ${VERSION}
 else
