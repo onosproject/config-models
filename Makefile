@@ -27,7 +27,7 @@ test: build linters license gofmt images models models-version-check
 .PHONY: models
 models: # @HELP make demo and test device models
 models:
-	@cd models && for model in *; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
+	@cd models && for model in *; do echo "Generating $$model:"; docker run --platform linux/x86_64 -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
 
 models-openapi: # @HELP generates the openapi specs for the models
 	@cd models && for model in *; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
@@ -62,7 +62,7 @@ all: # @HELP build all libraries
 all: build
 
 model-compiler-docker: # @HELP build model-compiler Docker image
-	docker build . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
+	docker build --platform linux/x86_64 . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 images: model-compiler-docker
 
