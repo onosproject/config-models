@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM onosproject/golang-build:v2 as build
+FROM onosproject/golang-build:v1.2.1 as build
 
 ENV GO111MODULE=on
 COPY . /go/src/github.com/onosproject/config-models
