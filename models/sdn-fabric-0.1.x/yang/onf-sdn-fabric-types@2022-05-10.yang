@@ -1,0 +1,48 @@
+// SPDX-FileCopyrightText: 2021 Open Networking Foundation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-sdn-fabric-types {
+  namespace "http://opennetworking.org/aether/onf-sdn-fabric-types";
+  prefix ft;
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "A set of base types for SDN Fabric modeling.";
+
+  revision "2022-05-10" {
+    description "SDN Fabric Base Types";
+    reference "RFC 6087";
+  }
+
+  identity speed {
+    description "base identity of port speeds";
+  }
+
+  identity speed-1g {
+    base speed;
+    description "1 Gbps";¬
+  }
+
+  identity speed-10g {
+    base speed;
+    description "10 Gbps";
+  }
+
+  grouping desc-display-name {
+    description "reusable leafs for description and display-name";
+    leaf display-name {
+      type string {
+        length 1..80;
+      }
+      description "display name to use in GUI or CLI";
+    }
+
+    leaf description {
+      type string {
+        length 1..1024;
+      }
+      description "long description field";
+    }
+  }
+}

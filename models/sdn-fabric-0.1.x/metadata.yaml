@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: sdn-fabric
+version: 0.1.0
+artifactName: sdn-fabric
+goPackage: github.com/onosproject/config-models/models/sdn-fabric
+modules:
+  - name: onf-switch
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-switch@2022-05-10.yang

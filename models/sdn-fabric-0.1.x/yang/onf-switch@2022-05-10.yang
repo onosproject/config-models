@@ -1,0 +1,91 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-switch {
+    namespace "http://opennetworking.org/oran/onf-switch";
+    prefix sw;
+
+    import onf-sdn-fabric-types { prefix st; }
+    import ietf-yang-types{ prefix yt; }
+    import ietf-inet-types{ prefix inet; }
+
+    include onf-port;
+
+    organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of switch components.
+        To generate JSON from this use command
+        pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+    revision "2022-05-10" {
+        description "Initial Version";
+        reference "ROC SD-Fabric Notes";
+    }
+
+  list switch {
+      key "switch-id";
+      description "A managed device in the fabric";
+
+      leaf switch-id {
+        type yt:yang-identifier;
+        description "unique identifier for the switch";
+      }
+
+      uses st:desc-display-name;
+
+      leaf form {
+        type enumeration {
+            enum undefined {
+                value 0;
+                description "Generic switch";
+            }
+            enum pizza-box {
+                value 1;
+                description "Rack mount form factor";
+            }
+            enum smart-nic {
+                value 2;
+                description "Smart Network Interface Card";
+            }
+        }
+        mandatory true;
+        description "The form factor for the switch";
+      }
+
+      leaf role {
+        type enumeration {
+            enum undefined {
+                value 0;
+                description "Unknown role";
+            }
+            enum leaf {
+                value 1;
+                description "Leaf role";
+            }
+            enum spine {
+                value 2;
+                description "Spine role";
+            }
+        }
+        mandatory true;
+        description "The role of the switch in the fabric";
+      }
+
+      container management {
+        leaf address {
+          type inet:ipv4-address;
+          description "The management IPv4 address";
+        }
+
+        leaf port-number {
+          type inet:port-number;
+          description "The mangement port number";
+        }
+
+        description "configuration of the management port";
+      }
+
+      uses port;
+  }
+}

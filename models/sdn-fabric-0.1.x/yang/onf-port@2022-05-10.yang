@@ -1,0 +1,70 @@
+// SPDX-FileCopyrightText: 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+submodule onf-port {
+  belongs-to onf-switch { prefix sw; }
+
+  import onf-sdn-fabric-types { prefix st; }
+
+  organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of port
+      To generate JSON from this use command
+      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+  revision "2022-05-10" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
+
+  grouping port {
+    list port {
+      key "port-id";
+      description "A port in a switch";
+
+      leaf port-id {
+        type int8;
+        description "identifier of the port";
+      }
+
+      uses st:desc-display-name;
+
+      leaf channel {
+        type enumeration {
+          enum not-channelized {
+            value 0;
+            description "not-channelized";
+          }
+          enum chan-0 {
+            value 1;
+            description "Channel 1";
+          }
+          enum chan-1 {
+            value 2;
+            description "Channel 2";
+          }
+          enum chan-2 {
+            value 3;
+            description "Channel 2";
+          }
+          enum chan-3 {
+            value 4;
+            description "Channel 3";
+          }
+        }
+        default "not-channelized";
+        description "port channelization";
+      }
+
+      leaf speed {
+        type identityref {
+          base st:speed;
+        }
+        description "port speed";
+      }
+
+    }
+    description "port list defintion";
+  }
+}
