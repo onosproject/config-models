@@ -6,6 +6,8 @@ submodule onf-port {
   belongs-to onf-switch { prefix sw; }
 
   import onf-sdn-fabric-types { prefix st; }
+  import onf-switch-model { prefix sm; }
+  import onf-port-types { prefix pt; }
 
   organization "Intel Corporation";
     contact "ROC Engineering";
@@ -18,17 +20,21 @@ submodule onf-port {
     reference "ROC SD-Fabric Notes";
   }
 
-  grouping port {
+  grouping ports {
     list port {
       key "port-id";
       description "A port in a switch";
 
       leaf port-id {
-        type int8;
-        description "identifier of the port";
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:port-id";
+        }
+        description "reference to the port in the switch model";
       }
 
       uses st:desc-display-name;
+
+      uses pt:port-speeds;
 
       leaf channel {
         type enumeration {
@@ -56,15 +62,7 @@ submodule onf-port {
         default "not-channelized";
         description "port channelization";
       }
-
-      leaf speed {
-        type identityref {
-          base st:speed;
-        }
-        description "port speed";
-      }
-
     }
-    description "port list defintion";
+    description "ports grouping";
   }
 }

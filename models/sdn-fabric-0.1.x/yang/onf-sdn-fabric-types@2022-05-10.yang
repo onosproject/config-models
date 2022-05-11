@@ -15,20 +15,6 @@ module onf-sdn-fabric-types {
     reference "RFC 6087";
   }
 
-  identity speed {
-    description "base identity of port speeds";
-  }
-
-  identity speed-1g {
-    base speed;
-    description "1 Gbps";¬
-  }
-
-  identity speed-10g {
-    base speed;
-    description "10 Gbps";
-  }
-
   grouping desc-display-name {
     description "reusable leafs for description and display-name";
     leaf display-name {

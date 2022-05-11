@@ -1,0 +1,63 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-port-types {
+  namespace "http://opennetworking.org/oran/onf-port-types";
+  prefix pt;
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch components.
+      To generate JSON from this use command
+      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+  revision "2022-05-10" {
+      description "Initial Version";
+      reference "ROC SD-Fabric Notes";
+  }
+
+  grouping port-speeds {
+    leaf-list speeds {
+      type identityref {
+        base speed;
+      }
+      description "port speed";
+    }
+    description "the ports supported speeds";
+  }
+
+  identity speed {
+    description "base identity of port speeds";
+  }
+
+  identity speed-1g {
+    base speed;
+    description "1 Gbps";
+  }
+
+  identity speed-10g {
+    base speed;
+    description "10 Gbps";
+  }
+
+  identity speed-25g {
+    base speed;
+    description "25 Gbps";
+  }
+
+  identity speed-40g {
+    base speed;
+    description "40 Gbps";
+  }
+
+  identity speed-100g {
+    base speed;
+    description "100 Gbps";
+  }
+
+  identity speed-400g {
+    base speed;
+    description "400 Gbps";
+  }
+}

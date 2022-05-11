@@ -7,10 +7,12 @@ module onf-switch {
     prefix sw;
 
     import onf-sdn-fabric-types { prefix st; }
+    import onf-switch-model { prefix sm; }
     import ietf-yang-types{ prefix yt; }
     import ietf-inet-types{ prefix inet; }
 
     include onf-port;
+    include onf-pool;
 
     organization "Intel Corporation";
     contact "ROC Engineering";
@@ -34,23 +36,11 @@ module onf-switch {
 
       uses st:desc-display-name;
 
-      leaf form {
-        type enumeration {
-            enum undefined {
-                value 0;
-                description "Generic switch";
-            }
-            enum pizza-box {
-                value 1;
-                description "Rack mount form factor";
-            }
-            enum smart-nic {
-                value 2;
-                description "Smart Network Interface Card";
-            }
+      leaf model {
+        type leafref {
+          path "/sm:switch-model/sm:switch-model-id";
         }
-        mandatory true;
-        description "The form factor for the switch";
+        description "link to switch model";
       }
 
       leaf role {
@@ -86,6 +76,8 @@ module onf-switch {
         description "configuration of the management port";
       }
 
-      uses port;
+      uses ports;
+
+      uses pools;
   }
 }

@@ -1,0 +1,68 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-switch-model {
+  namespace "http://opennetworking.org/oran/onf-switch-model";
+  prefix sm;
+
+  import onf-sdn-fabric-types { prefix st; }
+  import onf-port-types { prefix pt; }
+  import ietf-yang-types{ prefix yt; }
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch components.
+      To generate JSON from this use command
+      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+  revision "2022-05-10" {
+      description "Initial Version";
+      reference "ROC SD-Fabric Notes";
+  }
+
+  list switch-model {
+    key "switch-model-id";
+    description "A model of switch";
+
+    leaf switch-model-id {
+      type yt:yang-identifier;
+      description "unique identifier for the switch";
+    }
+
+    uses st:desc-display-name;
+
+    leaf form {
+      type enumeration {
+        enum undefined {
+            value 0;
+            description "Generic switch";
+        }
+        enum pizza-box {
+            value 1;
+            description "Rack mount form factor";
+        }
+        enum smart-nic {
+            value 2;
+            description "Smart Network Interface Card";
+        }
+      }
+      mandatory true;
+      description "The form factor for the switch";
+    }
+
+    list port {
+      key "port-id";
+      description "A port in a switch";
+
+      leaf port-id {
+        type uint8;
+        description "identifier of the port";
+      }
+
+      uses st:desc-display-name;
+
+      uses pt:port-speeds;
+    }
+  }
+}

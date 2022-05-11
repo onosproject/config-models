@@ -1,0 +1,64 @@
+// SPDX-FileCopyrightText: 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+submodule onf-pool {
+  belongs-to onf-switch { prefix sw; }
+
+  import ietf-yang-types{ prefix yt; }
+
+  organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of pool
+      To generate JSON from this use command
+      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+  revision "2022-05-10" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
+
+  grouping pools {
+    list pool {
+      key "pool-id";
+
+      leaf pool-id {
+        type yt:yang-identifier;
+        description "identifier of the port";
+      }
+
+      leaf pool-size {
+        type uint8;
+        description "size of pool";
+        // TODO - is there a unit? or is it a count
+      }
+
+      leaf enable-color-drop {
+        type boolean;
+        description "drop colored packets";
+      }
+
+      container color-drop-limit {
+        leaf green {
+          type uint32;
+          description "the drop limit for packets colored green";
+          // TODO - is there a unit?
+        }
+        leaf yellow {
+          type uint32;
+          description "the drop limit for packets colored yellow";
+          // TODO - is there a unit?
+        }
+        leaf red {
+          type uint32;
+          description "the drop limit for packets colored red";
+          // TODO - is there a unit?
+        }
+        description "drop limits for packets of different color";
+      }
+
+      description "list of pool";
+    }
+    description "pools grouping";
+  }
+}
