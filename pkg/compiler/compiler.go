@@ -334,6 +334,9 @@ func (c *ModelCompiler) generateOpenApi(path string) error {
 	// the Schema we need to import is generated at runtime, so we need to generate the tool
 	// to import such schema and generate the OpenApi specs
 
+	// TODO we should be able to run this generated code right after we generate it,
+	// so that we can remove a step from `make models-images`
+
 	dir := filepath.Join(path, "openapi")
 	openapiGenFile := filepath.Join(dir, "openapi-gen.go")
 	c.createDir(dir)
