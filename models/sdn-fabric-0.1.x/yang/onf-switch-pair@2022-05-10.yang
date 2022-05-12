@@ -1,0 +1,45 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-switch-pair {
+    namespace "http://opennetworking.org/oran/onf-switch-pair";
+    prefix sp;
+
+    import onf-sdn-fabric-types { prefix st; }
+    import onf-switch { prefix sw; }
+
+    organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of switch pairs.
+        To generate JSON from this use command
+        pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+    revision "2022-05-10" {
+        description "Initial Version";
+        reference "ROC SD-Fabric Notes";
+    }
+
+    list switch-pair {
+      key switch-a;
+
+      leaf switch-a {
+        type leafref {
+          path "/sw:switch/sw:switch-id";
+        }
+        description "A reference to a configured switch";
+      }
+
+      uses st:desc-display-name;
+
+      leaf switch-b {
+        type leafref {
+          path "/sw:switch/sw:switch-id";
+        }
+        mandatory true;
+        description "A switch to pair with switch-a";
+      }
+      description "A Switch pairing. A switch can participate on 0-1 pairings";
+    }
+
+}

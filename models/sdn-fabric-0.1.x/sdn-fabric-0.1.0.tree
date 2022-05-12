@@ -1,36 +1,43 @@
 module: onf-switch
   +--rw switch* [switch-id]
-     +--rw switch-id       yt:yang-identifier
+     +--rw switch-id       inet:domain-name
      +--rw display-name?   string
      +--rw description?    string
+     +--rw attribute* [attribute-key]
+     |  +--rw attribute-key    yt:yang-identifier
+     |  +--rw value?           string
      +--rw model?          -> /sm:switch-model/switch-model-id
      +--rw role            enumeration
      +--rw management
      |  +--rw address?       inet:ipv4-address
      |  +--rw port-number?   inet:port-number
-     +--rw port* [port-id]
-     |  +--rw port-id         -> /sm:switch-model/port/port-id
-     |  +--rw display-name?   string
-     |  +--rw description?    string
-     |  +--rw speeds*         identityref
-     |  +--rw channel?        enumeration
-     +--rw pool* [pool-id]
-        +--rw pool-id              yt:yang-identifier
-        +--rw pool-size?           uint8
-        +--rw enable-color-drop?   boolean
-        +--rw color-drop-limit
-           +--rw green?    uint32
-           +--rw yellow?   uint32
-           +--rw red?      uint32
+     +--rw port* [cage-number channel-number]
+        +--rw cage-number       -> /sm:switch-model/port/cage-number
+        +--rw channel-number    -> /sm:switch-model/port/channel-number
+        +--rw display-name?     string
+        +--rw description?      string
+        +--rw speed?            identityref
 
 module: onf-switch-model
   +--rw switch-model* [switch-model-id]
      +--rw switch-model-id    yt:yang-identifier
      +--rw display-name?      string
      +--rw description?       string
-     +--rw form               enumeration
-     +--rw port* [port-id]
-        +--rw port-id         uint8
-        +--rw display-name?   string
-        +--rw description?    string
-        +--rw speeds*         identityref
+     +--rw attribute* [attribute-key]
+     |  +--rw attribute-key    yt:yang-identifier
+     |  +--rw value?           string
+     +--rw form-factor        enumeration
+     +--rw pipeline?          enumeration
+     +--rw port* [cage-number channel-number]
+        +--rw cage-number       uint8
+        +--rw channel-number    uint8
+        +--rw display-name?     string
+        +--rw description?      string
+        +--rw speeds*           identityref
+
+module: onf-switch-pair
+  +--rw switch-pair* [switch-a]
+     +--rw switch-a        -> /sw:switch/switch-id
+     +--rw display-name?   string
+     +--rw description?    string
+     +--rw switch-b        -> /sw:switch/switch-id

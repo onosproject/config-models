@@ -11,3 +11,11 @@ modules:
     organization: Open Networking Foundation
     revision: 2022-05-10
     file: onf-switch@2022-05-10.yang
+  - name: onf-switch-model
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-switch-model@2022-05-10.yang
+  - name: onf-switch-pair
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-switch-pair@2022-05-10.yang

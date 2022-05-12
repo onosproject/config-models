@@ -22,45 +22,30 @@ submodule onf-port {
 
   grouping ports {
     list port {
-      key "port-id";
+      key "cage-number channel-number";
       description "A port in a switch";
 
-      leaf port-id {
+      leaf cage-number {
         type leafref {
-          path "/sm:switch-model/sm:port/sm:port-id";
+          path "/sm:switch-model/sm:port/sm:cage-number";
         }
-        description "reference to the port in the switch model";
+        description "reference to the cage-number of the port in the switch model";
+      }
+
+      leaf channel-number {
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:channel-number";
+        }
+        description "reference to the channel-number of the port in the switch model";
       }
 
       uses st:desc-display-name;
 
-      uses pt:port-speeds;
-
-      leaf channel {
-        type enumeration {
-          enum not-channelized {
-            value 0;
-            description "not-channelized";
-          }
-          enum chan-0 {
-            value 1;
-            description "Channel 1";
-          }
-          enum chan-1 {
-            value 2;
-            description "Channel 2";
-          }
-          enum chan-2 {
-            value 3;
-            description "Channel 2";
-          }
-          enum chan-3 {
-            value 4;
-            description "Channel 3";
-          }
+      leaf speed {
+        type identityref {
+          base pt:speed;
         }
-        default "not-channelized";
-        description "port channelization";
+        description "configured port speed";
       }
     }
     description "ports grouping";

@@ -8,11 +8,9 @@ module onf-switch {
 
     import onf-sdn-fabric-types { prefix st; }
     import onf-switch-model { prefix sm; }
-    import ietf-yang-types{ prefix yt; }
     import ietf-inet-types{ prefix inet; }
 
     include onf-port;
-    include onf-pool;
 
     organization "Intel Corporation";
     contact "ROC Engineering";
@@ -30,11 +28,13 @@ module onf-switch {
       description "A managed device in the fabric";
 
       leaf switch-id {
-        type yt:yang-identifier;
+        type inet:domain-name;
         description "unique identifier for the switch";
       }
 
       uses st:desc-display-name;
+
+      uses st:map-of-attributes;
 
       leaf model {
         type leafref {
@@ -77,7 +77,5 @@ module onf-switch {
       }
 
       uses ports;
-
-      uses pools;
   }
 }

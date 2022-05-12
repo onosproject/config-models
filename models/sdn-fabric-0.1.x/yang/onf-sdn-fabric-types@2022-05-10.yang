@@ -6,6 +6,8 @@ module onf-sdn-fabric-types {
   namespace "http://opennetworking.org/aether/onf-sdn-fabric-types";
   prefix ft;
 
+  import ietf-yang-types{ prefix yt; }
+
   organization "Intel Corporation";
   contact "ROC Engineering";
   description "A set of base types for SDN Fabric modeling.";
@@ -30,5 +32,25 @@ module onf-sdn-fabric-types {
       }
       description "long description field";
     }
+  }
+
+  grouping map-of-attributes {
+    list attribute {
+      key "attribute-key";
+
+      leaf attribute-key {
+        type yt:yang-identifier;
+        description "the key in a map of attributes";
+      }
+
+      leaf value {
+        type string {
+          length 1..200;
+        }
+        description "the value of attribute-key";
+      }
+      description "a map of extra attributes: string-string";
+    }
+    description "Reusable map of attributes";
   }
 }

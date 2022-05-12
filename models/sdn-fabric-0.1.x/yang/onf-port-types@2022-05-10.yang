@@ -31,9 +31,24 @@ module onf-port-types {
     description "base identity of port speeds";
   }
 
+  identity speed-autoneg {
+    base speed;
+    description "Auto-negotiate";
+  }
+
   identity speed-1g {
     base speed;
     description "1 Gbps";
+  }
+
+  identity speed-2-5g {
+    base speed;
+    description "2.5 Gbps";
+  }
+
+  identity speed-5g {
+    base speed;
+    description "5 Gbps";
   }
 
   identity speed-10g {
