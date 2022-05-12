@@ -10,17 +10,19 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	testdevice "github.com/onosproject/config-models/models/testdevice-1.0.x/api"
 	"github.com/onosproject/onos-lib-go/pkg/certs"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"os"
-	"time"
 )
 
 type gnmiClient struct {
 	client gnmi.GNMIClient
 }
+
+const target = "target-foo"
 
 func main() {
 
@@ -49,13 +51,13 @@ func main() {
 
 	// create an instance of the gNMI model client
 	// this the one we want to autogenerate
-	client := NewGnmiClient(gnmiConn)
+	client := testdevice.NewGnmiClient(gnmiConn)
+	ctx := context.TODO()
 
 	val := &gnmi.TypedValue{
 		Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
 	}
-	ctx := context.TODO()
-	setRes, err := client.GnmiSetLeafAtTopLevel(ctx, val)
+	setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -63,7 +65,7 @@ func main() {
 	fmt.Println("gNMI SET:")
 	fmt.Println(setRes)
 
-	getRes, err := client.GnmiGetLeafAtTopLevel(ctx)
+	getRes, err := client.GetLeafattoplevel(ctx, target)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -71,68 +73,23 @@ func main() {
 	fmt.Println("gNMI GET:")
 	fmt.Println(getRes)
 
-}
-
-// start of the generated code
-
-func NewGnmiClient(conn *grpc.ClientConn) *gnmiClient {
-	gnmi_client := gnmi.NewGNMIClient(conn)
-	return &gnmiClient{client: gnmi_client}
-}
-
-func (c *gnmiClient) GnmiGetLeafAtTopLevel(ctx context.Context) (*gnmi.GetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	leafAtTopLevelPath := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "leafAtTopLevel",
-				},
-			},
-			Target: "target-foo",
-		},
+	val = &gnmi.TypedValue{
+		Value: &gnmi.TypedValue_UintVal{UintVal: 2},
 	}
-
-	getRequest := &gnmi.GetRequest{
-		Prefix:    nil,
-		Path:      leafAtTopLevelPath,
-		Type:      0,
-		Encoding:  gnmi.Encoding_PROTO,
-		UseModels: nil,
-		Extension: nil,
+	setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
+	fmt.Println("gNMI SET nested:")
+	fmt.Println(setRes)
 
-	return c.client.Get(gnmiCtx, getRequest)
-}
-
-func (c *gnmiClient) GnmiSetLeafAtTopLevel(ctx context.Context, val *gnmi.TypedValue) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	leafAtTopLevelPath := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "leafAtTopLevel",
-				},
-			},
-			Target: "target-foo",
-		},
+	getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
+	fmt.Println("gNMI GET nested:")
+	fmt.Println(getNestedRes)
 
-	setRequest := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path:       leafAtTopLevelPath[0],
-				Value:      nil,
-				Val:        val,
-				Duplicates: 0,
-			},
-		},
-		Extension: nil,
-	}
-
-	return c.client.Set(gnmiCtx, setRequest)
 }
