@@ -101,12 +101,24 @@ func main() {
 	fmt.Println("gNMI GET Cont1A:")
 	fmt.Println(fmt.Sprintf("%v", cont1a))
 
+	leaf2a := uint8(1)
+	c1a_c2a := testdevice.OnfTest1_Cont1A_Cont2A{
+		Leaf2A: &leaf2a,
+	}
+	set, err := client.SetCont1A_Cont2A(ctx, target, c1a_c2a)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("gNMI GET SetCont1A_Cont2A:")
+	fmt.Println(fmt.Sprintf("%v", set))
+
 	cont1a_cont2a, err := client.GetCont1A_Cont2A(context.TODO(), target)
 
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println("gNMI GET GetCont1A_Cont2A:")
-	fmt.Println(fmt.Sprintf("%v", cont1a_cont2a))
+	fmt.Println("gNMI GET GetCont1A_Cont2A Leaf2a:")
+	fmt.Println(fmt.Sprintf("%d", *cont1a_cont2a.Leaf2A))
 }
