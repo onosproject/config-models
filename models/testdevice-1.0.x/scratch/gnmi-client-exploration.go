@@ -52,46 +52,46 @@ func main() {
 
 	// create an instance of the gNMI model client
 	// this the one we want to autogenerate
-	//client := testdevice.NewOnfTest1GnmiClient(gnmiConn)
-	//ctx := context.TODO()
-	//
-	//val := &gnmi.TypedValue{
-	//	Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
-	//}
-	//setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
-	//fmt.Println("gNMI SET:")
-	//fmt.Println(setRes)
-	//
-	//getRes, err := client.GetLeafattoplevel(ctx, target)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
-	//fmt.Println("gNMI GET:")
-	//fmt.Println(getRes)
-	//
-	//val = &gnmi.TypedValue{
-	//	Value: &gnmi.TypedValue_UintVal{UintVal: 2},
-	//}
-	//setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
-	//fmt.Println("gNMI SET nested:")
-	//fmt.Println(setRes)
-	//
-	//getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
-	//fmt.Println("gNMI GET nested:")
-	//fmt.Println(getNestedRes)
+	client := testdevice.NewOnfTest1GnmiClient(gnmiConn)
+	ctx := context.TODO()
+
+	val := &gnmi.TypedValue{
+		Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
+	}
+	setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("gNMI SET:")
+	fmt.Println(setRes)
+
+	getRes, err := client.GetLeafattoplevel(ctx, target)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("gNMI GET:")
+	fmt.Println(getRes)
+
+	val = &gnmi.TypedValue{
+		Value: &gnmi.TypedValue_UintVal{UintVal: 2},
+	}
+	setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("gNMI SET nested:")
+	fmt.Println(setRes)
+
+	getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("gNMI GET nested:")
+	fmt.Println(getNestedRes)
 
 	cont1a, err := GetCont1aJson(gnmi.NewGNMIClient(gnmiConn), context.TODO(), target)
 
