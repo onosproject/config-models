@@ -20,7 +20,7 @@ type GnmiClient struct {
     client gnmi.GNMIClient
 }
 
-func NewGnmiClient(conn *grpc.ClientConn) *GnmiClient {
+func New{{ .BaseModel }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
     gnmi_client := gnmi.NewGNMIClient(conn)
     return &GnmiClient{client: gnmi_client}
 }

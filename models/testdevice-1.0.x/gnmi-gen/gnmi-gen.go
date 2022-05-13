@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"github.com/onosproject/config-models/models/testdevice-1.0.x/api"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
+	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/goyang/pkg/yang"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -42,14 +43,17 @@ func main() {
 
 	// in order to import api.Schema we need to generate this file via a template
 	// after we run the ygot generator
+
 	schemaMap, err := api.Schema()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
 	}
 
+	modelName := capitalizeModelName(api.ModelData())
+	fmt.Println(modelName)
 	topEntry := schemaMap.SchemaTree["Device"]
-	res, err := buildGnmiStruct(topEntry, "", "")
+	res, err := buildGnmiStruct(modelName, topEntry, "", "")
 	if err != nil {
 		log.Errorw("failed to generate gNMI Endpoint list", "err", err)
 	}
@@ -63,27 +67,41 @@ func main() {
 	log.Infow("code-generated", "output", outPath)
 }
 
-// TODO we might need/want to move the following in a separate package,
+// TODO we should move the following in a separate package,
 // as per pkg/openapi-gen/openapi-gen.go
 
 // find a better name,
 // keeps a flat list of gNMI methods we need to create
-
 type GnmiEndpoints struct {
 	Endpoints []GnmiEndpoint
+	BaseModel string // the name of the yang model
 }
 
 type GnmiEndpoint struct {
 	Method     string // GET or SET (NOTE: do we need an Enum?)
-	MethodName string
-	Path       string
+	MethodName string // Get, Update, List and Delete
+	Path       string // A string representing the gNMI path (/ separated)
 	ValueType  yang.TypeKind
 }
 
-func buildGnmiStruct(entry *yang.Entry, parentPath string, parentName string) (*GnmiEndpoints, error) {
+func capitalizeModelName(model []*gnmi.ModelData) string {
+	caser := cases.Title(language.English)
+
+	// onf-test1 -> OnfTest1
+	modelName := model[0].Name
+	pieces := strings.Split(modelName, "-")
+	capitalized := ""
+	for _, p := range pieces {
+		capitalized = capitalized + caser.String(p)
+	}
+	return capitalized
+}
+
+func buildGnmiStruct(modelName string, entry *yang.Entry, parentPath string, parentName string) (*GnmiEndpoints, error) {
 	caser := cases.Title(language.English)
 	g := &GnmiEndpoints{
 		Endpoints: []GnmiEndpoint{},
+		BaseModel: modelName,
 	}
 
 	for _, item := range entry.Dir {
@@ -102,7 +120,7 @@ func buildGnmiStruct(entry *yang.Entry, parentPath string, parentName string) (*
 			log.Debug("item-is-choice-entry")
 		} else if item.IsContainer() {
 			log.Debug("item-is-container")
-			_g, err := buildGnmiStruct(item, itemPath, itemName)
+			_g, err := buildGnmiStruct(modelName, item, itemPath, itemName)
 			if err != nil {
 				return nil, err
 			}

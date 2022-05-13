@@ -16,6 +16,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"os"
+	"time"
 )
 
 type gnmiClient struct {
@@ -51,45 +52,140 @@ func main() {
 
 	// create an instance of the gNMI model client
 	// this the one we want to autogenerate
-	client := testdevice.NewGnmiClient(gnmiConn)
-	ctx := context.TODO()
+	//client := testdevice.NewOnfTest1GnmiClient(gnmiConn)
+	//ctx := context.TODO()
+	//
+	//val := &gnmi.TypedValue{
+	//	Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
+	//}
+	//setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	os.Exit(1)
+	//}
+	//fmt.Println("gNMI SET:")
+	//fmt.Println(setRes)
+	//
+	//getRes, err := client.GetLeafattoplevel(ctx, target)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	os.Exit(1)
+	//}
+	//fmt.Println("gNMI GET:")
+	//fmt.Println(getRes)
+	//
+	//val = &gnmi.TypedValue{
+	//	Value: &gnmi.TypedValue_UintVal{UintVal: 2},
+	//}
+	//setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	os.Exit(1)
+	//}
+	//fmt.Println("gNMI SET nested:")
+	//fmt.Println(setRes)
+	//
+	//getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	os.Exit(1)
+	//}
+	//fmt.Println("gNMI GET nested:")
+	//fmt.Println(getNestedRes)
 
-	val := &gnmi.TypedValue{
-		Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
-	}
-	setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
+	cont1a, err := GetCont1aJson(gnmi.NewGNMIClient(gnmiConn), context.TODO(), target)
+
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println("gNMI SET:")
-	fmt.Println(setRes)
+	fmt.Println("gNMI GET struct via json:")
+	fmt.Println(fmt.Sprintf("%v", cont1a))
 
-	getRes, err := client.GetLeafattoplevel(ctx, target)
+	cont1a_2, err := GetCont1aProto(gnmi.NewGNMIClient(gnmiConn), context.TODO(), target)
+
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println("gNMI GET:")
-	fmt.Println(getRes)
+	fmt.Println("gNMI GET struct via proto:")
+	fmt.Println(fmt.Sprintf("%v", cont1a_2))
+}
 
-	val = &gnmi.TypedValue{
-		Value: &gnmi.TypedValue_UintVal{UintVal: 2},
+func GetCont1aJson(client gnmi.GNMIClient, ctx context.Context, target string,
+) (*testdevice.OnfTest1_Cont1A, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+			},
+			Target: target,
+		},
 	}
-	setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := client.Get(gnmiCtx, req)
+
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, err
 	}
-	fmt.Println("gNMI SET nested:")
-	fmt.Println(setRes)
 
-	getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
+	val, err := testdevice.GetResponseUpdate(res)
+
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, err
 	}
-	fmt.Println("gNMI GET nested:")
-	fmt.Println(getNestedRes)
 
+	json := val.GetJsonVal()
+	st := testdevice.Device{}
+	testdevice.Unmarshal(json, &st)
+
+	return st.Cont1A, nil
+}
+
+func GetCont1aProto(client gnmi.GNMIClient, ctx context.Context, target string,
+) (*testdevice.OnfTest1_Cont1A, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := testdevice.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := testdevice.Device{}
+	testdevice.Unmarshal(json, &st)
+
+	return st.Cont1A, nil
 }

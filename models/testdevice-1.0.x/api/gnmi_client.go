@@ -20,7 +20,7 @@ type GnmiClient struct {
     client gnmi.GNMIClient
 }
 
-func NewGnmiClient(conn *grpc.ClientConn) *GnmiClient {
+func NewOnfTest1GnmiClient(conn *grpc.ClientConn) *GnmiClient {
     gnmi_client := gnmi.NewGNMIClient(conn)
     return &GnmiClient{client: gnmi_client}
 }
@@ -42,6 +42,158 @@ func GetResponseUpdate(gr *gnmi.GetResponse) (*gnmi.TypedValue, error) {
         Value: u0.Val.Value,
     }, nil
 }
+
+
+func (c *GnmiClient) GetCont1aCont2aLeaf2f(ctx context.Context, target string,
+    ) ([]byte, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path :=  []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1a",
+                },
+                {
+                    Name: "cont2a",
+                },
+                {
+                    Name: "leaf2f",
+                },
+                },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding:  gnmi.Encoding_PROTO,
+        Path:      path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+    return []byte{}, err
+    }
+
+    val, err := GetResponseUpdate(res)
+
+    if err != nil {
+    return []byte{}, err
+    }
+
+    return val.GetBytesVal(), nil
+    }
+
+
+func (c *GnmiClient) ListCont1aCont2aLeaf2f(ctx context.Context, target string,
+    ) ([]byte, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path :=  []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1a",
+                },
+                {
+                    Name: "cont2a",
+                },
+                {
+                    Name: "leaf2f",
+                },
+                },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding:  gnmi.Encoding_PROTO,
+        Path:      path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+    return []byte{}, err
+    }
+
+    val, err := GetResponseUpdate(res)
+
+    if err != nil {
+    return []byte{}, err
+    }
+
+    return val.GetBytesVal(), nil
+    }
+
+
+func (c *GnmiClient) DeleteCont1aCont2aLeaf2f(ctx context.Context, target string, val *gnmi.TypedValue,
+    ) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path :=  []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1a",
+                },
+                {
+                    Name: "cont2a",
+                },
+                {
+                    Name: "leaf2f",
+                },
+                },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+    }
+
+
+func (c *GnmiClient) UpdateCont1aCont2aLeaf2f(ctx context.Context, target string, val *gnmi.TypedValue,
+    ) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path :=  []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1a",
+                },
+                {
+                    Name: "cont2a",
+                },
+                {
+                    Name: "leaf2f",
+                },
+                },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+    }
 
 
 func (c *GnmiClient) GetCont1aCont2aLeaf2g(ctx context.Context, target string,
@@ -938,158 +1090,6 @@ func (c *GnmiClient) UpdateCont1aCont2aLeaf2e(ctx context.Context, target string
                 },
                 {
                     Name: "leaf2e",
-                },
-                },
-            Target: target,
-        },
-    }
-
-    req := &gnmi.SetRequest{
-        Update: []*gnmi.Update{
-            {
-                Path: path[0],
-                Val:  val,
-            },
-        },
-    }
-    return c.client.Set(gnmiCtx, req)
-    }
-
-
-func (c *GnmiClient) GetCont1aCont2aLeaf2f(ctx context.Context, target string,
-    ) ([]byte, error) {
-    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-    defer cancel()
-
-    path :=  []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "cont1a",
-                },
-                {
-                    Name: "cont2a",
-                },
-                {
-                    Name: "leaf2f",
-                },
-                },
-            Target: target,
-        },
-    }
-
-    req := &gnmi.GetRequest{
-        Encoding:  gnmi.Encoding_PROTO,
-        Path:      path,
-    }
-    res, err := c.client.Get(gnmiCtx, req)
-
-    if err != nil {
-    return []byte{}, err
-    }
-
-    val, err := GetResponseUpdate(res)
-
-    if err != nil {
-    return []byte{}, err
-    }
-
-    return val.GetBytesVal(), nil
-    }
-
-
-func (c *GnmiClient) ListCont1aCont2aLeaf2f(ctx context.Context, target string,
-    ) ([]byte, error) {
-    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-    defer cancel()
-
-    path :=  []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "cont1a",
-                },
-                {
-                    Name: "cont2a",
-                },
-                {
-                    Name: "leaf2f",
-                },
-                },
-            Target: target,
-        },
-    }
-
-    req := &gnmi.GetRequest{
-        Encoding:  gnmi.Encoding_PROTO,
-        Path:      path,
-    }
-    res, err := c.client.Get(gnmiCtx, req)
-
-    if err != nil {
-    return []byte{}, err
-    }
-
-    val, err := GetResponseUpdate(res)
-
-    if err != nil {
-    return []byte{}, err
-    }
-
-    return val.GetBytesVal(), nil
-    }
-
-
-func (c *GnmiClient) DeleteCont1aCont2aLeaf2f(ctx context.Context, target string, val *gnmi.TypedValue,
-    ) (*gnmi.SetResponse, error) {
-    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-    defer cancel()
-
-    path :=  []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "cont1a",
-                },
-                {
-                    Name: "cont2a",
-                },
-                {
-                    Name: "leaf2f",
-                },
-                },
-            Target: target,
-        },
-    }
-
-    req := &gnmi.SetRequest{
-        Update: []*gnmi.Update{
-            {
-                Path: path[0],
-                Val:  val,
-            },
-        },
-    }
-    return c.client.Set(gnmiCtx, req)
-    }
-
-
-func (c *GnmiClient) UpdateCont1aCont2aLeaf2f(ctx context.Context, target string, val *gnmi.TypedValue,
-    ) (*gnmi.SetResponse, error) {
-    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-    defer cancel()
-
-    path :=  []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "cont1a",
-                },
-                {
-                    Name: "cont2a",
-                },
-                {
-                    Name: "leaf2f",
                 },
                 },
             Target: target,
