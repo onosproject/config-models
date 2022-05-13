@@ -43,14 +43,17 @@ func GetResponseUpdate(gr *gnmi.GetResponse) (*gnmi.TypedValue, error) {
     }, nil
 }
 
-{{ range $ep := .Endpoints }}
-{{ $returnType := $ep.ValueType -}}
+{{ range $ep := .LeavesEndpoints }}
+// {{ $ep }}
+{{ end }}
+
+{{ range $ep := .LeavesEndpoints }}
 func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ if eq $ep.Method "SET"}} val *gnmi.TypedValue,{{end}}
-    ) ({{ if eq $ep.Method "GET"}}{{ yang2goType $returnType }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
+    ) ({{ if eq $ep.Method "GET"}}{{ $ep.GoType }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
-    {{ $path := splitPath $ep.Path -}}
+    {{ $path := $ep.Path -}}
     path :=  []*gnmi.Path{
         {
             Elem: []*gnmi.PathElem{
@@ -72,16 +75,16 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
     res, err := c.client.Get(gnmiCtx, req)
 
     if err != nil {
-    return {{ emptyReturnValue $returnType }}, err
+    return {{ $ep.GoEmptyReturnType }}, err
     }
 
     val, err := GetResponseUpdate(res)
 
     if err != nil {
-    return {{ emptyReturnValue $returnType }}, err
+    return {{ $ep.GoEmptyReturnType }}, err
     }
 
-    return {{ yang2returnVal $returnType }}, nil
+    return {{ $ep.GoReturnType }}, nil
     {{ end -}}
 
     {{ if eq $ep.Method "SET" -}}

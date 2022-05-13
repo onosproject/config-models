@@ -58,7 +58,7 @@ func main() {
 	val := &gnmi.TypedValue{
 		Value: &gnmi.TypedValue_StringVal{StringVal: "ABC-123"},
 	}
-	setRes, err := client.UpdateLeafattoplevel(ctx, target, val)
+	setRes, err := client.UpdateLeafAtTopLevel(ctx, target, val)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -66,7 +66,7 @@ func main() {
 	fmt.Println("gNMI SET:")
 	fmt.Println(setRes)
 
-	getRes, err := client.GetLeafattoplevel(ctx, target)
+	getRes, err := client.GetLeafAtTopLevel(ctx, target)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -77,7 +77,7 @@ func main() {
 	val = &gnmi.TypedValue{
 		Value: &gnmi.TypedValue_UintVal{UintVal: 2},
 	}
-	setRes, err = client.UpdateCont1aCont2aLeaf2a(ctx, target, val)
+	setRes, err = client.UpdateCont1ACont2ALeaf2A(ctx, target, val)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -85,7 +85,7 @@ func main() {
 	fmt.Println("gNMI SET nested:")
 	fmt.Println(setRes)
 
-	getNestedRes, err := client.GetCont1aCont2aLeaf2a(ctx, target)
+	getNestedRes, err := client.GetCont1ACont2ALeaf2A(ctx, target)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
