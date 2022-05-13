@@ -43,8 +43,48 @@ func GetResponseUpdate(gr *gnmi.GetResponse) (*gnmi.TypedValue, error) {
     }, nil
 }
 
-{{ range $ep := .LeavesEndpoints }}
-// {{ $ep }}
+{{ range $ep := .ContainerEndpoints }}
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,
+) (*{{ $ep.ModuleName }}_{{ $ep.ModelName }}, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    {{/* TODO create a template helper to write the path, is duplicated in the LeavesEndpoint loop */}}
+    path :=  []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+            {{  range $p := $ep.Path -}}
+                {
+                Name: "{{ $p }}",
+                },
+            {{ end -}}
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    return st.{{ $ep.ModelPath }}, nil
+}
 {{ end }}
 
 {{ range $ep := .LeavesEndpoints }}
@@ -53,11 +93,10 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
-    {{ $path := $ep.Path -}}
     path :=  []*gnmi.Path{
         {
             Elem: []*gnmi.PathElem{
-                {{  range $p := $path -}}
+                {{  range $p := $ep.Path -}}
                 {
                     Name: "{{ $p }}",
                 },

@@ -20,12 +20,20 @@ func PathToCamelCaseName(path []string) string {
 	return name
 }
 
-func PathToYgotModelName(path []string, prefix string) string {
-	name := []string{prefix}
+func PathToYgotModelName(path []string) string {
+	name := []string{}
 	for _, p := range path {
 		name = append(name, genutil.EntryCamelCaseName(&yang.Entry{Name: p}))
 	}
 	return strings.Join(name, "_")
+}
+
+func PathToYgotModelPath(path []string) string {
+	name := []string{}
+	for _, p := range path {
+		name = append(name, genutil.EntryCamelCaseName(&yang.Entry{Name: p}))
+	}
+	return strings.Join(name, ".")
 }
 
 func yangTypeToGoType(val yang.TypeKind) string {
