@@ -7,7 +7,6 @@ module onf-switch-model {
   prefix sm;
 
   import onf-sdn-fabric-types { prefix st; }
-  import onf-port-types { prefix pt; }
   import ietf-yang-types{ prefix yt; }
 
   organization "Intel Corporation";
@@ -26,7 +25,9 @@ module onf-switch-model {
     description "A model of switch";
 
     leaf switch-model-id {
-      type yt:yang-identifier;
+      type yt:yang-identifier {
+        length 1..100;
+      }
       description "unique identifier for the switch";
     }
 
@@ -95,7 +96,12 @@ module onf-switch-model {
 
       uses st:desc-display-name;
 
-      uses pt:port-speeds;
+      leaf-list speeds {
+        type identityref {
+          base st:speed;
+        }
+        description "port speed";
+      }
     }
   }
 }

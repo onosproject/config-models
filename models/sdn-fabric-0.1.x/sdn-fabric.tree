@@ -50,15 +50,16 @@ module: onf-switch-pair
         +--rw channel-number?   -> /sw:switch/port/channel-number
 
 module: onf-vlan
-  +--rw vlan-id?        st:vlan
-  +--rw display-name?   string
-  +--rw description?    string
-  +--rw subnet?         inet:ipv4-prefix
+  +--rw vlan* [vlan-id]
+     +--rw vlan-id         st:vlan
+     +--rw display-name?   string
+     +--rw description?    string
+     +--rw subnet          inet:ipv4-prefix
 
 module: onf-route
   +--rw route* [route-id]
      +--rw route-id    yt:yang-identifier
-     +--rw prefix?     inet:ip-prefix
+     +--rw prefix      inet:ip-prefix
      +--rw nexthop* [index]
         +--rw index      uint32
-        +--rw address?   inet:ip-address-no-zone
+        +--rw address    inet:ip-address-no-zone

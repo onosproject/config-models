@@ -29,6 +29,7 @@ module onf-route {
       leaf prefix {
         type inet:ip-prefix;
         description "subnet to match packet";
+        mandatory true;
       }
 
       list nexthop {
@@ -42,6 +43,7 @@ module onf-route {
         leaf address {
           type inet:ip-address-no-zone;
           description "IP address of hop";
+          mandatory true;
         }
 
         description "ordered list of next hops";

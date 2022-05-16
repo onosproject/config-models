@@ -73,6 +73,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Port'
+    RequestBody_Vlan:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Vlan'
   schemas:
     AdditionalPropertiesUnchTarget:
       description: both the additional property 'unchanged' and the 'target'
@@ -107,21 +112,9 @@ components:
           type: string
       title: AdditionalPropertyUnchanged
       type: object
-    Description:
-      description: long description field
-      maxLength: 1024
-      minLength: 1
-      title: description
-      type: string
-    Display-name:
-      description: display name to use in GUI or CLI
-      maxLength: 80
-      minLength: 1
-      title: display-name
-      type: string
     Route:
       additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyTarget'
+        $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
       description: A list of routes (single)
       properties:
         nexthop:
@@ -138,6 +131,7 @@ components:
           title: route-id
           type: string
       required:
+      - prefix
       - route-id
       title: Route
       type: object
@@ -152,6 +146,8 @@ components:
       - route-id
       x-list-multiple: true
     Route_Nexthop:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: ordered list of next hops (single)
       properties:
         address:
@@ -165,6 +161,7 @@ components:
           title: index
           type: integer
       required:
+      - address
       - index
       title: Route_Nexthop
       type: object
@@ -178,11 +175,6 @@ components:
       x-keys:
       - index
       x-list-multiple: true
-    Subnet:
-      description: Network subnet for VLAN
-      pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))
-      title: subnet
-      type: string
     Switch:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
@@ -285,7 +277,7 @@ components:
       properties:
         attribute-key:
           description: the key in a map of attributes
-          maxLength: 18446744073709551615
+          maxLength: 40
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: attribute-key
@@ -465,7 +457,7 @@ components:
       properties:
         attribute-key:
           description: the key in a map of attributes
-          maxLength: 18446744073709551615
+          maxLength: 40
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: attribute-key
@@ -520,7 +512,7 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: A port in a switch (single)
       properties:
-        /switch/port:
+        switch-port:
           $ref: '#/components/schemas/Switch_Port_Dhcp-connect-point'
         cage-number:
           description: reference to the cage-number of the port in the switch model
@@ -582,19 +574,56 @@ components:
       - cage-number
       - channel-number
       x-list-multiple: true
-    Vlan-id:
-      description: the VLAN ID
-      maximum: 4096
-      minimum: 0
-      title: vlan-id
-      type: integer
+    Vlan:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
+      description: a list of VLANs (single)
+      properties:
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        subnet:
+          description: Network subnet for VLAN
+          pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))
+          title: subnet
+          type: string
+        vlan-id:
+          description: the VLAN ID
+          maximum: 4096
+          minimum: 0
+          title: vlan-id
+          type: integer
+      required:
+      - subnet
+      - vlan-id
+      title: Vlan
+      type: object
+      x-list-multiple: true
+    Vlan_List:
+      description: a list of VLANs (list)
+      items:
+        $ref: '#/components/schemas/Vlan'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - vlan-id
+      x-list-multiple: true
 info:
   contact:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated from sdn-fabric onos-config
-    model plugin
+  description: OpenAPI 3 specification is generated from sdn-fabric onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -1319,3 +1348,59 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port
+  /sdn-fabric/v0.1.0/{target}/vlan:
+    description: a list of VLANs
+    get:
+      operationId: getVlan_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vlan_List'
+          description: GET OK 200
+      summary: GET /vlan List
+      tags:
+      - Vlan
+      - List
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /sdn-fabric/v0.1.0/{target}/vlan/{vlan-id}:
+    delete:
+      operationId: deleteVlan_Container
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /vlan
+    description: a list of VLANs
+    get:
+      operationId: getVlan
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vlan'
+          description: GET OK 200
+      summary: GET /vlan Container
+      tags:
+      - Vlan
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {vlan-id}
+      in: path
+      name: vlan-id
+      required: true
+    post:
+      operationId: postVlan
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Vlan'
+      responses:
+        "201":
+          description: created
+      summary: POST /vlan

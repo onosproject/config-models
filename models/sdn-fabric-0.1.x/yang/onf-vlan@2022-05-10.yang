@@ -18,16 +18,21 @@ module onf-vlan {
         reference "ROC SD-Fabric Notes";
     }
 
-    leaf vlan-id {
-      type st:vlan;
-      description "the VLAN ID";
+    list vlan {
+      key vlan-id;
+
+      leaf vlan-id {
+        type st:vlan;
+        description "the VLAN ID";
+      }
+
+      uses st:desc-display-name;
+
+      leaf subnet {
+        type inet:ipv4-prefix;
+        description "Network subnet for VLAN";
+        mandatory true;
+      }
+      description "a list of VLANs";
     }
-
-    uses st:desc-display-name;
-
-    leaf subnet {
-      type inet:ipv4-prefix;
-      description "Network subnet for VLAN";
-    }
-
 }

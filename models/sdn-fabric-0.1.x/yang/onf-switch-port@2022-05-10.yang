@@ -7,7 +7,6 @@ submodule onf-switch-port {
 
   import onf-sdn-fabric-types { prefix st; }
   import onf-switch-model { prefix sm; }
-  import onf-port-types { prefix pt; }
 
   include onf-switch-port-dhcp;
 
@@ -43,7 +42,7 @@ submodule onf-switch-port {
 
       leaf speed {
         type identityref {
-          base pt:speed;
+          base st:speed;
         }
         description "configured port speed";
       }
