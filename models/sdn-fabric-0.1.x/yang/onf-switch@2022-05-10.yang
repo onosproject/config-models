@@ -10,13 +10,12 @@ module onf-switch {
     import onf-switch-model { prefix sm; }
     import ietf-inet-types{ prefix inet; }
 
-    include onf-port;
+    include onf-switch-port;
+    include onf-switch-port-dhcp;
 
     organization "Intel Corporation";
     contact "ROC Engineering";
-    description "Configuration of switch components.
-        To generate JSON from this use command
-        pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+    description "Configuration of switch components";
 
     revision "2022-05-10" {
         description "Initial Version";
@@ -64,7 +63,7 @@ module onf-switch {
 
       container management {
         leaf address {
-          type inet:ipv4-address;
+          type inet:ipv4-address-no-zone;
           description "The management IPv4 address";
         }
 

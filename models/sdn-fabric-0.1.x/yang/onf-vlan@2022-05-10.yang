@@ -1,0 +1,33 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-vlan {
+    namespace "http://opennetworking.org/oran/onf-vlan";
+    prefix vl;
+
+    import onf-sdn-fabric-types { prefix st; }
+    import ietf-inet-types { prefix inet; }
+
+    organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of VLAN";
+
+    revision "2022-05-10" {
+        description "Initial Version";
+        reference "ROC SD-Fabric Notes";
+    }
+
+    leaf vlan-id {
+      type st:vlan;
+      description "the VLAN ID";
+    }
+
+    uses st:desc-display-name;
+
+    leaf subnet {
+      type inet:ipv4-prefix;
+      description "Network subnet for VLAN";
+    }
+
+}

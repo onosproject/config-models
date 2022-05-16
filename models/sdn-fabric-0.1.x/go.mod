@@ -13,3 +13,5 @@ require (
 	github.com/openconfig/ygot v0.14.0
 	google.golang.org/grpc v1.41.0
 )
+
+replace github.com/onosproject/config-models => ../..

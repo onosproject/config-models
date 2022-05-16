@@ -17,6 +17,13 @@ module onf-sdn-fabric-types {
     reference "RFC 6087";
   }
 
+  typedef vlan {
+    type uint16 {
+      range 0..4096;
+    }
+    description "a 12 bit VLAN identifier";
+  }
+
   grouping desc-display-name {
     description "reusable leafs for description and display-name";
     leaf display-name {

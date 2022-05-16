@@ -19,3 +19,11 @@ modules:
     organization: Open Networking Foundation
     revision: 2022-05-10
     file: onf-switch-pair@2022-05-10.yang
+  - name: onf-vlan
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-vlan@2022-05-10.yang
+  - name: onf-route
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-route@2022-05-10.yang

@@ -2,18 +2,18 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-submodule onf-port {
+submodule onf-switch-port {
   belongs-to onf-switch { prefix sw; }
 
   import onf-sdn-fabric-types { prefix st; }
   import onf-switch-model { prefix sm; }
   import onf-port-types { prefix pt; }
 
+  include onf-switch-port-dhcp;
+
   organization "Intel Corporation";
-    contact "ROC Engineering";
-    description "Configuration of port
-      To generate JSON from this use command
-      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+  contact "ROC Engineering";
+  description "Configuration of port within switch";
 
   revision "2022-05-10" {
     description "Initial Version";
@@ -47,6 +47,8 @@ submodule onf-port {
         }
         description "configured port speed";
       }
+
+      uses dhcp;
     }
     description "ports grouping";
   }
