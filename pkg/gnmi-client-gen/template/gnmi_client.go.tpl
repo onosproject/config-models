@@ -10,7 +10,7 @@ package api
 
 import (
     "context"
-    "fmt"
+    "github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
     "github.com/openconfig/gnmi/proto/gnmi"
     "google.golang.org/grpc"
     "time"
@@ -25,27 +25,9 @@ func New{{ .BaseModel }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-// GetResponseUpdate -- extract the single Update from the GetResponse
-func GetResponseUpdate(gr *gnmi.GetResponse) (*gnmi.TypedValue, error) {
-    if len(gr.Notification) != 1 {
-        return nil, fmt.Errorf("unexpected number of GetResponse notifications %d", len(gr.Notification))
-    }
-    n0 := gr.Notification[0]
-    if len(n0.Update) != 1 {
-        return nil, fmt.Errorf("unexpected number of GetResponse notification updates %d", len(n0.Update))
-    }
-    u0 := n0.Update[0]
-    if u0.Val == nil {
-        return nil, nil
-    }
-    return &gnmi.TypedValue{
-        Value: u0.Val.Value,
-    }, nil
-}
-
 {{ range $ep := .ContainerEndpoints }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,
-) (*{{ $ep.ModuleName }}_{{ $ep.ModelName }}, error) {
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "SET"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
+) ({{ if eq $ep.Method "GET"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -63,6 +45,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,
         },
     }
 
+    {{ if eq $ep.Method "GET" -}}
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
         Path:     path,
@@ -73,7 +56,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,
         return nil, err
     }
 
-    val, err := GetResponseUpdate(res)
+    val, err := gnmi_utils.GetResponseUpdate(res)
 
     if err != nil {
         return nil, err
@@ -84,6 +67,15 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,
     Unmarshal(json, &st)
 
     return st.{{ $ep.ModelPath }}, nil
+    {{ end }}
+    {{ if eq $ep.Method "SET" -}}
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+    {{ end -}}
 }
 {{ end }}
 
@@ -117,7 +109,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
     return {{ $ep.GoEmptyReturnType }}, err
     }
 
-    val, err := GetResponseUpdate(res)
+    val, err := gnmi_utils.GetResponseUpdate(res)
 
     if err != nil {
     return {{ $ep.GoEmptyReturnType }}, err

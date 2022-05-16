@@ -163,7 +163,7 @@ func generateGnmiEndpointsForContainer(item *yang.Entry, path []string, moduleNa
 	caser := cases.Title(language.English)
 	for _, m := range methods {
 
-		if m != gnmiGet {
+		if m != gnmiGet && m != gnmiUpdate {
 			// skip the update/delete/list methods for now
 			continue
 		}
