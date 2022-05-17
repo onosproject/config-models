@@ -16,7 +16,9 @@ import (
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 	"os"
 	"testing"
 )
@@ -67,6 +69,18 @@ func TestLeafAtTopLevel(t *testing.T) {
 	getRes, err := client.GetLeafAtTopLevel(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, str, getRes)
+
+	delRes, err := client.DeleteLeafAtTopLevel(ctx, target)
+	assert.NoError(t, err)
+	resId, err = gnmi_utils.ExtractResponseID(delRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes, err = client.GetLeafAtTopLevel(ctx, target)
+	assert.Error(t, err)
+	assert.Equal(t, "", getRes)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
 }
 
 func TestNestedLeaf(t *testing.T) {
@@ -87,6 +101,18 @@ func TestNestedLeaf(t *testing.T) {
 	getRes, err := client.GetCont1ACont2ALeaf2A(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, v, getRes)
+
+	delRes, err := client.DeleteCont1ACont2ALeaf2A(ctx, target)
+	assert.NoError(t, err)
+	resId, err = gnmi_utils.ExtractResponseID(delRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes, err = client.GetCont1ACont2ALeaf2A(ctx, target)
+	assert.Error(t, err)
+	assert.Equal(t, uint8(0), getRes)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
 }
 
 func TestBasicContainer(t *testing.T) {
@@ -109,6 +135,18 @@ func TestBasicContainer(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, c1a_c2a.Leaf2A, getRes.Leaf2A)
+
+	delRes, err := client.DeleteCont1A_Cont2A(ctx, target)
+	assert.NoError(t, err)
+	resId, err = gnmi_utils.ExtractResponseID(delRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes, err = client.GetCont1A_Cont2A(ctx, target)
+	assert.Error(t, err)
+	assert.Nil(t, getRes)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
 }
 
 func TestNestedContainer(t *testing.T) {
@@ -137,4 +175,16 @@ func TestNestedContainer(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, c1a.Cont2A.Leaf2A, getRes.Cont2A.Leaf2A)
 	assert.Equal(t, c1a.Leaf1A, getRes.Leaf1A)
+
+	delRes, err := client.DeleteCont1A(ctx, target)
+	assert.NoError(t, err)
+	resId, err = gnmi_utils.ExtractResponseID(delRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes, err = client.GetCont1A(ctx, target)
+	assert.Error(t, err)
+	assert.Nil(t, getRes)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
 }

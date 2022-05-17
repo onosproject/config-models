@@ -123,7 +123,7 @@ func yangTypeToGoEmptyReturnVal(val yang.TypeKind) string {
 	case yang.Ystring:
 		return "\"\""
 	case yang.Ybinary:
-		return "[]byte{}"
+		return "nil"
 	}
 	// not ideal, but for now we'll take it
 	return "interface{}"

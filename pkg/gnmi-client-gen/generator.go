@@ -34,8 +34,9 @@ type GnmiEndpoints struct {
 // LeavesEndpoint contains the information needed to generate the gNMI client for
 // elements which are at the end of the tree (leaves) and thus are simple types.
 type LeavesEndpoint struct {
-	Method            string   // GET or SET (NOTE: do we need an Enum?)
-	MethodName        string   // Get, Update, List and Delete
+	Method            string // GET or SET (NOTE: do we need an Enum?)
+	MethodName        string // Get, Update, List and Delete
+	ModelName         string
 	Path              []string // A string representing the gNMI path (/ separated)
 	GoType            string
 	GoReturnType      string
@@ -43,12 +44,13 @@ type LeavesEndpoint struct {
 }
 
 type ContainerEndpoint struct {
-	ModuleName string
-	ModelName  string
-	ModelPath  string
-	Method     string   // GET or SET (NOTE: do we need an Enum?)
-	MethodName string   // Get, Update, List and Delete
-	Path       []string // A string representing the gNMI path (/ separated)
+	ModuleName      string
+	ModelName       string
+	ModelPath       string
+	ParentModelPath string
+	Method          string   // GET or SET (NOTE: do we need an Enum?)
+	MethodName      string   // Get, Update, List and Delete
+	Path            []string // A string representing the gNMI path (/ separated)
 
 }
 
@@ -116,11 +118,10 @@ func BuildGnmiStruct(debug bool, modelName string, entry *yang.Entry, parentPath
 
 const gnmiGet = "get"
 const gnmiUpdate = "update"
-const gnmiList = "list"
 const gnmiDelete = "delete"
 
 // NOTE do we need a "create" or an update without an ID ==  a create?
-var methods = []string{gnmiGet, gnmiList, gnmiDelete, gnmiUpdate}
+var methods = []string{gnmiGet, gnmiDelete, gnmiUpdate}
 
 func generateGnmiEndpointsForLeaf(item *yang.Entry, path []string) ([]LeavesEndpoint, error) {
 	eps := []LeavesEndpoint{}
@@ -130,15 +131,9 @@ func generateGnmiEndpointsForLeaf(item *yang.Entry, path []string) ([]LeavesEndp
 	for _, m := range methods {
 		epName := caser.String(m)
 
-		var gnmiMethod string
-		if m == gnmiGet || m == gnmiList {
-			gnmiMethod = "GET"
-		} else {
-			gnmiMethod = "SET"
-		}
-
 		ep := LeavesEndpoint{
-			Method:            gnmiMethod,
+			Method:            m,
+			ModelName:         itemName,
 			MethodName:        fmt.Sprintf("%s%s", epName, itemName),
 			Path:              path,
 			GoType:            yangTypeToGoType(item.Type.Kind),
@@ -159,31 +154,22 @@ func generateGnmiEndpointsForContainer(item *yang.Entry, path []string, moduleNa
 	itemName := PathToYgotModelName(path)
 	// pathInModel is where this particular container is nested in the YGOT device
 	pathInModel := PathToYgotModelPath(path)
+	// parentModelPath is the path to the parent container
+	parentModelPath := PathToYgotModelPath(path[:len(path)-1])
 
 	caser := cases.Title(language.English)
 	for _, m := range methods {
 
-		if m != gnmiGet && m != gnmiUpdate {
-			// skip the update/delete/list methods for now
-			continue
-		}
-
 		epName := caser.String(m)
 
-		var gnmiMethod string
-		if m == gnmiGet || m == gnmiList {
-			gnmiMethod = "GET"
-		} else {
-			gnmiMethod = "SET"
-		}
-
 		ep := ContainerEndpoint{
-			Method:     gnmiMethod,
-			MethodName: fmt.Sprintf("%s%s", epName, itemName),
-			Path:       path,
-			ModelName:  itemName,
-			ModuleName: moduleName,
-			ModelPath:  pathInModel,
+			Method:          m,
+			MethodName:      fmt.Sprintf("%s%s", epName, itemName),
+			Path:            path,
+			ModelName:       itemName,
+			ModuleName:      moduleName,
+			ModelPath:       pathInModel,
+			ParentModelPath: parentModelPath,
 		}
 		eps = append(eps, ep)
 	}

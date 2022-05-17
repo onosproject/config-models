@@ -65,8 +65,6 @@ func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *
 	rt := rv.Type()
 
 	// iterate over all the fields in the model
-	// TODO most likely this will need to be a recursive method
-	// to handle nested containers
 	for i := 0; i < rt.NumField(); i++ {
 		// reflect the field Type and Value
 		fieldType := rt.Field(i)

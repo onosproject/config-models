@@ -26,8 +26,8 @@ func New{{ .BaseModel }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
 }
 
 {{ range $ep := .ContainerEndpoints }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "SET"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
-) ({{ if eq $ep.Method "GET"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
+) ({{ if eq $ep.Method "get"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -45,7 +45,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
         },
     }
 
-    {{ if eq $ep.Method "GET" -}}
+    {{ if eq $ep.Method "get" -}}
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
         Path:     path,
@@ -66,9 +66,19 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
     st := Device{}
     Unmarshal(json, &st)
 
+    {{ if not (eq $ep.ParentModelPath "") -}}
+    if reflect.ValueOf(st.{{ $ep.ParentModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ParentModelPath }}).IsNil() {
+        return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
+    }
+    {{ end -}}
+
+    if reflect.ValueOf(st.{{ $ep.ModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ModelPath }}).IsNil() {
+        return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
+    }
+
     return st.{{ $ep.ModelPath }}, nil
     {{ end }}
-    {{ if eq $ep.Method "SET" -}}
+    {{ if eq $ep.Method "update" -}}
     req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
     if err != nil {
         return nil, err
@@ -76,12 +86,24 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
 
     return c.client.Set(gnmiCtx, req)
     {{ end -}}
+
+    {{ if eq $ep.Method "delete" -}}
+        req := &gnmi.SetRequest{
+            Delete: []*gnmi.Path{
+                {
+                    Elem:   path[0].Elem,
+                    Target: target,
+                },
+            },
+        }
+        return c.client.Set(gnmiCtx, req)
+    {{ end -}}
 }
 {{ end }}
 
 {{ range $ep := .LeavesEndpoints }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ if eq $ep.Method "SET"}} val *gnmi.TypedValue,{{end}}
-    ) ({{ if eq $ep.Method "GET"}}{{ $ep.GoType }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ if eq $ep.Method "update"}} val *gnmi.TypedValue,{{end}}
+    ) ({{ if eq $ep.Method "get"}}{{ $ep.GoType }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -98,7 +120,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
         },
     }
 
-    {{ if eq $ep.Method "GET" -}}
+    {{ if eq $ep.Method "get" -}}
     req := &gnmi.GetRequest{
         Encoding:  gnmi.Encoding_PROTO,
         Path:      path,
@@ -115,10 +137,14 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
     return {{ $ep.GoEmptyReturnType }}, err
     }
 
+    if {{ $ep.GoReturnType }} ==  {{ $ep.GoEmptyReturnType }} {
+        return {{ $ep.GoEmptyReturnType }}, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
+    }
+
     return {{ $ep.GoReturnType }}, nil
     {{ end -}}
 
-    {{ if eq $ep.Method "SET" -}}
+    {{ if eq $ep.Method "update" -}}
     req := &gnmi.SetRequest{
         Update: []*gnmi.Update{
             {
@@ -128,6 +154,18 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ 
         },
     }
     return c.client.Set(gnmiCtx, req)
+    {{ end -}}
+
+    {{ if eq $ep.Method "delete" -}}
+        req := &gnmi.SetRequest{
+            Delete: []*gnmi.Path{
+                {
+                    Elem:   path[0].Elem,
+                    Target: target,
+                },
+            },
+        }
+        return c.client.Set(gnmiCtx, req)
     {{ end -}}
 }
 
