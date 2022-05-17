@@ -7,6 +7,7 @@
 package gnmi_client_gen
 
 import (
+	"fmt"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/genutil"
 	"strings"
@@ -34,6 +35,25 @@ func PathToYgotModelPath(path []string) string {
 		name = append(name, genutil.EntryCamelCaseName(&yang.Entry{Name: p}))
 	}
 	return strings.Join(name, ".")
+}
+
+// given a yang entry with a key, return the appropriate type for the key
+func GetListKey(entry *yang.Entry) ListKey {
+	key := entry.Key
+
+	if kv, ok := entry.Dir[key]; ok {
+		return ListKey{
+			Name: key,
+			Type: yangTypeToGoType(kv.Type.Kind),
+		}
+	}
+
+	// TODO support multiple keys
+
+	return ListKey{
+		Name: fmt.Sprintf("unkown_for_model_%s_and_key_%s", entry.Name, entry.Key),
+		Type: "unknown",
+	}
 }
 
 func yangTypeToGoType(val yang.TypeKind) string {
@@ -65,6 +85,8 @@ func yangTypeToGoType(val yang.TypeKind) string {
 		return "[]byte"
 	case yang.Yenum, yang.Yidentityref:
 		return "int64"
+	case yang.Yleafref:
+		return "string"
 	}
 	// not ideal, but for now we'll take it
 	return "interface{}"
