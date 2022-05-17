@@ -29,7 +29,7 @@ func main() {
 		ModelType:    "sdn-fabric",
 		ModelVersion: "0.1.0",
 		Title:        "sdn-fabric-0.1.0",
-		TargetAlias:  "",
+		TargetAlias:  "fabric-id",
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)

@@ -2,72 +2,67 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-module onf-switch-pair {
-    namespace "http://opennetworking.org/oran/onf-switch-pair";
-    prefix sp;
+submodule onf-switch-pair {
+  belongs-to onf-switch { prefix sw; }
 
-    import onf-sdn-fabric-types { prefix st; }
-    import onf-switch { prefix sw; }
+  include onf-switch-port;
 
-    organization "Intel Corporation";
-    contact "ROC Engineering";
-    description "Configuration of switch pairs.
-        To generate JSON from this use command
-        pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch pairs";
 
-    revision "2022-05-10" {
-        description "Initial Version";
-        reference "ROC SD-Fabric Notes";
-    }
+  revision "2022-05-10" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
 
-    list switch-pair {
-      key switch-a;
+  grouping switch-pair-grouping {
+    container switch-pair {
+      leaf cage-number {
+          type leafref {
+            path "../../sw:port/sw:cage-number";
+          }
+          description "Port cage number used for connecting to ";
+      }
 
-      leaf switch-a {
-        type leafref {
-          path "/sw:switch/sw:switch-id";
+      leaf channel-number {
+          type leafref {
+            path "../../sw:port/sw:channel-number";
+          }
+          description "Port channel number used for Switch A";
+      }
+
+      container paired-switch {
+        leaf switch-b {
+          type leafref {
+            path "/sw:switch/sw:switch-id";
+          }
+          mandatory true;
+          description "A switch to pair with switch-a";
         }
-        description "A reference to a configured switch";
-      }
 
-      container port-a {
-        uses switch-port-ref;
-        description "The port of switch-a"; // TODO why is port needed here?
-      }
-
-      uses st:desc-display-name;
-
-      leaf switch-b {
-        type leafref {
-          path "/sw:switch/sw:switch-id";
+        leaf cage-number {
+          type leafref {
+            path "/sw:switch/sw:port/sw:cage-number";
+          }
+          mandatory true;
+          description "Port cage number used for connecting to ";
         }
-        mandatory true;
-        description "A switch to pair with switch-a";
-      }
 
-      container port-b {
-        uses switch-port-ref;
-        description "the port of switch-b"; // TODO why is port needed here?
+        leaf channel-number {
+          type leafref {
+            path "/sw:switch/sw:port/sw:channel-number";
+          }
+          mandatory true;
+          description "Port channel number used for Switch A";
+        }
+
+        description "details of the switch paired with this one";
       }
 
       description "A Switch pairing. A switch can participate on 0-1 pairings";
     }
-
-    grouping switch-port-ref {
-      leaf cage-number {
-        type leafref {
-          path "/sw:switch/sw:port/sw:cage-number";
-        }
-        description "Port cage number used for Switch A";
-      }
-
-      leaf channel-number {
-        type leafref {
-          path "/sw:switch/sw:port/sw:channel-number";
-        }
-        description "Port channel number used for Switch A";
-      }
-      description "references to the cage and channel numbers of switch instances";
-    }
+  description "switch pairing attributes";
+  }
 
 }

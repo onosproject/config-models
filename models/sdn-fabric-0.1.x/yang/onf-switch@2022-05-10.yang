@@ -11,6 +11,7 @@ module onf-switch {
     import ietf-inet-types{ prefix inet; }
 
     include onf-switch-port;
+    include onf-switch-pair;
     include onf-switch-port-dhcp;
 
     organization "Intel Corporation";
@@ -39,6 +40,7 @@ module onf-switch {
         type leafref {
           path "/sm:switch-model/sm:switch-model-id";
         }
+        mandatory true;
         description "link to switch model";
       }
 
@@ -75,6 +77,8 @@ module onf-switch {
         description "configuration of the management port";
       }
 
-      uses ports;
+      uses ports-grouping;
+
+      uses switch-pair-grouping;
   }
 }

@@ -6,6 +6,7 @@ name: sdn-fabric
 version: 0.1.0
 artifactName: sdn-fabric
 goPackage: github.com/onosproject/config-models/models/sdn-fabric
+openAPITargetAlias: fabric-id
 modules:
   - name: onf-switch
     organization: Open Networking Foundation
@@ -15,10 +16,6 @@ modules:
     organization: Open Networking Foundation
     revision: 2022-05-10
     file: onf-switch-model@2022-05-10.yang
-  - name: onf-switch-pair
-    organization: Open Networking Foundation
-    revision: 2022-05-10
-    file: onf-switch-pair@2022-05-10.yang
   - name: onf-vlan
     organization: Open Networking Foundation
     revision: 2022-05-10

@@ -5,19 +5,26 @@ module: onf-switch
      +--rw description?    string
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
-     |  +--rw value?           string
-     +--rw model?          -> /sm:switch-model/switch-model-id
+     |  +--rw value            string
+     +--rw model           -> /sm:switch-model/switch-model-id
      +--rw role            enumeration
      +--rw management
      |  +--rw address?       inet:ipv4-address-no-zone
      |  +--rw port-number?   inet:port-number
      +--rw port* [cage-number channel-number]
-        +--rw cage-number           -> /sm:switch-model/port/cage-number
-        +--rw channel-number        -> /sm:switch-model/port/channel-number
-        +--rw display-name?         string
-        +--rw description?          string
-        +--rw speed?                identityref
-        +--rw dhcp-connect-point*   inet:ipv4-address-no-zone
+     |  +--rw cage-number           -> /sm:switch-model/port/cage-number
+     |  +--rw channel-number        -> /sm:switch-model/port/channel-number
+     |  +--rw display-name?         string
+     |  +--rw description?          string
+     |  +--rw speed?                identityref
+     |  +--rw dhcp-connect-point*   inet:ipv4-address-no-zone
+     +--rw switch-pair
+        +--rw cage-number?      -> ../../port/cage-number
+        +--rw channel-number?   -> ../../port/channel-number
+        +--rw paired-switch
+           +--rw switch-b          -> /switch/switch-id
+           +--rw cage-number       -> /switch/port/cage-number
+           +--rw channel-number    -> /switch/port/channel-number
 
 module: onf-switch-model
   +--rw switch-model* [switch-model-id]
@@ -26,7 +33,7 @@ module: onf-switch-model
      +--rw description?       string
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
-     |  +--rw value?           string
+     |  +--rw value            string
      +--rw form-factor        enumeration
      +--rw pipeline?          enumeration
      +--rw port* [cage-number channel-number]
@@ -35,19 +42,6 @@ module: onf-switch-model
         +--rw display-name?     string
         +--rw description?      string
         +--rw speeds*           identityref
-
-module: onf-switch-pair
-  +--rw switch-pair* [switch-a]
-     +--rw switch-a        -> /sw:switch/switch-id
-     +--rw port-a
-     |  +--rw cage-number?      -> /sw:switch/port/cage-number
-     |  +--rw channel-number?   -> /sw:switch/port/channel-number
-     +--rw display-name?   string
-     +--rw description?    string
-     +--rw switch-b        -> /sw:switch/switch-id
-     +--rw port-b
-        +--rw cage-number?      -> /sw:switch/port/cage-number
-        +--rw channel-number?   -> /sw:switch/port/channel-number
 
 module: onf-vlan
   +--rw vlan* [vlan-id]

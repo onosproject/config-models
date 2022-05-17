@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: Apache-2.0
 components:
   parameters:
-    target:
+    fabric-id:
       content:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (target in onos-config)
+      description: fabric-id (target in onos-config)
       in: path
-      name: target
+      name: fabric-id
       required: true
   requestBodies:
     RequestBody_Route:
@@ -43,21 +43,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch-model_Port'
-    RequestBody_Switch-pair:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Switch-pair'
-    RequestBody_Switch-pair_Port-a:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Switch-pair_Port-a'
-    RequestBody_Switch-pair_Port-b:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Switch-pair_Port-b'
     RequestBody_Switch_Attribute:
       content:
         application/json:
@@ -73,6 +58,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Port'
+    RequestBody_Switch_Switch-pair:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Switch-pair'
+    RequestBody_Switch_Switch-pair_Paired-switch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Switch-pair_Paired-switch'
     RequestBody_Vlan:
       content:
         application/json:
@@ -80,11 +75,11 @@ components:
             $ref: '#/components/schemas/Vlan'
   schemas:
     AdditionalPropertiesUnchTarget:
-      description: both the additional property 'unchanged' and the 'target'
+      description: both the additional property 'unchanged' and the 'fabric-id'
       properties:
-        target:
-          description: an override of the target (target)
-          title: target
+        fabric-id:
+          description: an override of the fabric-id (target)
+          title: fabric-id
           type: string
         unchanged:
           description: A comma seperated list of unchanged mandatory attribute names
@@ -92,15 +87,15 @@ components:
           type: string
       title: AdditionalPropertiesUnchTarget
       type: object
-    AdditionalPropertyTarget:
-      description: Optionally specify a target other than the default (only on PATCH
-        method)
+    AdditionalPropertyFabric-Id:
+      description: Optionally specify a fabric-id other than the default (only on
+        PATCH method)
       properties:
-        target:
-          description: an override of the target (target)
-          title: target
+        fabric-id:
+          description: an override of the fabric-id (target)
+          title: fabric-id
           type: string
-      title: AdditionalPropertyTarget
+      title: AdditionalPropertyFabric-Id
       type: object
     AdditionalPropertyUnchanged:
       description: To optionally omit 'required' properties, add them to 'unchanged'
@@ -207,6 +202,10 @@ components:
           description: The role of the switch in the fabric
           title: role
           type: string
+          enum:
+            - undefined
+            - leaf
+            - spine
         switch-id:
           description: unique identifier for the switch
           maxLength: 253
@@ -214,7 +213,10 @@ components:
           pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
           title: switch-id
           type: string
+        switch-pair:
+          $ref: '#/components/schemas/Switch_Switch-pair'
       required:
+      - model
       - role
       - switch-id
       title: Switch
@@ -261,7 +263,7 @@ components:
           $ref: '#/components/schemas/Switch-model_Port_List'
         switch-model-id:
           description: unique identifier for the switch
-          maxLength: 18446744073709551615
+          maxLength: 100
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: switch-model-id
@@ -273,6 +275,8 @@ components:
       type: object
       x-list-multiple: true
     Switch-model_Attribute:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: 'a map of extra attributes: string-string (single)'
       properties:
         attribute-key:
@@ -290,6 +294,7 @@ components:
           type: string
       required:
       - attribute-key
+      - value
       title: Switch-model_Attribute
       type: object
       x-list-multiple: true
@@ -316,8 +321,6 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: A port in a switch (single)
       properties:
-        /switch-model/port:
-          $ref: '#/components/schemas/Switch-model_Port_Speeds'
         cage-number:
           description: identifier of the cage - physical port on switch
           maximum: 255
@@ -343,6 +346,8 @@ components:
           minLength: 1
           title: display-name
           type: string
+        speeds:
+          $ref: '#/components/schemas/Switch-model_Port_Speeds'
       required:
       - cage-number
       - channel-number
@@ -376,83 +381,9 @@ components:
         type: string
       title: leaf-list-speeds
       type: array
-    Switch-pair:
-      additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
-      description: A Switch pairing. A switch can participate on 0-1 pairings (single)
-      properties:
-        description:
-          description: long description field
-          maxLength: 1024
-          minLength: 1
-          title: description
-          type: string
-        display-name:
-          description: display name to use in GUI or CLI
-          maxLength: 80
-          minLength: 1
-          title: display-name
-          type: string
-        port-a:
-          $ref: '#/components/schemas/Switch-pair_Port-a'
-        port-b:
-          $ref: '#/components/schemas/Switch-pair_Port-b'
-        switch-a:
-          description: A reference to a configured switch
-          title: switch-a
-          type: string
-          x-leafref: /sw:switch/sw:switch-id
-        switch-b:
-          description: A switch to pair with switch-a
-          title: switch-b
-          type: string
-          x-leafref: /sw:switch/sw:switch-id
-      required:
-      - switch-a
-      - switch-b
-      title: Switch-pair
-      type: object
-      x-list-multiple: true
-    Switch-pair_List:
-      description: A Switch pairing. A switch can participate on 0-1 pairings (list)
-      items:
-        $ref: '#/components/schemas/Switch-pair'
-      type: array
-      uniqueItems: true
-      x-keys:
-      - switch-a
-      x-list-multiple: true
-    Switch-pair_Port-a:
-      description: The port of switch-a
-      properties:
-        cage-number:
-          description: Port cage number used for Switch A
-          title: cage-number
-          type: string
-          x-leafref: /sw:switch/sw:port/sw:cage-number
-        channel-number:
-          description: Port channel number used for Switch A
-          title: channel-number
-          type: string
-          x-leafref: /sw:switch/sw:port/sw:channel-number
-      title: Switch-pair_Port-a
-      type: object
-    Switch-pair_Port-b:
-      description: the port of switch-b
-      properties:
-        cage-number:
-          description: Port cage number used for Switch A
-          title: cage-number
-          type: string
-          x-leafref: /sw:switch/sw:port/sw:cage-number
-        channel-number:
-          description: Port channel number used for Switch A
-          title: channel-number
-          type: string
-          x-leafref: /sw:switch/sw:port/sw:channel-number
-      title: Switch-pair_Port-b
-      type: object
     Switch_Attribute:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: 'a map of extra attributes: string-string (single)'
       properties:
         attribute-key:
@@ -470,6 +401,7 @@ components:
           type: string
       required:
       - attribute-key
+      - value
       title: Switch_Attribute
       type: object
       x-list-multiple: true
@@ -512,8 +444,6 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: A port in a switch (single)
       properties:
-        switch-port:
-          $ref: '#/components/schemas/Switch_Port_Dhcp-connect-point'
         cage-number:
           description: reference to the cage-number of the port in the switch model
           title: cage-number
@@ -530,6 +460,8 @@ components:
           minLength: 1
           title: description
           type: string
+        dhcp-connect-point:
+          $ref: '#/components/schemas/Switch_Port_Dhcp-connect-point'
         display-name:
           description: display name to use in GUI or CLI
           maxLength: 80
@@ -574,6 +506,49 @@ components:
       - cage-number
       - channel-number
       x-list-multiple: true
+    Switch_Switch-pair:
+      description: A Switch pairing. A switch can participate on 0-1 pairings
+      properties:
+        cage-number:
+          description: 'Port cage number used for connecting to '
+          title: cage-number
+          type: string
+          x-leafref: ../../sw:port/sw:cage-number
+        channel-number:
+          description: Port channel number used for Switch A
+          title: channel-number
+          type: string
+          x-leafref: ../../sw:port/sw:channel-number
+        paired-switch:
+          $ref: '#/components/schemas/Switch_Switch-pair_Paired-switch'
+      title: Switch_Switch-pair
+      type: object
+    Switch_Switch-pair_Paired-switch:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: details of the switch paired with this one
+      properties:
+        cage-number:
+          description: 'Port cage number used for connecting to '
+          title: cage-number
+          type: string
+          x-leafref: /sw:switch/sw:port/sw:cage-number
+        channel-number:
+          description: Port channel number used for Switch A
+          title: channel-number
+          type: string
+          x-leafref: /sw:switch/sw:port/sw:channel-number
+        switch-b:
+          description: A switch to pair with switch-a
+          title: switch-b
+          type: string
+          x-leafref: /sw:switch/sw:switch-id
+      required:
+      - cage-number
+      - channel-number
+      - switch-b
+      title: Switch_Switch-pair_Paired-switch
+      type: object
     Vlan:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
@@ -631,7 +606,7 @@ info:
   version: 0.1.0
 openapi: 3.0.0
 paths:
-  /sdn-fabric/v0.1.0/{target}/route:
+  /sdn-fabric/v0.1.0/{fabric-id}/route:
     description: A list of routes
     get:
       operationId: getRoute_List
@@ -647,8 +622,8 @@ paths:
       - Route
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /sdn-fabric/v0.1.0/{target}/route/{route-id}:
+    - $ref: '#/components/parameters/fabric-id'
+  /sdn-fabric/v0.1.0/{fabric-id}/route/{route-id}:
     delete:
       operationId: deleteRoute_Container
       responses:
@@ -670,7 +645,7 @@ paths:
       - Route
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -687,7 +662,7 @@ paths:
         "201":
           description: created
       summary: POST /route
-  /sdn-fabric/v0.1.0/{target}/route/{route-id}/nexthop:
+  /sdn-fabric/v0.1.0/{fabric-id}/route/{route-id}/nexthop:
     description: ordered list of next hops
     get:
       operationId: getRoute_Nexthop_List
@@ -703,7 +678,7 @@ paths:
       - Route_Nexthop
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -712,7 +687,7 @@ paths:
       in: path
       name: route-id
       required: true
-  /sdn-fabric/v0.1.0/{target}/route/{route-id}/nexthop/{index}:
+  /sdn-fabric/v0.1.0/{fabric-id}/route/{route-id}/nexthop/{index}:
     delete:
       operationId: deleteRoute_Nexthop_Container
       responses:
@@ -734,7 +709,7 @@ paths:
       - Route_Nexthop
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -759,7 +734,7 @@ paths:
         "201":
           description: created
       summary: POST /route/{route-id}/nexthop
-  /sdn-fabric/v0.1.0/{target}/switch:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch:
     description: A managed device in the fabric
     get:
       operationId: getSwitch_List
@@ -775,8 +750,8 @@ paths:
       - Switch
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /sdn-fabric/v0.1.0/{target}/switch-model:
+    - $ref: '#/components/parameters/fabric-id'
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model:
     description: A model of switch
     get:
       operationId: getSwitch-model_List
@@ -792,8 +767,8 @@ paths:
       - Switch-model
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /sdn-fabric/v0.1.0/{target}/switch-model/{switch-model-id}:
+    - $ref: '#/components/parameters/fabric-id'
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model/{switch-model-id}:
     delete:
       operationId: deleteSwitch-model_Container
       responses:
@@ -815,7 +790,7 @@ paths:
       - Switch-model
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -832,7 +807,7 @@ paths:
         "201":
           description: created
       summary: POST /switch-model
-  /sdn-fabric/v0.1.0/{target}/switch-model/{switch-model-id}/attribute:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model/{switch-model-id}/attribute:
     description: 'a map of extra attributes: string-string'
     get:
       operationId: getSwitch-model_Attribute_List
@@ -848,7 +823,7 @@ paths:
       - Switch-model_Attribute
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -857,7 +832,7 @@ paths:
       in: path
       name: switch-model-id
       required: true
-  /sdn-fabric/v0.1.0/{target}/switch-model/{switch-model-id}/attribute/{attribute-key}:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model/{switch-model-id}/attribute/{attribute-key}:
     delete:
       operationId: deleteSwitch-model_Attribute_Container
       responses:
@@ -879,7 +854,7 @@ paths:
       - Switch-model_Attribute
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -904,7 +879,7 @@ paths:
         "201":
           description: created
       summary: POST /switch-model/{switch-model-id}/attribute
-  /sdn-fabric/v0.1.0/{target}/switch-model/{switch-model-id}/port:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model/{switch-model-id}/port:
     description: A port in a switch
     get:
       operationId: getSwitch-model_Port_List
@@ -920,7 +895,7 @@ paths:
       - Switch-model_Port
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -929,7 +904,7 @@ paths:
       in: path
       name: switch-model-id
       required: true
-  /sdn-fabric/v0.1.0/{target}/switch-model/{switch-model-id}/port/{cage-number}/{channel-number}:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch-model/{switch-model-id}/port/{cage-number}/{channel-number}:
     delete:
       operationId: deleteSwitch-model_Port_Container
       responses:
@@ -951,7 +926,7 @@ paths:
       - Switch-model_Port
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -984,141 +959,7 @@ paths:
         "201":
           description: created
       summary: POST /switch-model/{switch-model-id}/port
-  /sdn-fabric/v0.1.0/{target}/switch-pair:
-    description: A Switch pairing. A switch can participate on 0-1 pairings
-    get:
-      operationId: getSwitch-pair_List
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch-pair_List'
-          description: GET OK 200
-      summary: GET /switch-pair List
-      tags:
-      - Switch-pair
-      - List
-    parameters:
-    - $ref: '#/components/parameters/target'
-  /sdn-fabric/v0.1.0/{target}/switch-pair/{switch-a}:
-    delete:
-      operationId: deleteSwitch-pair_Container
-      responses:
-        "200":
-          description: DELETE 200 OK
-      summary: DELETE /switch-pair
-    description: A Switch pairing. A switch can participate on 0-1 pairings
-    get:
-      operationId: getSwitch-pair
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch-pair'
-          description: GET OK 200
-      summary: GET /switch-pair Container
-      tags:
-      - Switch-pair
-      - Container
-    parameters:
-    - $ref: '#/components/parameters/target'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {switch-a}
-      in: path
-      name: switch-a
-      required: true
-    post:
-      operationId: postSwitch-pair
-      requestBody:
-        $ref: '#/components/requestBodies/RequestBody_Switch-pair'
-      responses:
-        "201":
-          description: created
-      summary: POST /switch-pair
-  /sdn-fabric/v0.1.0/{target}/switch-pair/{switch-a}/port-a:
-    delete:
-      operationId: deleteSwitch-pair_Port-a_Container
-      responses:
-        "200":
-          description: DELETE 200 OK
-      summary: DELETE /switch-pair/{switch-a}/port-a
-    description: The port of switch-a
-    get:
-      operationId: getSwitch-pair_Port-a
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch-pair_Port-a'
-          description: GET OK 200
-      summary: GET /switch-pair/{switch-a}/port-a Container
-      tags:
-      - Switch-pair
-      - Container
-    parameters:
-    - $ref: '#/components/parameters/target'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {switch-a}
-      in: path
-      name: switch-a
-      required: true
-    post:
-      operationId: postSwitch-pair_Port-a
-      requestBody:
-        $ref: '#/components/requestBodies/RequestBody_Switch-pair_Port-a'
-      responses:
-        "201":
-          description: created
-      summary: POST /switch-pair/{switch-a}/port-a
-  /sdn-fabric/v0.1.0/{target}/switch-pair/{switch-a}/port-b:
-    delete:
-      operationId: deleteSwitch-pair_Port-b_Container
-      responses:
-        "200":
-          description: DELETE 200 OK
-      summary: DELETE /switch-pair/{switch-a}/port-b
-    description: the port of switch-b
-    get:
-      operationId: getSwitch-pair_Port-b
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch-pair_Port-b'
-          description: GET OK 200
-      summary: GET /switch-pair/{switch-a}/port-b Container
-      tags:
-      - Switch-pair
-      - Container
-    parameters:
-    - $ref: '#/components/parameters/target'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {switch-a}
-      in: path
-      name: switch-a
-      required: true
-    post:
-      operationId: postSwitch-pair_Port-b
-      requestBody:
-        $ref: '#/components/requestBodies/RequestBody_Switch-pair_Port-b'
-      responses:
-        "201":
-          description: created
-      summary: POST /switch-pair/{switch-a}/port-b
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}:
     delete:
       operationId: deleteSwitch_Container
       responses:
@@ -1140,7 +981,7 @@ paths:
       - Switch
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1157,7 +998,7 @@ paths:
         "201":
           description: created
       summary: POST /switch
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}/attribute:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/attribute:
     description: 'a map of extra attributes: string-string'
     get:
       operationId: getSwitch_Attribute_List
@@ -1173,7 +1014,7 @@ paths:
       - Switch_Attribute
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1182,7 +1023,7 @@ paths:
       in: path
       name: switch-id
       required: true
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}/attribute/{attribute-key}:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/attribute/{attribute-key}:
     delete:
       operationId: deleteSwitch_Attribute_Container
       responses:
@@ -1204,7 +1045,7 @@ paths:
       - Switch_Attribute
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1229,7 +1070,7 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/attribute
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}/management:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/management:
     delete:
       operationId: deleteSwitch_Management_Container
       responses:
@@ -1251,7 +1092,7 @@ paths:
       - Switch
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1268,7 +1109,7 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/management
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}/port:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/port:
     description: A port in a switch
     get:
       operationId: getSwitch_Port_List
@@ -1284,7 +1125,7 @@ paths:
       - Switch_Port
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1293,7 +1134,7 @@ paths:
       in: path
       name: switch-id
       required: true
-  /sdn-fabric/v0.1.0/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}:
     delete:
       operationId: deleteSwitch_Port_Container
       responses:
@@ -1315,7 +1156,7 @@ paths:
       - Switch_Port
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -1348,7 +1189,85 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port
-  /sdn-fabric/v0.1.0/{target}/vlan:
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/switch-pair:
+    delete:
+      operationId: deleteSwitch_Switch-pair_Container
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch/{switch-id}/switch-pair
+    description: A Switch pairing. A switch can participate on 0-1 pairings
+    get:
+      operationId: getSwitch_Switch-pair
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Switch-pair'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair Container
+      tags:
+      - Switch
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    post:
+      operationId: postSwitch_Switch-pair
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch_Switch-pair'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch/{switch-id}/switch-pair
+  /sdn-fabric/v0.1.0/{fabric-id}/switch/{switch-id}/switch-pair/paired-switch:
+    delete:
+      operationId: deleteSwitch_Switch-pair_Paired-switch_Container
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch/{switch-id}/switch-pair/paired-switch
+    description: details of the switch paired with this one
+    get:
+      operationId: getSwitch_Switch-pair_Paired-switch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Switch-pair_Paired-switch'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/paired-switch Container
+      tags:
+      - Switch_Switch-pair
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    post:
+      operationId: postSwitch_Switch-pair_Paired-switch
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch_Switch-pair_Paired-switch'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch/{switch-id}/switch-pair/paired-switch
+  /sdn-fabric/v0.1.0/{fabric-id}/vlan:
     description: a list of VLANs
     get:
       operationId: getVlan_List
@@ -1364,8 +1283,8 @@ paths:
       - Vlan
       - List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /sdn-fabric/v0.1.0/{target}/vlan/{vlan-id}:
+    - $ref: '#/components/parameters/fabric-id'
+  /sdn-fabric/v0.1.0/{fabric-id}/vlan/{vlan-id}:
     delete:
       operationId: deleteVlan_Container
       responses:
@@ -1387,7 +1306,7 @@ paths:
       - Vlan
       - Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/fabric-id'
     - content:
         text/plain; charset=utf-8:
           schema:

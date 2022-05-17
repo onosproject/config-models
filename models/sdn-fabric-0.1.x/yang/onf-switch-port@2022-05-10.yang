@@ -19,7 +19,7 @@ submodule onf-switch-port {
     reference "ROC SD-Fabric Notes";
   }
 
-  grouping ports {
+  grouping ports-grouping {
     list port {
       key "cage-number channel-number";
       description "A port in a switch";

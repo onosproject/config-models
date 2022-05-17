@@ -30,8 +30,8 @@ module onf-vlan {
 
       leaf subnet {
         type inet:ipv4-prefix;
-        description "Network subnet for VLAN";
         mandatory true;
+        description "Network subnet for VLAN";
       }
       description "a list of VLANs";
     }
