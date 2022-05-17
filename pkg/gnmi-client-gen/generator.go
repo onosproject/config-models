@@ -178,6 +178,11 @@ func generateGnmiEndpointsForContainer(item *yang.Entry, path []string, moduleNa
 	return eps, nil
 }
 
+// I assume that a list always contains Yang contianers, we can't have a list of strings
+func generateGnmiEndpointsForLists() {
+	return
+}
+
 func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 
 	var funcs template.FuncMap = map[string]interface{}{

@@ -150,7 +150,7 @@ func TestBasicContainer(t *testing.T) {
 }
 
 func TestNestedContainer(t *testing.T) {
-	// NOTE this container does has a nested child (Cont1A_Cont2A)
+	// NOTE this container does have a nested child (Cont1A_Cont2A)
 	client := setup(t)
 	ctx := context.TODO()
 
@@ -185,6 +185,35 @@ func TestNestedContainer(t *testing.T) {
 	getRes, err = client.GetCont1A(ctx, target)
 	assert.Error(t, err)
 	assert.Nil(t, getRes)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
+}
+
+func TestListSingleKey(t *testing.T) {
+	client := setup(t)
+	ctx := context.TODO()
+
+	item1 := "item1"
+	item2 := "item2"
+	list := map[string]*testdevice.OnfTest1_Cont1A_List2A{
+		item1: {Name: &item1},
+		item2: {Name: &item2},
+	}
+
+	setRes, err := client.UpdateItemCont1AList2A(ctx, target, *list[item1])
+	assert.NoError(t, err)
+
+	resId, err := gnmi_utils.ExtractResponseID(setRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes1, err := client.GetCont1AList2A(context.TODO(), target, item1)
+	assert.NoError(t, err)
+	assert.Equal(t, list[item1].Name, getRes1.Name, "item1 is missing")
+
+	getRes2, err := client.GetCont1AList2A(context.TODO(), target, item2)
+	assert.Error(t, err)
+	assert.Nil(t, getRes2)
 	s, _ := status.FromError(err)
 	assert.Equal(t, s.Code(), codes.NotFound)
 }
