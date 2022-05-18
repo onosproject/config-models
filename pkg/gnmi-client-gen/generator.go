@@ -249,7 +249,7 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 
 	t, err := template.New(templateFile).
 		Funcs(funcs).
-		ParseFS(t.GnmiGenTemplate, templateFile)
+		ParseFS(t.GnmiGenTemplate, "*.go.tpl")
 	if err != nil {
 		return err
 	}

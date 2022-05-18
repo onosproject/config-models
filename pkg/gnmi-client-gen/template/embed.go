@@ -8,5 +8,5 @@ package template
 
 import "embed"
 
-//go:embed gnmi_client.go.tpl
+//go:embed *.go.tpl
 var GnmiGenTemplate embed.FS
