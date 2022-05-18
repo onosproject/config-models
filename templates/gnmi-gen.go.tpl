@@ -9,7 +9,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/onosproject/config-models/models/testdevice-1.0.x/api"
+	"{{ .GoPackage }}/api"
 	gnmi_client_gen "github.com/onosproject/config-models/pkg/gnmi-client-gen"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"os"
@@ -18,7 +18,7 @@ import (
 
 const outputFolder = "api"
 var outputFile string
-var log = logging.GetLogger("testdevice-gnmi-gen")
+var log = logging.GetLogger("{{ .Name }}-gnmi-gen")
 
 func main() {
 	var debug bool
