@@ -26,7 +26,7 @@ func New{{ .BaseModel }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
 }
 
 {{ range $ep := .ListEndpoints }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} list map[{{ $ep.Key.Type }}]*{{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}map[{{ $ep.Key.Type }}]*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
@@ -81,7 +81,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
     }
 
     return st.{{ $ep.ModelPath }}, nil
-    {{ end }}
+    {{ end -}}
 
     {{ if eq $ep.Method "delete" -}}
         req := &gnmi.SetRequest{
@@ -93,6 +93,41 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
             },
         }
         return c.client.Set(gnmiCtx, req)
+    {{ end -}}
+
+    {{ if eq $ep.Method "update" -}}
+    basePathElems :=  []*gnmi.PathElem{
+        {{  range $p := $ep.ParentPath -}}
+            {
+                Name: "{{ $p }}",
+            },
+        {{ end -}}
+        }
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{},
+    }
+    for _, item := range list {
+
+        path := &gnmi.Path{
+            Elem: append(basePathElems, &gnmi.PathElem{
+                Name: "list2a",
+                Key: map[string]string{
+                    "name": string(*item.{{ $ep.Key.Name }}),
+                },
+            }),
+            Target: target,
+        }
+
+        // TODO if it's pointer, pass the value
+        // if it's a value pass it directly
+        r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
+        if err != nil {
+            return nil, err
+        }
+        req.Update = append(req.Update, r.Update...)
+    }
+
+    return c.client.Set(gnmiCtx, req)
     {{ end -}}
 }
 {{ end }}

@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/genutil"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"strings"
 )
 
@@ -41,9 +43,10 @@ func PathToYgotModelPath(path []string) string {
 func GetListKey(entry *yang.Entry) ListKey {
 	key := entry.Key
 
+	caser := cases.Title(language.English)
 	if kv, ok := entry.Dir[key]; ok {
 		return ListKey{
-			Name: key,
+			Name: caser.String(key),
 			Type: yangTypeToGoType(kv.Type.Kind),
 		}
 	}

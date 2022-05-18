@@ -51,7 +51,7 @@ type ContainerEndpoint struct {
 	ParentModelPath string
 	Method          string   // GET or SET (NOTE: do we need an Enum?)
 	MethodName      string   // Get, Update, List and Delete
-	Path            []string // A string representing the gNMI path (/ separated)
+	Path            []string // A list of strings representing the gNMI path
 }
 
 type ListKey struct {
@@ -61,7 +61,8 @@ type ListKey struct {
 
 type ListEndpoint struct {
 	ContainerEndpoint
-	Key ListKey
+	Key        ListKey
+	ParentPath []string // A list of strings representing the gNMI path to the parent model
 }
 
 func CapitalizeModelName(model []*gnmi.ModelData) string {
@@ -207,11 +208,6 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string, moduleName s
 	caser := cases.Title(language.English)
 	for _, m := range methods {
 
-		if m == gnmiUpdate {
-			// skip updates for now
-			continue
-		}
-
 		epName := caser.String(m)
 
 		key := GetListKey(item)
@@ -225,10 +221,11 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string, moduleName s
 				ModelPath:       pathInModel,
 				ParentModelPath: parentModelPath,
 			},
-			Key: key,
+			ParentPath: path[:len(path)-1],
+			Key:        key,
 		}
 
-		if (key.Type != "unknown") {
+		if key.Type != "unknown" {
 			// NOTE temporary workaround to avoid generating code
 			// for lists with composite keys
 			eps = append(eps, ep)
