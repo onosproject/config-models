@@ -9,7 +9,7 @@ package gnmi_utils
 import (
 	"context"
 	"fmt"
-	"github.com/golang/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/gnmi/proto/gnmi_ext"

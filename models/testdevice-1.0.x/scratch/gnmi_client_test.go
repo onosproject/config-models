@@ -189,35 +189,41 @@ func TestNestedContainer(t *testing.T) {
 	assert.Equal(t, s.Code(), codes.NotFound)
 }
 
-//func TestListSingleKeyItem(t *testing.T) {
-//	// test operations on a single item in a list
-//	client := setup(t)
-//	ctx := context.TODO()
-//
-//	item1 := "item1"
-//	item2 := "item2"
-//	list := map[string]*testdevice.OnfTest1_Cont1A_List2A{
-//		item1: {Name: &item1},
-//		item2: {Name: &item2},
-//	}
-//
-//	setRes, err := client.UpdateCont1AList2AItem(ctx, target, *list[item1])
-//	assert.NoError(t, err)
-//
-//	resId, err := gnmi_utils.ExtractResponseID(setRes)
-//	assert.NoError(t, err)
-//	assert.NotNil(t, resId)
-//
-//	getRes1, err := client.GetCont1AList2AItem(context.TODO(), target, item1)
-//	assert.NoError(t, err)
-//	assert.Equal(t, list[item1].Name, getRes1.Name, "item1 is missing")
-//
-//	getRes2, err := client.GetCont1AList2AItem(context.TODO(), target, item2)
-//	assert.Error(t, err)
-//	assert.Nil(t, getRes2)
-//	s, _ := status.FromError(err)
-//	assert.Equal(t, s.Code(), codes.NotFound)
-//}
+func TestListSingleKeyItem(t *testing.T) {
+	// test operations on a single item in a list
+	client := setup(t)
+	ctx := context.TODO()
+
+	item1 := "item1"
+	item2 := "item2"
+	rm1 := uint8(12)
+	rm2 := uint8(13)
+	list := map[string]*testdevice.OnfTest1_Cont1A_List2A{
+		item1: {Name: &item1, RangeMax: &rm1},
+		item2: {Name: &item2, RangeMax: &rm2},
+	}
+
+	// make sure the list is not there
+	_, err := client.DeleteCont1A_List2A(ctx, target)
+	assert.NoError(t, err)
+
+	setRes, err := client.UpdateCont1A_List2A_Item(ctx, target, *list[item1])
+	assert.NoError(t, err)
+
+	resId, err := gnmi_utils.ExtractResponseID(setRes)
+	assert.NoError(t, err)
+	assert.NotNil(t, resId)
+
+	getRes1, err := client.GetCont1A_List2A_Item(context.TODO(), target, item1)
+	assert.NoError(t, err)
+	assert.Equal(t, list[item1].Name, getRes1.Name, "item1 is missing")
+
+	getRes2, err := client.GetCont1A_List2A_Item(context.TODO(), target, item2)
+	assert.Error(t, err)
+	assert.Nil(t, getRes2)
+	s, _ := status.FromError(err)
+	assert.Equal(t, s.Code(), codes.NotFound)
+}
 
 func TestListSingleKey(t *testing.T) {
 	client := setup(t)

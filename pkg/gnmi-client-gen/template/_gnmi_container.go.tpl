@@ -1,3 +1,8 @@
+{{/*
+* SPDX-FileCopyrightText: 2022-present Intel Corporation
+*
+* SPDX-License-Identifier: Apache-2.0
+*/}}
 {{ $ep := . }}
 func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
@@ -28,9 +33,9 @@ defer cancel()
     Unmarshal(json, &st)
 
     {{ if not (eq $ep.ParentModelPath "") -}}
-        if reflect.ValueOf(st.{{ $ep.ParentModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ParentModelPath }}).IsNil() {
+    if reflect.ValueOf(st.{{ $ep.ParentModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ParentModelPath }}).IsNil() {
         return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
-        }
+    }
     {{ end -}}
 
     if reflect.ValueOf(st.{{ $ep.ModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ModelPath }}).IsNil() {

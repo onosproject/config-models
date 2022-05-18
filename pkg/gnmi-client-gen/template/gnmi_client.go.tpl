@@ -29,6 +29,10 @@ func New{{ .BaseModel }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
 }
 
 {{ range $ep := .ListEndpoints -}}
+    {{ template "_gnmi_list_item.go.tpl" $ep }}
+{{ end -}}
+
+{{ range $ep := .ListEndpoints -}}
 {{ template "_gnmi_list.go.tpl" $ep }}
 {{ end -}}
 

@@ -83,7 +83,7 @@ func TestHasNonZeroField(t *testing.T) {
 			} else {
 				logMsg += " NOT expected to have a value, but it did."
 			}
-			assert.Equal(t, tt.want, res, fmt.Sprintf("Test %s failed: %s", tt.name, logMsg))
+			assert.Equal(t, tt.want, res, fmt.Sprintf("Test %s failed checking field '%s': %s", tt.name, tt.args.fieldName, logMsg))
 		})
 	}
 }

@@ -88,3 +88,36 @@ package api
 //	}
 //	return nil, status.Error(codes.NotFound, "item-not-found")
 //}
+//
+//func (c *GnmiClient) DeleteCont1AList2AItem(ctx context.Context, target string, key string,
+//) (*gnmi.SetResponse, error) {
+//	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+//	defer cancel()
+//
+//	path := []*gnmi.Path{
+//		{
+//			Elem: []*gnmi.PathElem{
+//				{
+//					Name: "cont1a",
+//				},
+//				{
+//					Name: "list2a",
+//					Key: map[string]string{
+//						"name": key,
+//					},
+//				},
+//			},
+//			Target: target,
+//		},
+//	}
+//
+//	req := &gnmi.SetRequest{
+//		Delete: []*gnmi.Path{
+//			{
+//				Elem:   path[0].Elem,
+//				Target: target,
+//			},
+//		},
+//	}
+//	return c.client.Set(gnmiCtx, req)
+//}

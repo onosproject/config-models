@@ -1,3 +1,8 @@
+{{/*
+* SPDX-FileCopyrightText: 2022-present Intel Corporation
+*
+* SPDX-License-Identifier: Apache-2.0
+*/}}
 {{ $ep := . }}
 func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string,{{ if eq $ep.Method "update"}} val *gnmi.TypedValue,{{end}}
 ) ({{ if eq $ep.Method "get"}}{{ $ep.GoType }}{{ else }}*gnmi.SetResponse{{ end }}, error) {

@@ -15,12 +15,10 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"os"
-	"path/filepath"
 	"strings"
 	"text/template"
 )
 
-const templateFolder = "template"
 const templateFile = "gnmi_client.go.tpl"
 
 var log = logging.GetLogger("gnmi-client-gen")
@@ -245,6 +243,10 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 		"replace": func(search, replace string, value interface{}) string {
 			return strings.ReplaceAll(fmt.Sprint(value), search, replace)
 		},
+		"sub": func(a int, b int) int {
+			return a - b
+		},
+		"lower": strings.ToLower,
 	}
 
 	t, err := template.New(templateFile).
@@ -261,8 +263,4 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 	defer file.Close()
 
 	return t.Execute(file, epList)
-}
-
-func getTemplatePath(name string) string {
-	return filepath.Join(templateFolder, name)
 }

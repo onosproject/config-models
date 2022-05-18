@@ -1,3 +1,11 @@
+{{/*
+* SPDX-FileCopyrightText: 2022-present Intel Corporation
+*
+* SPDX-License-Identifier: Apache-2.0
+*/}}
+
+{{/*This template generates methods to interact with the list object*/}}
+
 {{ $ep := . }}
 func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} list map[{{ $ep.Key.Type }}]*{{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}map[{{ $ep.Key.Type }}]*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {

@@ -10,6 +10,8 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"math"
 	"os"
 	"sort"
@@ -839,5 +841,6 @@ func floatFromYnumber(ynumber yang.Number) float64 {
 }
 
 func additionalPropertyTarget(targetAlias string) string {
-	return fmt.Sprintf("AdditionalProperty%s", strings.Title(targetAlias))
+	caser := cases.Title(language.English)
+	return fmt.Sprintf("AdditionalProperty%s", caser.String(targetAlias))
 }
