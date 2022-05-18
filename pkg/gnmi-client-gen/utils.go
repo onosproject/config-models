@@ -40,23 +40,40 @@ func PathToYgotModelPath(path []string) string {
 }
 
 // given a yang entry with a key, return the appropriate type for the key
-func GetListKey(entry *yang.Entry) ListKey {
-	key := entry.Key
-
+func GetListKey(entry *yang.Entry, moduleName string, modelName string) (ListKey, error) {
+	keys := strings.Split(entry.Key, " ")
 	caser := cases.Title(language.English)
-	if kv, ok := entry.Dir[key]; ok {
-		return ListKey{
-			Name: caser.String(key),
-			Type: yangTypeToGoType(kv.Type.Kind),
+
+	if len(keys) > 1 {
+		key := ListKey{
+			Type: fmt.Sprintf("%s_%s_Key", moduleName, modelName),
+			Keys: []Key{},
 		}
-	}
 
-	// TODO support multiple keys
+		for _, k := range keys {
+			if kv, ok := entry.Dir[k]; ok {
+				key.Keys = append(key.Keys, Key{
+					Name: caser.String(k),
+					Type: yangTypeToGoType(kv.Type.Kind),
+				})
+			}
+		}
+		return key, nil
+	} else {
+		if kv, ok := entry.Dir[keys[0]]; ok {
+			return ListKey{
+				Type: yangTypeToGoType(kv.Type.Kind),
+				Keys: []Key{
+					{
+						Name: caser.String(keys[0]),
+						Type: yangTypeToGoType(kv.Type.Kind),
+					},
+				},
+			}, nil
+		}
 
-	return ListKey{
-		Name: fmt.Sprintf("unkown_for_model_%s_and_key_%s", entry.Name, entry.Key),
-		Type: "unknown",
 	}
+	return ListKey{}, fmt.Errorf("cannot-generate-key-from-%s", keys)
 }
 
 func yangTypeToGoType(val yang.TypeKind) string {

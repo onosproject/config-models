@@ -6,10 +6,18 @@
 
 {{/*This template generates methods to interact with a single item in the list*/}}
 
+{{ define "keys_parameters"}}
+{{ $kl := len .Keys }}
+{{- if eq $kl 0 -}}
+key {{ lower (index .Keys 0).Type }}
+{{- else -}}
+key {{ .Type }}
+{{- end -}}
+{{ end }}
+
 {{ $ep := . }}
 {{ $path_length := len $ep.Path }}
-// {{$ep}}
-func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}key {{ $ep.Key.Type }},{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
+func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}{{ template "keys_parameters" $ep.Key }},{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
@@ -30,11 +38,17 @@ func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target strin
                 {
                     Name: "{{index $ep.Path (sub $path_length 1)}}",
                     Key: map[string]string{
-                        {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}
-                        "{{ lower $ep.Key.Name }}": string(key),
-                        {{ else if eq $ep.Method "update"}}
-                        "{{ lower $ep.Key.Name }}": string(*data.{{ $ep.Key.Name }}),
+                        {{ range $k := $ep.Key.Keys -}}
+                        {{ if or (eq $ep.Method "get") (eq $ep.Method "delete") -}}
+                        {{ if eq (len $ep.Key.Keys) 1}}
+                        "{{ lower $k.Name }}": string(key),
+                        {{ else }}
+                        "{{ lower $k.Name }}": string(key.{{ $k.Name }}),
                         {{ end }}
+                        {{ else if eq $ep.Method "update" -}}
+                        "{{ lower $k.Name }}": string(*data.{{ $k.Name }}),
+                        {{ end -}}
+                        {{ end -}}
                     },
                 },
             },
@@ -72,6 +86,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target strin
     if res, ok := st.{{ $ep.ModelPath }}[key]; ok {
         return res, nil
     }
+
     return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
     {{ end -}}
 

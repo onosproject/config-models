@@ -81,7 +81,9 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
             Elem: append(basePathElems, &gnmi.PathElem{
                 Name: "list2a",
                 Key: map[string]string{
-                    "name": string(*item.{{ $ep.Key.Name }}),
+                    {{ range $k := $ep.Key.Keys -}}
+                    "{{ lower $k.Name }}": string(*item.{{ $k.Name }}),
+                    {{ end -}}
                 },
             }),
             Target: target,

@@ -53,6 +53,10 @@ type ContainerEndpoint struct {
 }
 
 type ListKey struct {
+	Type string // the generated Key type (can be a Go type, eg: string)
+	Keys []Key  // a list of keys that we need to set in the path
+}
+type Key struct {
 	Name string
 	Type string
 }
@@ -208,7 +212,10 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string, moduleName s
 
 		epName := caser.String(m)
 
-		key := GetListKey(item)
+		key, err := GetListKey(item, moduleName, itemName)
+		if err != nil {
+			return nil, err
+		}
 		ep := ListEndpoint{
 			ContainerEndpoint: ContainerEndpoint{
 				Method:          m,
@@ -222,12 +229,7 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string, moduleName s
 			ParentPath: path[:len(path)-1],
 			Key:        key,
 		}
-
-		if key.Type != "unknown" {
-			// NOTE temporary workaround to avoid generating code
-			// for lists with composite keys
-			eps = append(eps, ep)
-		}
+		eps = append(eps, ep)
 	}
 	log.Debugw("generating-methods-for-list-items",
 		"name", itemName, "path", path, "endpoints", eps)
