@@ -4,8 +4,8 @@
 * SPDX-License-Identifier: Apache-2.0
 */}}
 {{ $ep := . }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} data {{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
-) ({{ if eq $ep.Method "get"}}*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} data {{$ep.ModelName}},{{end}}
+) ({{ if eq $ep.Method "get"}}*{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
 gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 defer cancel()
 

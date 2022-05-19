@@ -7,8 +7,8 @@
 {{/*This template generates methods to interact with the list object*/}}
 
 {{ $ep := . }}
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} list map[{{ $ep.Key.Type }}]*{{$ep.ModuleName}}_{{$ep.ModelName}},{{end}}
-) ({{ if eq $ep.Method "get"}}map[{{ $ep.Key.Type }}]*{{ $ep.ModuleName }}_{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} list map[{{ $ep.Key.Type }}]*{{$ep.ModelName}},{{end}}
+) ({{ if eq $ep.Method "get"}}map[{{ $ep.Key.Type }}]*{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 

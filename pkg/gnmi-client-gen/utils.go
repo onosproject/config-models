@@ -23,6 +23,7 @@ func PathToCamelCaseName(path []string) string {
 	return name
 }
 
+// deprecated: the model name is in item.Annotation["structname"]
 func PathToYgotModelName(path []string) string {
 	name := []string{}
 	for _, p := range path {
@@ -40,13 +41,14 @@ func PathToYgotModelPath(path []string) string {
 }
 
 // given a yang entry with a key, return the appropriate type for the key
-func GetListKey(entry *yang.Entry, moduleName string, modelName string) (ListKey, error) {
+func GetListKey(entry *yang.Entry) (ListKey, error) {
 	keys := strings.Split(entry.Key, " ")
+	modelName := fmt.Sprintf("%s", entry.Annotation["structname"])
 	caser := cases.Title(language.English)
 
 	if len(keys) > 1 {
 		key := ListKey{
-			Type: fmt.Sprintf("%s_%s_Key", moduleName, modelName),
+			Type: fmt.Sprintf("%s_Key", modelName),
 			Keys: []Key{},
 		}
 

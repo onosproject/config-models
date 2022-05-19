@@ -13,3 +13,6 @@ require (
 	github.com/openconfig/ygot v0.14.0
 	google.golang.org/grpc v1.41.0
 )
+
+// temporary till the gNMI client generator is released
+replace github.com/onosproject/config-models => ../../

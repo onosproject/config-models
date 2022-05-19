@@ -14,9 +14,6 @@ import (
 
 func TestGetListKey(t *testing.T) {
 
-	moduelName := "OnfTest1"
-	modelName := "Cont1A_List5"
-
 	type args struct {
 		entry *yang.Entry
 	}
@@ -31,6 +28,9 @@ func TestGetListKey(t *testing.T) {
 			Dir: map[string]*yang.Entry{
 				"id": {Type: &yang.YangType{Kind: yang.Ystring}},
 			},
+			Annotation: map[string]interface{}{
+				"structname": "OnfTest1_Cont1A_List5",
+			},
 		}}, want: ListKey{Type: "string", Keys: []Key{{Name: "Id", Type: "string"}}}},
 		{
 			name: "composite-key",
@@ -38,6 +38,9 @@ func TestGetListKey(t *testing.T) {
 				entry: &yang.Entry{
 					Name: "list5",
 					Key:  "key1 key2",
+					Annotation: map[string]interface{}{
+						"structname": "OnfTest1_Cont1A_List5",
+					},
 					Dir: map[string]*yang.Entry{
 						"key1": {Type: &yang.YangType{Kind: yang.Ystring}},
 						"key2": {Type: &yang.YangType{Kind: yang.Ystring}},
@@ -56,7 +59,7 @@ func TestGetListKey(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			res, err := GetListKey(tt.args.entry, moduelName, modelName)
+			res, err := GetListKey(tt.args.entry)
 			assert.NoError(t, err)
 			assert.Equal(t, tt.want.Type, res.Type)
 			assert.Equal(t, len(tt.want.Keys), len(res.Keys))

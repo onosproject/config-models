@@ -36,10 +36,8 @@ func main() {
 		os.Exit(-1)
 	}
 
-	modelName := gnmi_client_gen.CapitalizeModelName(api.ModelData())
-
 	topEntry := schemaMap.SchemaTree["Device"]
-	res, err := gnmi_client_gen.BuildGnmiStruct(debug, modelName, topEntry, []string{})
+	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "{{ .Name }}_{{ .Version }}", topEntry, []string{})
 	if err != nil {
 		log.Errorw("failed to generate gNMI Endpoint list", "err", err)
 	}

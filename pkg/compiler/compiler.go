@@ -369,22 +369,23 @@ func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
 	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
 }
 
-func (c *ModelCompiler) generateGnmiClient(path string) error {
-	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
-
-	args := []string{
-		generatorPath,
-		"--debug",
-	}
-
-	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
-	cmd := exec.Command("go run", args...)
-	cmd.Env = os.Environ()
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		return err
-	}
-	return nil
-}
+//func (c *ModelCompiler) generateGnmiClient(path string) error {
+//	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
+//
+//	args := []string{
+//		"run",
+//		generatorPath,
+//		"--debug",
+//	}
+//
+//	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
+//	cmd := exec.Command("go", args...)
+//	cmd.Env = os.Environ()
+//	cmd.Stdout = os.Stdout
+//	cmd.Stderr = os.Stderr
+//	err := cmd.Run()
+//	if err != nil {
+//		return err
+//	}
+//	return nil
+//}
