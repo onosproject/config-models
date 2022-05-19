@@ -71,3 +71,54 @@ func TestGetListKey(t *testing.T) {
 		})
 	}
 }
+
+func TestYangTypeToGoType(t *testing.T) {
+
+	type args struct {
+		entry *yang.Entry
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"string-type", args{entry: &yang.Entry{Type: &yang.YangType{Kind: yang.Ystring}}}, "string"},
+		{
+			"leafref-one-level-above",
+			args{
+				entry: &yang.Entry{
+					Parent: &yang.Entry{
+						Name: "parent",
+						Dir: map[string]*yang.Entry{
+							"config": {
+								Name: "config",
+								Dir: map[string]*yang.Entry{
+									"key-leafref": {
+										Name: "key-leafref",
+										Type: &yang.YangType{
+											Kind: yang.Yuint16,
+										},
+									},
+								},
+							},
+						},
+					},
+					Name: "key-leafref",
+					Type: &yang.YangType{
+						Kind: yang.Yleafref,
+						Path: "../config/key-leafref",
+					},
+				},
+			},
+			"uint16",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			res := yangTypeToGoType(tt.args.entry)
+			assert.Equal(t, tt.want, res)
+		})
+	}
+}

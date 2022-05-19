@@ -56,7 +56,7 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 			if kv, ok := entry.Dir[k]; ok {
 				key.Keys = append(key.Keys, Key{
 					Name: caser.String(k),
-					Type: yangTypeToGoType(kv.Type.Kind),
+					Type: yangTypeToGoType(kv),
 				})
 			}
 		}
@@ -64,11 +64,11 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 	} else {
 		if kv, ok := entry.Dir[keys[0]]; ok {
 			return ListKey{
-				Type: yangTypeToGoType(kv.Type.Kind),
+				Type: yangTypeToGoType(kv),
 				Keys: []Key{
 					{
 						Name: caser.String(keys[0]),
-						Type: yangTypeToGoType(kv.Type.Kind),
+						Type: yangTypeToGoType(kv),
 					},
 				},
 			}, nil
@@ -78,9 +78,9 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 	return ListKey{}, fmt.Errorf("cannot-generate-key-from-%s", keys)
 }
 
-func yangTypeToGoType(val yang.TypeKind) string {
+func yangTypeToGoType(entry *yang.Entry) string {
 	// NOTE inspired by https://github.com/openconfig/ygot/blob/master/ytypes/util_types.go#L353
-	switch val {
+	switch entry.Type.Kind {
 	case yang.Yint8:
 		return "int8"
 	case yang.Yint16:
@@ -105,10 +105,17 @@ func yangTypeToGoType(val yang.TypeKind) string {
 		return "float64"
 	case yang.Ybinary:
 		return "[]byte"
-	case yang.Yenum, yang.Yidentityref:
+	case yang.Yenum:
 		return "int64"
+	case yang.Yidentityref:
+		// FIXME this is not enough, eg:
+		// SYSLOG_FACILITY is generated via YGOT as `type E_OpenconfigSystemLogging_SYSLOG_FACILITY int64`
+		// NOTE that these are the ENUMS
+		return entry.Type.IdentityBase.Name
 	case yang.Yleafref:
-		return "string"
+		return findLeafRefType(entry.Type.Path, entry)
+		//case yang.Yunion:
+
 	}
 	// not ideal, but for now we'll take it
 	return "interface{}"
@@ -171,4 +178,28 @@ func yangTypeToGoEmptyReturnVal(val yang.TypeKind) string {
 	}
 	// not ideal, but for now we'll take it
 	return "nil"
+}
+
+func findLeafRefType(path string, entry *yang.Entry) string {
+
+	// identify how many levels we have to go up the tree
+	lb := strings.Count(path, "../")
+
+	// identify the path to take once we have gone up the tree
+	downward_path := strings.Split(strings.ReplaceAll(path, "../", ""), "/")
+
+	// this is the entry we are moving to
+	var cur_entry = entry
+	for i := 0; i < lb; i++ {
+		// we're going up the tree till it's needed
+		cur_entry = cur_entry.Parent
+	}
+
+	for _, k := range downward_path {
+		// and then descending to the leafref path
+		cur_entry = cur_entry.Dir[k]
+	}
+
+	// not simply convert the type
+	return yangTypeToGoType(cur_entry)
 }

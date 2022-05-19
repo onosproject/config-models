@@ -141,7 +141,7 @@ func generateGnmiEndpointsForLeaf(item *yang.Entry, path []string) ([]LeavesEndp
 			ModelName:         itemName,
 			MethodName:        fmt.Sprintf("%s%s", epName, itemName),
 			Path:              path,
-			GoType:            yangTypeToGoType(item.Type.Kind),
+			GoType:            yangTypeToGoType(item),
 			GoReturnType:      yangTypeToGoReturnVal(item.Type.Kind),
 			GoEmptyReturnType: yangTypeToGoEmptyReturnVal(item.Type.Kind),
 		}
