@@ -58,6 +58,7 @@ type ListKey struct {
 type Key struct {
 	Name string
 	Type string
+	Ptr  bool // whether this is pointer or not
 }
 
 type ListEndpoint struct {
@@ -81,8 +82,6 @@ func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPat
 
 	for _, item := range entry.Dir {
 		itemPath := append(parentPath, item.Name)
-		log.Infow("Path", "path", item.Annotation["schemapath"])
-		log.Infow("Name", "name", item.Annotation["structname"])
 		log.Debugw("item", "path", itemPath)
 
 		if item.IsLeaf() || item.IsLeafList() {

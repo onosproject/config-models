@@ -6,6 +6,8 @@ package compiler
 
 import (
 	"fmt"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,6 +21,10 @@ func (c *ModelCompiler) applyTemplate(name, tplPath, outPath string) error {
 		},
 		"replace": func(search, replace string, value interface{}) string {
 			return strings.ReplaceAll(fmt.Sprint(value), search, replace)
+		},
+		"capitalize": func(s string) string {
+			caser := cases.Title(language.English)
+			return caser.String(s)
 		},
 	}
 

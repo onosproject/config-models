@@ -145,7 +145,7 @@ func yangTypeToGoReturnVal(val yang.TypeKind) string {
 		return "int64(val.GetIntVal())"
 	}
 	// not ideal, but for now we'll take it
-	return "GetValue()"
+	return "val.GetValue()"
 }
 
 // returns the correct format to return in case of error
@@ -170,5 +170,5 @@ func yangTypeToGoEmptyReturnVal(val yang.TypeKind) string {
 		return "nil"
 	}
 	// not ideal, but for now we'll take it
-	return "interface{}"
+	return "nil"
 }

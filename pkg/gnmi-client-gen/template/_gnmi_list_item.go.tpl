@@ -43,10 +43,10 @@ func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target strin
                         {{ if eq (len $ep.Key.Keys) 1}}
                         "{{ lower $k.Name }}": string(key),
                         {{ else }}
-                        "{{ lower $k.Name }}": string(key.{{ $k.Name }}),
+                        "{{ lower $k.Name }}": string(key.{{ replace "-" "" $k.Name }}),
                         {{ end }}
                         {{ else if eq $ep.Method "update" -}}
-                        "{{ lower $k.Name }}": string(*data.{{ $k.Name }}),
+                        "{{ lower $k.Name }}": string(*data.{{ replace "-" "" $k.Name }}),
                         {{ end -}}
                         {{ end -}}
                     },
