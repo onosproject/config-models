@@ -69,7 +69,7 @@ func (settings *ApiGenSettings) ApplyDefaults() {
 		settings.Title = fmt.Sprintf("%s onos-config model plugin", settings.ModelType)
 	}
 	if settings.Description == "" {
-		settings.Description = fmt.Sprintf("This OpenAPI 3 specification is generated from"+
+		settings.Description = fmt.Sprintf("OpenAPI 3 specification is generated from "+
 			"%s onos-config model plugin", settings.ModelType)
 	}
 	if settings.TargetAlias == "" {
@@ -568,6 +568,16 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						}
 					}
 					openapiComponents.Schemas[k] = v
+				case "leaf-list": // Leaf-list as a child of list
+					v.Value.Type = "array"
+					title := v.Value.Title
+					if strings.HasPrefix(title, "leaf-list") {
+						title = v.Value.Title[10:]
+					}
+					asSingle.Properties[title] = openapi3.NewSchemaRef(
+						fmt.Sprintf("#/components/schemas/%s", k), v.Value)
+
+					openapiComponents.Schemas[k] = v
 				case "object": // Container as a child of list
 					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
 						schemaPath := pathToSchemaName(itemPath)
@@ -589,6 +599,14 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					asSingle.Properties[v.Value.Title] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
+				}
+				for _, key := range keys {
+					if key == v.Value.Title {
+						if v.Value.Extensions == nil {
+							v.Value.Extensions = make(map[string]interface{})
+						}
+						v.Value.Extensions["x-go-type"] = "ListKey"
+					}
 				}
 			}
 			if len(asSingle.Required) > 1 {
@@ -666,6 +684,9 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 		deleteOp := openapi3.NewOperation()
 		deleteOp.Summary = fmt.Sprintf("DELETE %s", itemPath)
 		deleteOp.OperationID = fmt.Sprintf("delete%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
+		if pathType == pathTypeContainer {
+			deleteOp.OperationID = fmt.Sprintf("delete%s", toUnderScore(itemPath))
+		}
 		del20Ok := "DELETE 200 OK"
 		deleteResp200 := &openapi3.Response{
 			Description: &del20Ok,

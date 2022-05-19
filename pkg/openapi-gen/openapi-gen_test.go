@@ -239,7 +239,7 @@ func Test_newPathItem(t *testing.T) {
 
 		assert.Assert(t, pathItem.Delete != nil)
 		assert.Equal(t, "DELETE /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Delete.Summary)
-		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4_Container", pathItem.Delete.OperationID)
+		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4", pathItem.Delete.OperationID)
 
 		assert.Equal(t, 3, len(pathItem.Parameters))
 		for _, p := range pathItem.Parameters {
