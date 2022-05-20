@@ -58,7 +58,7 @@ kind-models:
 	@cd models && for model in *; do pushd $$model; make kind; popd; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: deps build linters license images models
+jenkins-test: deps mod-update build linters license images models
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do pushd $$model; make test; popd; done
