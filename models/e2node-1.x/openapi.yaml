@@ -106,7 +106,7 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated frome2node onos-config model
+  description: OpenAPI 3 specification is generated from e2node onos-config model
     plugin
   license:
     name: Apache-2.0
@@ -117,7 +117,7 @@ openapi: 3.0.0
 paths:
   /e2node/v1.0.0/{target}/e2node:
     delete:
-      operationId: deleteE2node_Container
+      operationId: deleteE2node
       responses:
         "200":
           description: DELETE 200 OK
@@ -148,7 +148,7 @@ paths:
       summary: POST /e2node
   /e2node/v1.0.0/{target}/e2node/intervals:
     delete:
-      operationId: deleteE2node_Intervals_Container
+      operationId: deleteE2node_Intervals
       responses:
         "200":
           description: DELETE 200 OK

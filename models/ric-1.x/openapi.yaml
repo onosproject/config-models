@@ -78,6 +78,7 @@ components:
           description: eNB id
           title: id
           type: string
+          x-go-type: ListKey
         ip:
           description: The IP address of the node
           title: ip
@@ -124,8 +125,7 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated fromric onos-config model
-    plugin
+  description: OpenAPI 3 specification is generated from ric onos-config model plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -194,7 +194,7 @@ paths:
       required: true
   /ric/v1.0.0/{target}/report_period:
     delete:
-      operationId: deleteReport_period_Container
+      operationId: deleteReport_period
       responses:
         "200":
           description: DELETE 200 OK

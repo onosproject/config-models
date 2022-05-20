@@ -170,6 +170,7 @@ components:
           minLength: 4
           title: name
           type: string
+          x-go-type: ListKey
         range-max:
           description: A max value for the range
           maximum: 255
@@ -220,6 +221,7 @@ components:
           description: Link to list2a names
           title: id
           type: string
+          x-go-type: ListKey
           x-leafref: /t1:cont1a/t1:list2a/t1:name
         leaf4b:
           description: leaf 4a on list4a elements
@@ -259,11 +261,13 @@ components:
           description: foreign key 1 - ref to list5a/key1
           title: fkey1
           type: string
+          x-go-type: ListKey
           x-leafref: /t1:cont1a/t1e:list5/t1e:key1
         fkey2:
           description: foreign key 2 - ref to list5a/key2
           title: fkey2
           type: string
+          x-go-type: ListKey
           x-leafref: /t1:cont1a/t1e:list5/t1e:key2
       required:
       - fkey1
@@ -297,12 +301,14 @@ components:
           minLength: 1
           title: key1
           type: string
+          x-go-type: ListKey
         key2:
           description: key2 of list 5 - number
           maximum: 10
           minimum: 2
           title: key2
           type: integer
+          x-go-type: ListKey
         leaf5a:
           description: non key attribute of list 5 - string
           maxLength: 20
@@ -354,6 +360,7 @@ components:
           minimum: 0
           title: index
           type: integer
+          x-go-type: ListKey
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
@@ -384,8 +391,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated fromtestdevice onos-config
-    model plugin
+  description: OpenAPI 3 specification is generated from testdevice onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -395,7 +402,7 @@ openapi: 3.0.0
 paths:
   /testdevice/v1.0.x/{target}/cont1a:
     delete:
-      operationId: deleteCont1a_Container
+      operationId: deleteCont1a
       responses:
         "200":
           description: DELETE 200 OK
@@ -426,7 +433,7 @@ paths:
       summary: POST /cont1a
   /testdevice/v1.0.x/{target}/cont1a/cont2a:
     delete:
-      operationId: deleteCont1a_Cont2a_Container
+      operationId: deleteCont1a_Cont2a
       responses:
         "200":
           description: DELETE 200 OK
@@ -474,7 +481,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list2a/{name}:
     delete:
-      operationId: deleteCont1a_List2a_Container
+      operationId: deleteCont1a_List2a
       responses:
         "200":
           description: DELETE 200 OK
@@ -530,7 +537,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}:
     delete:
-      operationId: deleteCont1a_List4_Container
+      operationId: deleteCont1a_List4
       responses:
         "200":
           description: DELETE 200 OK
@@ -594,7 +601,7 @@ paths:
       required: true
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}:
     delete:
-      operationId: deleteCont1a_List4_List4a_Container
+      operationId: deleteCont1a_List4_List4a
       responses:
         "200":
           description: DELETE 200 OK
@@ -666,7 +673,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list5/{key1}/{key2}:
     delete:
-      operationId: deleteCont1a_List5_Container
+      operationId: deleteCont1a_List5
       responses:
         "200":
           description: DELETE 200 OK

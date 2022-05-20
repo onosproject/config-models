@@ -10,6 +10,7 @@ package main
 import (
 	"context"
 	"{{ .GoPackage }}/api"
+    "github.com/onosproject/config-models/pkg/utils"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/errors"
@@ -28,6 +29,10 @@ type modelPlugin struct {
 
 type server struct {
 }
+
+// gRPC path lists; derived from native path maps
+var roPaths []*admin.ReadOnlyPath
+var rwPaths []*admin.ReadWritePath
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
@@ -50,7 +55,11 @@ func main() {
 	}
 	port := int16(i)
 
-	roPaths, rwPaths = extractPaths()
+	entries, err := api.UnzipSchema()
+	if err != nil {
+		log.Fatalf("Unable to extract model schema: %+v", err)
+	}
+	roPaths, rwPaths = utils.ExtractPaths(entries)
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -116,7 +125,7 @@ func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfi
 
 func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequest) (*admin.PathValuesResponse, error) {
 	log.Infof("Received path values request: %+v", request)
-	pathValues, err := getPathValues(request.PathPrefix, request.Json)
+	pathValues, err := utils.GetPathValues(request.PathPrefix, request.Json)
 	if err != nil {
 		return nil, errors.Status(errors.NewInvalid("Unable to get path values: %+v", err)).Err()
 	}
