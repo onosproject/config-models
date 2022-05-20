@@ -113,11 +113,54 @@ func TestYangTypeToGoType(t *testing.T) {
 			},
 			"uint16",
 		},
+		{
+			"leafref-absolute-path",
+			args{
+				entry: &yang.Entry{
+					Name:        "id",
+					Description: "Link to list2a names",
+					Type: &yang.YangType{
+						Kind: yang.Yleafref,
+						Path: "/t1:cont1a/t1:list2a/t1:name",
+					},
+					Parent: &yang.Entry{
+						Name: "list4",
+						Parent: &yang.Entry{
+							Name: "cont1a",
+							Parent: &yang.Entry{
+								Name:   "device",
+								Parent: nil,
+								Dir: map[string]*yang.Entry{
+									"cont1a": {
+										Name: "cont1a",
+										Dir: map[string]*yang.Entry{
+											"list2a": {
+												Name: "list2a",
+												Dir: map[string]*yang.Entry{
+													"name": {
+														Name: "name",
+														Type: &yang.YangType{
+															Kind: yang.Ystring,
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"string",
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			res := yangTypeToGoType(tt.args.entry)
+			res, err := yangTypeToGoType(tt.args.entry)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.want, res)
 		})
 	}

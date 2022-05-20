@@ -15,4 +15,4 @@ require (
 )
 
 // temporary till the gNMI client generator is released
-replace github.com/onosproject/config-models => ../../
+// replace github.com/onosproject/config-models => ../../

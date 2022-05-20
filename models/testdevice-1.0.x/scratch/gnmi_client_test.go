@@ -48,7 +48,7 @@ func setup(t *testing.T) *testdevice.GnmiClient {
 		os.Exit(1)
 	}
 
-	return testdevice.NewOnfTest1GnmiClient(gnmiConn)
+	return testdevice.NewTestdeviceGnmiClient(gnmiConn)
 }
 
 func TestLeafAtTopLevel(t *testing.T) {

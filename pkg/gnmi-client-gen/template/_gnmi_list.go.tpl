@@ -82,7 +82,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
                 Name: "list2a",
                 Key: map[string]string{
                     {{ range $k := $ep.Key.Keys -}}
-                    "{{ lower $k.Name }}": string(*item.{{ $k.Name }}),
+                    "{{ lower $k.Name }}": string(*item.{{ replace "-" "" $k.Name }}),
                     {{ end -}}
                 },
             }),

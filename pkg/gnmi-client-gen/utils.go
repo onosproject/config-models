@@ -12,8 +12,18 @@ import (
 	"github.com/openconfig/ygot/genutil"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"strings"
 )
+
+func PathToYgotModelName(path []string) string {
+	name := []string{}
+	for _, p := range path {
+		name = append(name, genutil.EntryCamelCaseName(&yang.Entry{Name: p}))
+	}
+	return strings.Join(name, "_")
+}
 
 func PathToCamelCaseName(path []string) string {
 	name := ""
@@ -21,15 +31,6 @@ func PathToCamelCaseName(path []string) string {
 		name += genutil.EntryCamelCaseName(&yang.Entry{Name: p})
 	}
 	return name
-}
-
-// deprecated: the model name is in item.Annotation["structname"]
-func PathToYgotModelName(path []string) string {
-	name := []string{}
-	for _, p := range path {
-		name = append(name, genutil.EntryCamelCaseName(&yang.Entry{Name: p}))
-	}
-	return strings.Join(name, "_")
 }
 
 func PathToYgotModelPath(path []string) string {
@@ -54,21 +55,29 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 
 		for _, k := range keys {
 			if kv, ok := entry.Dir[k]; ok {
+				t, err := yangTypeToGoType(kv)
+				if err != nil {
+					return ListKey{}, err
+				}
 				key.Keys = append(key.Keys, Key{
 					Name: caser.String(k),
-					Type: yangTypeToGoType(kv),
+					Type: t,
 				})
 			}
 		}
 		return key, nil
 	} else {
 		if kv, ok := entry.Dir[keys[0]]; ok {
+			t, err := yangTypeToGoType(kv)
+			if err != nil {
+				return ListKey{}, err
+			}
 			return ListKey{
-				Type: yangTypeToGoType(kv),
+				Type: t,
 				Keys: []Key{
 					{
 						Name: caser.String(keys[0]),
-						Type: yangTypeToGoType(kv),
+						Type: t,
 					},
 				},
 			}, nil
@@ -78,47 +87,48 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 	return ListKey{}, fmt.Errorf("cannot-generate-key-from-%s", keys)
 }
 
-func yangTypeToGoType(entry *yang.Entry) string {
+func yangTypeToGoType(entry *yang.Entry) (string, error) {
 	// NOTE inspired by https://github.com/openconfig/ygot/blob/master/ytypes/util_types.go#L353
 	switch entry.Type.Kind {
 	case yang.Yint8:
-		return "int8"
+		return "int8", nil
 	case yang.Yint16:
-		return "int16"
+		return "int16", nil
 	case yang.Yint32:
-		return "int32"
+		return "int32", nil
 	case yang.Yint64:
-		return "int64"
+		return "int64", nil
 	case yang.Yuint8:
-		return "uint8"
+		return "uint8", nil
 	case yang.Yuint16:
-		return "uint16"
+		return "uint16", nil
 	case yang.Yuint32:
-		return "uint32"
+		return "uint32", nil
 	case yang.Yuint64:
-		return "uint64"
+		return "uint64", nil
 	case yang.Ybool, yang.Yempty:
-		return "bool"
+		return "bool", nil
 	case yang.Ystring:
-		return "string"
+		return "string", nil
 	case yang.Ydecimal64:
-		return "float64"
+		return "float64", nil
 	case yang.Ybinary:
-		return "[]byte"
+		return "[]byte", nil
 	case yang.Yenum:
-		return "int64"
+		return "int64", nil
 	case yang.Yidentityref:
 		// FIXME this is not enough, eg:
 		// SYSLOG_FACILITY is generated via YGOT as `type E_OpenconfigSystemLogging_SYSLOG_FACILITY int64`
-		// NOTE that these are the ENUMS
-		return entry.Type.IdentityBase.Name
+		// NOTE that PrefixedName returns :SYSLOG_FACILITY
+		//return entry.Type.IdentityBase.PrefixedName()
+		return "", status.Error(codes.Unimplemented, "yang.Yidentityref type is not supported yet")
 	case yang.Yleafref:
 		return findLeafRefType(entry.Type.Path, entry)
 		//case yang.Yunion:
 
 	}
 	// not ideal, but for now we'll take it
-	return "interface{}"
+	return "", status.Error(codes.Unimplemented, fmt.Sprintf("%s type is not supported yet", entry.Type.Kind.String()))
 }
 
 // returns the correct format for an existing value
@@ -180,26 +190,50 @@ func yangTypeToGoEmptyReturnVal(val yang.TypeKind) string {
 	return "nil"
 }
 
-func findLeafRefType(path string, entry *yang.Entry) string {
+func findLeafRefType(path string, entry *yang.Entry) (string, error) {
 
-	// identify how many levels we have to go up the tree
-	lb := strings.Count(path, "../")
-
-	// identify the path to take once we have gone up the tree
-	downward_path := strings.Split(strings.ReplaceAll(path, "../", ""), "/")
-
-	// this is the entry we are moving to
+	var downwardPath = []string{}
 	var cur_entry = entry
-	for i := 0; i < lb; i++ {
-		// we're going up the tree till it's needed
-		cur_entry = cur_entry.Parent
-	}
 
-	for _, k := range downward_path {
+	// if the path is absolute (eg: /t1:cont1a/t1:list2a/t1:name) go back to the root and then descend
+	if path[0:1] == "/" {
+		dp := strings.Split(path[1:len(path)], "/")
+
+		// remove the prefix from the pieces
+		for _, p := range dp {
+			k := strings.Split(p, ":")
+			downwardPath = append(downwardPath, k[1])
+		}
+		// go back till the root
+		for {
+			if cur_entry.Parent != nil {
+				cur_entry = cur_entry.Parent
+			} else {
+				break
+			}
+		}
+
+	} else {
+		// identify how many levels we have to go up the tree
+		lb := strings.Count(path, "../")
+
+		// identify the path to take once we have gone up the tree
+		downwardPath = strings.Split(strings.ReplaceAll(path, "../", ""), "/")
+
+		// this is the entry we are moving to
+
+		for i := 0; i < lb; i++ {
+			// we're going up the tree till it's needed
+			cur_entry = cur_entry.Parent
+		}
+
+	}
+	for _, k := range downwardPath {
 		// and then descending to the leafref path
 		cur_entry = cur_entry.Dir[k]
 	}
 
 	// not simply convert the type
 	return yangTypeToGoType(cur_entry)
+
 }
