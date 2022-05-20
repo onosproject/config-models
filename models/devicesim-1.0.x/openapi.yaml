@@ -745,6 +745,7 @@ components:
           description: References the component name
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         properties:
           $ref: '#/components/schemas/Components_Component_Properties'
@@ -793,6 +794,7 @@ components:
           description: Reference to the property name.
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         state:
           $ref: '#/components/schemas/Components_Component_Properties_Property_State'
@@ -957,6 +959,7 @@ components:
           description: Reference to the name list key
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         state:
           $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
@@ -1016,6 +1019,7 @@ components:
           description: References the configured name of the interface
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         state:
           $ref: '#/components/schemas/Interfaces_Interface_State'
@@ -1636,6 +1640,7 @@ components:
             the logical interface
           title: index
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/index
         state:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State'
@@ -2165,6 +2170,7 @@ components:
             accounting server
           title: event-type
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/event-type
         state:
           $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
@@ -2367,6 +2373,7 @@ components:
           description: References the configured username for the user
           title: username
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/username
       required:
       - username
@@ -2499,6 +2506,7 @@ components:
           description: Reference to the event-type list key
           title: event-type
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/event-type
         state:
           $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
@@ -2579,6 +2587,7 @@ components:
           description: Reference to configured name of the server group
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         servers:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers'
@@ -2633,6 +2642,7 @@ components:
           description: Reference to the configured address of the AAA server
           title: address
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/address
         config:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Config'
@@ -3051,6 +3061,7 @@ components:
           description: Reference to the hostname list key
           title: hostname
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/hostname
         state:
           $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
@@ -3160,6 +3171,7 @@ components:
           description: References the configured address of the DNS server
           title: address
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/address
         config:
           $ref: '#/components/schemas/System_Dns_Servers_Server_Config'
@@ -3289,11 +3301,13 @@ components:
           description: Reference to facility list key
           title: facility
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/facility
         severity:
           description: Reference to severity list key
           title: severity
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/severity
         state:
           $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_State'
@@ -3403,6 +3417,7 @@ components:
           description: Reference to the host list key
           title: host
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/host
         selectors:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors'
@@ -3461,11 +3476,13 @@ components:
           description: Reference to facility list key
           title: facility
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/facility
         severity:
           description: Reference to severity list key
           title: severity
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/severity
         state:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_State'
@@ -3662,6 +3679,7 @@ components:
           description: Reference to auth key-id list key
           title: key-id
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/key-id
         state:
           $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
@@ -3747,6 +3765,7 @@ components:
             NTP server.
           title: address
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/address
         config:
           $ref: '#/components/schemas/System_Ntp_Servers_Server_Config'
@@ -4034,6 +4053,7 @@ components:
           description: The name identifies the controller.
           title: name
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/name
         state:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
@@ -4071,6 +4091,7 @@ components:
           description: Reference to auxiliary id list key
           title: aux-id
           type: string
+          x-go-type: ListKey
           x-leafref: ../config/aux-id
         config:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_Config'
@@ -4232,6 +4253,7 @@ components:
           description: Reference to the process pid key
           title: pid
           type: string
+          x-go-type: ListKey
           x-leafref: ../state/pid
         state:
           $ref: '#/components/schemas/System_Processes_Process_State'
@@ -4546,8 +4568,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated fromdevicesim onos-config
-    model plugin
+  description: OpenAPI 3 specification is generated from devicesim onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -4557,7 +4579,7 @@ openapi: 3.0.0
 paths:
   /devicesim/v1.0.0/{target}/components:
     delete:
-      operationId: deleteComponents_Container
+      operationId: deleteComponents
       responses:
         "200":
           description: DELETE 200 OK
@@ -4605,7 +4627,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/components/component/{name}:
     delete:
-      operationId: deleteComponents_Component_Container
+      operationId: deleteComponents_Component
       responses:
         "200":
           description: DELETE 200 OK
@@ -4644,7 +4666,7 @@ paths:
       summary: POST /components/component
   /devicesim/v1.0.0/{target}/components/component/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Config_Container
+      operationId: deleteComponents_Component_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -4683,7 +4705,7 @@ paths:
       summary: POST /components/component/{name}/config
   /devicesim/v1.0.0/{target}/components/component/{name}/properties:
     delete:
-      operationId: deleteComponents_Component_Properties_Container
+      operationId: deleteComponents_Component_Properties
       responses:
         "200":
           description: DELETE 200 OK
@@ -4747,7 +4769,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}:
     delete:
-      operationId: deleteComponents_Component_Properties_Property_Container
+      operationId: deleteComponents_Component_Properties_Property
       responses:
         "200":
           description: DELETE 200 OK
@@ -4794,7 +4816,7 @@ paths:
       summary: POST /components/component/{name}/properties/property
   /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Properties_Property_Config_Container
+      operationId: deleteComponents_Component_Properties_Property_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -4929,7 +4951,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents:
     delete:
-      operationId: deleteComponents_Component_Subcomponents_Container
+      operationId: deleteComponents_Component_Subcomponents
       responses:
         "200":
           description: DELETE 200 OK
@@ -4993,7 +5015,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}:
     delete:
-      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Container
+      operationId: deleteComponents_Component_Subcomponents_Subcomponent
       responses:
         "200":
           description: DELETE 200 OK
@@ -5040,7 +5062,7 @@ paths:
       summary: POST /components/component/{name}/subcomponents/subcomponent
   /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/config:
     delete:
-      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config_Container
+      operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5122,7 +5144,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/interfaces:
     delete:
-      operationId: deleteInterfaces_Container
+      operationId: deleteInterfaces
       responses:
         "200":
           description: DELETE 200 OK
@@ -5172,7 +5194,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}:
     delete:
-      operationId: deleteInterfaces_Interface_Container
+      operationId: deleteInterfaces_Interface
       responses:
         "200":
           description: DELETE 200 OK
@@ -5211,7 +5233,7 @@ paths:
       summary: POST /interfaces/interface
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/config:
     delete:
-      operationId: deleteInterfaces_Interface_Config_Container
+      operationId: deleteInterfaces_Interface_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5252,7 +5274,7 @@ paths:
       summary: POST /interfaces/interface/{name}/config
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time:
     delete:
-      operationId: deleteInterfaces_Interface_Hold-time_Container
+      operationId: deleteInterfaces_Interface_Hold-time
       responses:
         "200":
           description: DELETE 200 OK
@@ -5293,7 +5315,7 @@ paths:
       summary: POST /interfaces/interface/{name}/hold-time
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/config:
     delete:
-      operationId: deleteInterfaces_Interface_Hold-time_Config_Container
+      operationId: deleteInterfaces_Interface_Hold-time_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5407,7 +5429,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces_Container
+      operationId: deleteInterfaces_Interface_Subinterfaces
       responses:
         "200":
           description: DELETE 200 OK
@@ -5475,7 +5497,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Container
+      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface
       responses:
         "200":
           description: DELETE 200 OK
@@ -5524,7 +5546,7 @@ paths:
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
     delete:
-      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config_Container
+      operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5640,7 +5662,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system:
     delete:
-      operationId: deleteSystem_Container
+      operationId: deleteSystem
       responses:
         "200":
           description: DELETE 200 OK
@@ -5673,7 +5695,7 @@ paths:
       summary: POST /system
   /devicesim/v1.0.0/{target}/system/aaa:
     delete:
-      operationId: deleteSystem_Aaa_Container
+      operationId: deleteSystem_Aaa
       responses:
         "200":
           description: DELETE 200 OK
@@ -5704,7 +5726,7 @@ paths:
       summary: POST /system/aaa
   /devicesim/v1.0.0/{target}/system/aaa/accounting:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Container
+      operationId: deleteSystem_Aaa_Accounting
       responses:
         "200":
           description: DELETE 200 OK
@@ -5735,7 +5757,7 @@ paths:
       summary: POST /system/aaa/accounting
   /devicesim/v1.0.0/{target}/system/aaa/accounting/config:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Config_Container
+      operationId: deleteSystem_Aaa_Accounting_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5766,7 +5788,7 @@ paths:
       summary: POST /system/aaa/accounting/config
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events_Container
+      operationId: deleteSystem_Aaa_Accounting_Events
       responses:
         "200":
           description: DELETE 200 OK
@@ -5816,7 +5838,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events_Event_Container
+      operationId: deleteSystem_Aaa_Accounting_Events_Event
       responses:
         "200":
           description: DELETE 200 OK
@@ -5855,7 +5877,7 @@ paths:
       summary: POST /system/aaa/accounting/events/event
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/config:
     delete:
-      operationId: deleteSystem_Aaa_Accounting_Events_Event_Config_Container
+      operationId: deleteSystem_Aaa_Accounting_Events_Event_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -5936,7 +5958,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Container
+      operationId: deleteSystem_Aaa_Authentication
       responses:
         "200":
           description: DELETE 200 OK
@@ -5967,7 +5989,7 @@ paths:
       summary: POST /system/aaa/authentication
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Admin-user_Container
+      operationId: deleteSystem_Aaa_Authentication_Admin-user
       responses:
         "200":
           description: DELETE 200 OK
@@ -6000,7 +6022,7 @@ paths:
       summary: POST /system/aaa/authentication/admin-user
   /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Admin-user_Config_Container
+      operationId: deleteSystem_Aaa_Authentication_Admin-user_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6048,7 +6070,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Config_Container
+      operationId: deleteSystem_Aaa_Authentication_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6098,7 +6120,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users_Container
+      operationId: deleteSystem_Aaa_Authentication_Users
       responses:
         "200":
           description: DELETE 200 OK
@@ -6146,7 +6168,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users_User_Container
+      operationId: deleteSystem_Aaa_Authentication_Users_User
       responses:
         "200":
           description: DELETE 200 OK
@@ -6185,7 +6207,7 @@ paths:
       summary: POST /system/aaa/authentication/users/user
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/config:
     delete:
-      operationId: deleteSystem_Aaa_Authentication_Users_User_Config_Container
+      operationId: deleteSystem_Aaa_Authentication_Users_User_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6249,7 +6271,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/aaa/authorization:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Container
+      operationId: deleteSystem_Aaa_Authorization
       responses:
         "200":
           description: DELETE 200 OK
@@ -6282,7 +6304,7 @@ paths:
       summary: POST /system/aaa/authorization
   /devicesim/v1.0.0/{target}/system/aaa/authorization/config:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Config_Container
+      operationId: deleteSystem_Aaa_Authorization_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6315,7 +6337,7 @@ paths:
       summary: POST /system/aaa/authorization/config
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events_Container
+      operationId: deleteSystem_Aaa_Authorization_Events
       responses:
         "200":
           description: DELETE 200 OK
@@ -6365,7 +6387,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events_Event_Container
+      operationId: deleteSystem_Aaa_Authorization_Events_Event
       responses:
         "200":
           description: DELETE 200 OK
@@ -6404,7 +6426,7 @@ paths:
       summary: POST /system/aaa/authorization/events/event
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/config:
     delete:
-      operationId: deleteSystem_Aaa_Authorization_Events_Event_Config_Container
+      operationId: deleteSystem_Aaa_Authorization_Events_Event_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6485,7 +6507,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/config:
     delete:
-      operationId: deleteSystem_Aaa_Config_Container
+      operationId: deleteSystem_Aaa_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6516,7 +6538,7 @@ paths:
       summary: POST /system/aaa/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Container
+      operationId: deleteSystem_Aaa_Server-groups
       responses:
         "200":
           description: DELETE 200 OK
@@ -6567,7 +6589,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group
       responses:
         "200":
           description: DELETE 200 OK
@@ -6609,7 +6631,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Config_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6648,7 +6670,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers
       responses:
         "200":
           description: DELETE 200 OK
@@ -6712,7 +6734,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server
       responses:
         "200":
           description: DELETE 200 OK
@@ -6759,7 +6781,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -6807,7 +6829,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
       responses:
         "200":
           description: DELETE 200 OK
@@ -6855,7 +6877,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7005,7 +7027,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
       responses:
         "200":
           description: DELETE 200 OK
@@ -7053,7 +7075,7 @@ paths:
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
     delete:
-      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config_Container
+      operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7177,7 +7199,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/clock:
     delete:
-      operationId: deleteSystem_Clock_Container
+      operationId: deleteSystem_Clock
       responses:
         "200":
           description: DELETE 200 OK
@@ -7208,7 +7230,7 @@ paths:
       summary: POST /system/clock
   /devicesim/v1.0.0/{target}/system/clock/config:
     delete:
-      operationId: deleteSystem_Clock_Config_Container
+      operationId: deleteSystem_Clock_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7256,7 +7278,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/config:
     delete:
-      operationId: deleteSystem_Config_Container
+      operationId: deleteSystem_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7287,7 +7309,7 @@ paths:
       summary: POST /system/config
   /devicesim/v1.0.0/{target}/system/dns:
     delete:
-      operationId: deleteSystem_Dns_Container
+      operationId: deleteSystem_Dns
       responses:
         "200":
           description: DELETE 200 OK
@@ -7318,7 +7340,7 @@ paths:
       summary: POST /system/dns
   /devicesim/v1.0.0/{target}/system/dns/config:
     delete:
-      operationId: deleteSystem_Dns_Config_Container
+      operationId: deleteSystem_Dns_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7349,7 +7371,7 @@ paths:
       summary: POST /system/dns/config
   /devicesim/v1.0.0/{target}/system/dns/host-entries:
     delete:
-      operationId: deleteSystem_Dns_Host-entries_Container
+      operationId: deleteSystem_Dns_Host-entries
       responses:
         "200":
           description: DELETE 200 OK
@@ -7397,7 +7419,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
     delete:
-      operationId: deleteSystem_Dns_Host-entries_Host-entry_Container
+      operationId: deleteSystem_Dns_Host-entries_Host-entry
       responses:
         "200":
           description: DELETE 200 OK
@@ -7436,7 +7458,7 @@ paths:
       summary: POST /system/dns/host-entries/host-entry
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/config:
     delete:
-      operationId: deleteSystem_Dns_Host-entries_Host-entry_Config_Container
+      operationId: deleteSystem_Dns_Host-entries_Host-entry_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7500,7 +7522,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/dns/servers:
     delete:
-      operationId: deleteSystem_Dns_Servers_Container
+      operationId: deleteSystem_Dns_Servers
       responses:
         "200":
           description: DELETE 200 OK
@@ -7562,7 +7584,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Dns_Servers_Server_Container
+      operationId: deleteSystem_Dns_Servers_Server
       responses:
         "200":
           description: DELETE 200 OK
@@ -7615,7 +7637,7 @@ paths:
       summary: POST /system/dns/servers/server
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Dns_Servers_Server_Config_Container
+      operationId: deleteSystem_Dns_Servers_Server_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7696,7 +7718,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging:
     delete:
-      operationId: deleteSystem_Logging_Container
+      operationId: deleteSystem_Logging
       responses:
         "200":
           description: DELETE 200 OK
@@ -7727,7 +7749,7 @@ paths:
       summary: POST /system/logging
   /devicesim/v1.0.0/{target}/system/logging/console:
     delete:
-      operationId: deleteSystem_Logging_Console_Container
+      operationId: deleteSystem_Logging_Console
       responses:
         "200":
           description: DELETE 200 OK
@@ -7760,7 +7782,7 @@ paths:
       summary: POST /system/logging/console
   /devicesim/v1.0.0/{target}/system/logging/console/config:
     delete:
-      operationId: deleteSystem_Logging_Console_Config_Container
+      operationId: deleteSystem_Logging_Console_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7791,7 +7813,7 @@ paths:
       summary: POST /system/logging/console/config
   /devicesim/v1.0.0/{target}/system/logging/console/selectors:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors_Container
+      operationId: deleteSystem_Logging_Console_Selectors
       responses:
         "200":
           description: DELETE 200 OK
@@ -7839,7 +7861,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors_Selector_Container
+      operationId: deleteSystem_Logging_Console_Selectors_Selector
       responses:
         "200":
           description: DELETE 200 OK
@@ -7886,7 +7908,7 @@ paths:
       summary: POST /system/logging/console/selectors/selector
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/config:
     delete:
-      operationId: deleteSystem_Logging_Console_Selectors_Selector_Config_Container
+      operationId: deleteSystem_Logging_Console_Selectors_Selector_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -7985,7 +8007,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Container
+      operationId: deleteSystem_Logging_Remote-servers
       responses:
         "200":
           description: DELETE 200 OK
@@ -8033,7 +8055,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Container
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server
       responses:
         "200":
           description: DELETE 200 OK
@@ -8072,7 +8094,7 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/config:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config_Container
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8111,7 +8133,7 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Container
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors
       responses:
         "200":
           description: DELETE 200 OK
@@ -8176,7 +8198,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Container
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
       responses:
         "200":
           description: DELETE 200 OK
@@ -8232,7 +8254,7 @@ paths:
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
     delete:
-      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config_Container
+      operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8355,7 +8377,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/memory:
     delete:
-      operationId: deleteSystem_Memory_Container
+      operationId: deleteSystem_Memory
       responses:
         "200":
           description: DELETE 200 OK
@@ -8386,7 +8408,7 @@ paths:
       summary: POST /system/memory
   /devicesim/v1.0.0/{target}/system/memory/config:
     delete:
-      operationId: deleteSystem_Memory_Config_Container
+      operationId: deleteSystem_Memory_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8434,7 +8456,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp:
     delete:
-      operationId: deleteSystem_Ntp_Container
+      operationId: deleteSystem_Ntp
       responses:
         "200":
           description: DELETE 200 OK
@@ -8465,7 +8487,7 @@ paths:
       summary: POST /system/ntp
   /devicesim/v1.0.0/{target}/system/ntp/config:
     delete:
-      operationId: deleteSystem_Ntp_Config_Container
+      operationId: deleteSystem_Ntp_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8496,7 +8518,7 @@ paths:
       summary: POST /system/ntp/config
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys_Container
+      operationId: deleteSystem_Ntp_Ntp-keys
       responses:
         "200":
           description: DELETE 200 OK
@@ -8544,7 +8566,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Container
+      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key
       responses:
         "200":
           description: DELETE 200 OK
@@ -8583,7 +8605,7 @@ paths:
       summary: POST /system/ntp/ntp-keys/ntp-key
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
     delete:
-      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config_Container
+      operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8647,7 +8669,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/ntp/servers:
     delete:
-      operationId: deleteSystem_Ntp_Servers_Container
+      operationId: deleteSystem_Ntp_Servers
       responses:
         "200":
           description: DELETE 200 OK
@@ -8699,7 +8721,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}:
     delete:
-      operationId: deleteSystem_Ntp_Servers_Server_Container
+      operationId: deleteSystem_Ntp_Servers_Server
       responses:
         "200":
           description: DELETE 200 OK
@@ -8742,7 +8764,7 @@ paths:
       summary: POST /system/ntp/servers/server
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/config:
     delete:
-      operationId: deleteSystem_Ntp_Servers_Server_Config_Container
+      operationId: deleteSystem_Ntp_Servers_Server_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8823,7 +8845,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow:
     delete:
-      operationId: deleteSystem_Openflow_Container
+      operationId: deleteSystem_Openflow
       responses:
         "200":
           description: DELETE 200 OK
@@ -8854,7 +8876,7 @@ paths:
       summary: POST /system/openflow
   /devicesim/v1.0.0/{target}/system/openflow/agent:
     delete:
-      operationId: deleteSystem_Openflow_Agent_Container
+      operationId: deleteSystem_Openflow_Agent
       responses:
         "200":
           description: DELETE 200 OK
@@ -8885,7 +8907,7 @@ paths:
       summary: POST /system/openflow/agent
   /devicesim/v1.0.0/{target}/system/openflow/agent/config:
     delete:
-      operationId: deleteSystem_Openflow_Agent_Config_Container
+      operationId: deleteSystem_Openflow_Agent_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -8933,7 +8955,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Container
+      operationId: deleteSystem_Openflow_Controllers
       responses:
         "200":
           description: DELETE 200 OK
@@ -8983,7 +9005,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Container
+      operationId: deleteSystem_Openflow_Controllers_Controller
       responses:
         "200":
           description: DELETE 200 OK
@@ -9024,7 +9046,7 @@ paths:
       summary: POST /system/openflow/controllers/controller
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/config:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Config_Container
+      operationId: deleteSystem_Openflow_Controllers_Controller_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -9063,7 +9085,7 @@ paths:
       summary: POST /system/openflow/controllers/controller/{name}/config
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Container
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections
       responses:
         "200":
           description: DELETE 200 OK
@@ -9132,7 +9154,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Container
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection
       responses:
         "200":
           description: DELETE 200 OK
@@ -9184,7 +9206,7 @@ paths:
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
     delete:
-      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config_Container
+      operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -9293,7 +9315,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/processes:
     delete:
-      operationId: deleteSystem_Processes_Container
+      operationId: deleteSystem_Processes
       responses:
         "200":
           description: DELETE 200 OK
@@ -9391,7 +9413,7 @@ paths:
       required: true
   /devicesim/v1.0.0/{target}/system/ssh-server:
     delete:
-      operationId: deleteSystem_Ssh-server_Container
+      operationId: deleteSystem_Ssh-server
       responses:
         "200":
           description: DELETE 200 OK
@@ -9422,7 +9444,7 @@ paths:
       summary: POST /system/ssh-server
   /devicesim/v1.0.0/{target}/system/ssh-server/config:
     delete:
-      operationId: deleteSystem_Ssh-server_Config_Container
+      operationId: deleteSystem_Ssh-server_Config
       responses:
         "200":
           description: DELETE 200 OK
@@ -9487,7 +9509,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/telnet-server:
     delete:
-      operationId: deleteSystem_Telnet-server_Container
+      operationId: deleteSystem_Telnet-server
       responses:
         "200":
           description: DELETE 200 OK
@@ -9518,7 +9540,7 @@ paths:
       summary: POST /system/telnet-server
   /devicesim/v1.0.0/{target}/system/telnet-server/config:
     delete:
-      operationId: deleteSystem_Telnet-server_Config_Container
+      operationId: deleteSystem_Telnet-server_Config
       responses:
         "200":
           description: DELETE 200 OK

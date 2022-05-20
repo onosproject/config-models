@@ -47,10 +47,6 @@ var rOnIndex = regexp.MustCompile(matchOnIndex)
 var roPathMap path.ReadOnlyPathMap
 var rwPathMap path.ReadWritePathMap
 
-// gRPC path lists; derived from native path maps
-var roPaths []*admin.ReadOnlyPath
-var rwPaths []*admin.ReadWritePath
-
 func getPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValue, error) {
 	var f interface{}
 	err := json.Unmarshal(genericJSON, &f)

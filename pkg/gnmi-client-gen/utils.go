@@ -197,7 +197,7 @@ func findLeafRefType(path string, entry *yang.Entry) (string, error) {
 
 	// if the path is absolute (eg: /t1:cont1a/t1:list2a/t1:name) go back to the root and then descend
 	if path[0:1] == "/" {
-		dp := strings.Split(path[1:len(path)], "/")
+		dp := strings.Split(path[1:], "/")
 
 		// remove the prefix from the pieces
 		for _, p := range dp {

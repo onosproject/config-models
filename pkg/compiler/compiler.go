@@ -29,12 +29,11 @@ const (
 	versionFile        = "VERSION"
 	mainTemplate       = "main.go.tpl"
 	modelTemplate      = "model.go.tpl"
-	pathsUtilsTemplate = "paths.go.tpl"
 	gomodTemplate      = "go.mod.tpl"
 	makefileTemplate   = "Makefile.tpl"
 	dockerfileTemplate = "Dockerfile.tpl"
 	openapiGenTemplate = "openapi-gen.go.tpl"
-	gnmiGenTemplate    = "gnmi-gen.go.tpl"
+	//gnmiGenTemplate    = "gnmi-gen.go.tpl"
 )
 
 // NewCompiler creates a new config model compiler
@@ -282,9 +281,6 @@ func (c *ModelCompiler) generatePluginArtifacts(path string) error {
 	if err := c.generateModel(path); err != nil {
 		return err
 	}
-	if err := c.generatePathsExtraction(path); err != nil {
-		return err
-	}
 
 	// Generate go.mod from template
 	if err := c.generateGoModule(path); err != nil {
@@ -317,14 +313,6 @@ func (c *ModelCompiler) generateModel(path string) error {
 	log.Infof("Generating plugin model '%s'", modelFile)
 	c.createDir(modelDir)
 	return c.applyTemplate(modelTemplate, c.getTemplatePath(modelTemplate), modelFile)
-}
-
-func (c *ModelCompiler) generatePathsExtraction(path string) error {
-	mainDir := filepath.Join(path, "plugin")
-	pathsFile := filepath.Join(mainDir, "paths.go")
-	log.Infof("Generating plugin paths extraction utility '%s'", pathsFile)
-	c.createDir(mainDir)
-	return c.applyTemplate(pathsUtilsTemplate, c.getTemplatePath(pathsUtilsTemplate), pathsFile)
 }
 
 func (c *ModelCompiler) generateGoModule(path string) error {
