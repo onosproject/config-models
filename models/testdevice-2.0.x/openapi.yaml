@@ -184,6 +184,7 @@ components:
           minLength: 4
           title: name
           type: string
+          x-go-type: ListKey
         rx-power:
           description: Receive power
           maximum: 30
@@ -260,12 +261,14 @@ components:
           minimum: 0
           title: index1
           type: integer
+          x-go-type: ListKey
         index2:
           description: The list index
           maximum: 255
           minimum: 0
           title: index2
           type: integer
+          x-go-type: ListKey
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
@@ -306,8 +309,8 @@ info:
     email: info@opennetworking.org
     name: Open Networking Foundation
     url: https://opennetworking.org
-  description: This OpenAPI 3 specification is generated fromtestdevice onos-config
-    model plugin
+  description: OpenAPI 3 specification is generated from testdevice onos-config model
+    plugin
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
@@ -317,7 +320,7 @@ openapi: 3.0.0
 paths:
   /testdevice/v2.0.x/{target}/cont1a:
     delete:
-      operationId: deleteCont1a_Container
+      operationId: deleteCont1a
       responses:
         "200":
           description: DELETE 200 OK
@@ -348,7 +351,7 @@ paths:
       summary: POST /cont1a
   /testdevice/v2.0.x/{target}/cont1a/cont2a:
     delete:
-      operationId: deleteCont1a_Cont2a_Container
+      operationId: deleteCont1a_Cont2a
       responses:
         "200":
           description: DELETE 200 OK
@@ -379,7 +382,7 @@ paths:
       summary: POST /cont1a/cont2a
   /testdevice/v2.0.x/{target}/cont1a/cont2d:
     delete:
-      operationId: deleteCont1a_Cont2d_Container
+      operationId: deleteCont1a_Cont2d
       responses:
         "200":
           description: DELETE 200 OK
@@ -427,7 +430,7 @@ paths:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.x/{target}/cont1a/list2a/{name}:
     delete:
-      operationId: deleteCont1a_List2a_Container
+      operationId: deleteCont1a_List2a
       responses:
         "200":
           description: DELETE 200 OK
