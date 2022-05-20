@@ -6,6 +6,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/onosproject/config-models v0.9.29
 	github.com/onosproject/onos-api/go v0.9.11
+	github.com/onosproject/onos-config v0.10.34 // indirect
 	github.com/onosproject/onos-lib-go v0.8.13
 	github.com/openconfig/gnmi v0.0.0-20210914185457-51254b657b7d
 	github.com/openconfig/goyang v0.4.0
