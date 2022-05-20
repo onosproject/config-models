@@ -46,7 +46,7 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
 	go mod vendor
 
-image: mod-update openapi gnmi-gen # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+image: mod-update openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION} ${DOCKER_REPOSITORY}testdevice-1.0.x:${LATEST_VERSION}
 
