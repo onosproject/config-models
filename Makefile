@@ -67,7 +67,7 @@ all: # @HELP build all libraries
 all: build
 
 model-compiler-docker: mod-update # @HELP build model-compiler Docker image
-	docker build ${PLATFORM} . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
+	DOCKER_BUILDKIT=1 docker build ${PLATFORM} . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 images: model-compiler-docker
 
