@@ -2,12 +2,18 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+# syntax=docker/dockerfile:1.3
+
 FROM onosproject/golang-build:v2 as build
 
 ENV GO111MODULE=on
+
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    go install github.com/openconfig/ygot/generator@v0.14.0
 COPY . /go/src/github.com/onosproject/config-models
-RUN cd /go/src/github.com/onosproject/config-models && make build && \
-    go get github.com/openconfig/ygot/generator@v0.14.0
+WORKDIR /go/src/github.com/onosproject/config-models
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    go build -v -mod=vendor -o build/_output/model-compiler ./cmd/model-compiler
 
 FROM alpine:3.14
 RUN apk add libc6-compat libc-dev gcc libxml2-dev libxslt-dev python3-dev py3-pip && pip3 install pyang

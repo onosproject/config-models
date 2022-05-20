@@ -10,16 +10,21 @@ export GO111MODULE=on
 
 KIND_CLUSTER_NAME   ?= kind
 MODEL_COMPILER_VERSION ?= latest
+PLATFORM ?= --platform linux/x86_64
+
+mod-update: # @HELP Download the dependencies to the vendor folder
+	go mod tidy
+	go mod vendor
 
 build: # @HELP build all libraries
 build:
-	go build -o build/_output/model-compiler ./cmd/model-compiler
+	go build -mod=vendor -o build/_output/model-compiler ./cmd/model-compiler
 
 build-tools:=$(shell if [ ! -d "./build/build-tools" ]; then cd build && git clone https://github.com/onosproject/build-tools.git; fi)
 include ./build/build-tools/make/onf-common.mk
 
 test: # @HELP run go test on projects
-test: build linters license gofmt images models models-version-check
+test: mod-update build linters license gofmt images models models-version-check
 	go test ./pkg/...
 	@bash test/generated.sh
 	@cd models && for model in *; do pushd $$model; make test; popd; done
@@ -27,7 +32,7 @@ test: build linters license gofmt images models models-version-check
 .PHONY: models
 models: # @HELP make demo and test device models
 models:
-	@cd models && for model in *; do echo "Generating $$model:"; docker run --platform linux/x86_64 -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
+	@cd models && for model in *; do echo "Generating $$model:"; docker run ${PLATFORM} -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
 
 models-openapi: # @HELP generates the openapi specs for the models
 	@cd models && for model in *; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
@@ -53,7 +58,7 @@ kind-models:
 	@cd models && for model in *; do pushd $$model; make kind; popd; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: deps build linters license images models
+jenkins-test: deps mod-update build linters license images models
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do pushd $$model; make test; popd; done
@@ -61,8 +66,8 @@ jenkins-test: deps build linters license images models
 all: # @HELP build all libraries
 all: build
 
-model-compiler-docker: # @HELP build model-compiler Docker image
-	docker build --platform linux/x86_64 . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
+model-compiler-docker: mod-update # @HELP build model-compiler Docker image
+	DOCKER_BUILDKIT=1 docker build ${PLATFORM} . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 images: model-compiler-docker
 
