@@ -60,8 +60,15 @@ endif
 kind-models:
 	@cd models && for model in *; do pushd $$model; make kind; popd; done
 
+check-models-tag: # @HELP check that the
+	@make -C models/ric-1.x check-tag
+	@make -C models/e2node-1.x check-tag
+	@make -C models/devicesim-1.0.x check-tag
+	@make -C models/testdevice-1.0.x check-tag
+	@make -C models/testdevice-2.0.x check-tag
+
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: deps mod-update build linters license images models
+jenkins-test: deps mod-update build linters license check-models-tag images models
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do pushd $$model; make test; popd; done
