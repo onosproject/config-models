@@ -10,7 +10,7 @@ DOCKER_REPOSITORY ?= onosproject/
 BASE_VERSION ?= $(shell cat ./VERSION)
 VERSION           ?= ${BASE_VERSION}-ric-1.0.0
 LATEST_VERSION           ?= ${BASE_VERSION}-ric-latest
-GO_TAG ?= models/ric-1.0.0/${BASE_VERSION}
+GO_TAG ?= models/ric-1.0.0/v${BASE_VERSION}
 KIND_CLUSTER_NAME ?= kind
 HAS_CHANGED=$(shell git --no-pager diff HEAD~1 HEAD . | wc -l) # check if the content of this folder is different than the parent commit
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
