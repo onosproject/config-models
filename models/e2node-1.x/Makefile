@@ -10,6 +10,7 @@ DOCKER_REPOSITORY ?= onosproject/
 BASE_VERSION ?= $(shell cat ./VERSION)
 VERSION           ?= ${BASE_VERSION}-e2node-1.0.0
 LATEST_VERSION           ?= ${BASE_VERSION}-e2node-latest
+GO_TAG ?= models/e2node-1.0.0/${BASE_VERSION}
 KIND_CLUSTER_NAME ?= kind
 HAS_CHANGED=$(shell git --no-pager diff HEAD~1 HEAD . | wc -l) # check if the content of this folder is different than the parent commit
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
@@ -62,10 +63,8 @@ repo-tag:
 ifeq ($(IS_RELEASED_VERSION), true)
 ifneq ("$(HAS_CHANGED)", "0 ")
 	NEW_VERSION=${VERSION} ../../build/build-tools/tag-collision-reject
-	git tag ${VERSION}
-	git push origin ${VERSION}
-	git tag v${VERSION}
-	git push origin v${VERSION}
+	git tag ${GO_TAG}
+	git push origin ${GO_TAG}
 else
 	@echo "No changes, nothing to tag"
 endif
