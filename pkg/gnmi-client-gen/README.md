@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022-present Intel Corporation
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # gNMI Client Gen
 
 `gnmi-client-gen` is a utility to generate a `gNMI` client starting from the `yang` models.
