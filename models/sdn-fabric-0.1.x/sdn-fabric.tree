@@ -1,13 +1,13 @@
 module: onf-switch
   +--rw switch* [switch-id]
-     +--rw switch-id       inet:domain-name
-     +--rw display-name?   string
-     +--rw description?    string
+     +--rw switch-id             inet:domain-name
+     +--rw display-name?         string
+     +--rw description?          string
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
      |  +--rw value            string
-     +--rw model           -> /sm:switch-model/switch-model-id
-     +--rw role            enumeration
+     +--rw model                 -> /sm:switch-model/switch-model-id
+     +--rw role                  enumeration
      +--rw management
      |  +--rw address?       inet:ipv4-address-no-zone
      |  +--rw port-number?   inet:port-number
@@ -17,14 +17,22 @@ module: onf-switch
      |  +--rw display-name?         string
      |  +--rw description?          string
      |  +--rw speed?                identityref
-     |  +--rw dhcp-connect-point*   inet:ipv4-address-no-zone
+     |  +--rw dhcp-connect-point?   -> ../../dhcp-connect-point/dhcp-id
+     |  +--rw vlans
+     |     +--rw untagged?   -> ../../../vlan/vlan-id
+     |     +--rw tagged*     -> ../../../vlan/vlan-id
      +--rw switch-pair
-        +--rw cage-number?      -> ../../port/cage-number
-        +--rw channel-number?   -> ../../port/channel-number
-        +--rw paired-switch
-           +--rw switch-b          -> /switch/switch-id
-           +--rw cage-number       -> /switch/port/cage-number
-           +--rw channel-number    -> /switch/port/channel-number
+     |  +--rw cage-number?      -> ../../port/cage-number
+     |  +--rw channel-number?   -> ../../port/channel-number
+     |  +--rw paired-switch?    -> /switch/switch-id
+     +--rw vlan* [vlan-id]
+     |  +--rw vlan-id         st:vlan
+     |  +--rw display-name?   string
+     |  +--rw description?    string
+     |  +--rw subnet          inet:ipv4-prefix
+     +--rw dhcp-connect-point* [dhcp-id]
+        +--rw dhcp-id          yt:yang-identifier
+        +--rw connect-point*   inet:ipv4-address-no-zone
 
 module: onf-switch-model
   +--rw switch-model* [switch-model-id]
@@ -42,13 +50,6 @@ module: onf-switch-model
         +--rw display-name?     string
         +--rw description?      string
         +--rw speeds*           identityref
-
-module: onf-vlan
-  +--rw vlan* [vlan-id]
-     +--rw vlan-id         st:vlan
-     +--rw display-name?   string
-     +--rw description?    string
-     +--rw subnet          inet:ipv4-prefix
 
 module: onf-route
   +--rw route* [route-id]

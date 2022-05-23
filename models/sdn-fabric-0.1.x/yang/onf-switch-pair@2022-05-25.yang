@@ -11,12 +11,14 @@ submodule onf-switch-pair {
   contact "ROC Engineering";
   description "Configuration of switch pairs";
 
-  revision "2022-05-10" {
+  revision "2022-05-25" {
     description "Initial Version";
     reference "ROC SD-Fabric Notes";
   }
 
   grouping switch-pair-grouping {
+    // TODO: consider moving this definition under port with guardrail that
+    //  only one port can have a paired switch
     container switch-pair {
       leaf cage-number {
           type leafref {
@@ -32,32 +34,11 @@ submodule onf-switch-pair {
           description "Port channel number used for Switch A";
       }
 
-      container paired-switch {
-        leaf switch-b {
-          type leafref {
-            path "/sw:switch/sw:switch-id";
-          }
-          mandatory true;
-          description "A switch to pair with switch-a";
+      leaf paired-switch {
+        type leafref {
+          path "/sw:switch/sw:switch-id";
         }
-
-        leaf cage-number {
-          type leafref {
-            path "/sw:switch/sw:port/sw:cage-number";
-          }
-          mandatory true;
-          description "Port cage number used for connecting to ";
-        }
-
-        leaf channel-number {
-          type leafref {
-            path "/sw:switch/sw:port/sw:channel-number";
-          }
-          mandatory true;
-          description "Port channel number used for Switch A";
-        }
-
-        description "details of the switch paired with this one";
+        description "Paired switch identifier";
       }
 
       description "A Switch pairing. A switch can participate on 0-1 pairings";

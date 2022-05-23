@@ -9,16 +9,17 @@ module onf-switch {
     import onf-sdn-fabric-types { prefix st; }
     import onf-switch-model { prefix sm; }
     import ietf-inet-types{ prefix inet; }
+    import ietf-yang-types{ prefix yt; }
 
     include onf-switch-port;
     include onf-switch-pair;
-    include onf-switch-port-dhcp;
+    include onf-switch-vlan;
 
     organization "Intel Corporation";
     contact "ROC Engineering";
     description "Configuration of switch components";
 
-    revision "2022-05-10" {
+    revision "2022-05-25" {
         description "Initial Version";
         reference "ROC SD-Fabric Notes";
     }
@@ -80,5 +81,20 @@ module onf-switch {
       uses ports-grouping;
 
       uses switch-pair-grouping;
+
+      uses vlan-grouping;
+
+      list dhcp-connect-point {
+        key dhcp-id;
+        leaf dhcp-id {
+          type yt:yang-identifier;
+          description "id of the DHCP CP collection";
+        }
+        leaf-list connect-point {
+          type inet:ipv4-address-no-zone;
+          description "a list of ip addresses";
+        }
+        description "A collection of DHCP endpoints";
+      }
   }
 }

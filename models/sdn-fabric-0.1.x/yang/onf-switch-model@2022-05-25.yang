@@ -15,7 +15,7 @@ module onf-switch-model {
       To generate JSON from this use command
       pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
 
-  revision "2022-05-10" {
+  revision "2022-05-25" {
       description "Initial Version";
       reference "ROC SD-Fabric Notes";
   }

@@ -8,13 +8,13 @@ submodule onf-switch-port {
   import onf-sdn-fabric-types { prefix st; }
   import onf-switch-model { prefix sm; }
 
-  include onf-switch-port-dhcp;
+  include onf-switch-vlan;
 
   organization "Intel Corporation";
   contact "ROC Engineering";
   description "Configuration of port within switch";
 
-  revision "2022-05-10" {
+  revision "2022-05-25" {
     description "Initial Version";
     reference "ROC SD-Fabric Notes";
   }
@@ -47,7 +47,29 @@ submodule onf-switch-port {
         description "configured port speed";
       }
 
-      uses dhcp;
+      leaf dhcp-connect-point {
+        type leafref {
+          path "../../sw:dhcp-connect-point/sw:dhcp-id";
+        }
+        description "Reference to DHCP connect point";
+      }
+
+      container vlans {
+        leaf untagged {
+          type leafref {
+            path "../../../sw:vlan/sw:vlan-id";
+          }
+          default 1;
+          description "vlan for untagged packets";
+        }
+        leaf-list tagged {
+          type leafref {
+            path "../../../sw:vlan/sw:vlan-id";
+          }
+          description "multiple tagged vlans";
+        }
+        description "untagged and tagged vlans per port";
+      }
     }
     description "ports grouping";
   }

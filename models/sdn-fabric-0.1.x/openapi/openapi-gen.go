@@ -1,3 +1,4 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
 // SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 //
 // SPDX-License-Identifier: Apache-2.0
@@ -8,7 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
-	"github.com/onosproject/config-models/models/sdn-fabric/api"
+	"github.com/onosproject/config-models/models/sdn-fabric-0.1.x/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
 	"io/ioutil"
 	"os"
@@ -27,8 +28,8 @@ func main() {
 
 	settings := openapi_gen.ApiGenSettings{
 		ModelType:    "sdn-fabric",
-		ModelVersion: "0.1.0",
-		Title:        "sdn-fabric-0.1.0",
+		ModelVersion: "0.1.x",
+		Title:        "sdn-fabric-0.1.x",
 		TargetAlias:  "fabric-id",
 	}
 

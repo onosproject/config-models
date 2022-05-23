@@ -1,0 +1,40 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+submodule onf-switch-vlan {
+  belongs-to onf-switch { prefix sw; }
+
+  import onf-sdn-fabric-types { prefix st; }
+  import ietf-inet-types { prefix inet; }
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of VLAN";
+
+  revision "2022-05-25" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
+
+  grouping vlan-grouping {
+    list vlan {
+      key vlan-id;
+
+      leaf vlan-id {
+        type st:vlan;
+        description "the VLAN ID";
+      }
+
+      uses st:desc-display-name;
+
+      leaf subnet {
+        type inet:ipv4-prefix;
+        mandatory true;
+        description "Network subnet for VLAN";
+      }
+      description "a list of VLANs";
+    }
+    description "vlan definition within a switch";
+  }
+}

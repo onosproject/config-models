@@ -13,7 +13,7 @@ module onf-route {
     contact "ROC Engineering";
     description "Configuration of routes";
 
-    revision "2022-05-10" {
+    revision "2022-05-25" {
         description "Initial Version";
         reference "ROC SD-Fabric Notes";
     }

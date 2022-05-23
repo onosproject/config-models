@@ -12,7 +12,7 @@ module onf-sdn-fabric-types {
   contact "ROC Engineering";
   description "A set of base types for SDN Fabric modeling.";
 
-  revision "2022-05-10" {
+  revision "2022-05-25" {
     description "SDN Fabric Base Types";
     reference "RFC 6087";
   }
