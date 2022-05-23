@@ -33,7 +33,7 @@ const (
 	makefileTemplate   = "Makefile.tpl"
 	dockerfileTemplate = "Dockerfile.tpl"
 	openapiGenTemplate = "openapi-gen.go.tpl"
-	//gnmiGenTemplate    = "gnmi-gen.go.tpl"
+	gnmiGenTemplate    = "gnmi-gen.go.tpl"
 )
 
 // NewCompiler creates a new config model compiler
@@ -133,12 +133,12 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
-	// Generate gNMI Client Generator
-	//err = c.generateGnmiClientGenerator(path)
-	//if err != nil {
-	//	log.Errorf("Unable to generate gNMI Client Generator: %+v", err)
-	//	return err
-	//}
+	//Generate gNMI Client Generator
+	err = c.generateGnmiClientGenerator(path)
+	if err != nil {
+		log.Errorf("Unable to generate gNMI Client Generator: %+v", err)
+		return err
+	}
 
 	// Now generate the gNMI client itself
 	//err = c.generateGnmiClient(path)
@@ -346,17 +346,16 @@ func (c *ModelCompiler) generateOpenApi(path string) error {
 	return c.applyTemplate(openapiGenTemplate, c.getTemplatePath(openapiGenTemplate), openapiGenFile)
 }
 
-// NOTE we need to release config-models so that we can reference github.com/onosproject/config-models/pkg/gnmi-client-gen
-//func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
-//	// the Schema we need to import is generated at runtime, so we need to generate the tool
-//	// to import such schema and generate the OpenApi specs
-//	dir := filepath.Join(path, "gnmi-gen")
-//	gnmiGen := filepath.Join(dir, "gnmi-gen.go")
-//	c.createDir(dir)
-//
-//	log.Infof("Generating plugin GnmiGen file '%s'", gnmiGen)
-//	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
-//}
+func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
+	// the Schema we need to import is generated at runtime, so we need to generate the tool
+	// to import such schema and generate the OpenApi specs
+	dir := filepath.Join(path, "gnmi-gen")
+	gnmiGen := filepath.Join(dir, "gnmi-gen.go")
+	c.createDir(dir)
+
+	log.Infof("Generating plugin GnmiGen file '%s'", gnmiGen)
+	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
+}
 
 //func (c *ModelCompiler) generateGnmiClient(path string) error {
 //	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
