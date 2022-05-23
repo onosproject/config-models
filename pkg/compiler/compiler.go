@@ -33,6 +33,7 @@ const (
 	makefileTemplate   = "Makefile.tpl"
 	dockerfileTemplate = "Dockerfile.tpl"
 	openapiGenTemplate = "openapi-gen.go.tpl"
+	//gnmiGenTemplate    = "gnmi-gen.go.tpl"
 )
 
 // NewCompiler creates a new config model compiler
@@ -131,6 +132,20 @@ func (c *ModelCompiler) Compile(path string) error {
 		log.Errorf("Unable to generate OpenApi specs: %+v", err)
 		return err
 	}
+
+	// Generate gNMI Client Generator
+	//err = c.generateGnmiClientGenerator(path)
+	//if err != nil {
+	//	log.Errorf("Unable to generate gNMI Client Generator: %+v", err)
+	//	return err
+	//}
+
+	// Now generate the gNMI client itself
+	//err = c.generateGnmiClient(path)
+	//if err != nil {
+	//	log.Errorf("Unable to generate gNMI Client: %+v", err)
+	//	return err
+	//}
 
 	return nil
 }
@@ -318,10 +333,11 @@ func (c *ModelCompiler) generateDockerfile(path string) error {
 	return c.applyTemplate(dockerfileTemplate, c.getTemplatePath(dockerfileTemplate), dockerfileFile)
 }
 
+// TODO we should be able to run this generated code right after we generate it,
+// so that we can remove a step from `make models-images`
 func (c *ModelCompiler) generateOpenApi(path string) error {
 	// the Schema we need to import is generated at runtime, so we need to generate the tool
 	// to import such schema and generate the OpenApi specs
-
 	dir := filepath.Join(path, "openapi")
 	openapiGenFile := filepath.Join(dir, "openapi-gen.go")
 	c.createDir(dir)
@@ -329,3 +345,36 @@ func (c *ModelCompiler) generateOpenApi(path string) error {
 	log.Infof("Generating plugin OpenApi Gen file '%s'", openapiGenFile)
 	return c.applyTemplate(openapiGenTemplate, c.getTemplatePath(openapiGenTemplate), openapiGenFile)
 }
+
+// NOTE we need to release config-models so that we can reference github.com/onosproject/config-models/pkg/gnmi-client-gen
+//func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
+//	// the Schema we need to import is generated at runtime, so we need to generate the tool
+//	// to import such schema and generate the OpenApi specs
+//	dir := filepath.Join(path, "gnmi-gen")
+//	gnmiGen := filepath.Join(dir, "gnmi-gen.go")
+//	c.createDir(dir)
+//
+//	log.Infof("Generating plugin GnmiGen file '%s'", gnmiGen)
+//	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
+//}
+
+//func (c *ModelCompiler) generateGnmiClient(path string) error {
+//	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
+//
+//	args := []string{
+//		"run",
+//		generatorPath,
+//		"--debug",
+//	}
+//
+//	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
+//	cmd := exec.Command("go", args...)
+//	cmd.Env = os.Environ()
+//	cmd.Stdout = os.Stdout
+//	cmd.Stderr = os.Stderr
+//	err := cmd.Run()
+//	if err != nil {
+//		return err
+//	}
+//	return nil
+//}

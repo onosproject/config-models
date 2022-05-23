@@ -56,6 +56,10 @@ image: mod-update openapi # @HELP Build the docker image (available parameters: 
 openapi: mod-update # @HELP Generate OpenApi specs
 	go run openapi/openapi-gen.go -o openapi.yaml
 
+.PHONY: gnmi-gen
+gnmi-gen: mod-update # @HELP Generate gNMI Client
+	go run gnmi-gen/gnmi-gen.go
+
 test: mod-update # @HELP Run the unit tests
 	go test ./...
 
