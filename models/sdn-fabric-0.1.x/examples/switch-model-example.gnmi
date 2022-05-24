@@ -1,0 +1,48 @@
+prefix: <
+    target: 'new-fabric',
+    elem: <name: 'switch-model' key:<key:'switch-model-id' value:'super-switch-1610' >>
+>
+update: <
+  path: <
+    elem: <name: 'switch-model-id' >
+  >
+  val: <string_val: 'super-switch-1610'>
+>
+update: <
+  path: <
+    elem: <name: 'form-factor' >
+  >
+  val: <string_val: 'pizza-box'>
+>
+update: <
+  path: <
+    elem: <name: 'pipeline' >
+  >
+  val: <string_val: 'dual'>
+>
+update: <
+  path: <
+    elem: <name: 'attribute' key:<key:'attribute-key' value:'vendor' >>
+    elem: <name: 'value' >
+  >
+  val: <string_val: 'Super Switch'>
+>
+update: <
+  path: <
+    elem: <name: 'attribute' key:<key:'attribute-key' value:'year' >>
+    elem: <name: 'value' >
+  >
+  val: <string_val: '2022'>
+>
+update: <
+  path: <
+    elem: <name: 'description' >
+  >
+  val: <string_val: 'Super Switch Model 1610 16-port 10Gb'>
+>
+update: <
+  path: <
+    elem: <name: 'display-name' >
+  >
+  val: <string_val: 'Super Switch 1610'>
+>

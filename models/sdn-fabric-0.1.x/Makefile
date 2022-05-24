@@ -10,6 +10,7 @@ DOCKER_REPOSITORY ?= onosproject/
 BASE_VERSION ?= $(shell cat ./VERSION)
 VERSION           ?= ${BASE_VERSION}-sdn-fabric-0.1.x
 LATEST_VERSION           ?= ${BASE_VERSION}-sdn-fabric-latest
+PLATFORM ?= --platform linux/x86_64
 KIND_CLUSTER_NAME ?= kind
 HAS_CHANGED=$(shell git --no-pager diff HEAD~1 HEAD . | wc -l) # check if the content of this folder is different than the parent commit
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
@@ -48,7 +49,7 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod vendor
 
 image: mod-update openapi # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} .
+	docker build $(PLATFORM) $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${LATEST_VERSION}
 
 .PHONY: openapi

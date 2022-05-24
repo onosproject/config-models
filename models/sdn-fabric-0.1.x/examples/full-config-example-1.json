@@ -1,0 +1,111 @@
+{
+  "switch": [
+    {
+      "attribute": [
+        {
+          "attribute-key": "latitude",
+          "value": "37.401083"
+        },
+        {
+          "attribute-key": "longitude",
+          "value": "-121.935509"
+        }
+      ],
+      "description": "San Jose Edge Top of Rack Leaf 1",
+      "dhcp-connect-point": [
+        {
+          "connect-point": [
+            "10.20.30.1",
+            "10.20.30.2"
+          ],
+          "dhcp-id": "dhcp-1"
+        },
+        {
+          "connect-point": [
+            "10.20.40.1",
+            "10.20.40.2",
+            "10.20.40.3"
+          ],
+          "dhcp-id": "dhcp-2"
+        }
+      ],
+      "display-name": "SJ TOR L1",
+      "management": {
+        "address": "117.182.160.150",
+        "port-number": 8080
+      },
+      "model": "super-switch-1610",
+      "port": [
+        {
+          "cage-number": 1,
+          "channel-number": 0,
+          "display-name": "Port 1/0"
+        }
+      ],
+      "role": "leaf",
+      "switch-id": "san-jose-edge-tor-1L",
+      "vlan": [
+        {
+          "description": "the default vlan for untagged packets for some ports",
+          "display-name": "VLAN 1",
+          "subnet": "10.20.1.0/24",
+          "vlan-id": 1
+        },
+        {
+          "display-name": "VLAN 30",
+          "subnet": "10.20.30.0/24",
+          "vlan-id": 30
+        },
+        {
+          "display-name": "VLAN 31",
+          "subnet": "10.20.31.0/24",
+          "vlan-id": 31
+        },
+        {
+          "display-name": "VLAN 32",
+          "subnet": "10.20.32.0/24",
+          "vlan-id": 32
+        }
+      ]
+    }
+  ],
+  "switch-model": [
+    {
+      "attribute": [
+        {
+          "attribute-key": "vendor",
+          "value": "Super Switch"
+        },
+        {
+          "attribute-key": "year",
+          "value": "2022"
+        }
+      ],
+      "description": "Super Switch Model 1610 16-port 10Gb",
+      "display-name": "Super Switch 1610",
+      "form-factor": "pizza-box",
+      "pipeline": "dual",
+      "port": [
+        {
+          "cage-number": 1,
+          "channel-number": 0,
+          "display-name": "Port 1/0",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 5,
+          "channel-number": 0,
+          "display-name": "Port 5/0",
+          "speeds": [
+            "speed-1g",
+            "speed-25g"
+          ]
+        }
+      ],
+      "switch-model-id": "super-switch-1610"
+    }
+  ]
+}

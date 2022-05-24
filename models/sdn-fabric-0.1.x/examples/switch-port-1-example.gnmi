@@ -1,0 +1,25 @@
+prefix: <
+    target: 'new-fabric',
+    elem: <name: 'switch' key:<key:'switch-id' value:'san-jose-edge-tor-1L' >>
+    elem: <name: 'port' key:<key:'cage-number' value:'1'> key:<key:'channel-number' value:'0'>>
+>
+update: <
+  path: <
+    elem: <name: 'cage-number' >
+  >
+  val: <uint_val: 1>
+>
+update: <
+  path: <
+    elem: <name: 'channel-number' >
+  >
+  val: <uint_val: 0>
+>
+update: <
+  path: <
+    elem: <name: 'display-name' >
+  >
+  val: <string_val: 'Port 1/0'>
+>
+
+

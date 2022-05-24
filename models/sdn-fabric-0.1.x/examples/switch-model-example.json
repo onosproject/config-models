@@ -11,8 +11,8 @@
       "value": "2022"
     }
   ],
-  "description": "Super Switch 1610",
-  "display-name": "Super Switch Model 1610 16-port 10Gb",
+  "description": "Super Switch Model 1610 16-port 10Gb",
+  "display-name": "Super Switch 1610",
   "pipeline": "dual",
   "port": [
     {
