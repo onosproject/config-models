@@ -41,12 +41,12 @@ func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target strin
                         {{ range $k := $ep.Key.Keys -}}
                         {{ if or (eq $ep.Method "get") (eq $ep.Method "delete") -}}
                         {{ if eq (len $ep.Key.Keys) 1}}
-                        "{{ lower $k.Name }}": string(key),
+                        "{{ lower $k.Name }}": fmt.Sprint(key),
                         {{ else }}
-                        "{{ lower $k.Name }}": string(key.{{ replace "-" "" $k.Name }}),
+                        "{{ lower $k.Name }}": fmt.Sprint(key.{{ replace "-" "" $k.Name }}),
                         {{ end }}
                         {{ else if eq $ep.Method "update" -}}
-                        "{{ lower $k.Name }}": string(*data.{{ replace "-" "" $k.Name }}),
+                        "{{ lower $k.Name }}": fmt.Sprint(*data.{{ replace "-" "" $k.Name }}),
                         {{ end -}}
                         {{ end -}}
                     },
