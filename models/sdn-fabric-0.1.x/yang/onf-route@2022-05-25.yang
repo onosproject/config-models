@@ -1,0 +1,52 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-route {
+    namespace "http://opennetworking.org/oran/onf-route";
+    prefix rt;
+
+    import onf-sdn-fabric-types { prefix st; }
+    import ietf-inet-types{ prefix inet; }
+    import ietf-yang-types{ prefix yt; }
+
+    organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of routes";
+
+    revision "2022-05-25" {
+        description "Initial Version";
+        reference "ROC SD-Fabric Notes";
+    }
+
+    list route {
+      key route-id;
+
+      leaf route-id {
+        type yt:yang-identifier;
+        description "The ID of the route";
+      }
+
+      uses st:desc-display-name;
+
+      leaf prefix {
+        type inet:ip-prefix;
+        mandatory true;
+        description "subnet to match packet";
+      }
+
+      leaf address {
+        type inet:ip-address-no-zone;
+        mandatory true;
+        description "IP address of hop";
+      }
+
+      leaf metric {
+        type uint8;
+        mandatory true;
+        description "Metric specifies the priority";
+      }
+
+      description "A list of routes";
+    }
+}

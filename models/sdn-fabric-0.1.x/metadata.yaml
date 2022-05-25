@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: sdn-fabric
+version: 0.1.x
+artifactName: sdn-fabric-0.1.x
+goPackage: github.com/onosproject/config-models/models/sdn-fabric-0.1.x
+openAPITargetAlias: fabric-id
+modules:
+  - name: onf-switch
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-switch@2022-05-25.yang
+  - name: onf-switch-model
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-switch-model@2022-05-25.yang
+  - name: onf-route
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-route@2022-05-25.yang
+  - name: onf-dhcp-server
+    organization: Open Networking Foundation
+    revision: 2022-05-10
+    file: onf-dhcp-server@2022-05-25.yang

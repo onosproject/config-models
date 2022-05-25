@@ -1,0 +1,57 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+submodule onf-switch-pair {
+  belongs-to onf-switch { prefix sw; }
+
+  include onf-switch-port;
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch pairs";
+
+  revision "2022-05-25" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
+
+  grouping switch-pair-grouping {
+
+    container switch-pair {
+      leaf paired-switch {
+        type leafref {
+          path "/sw:switch/sw:switch-id";
+        }
+        description "Paired switch identifier. A guard rail will require that
+        this field is present when the pairing-port list has at least 1 elements";
+      }
+
+      list pairing-port {
+          key "cage-number channel-number";
+          max-elements 1;
+          leaf cage-number {
+              type leafref {
+                path "../../../sw:port/sw:cage-number";
+              }
+              description "Port cage number used for connecting to ";
+          }
+
+          leaf channel-number {
+              type leafref {
+                path "../../../sw:port/sw:channel-number";
+              }
+              description "Port channel number used for Switch A";
+          }
+
+          description "The port on the local switch to establish the paired link
+          In future there may be more than 1 port to provide redundancy.
+          For the initial version this is limited to 1";
+      }
+
+      description "A Switch pairing. A switch can participate on 0-1 pairings";
+    }
+  description "switch pairing attributes";
+  }
+
+}

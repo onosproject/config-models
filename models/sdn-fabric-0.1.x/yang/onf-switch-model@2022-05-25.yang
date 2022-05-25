@@ -1,0 +1,80 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-switch-model {
+  namespace "http://opennetworking.org/oran/onf-switch-model";
+  prefix sm;
+
+  import onf-sdn-fabric-types { prefix st; }
+  import ietf-yang-types{ prefix yt; }
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch components.
+      To generate JSON from this use command
+      pyang -f jtoxx sdn-fabric.yang | python3 -m json.tool > test1.json";
+
+  revision "2022-05-25" {
+      description "Initial Version";
+      reference "ROC SD-Fabric Notes";
+  }
+
+  list switch-model {
+    key "switch-model-id";
+    description "A model of switch";
+
+    leaf switch-model-id {
+      type yt:yang-identifier {
+        length 1..100;
+      }
+      description "unique identifier for the switch";
+    }
+
+    uses st:desc-display-name;
+
+    uses st:map-of-attributes;
+
+    leaf pipeline {
+      type enumeration {
+        enum unknown {
+          value 0;
+          description "pipeline unknown";
+        }
+        enum dual {
+          value 1;
+          description "Dual pipe";
+        }
+        enum quad {
+          value 2;
+          description "Quad pipe";
+        }
+      }
+      description "Pipeline configuration - dual or quad";
+    }
+
+    list port {
+      key "cage-number channel-number";
+      description "A port in a switch";
+
+      leaf cage-number {
+        type uint8;
+        description "identifier of the cage - physical port on switch";
+      }
+
+      leaf "channel-number" {
+        type uint8;
+        description "channel in the port. 0 by default. A splitter can divide the port in to channels";
+      }
+
+      uses st:desc-display-name;
+
+      leaf-list speeds {
+        type identityref {
+          base st:speed;
+        }
+        description "port speed";
+      }
+    }
+  }
+}

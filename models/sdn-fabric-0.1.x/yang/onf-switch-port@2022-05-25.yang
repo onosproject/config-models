@@ -1,0 +1,93 @@
+// SPDX-FileCopyrightText: 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+submodule onf-switch-port {
+  belongs-to onf-switch { prefix sw; }
+
+  import onf-sdn-fabric-types { prefix st; }
+  import onf-switch-model { prefix sm; }
+  import onf-dhcp-server { prefix dhcp; }
+
+  include onf-switch-vlan;
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of port within switch";
+
+  revision "2022-05-25" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
+
+  grouping ports-grouping {
+    list port {
+      key "cage-number channel-number";
+      description "A port in a switch";
+
+      leaf cage-number {
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:cage-number";
+        }
+        description "reference to the cage-number of the port in the switch model";
+      }
+
+      leaf channel-number {
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:channel-number";
+        }
+        description "reference to the channel-number of the port in the switch model";
+      }
+
+      uses st:desc-display-name;
+
+      leaf speed {
+        type identityref {
+          base st:speed;
+        }
+        mandatory true;
+        description "configured port speed";
+      }
+
+      leaf-list dhcp-connect-point {
+        type leafref {
+          path "/dhcp:dhcp-server/dhcp:dhcp-id";
+        }
+        description "Reference to DHCP connect point";
+      }
+
+      container vlans {
+        leaf untagged {
+          type leafref {
+            path "../../../sw:vlan/sw:vlan-id";
+          }
+          default 1;
+          description "vlan for untagged packets";
+        }
+        leaf-list tagged {
+          type leafref {
+            path "../../../sw:vlan/sw:vlan-id";
+          }
+          description "multiple tagged vlans";
+        }
+        description "untagged and tagged vlans per port";
+      }
+
+      container state {
+        config false;
+
+        leaf observed-speed {
+          type string;
+          description "the speed reported by the port";
+        }
+
+        leaf connected {
+          type string;
+          description "status of the port: up|down";
+        }
+        description "Op state attributes";
+      }
+    }
+    description "ports grouping";
+  }
+}
