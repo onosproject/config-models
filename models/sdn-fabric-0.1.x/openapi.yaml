@@ -13,16 +13,16 @@ components:
       name: fabric-id
       required: true
   requestBodies:
+    RequestBody_Dhcp-server:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Dhcp-server'
     RequestBody_Route:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Route'
-    RequestBody_Route_Nexthop:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Route_Nexthop'
     RequestBody_Switch:
       content:
         application/json:
@@ -48,11 +48,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Attribute'
-    RequestBody_Switch_Dhcp-connect-point:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Switch_Dhcp-connect-point'
     RequestBody_Switch_Management:
       content:
         application/json:
@@ -63,16 +58,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Port'
+    RequestBody_Switch_Port_State:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Port_State'
     RequestBody_Switch_Port_Vlans:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Port_Vlans'
+    RequestBody_Switch_State:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_State'
     RequestBody_Switch_Switch-pair:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Switch_Switch-pair'
+    RequestBody_Switch_Switch-pair_Pairing-port:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port'
     RequestBody_Switch_Vlan:
       content:
         application/json:
@@ -112,13 +122,77 @@ components:
           type: string
       title: AdditionalPropertyUnchanged
       type: object
+    Dhcp-server:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyFabric-Id'
+      description: A list of DHCP Servers (single)
+      properties:
+        address:
+          description: a list of ip addresses
+          pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?
+          title: address
+          type: string
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        dhcp-id:
+          description: The ID of the DHCP Server
+          maxLength: 18446744073709551615
+          minLength: 1
+          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+          title: dhcp-id
+          type: string
+          x-go-type: ListKey
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+      required:
+      - dhcp-id
+      title: Dhcp-server
+      type: object
+      x-list-multiple: true
+    Dhcp-server_List:
+      description: A list of DHCP Servers (list)
+      items:
+        $ref: '#/components/schemas/Dhcp-server'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - dhcp-id
+      x-list-multiple: true
     Route:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
       description: A list of routes (single)
       properties:
-        nexthop:
-          $ref: '#/components/schemas/Route_Nexthop_List'
+        address:
+          description: IP address of hop
+          title: address
+          type: string
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        metric:
+          description: Metric specifies the priority
+          maximum: 255
+          minimum: 0
+          title: metric
+          type: integer
         prefix:
           description: subnet to match packet
           title: prefix
@@ -132,6 +206,8 @@ components:
           type: string
           x-go-type: ListKey
       required:
+      - address
+      - metric
       - prefix
       - route-id
       title: Route
@@ -146,37 +222,6 @@ components:
       x-keys:
       - route-id
       x-list-multiple: true
-    Route_Nexthop:
-      additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
-      description: ordered list of next hops (single)
-      properties:
-        address:
-          description: IP address of hop
-          title: address
-          type: string
-        index:
-          description: the order of the next hops
-          format: int32
-          minimum: 0
-          title: index
-          type: integer
-          x-go-type: ListKey
-      required:
-      - address
-      - index
-      title: Route_Nexthop
-      type: object
-      x-list-multiple: true
-    Route_Nexthop_List:
-      description: ordered list of next hops (list)
-      items:
-        $ref: '#/components/schemas/Route_Nexthop'
-      type: array
-      uniqueItems: true
-      x-keys:
-      - index
-      x-list-multiple: true
     Switch:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
@@ -190,8 +235,6 @@ components:
           minLength: 1
           title: description
           type: string
-        dhcp-connect-point:
-          $ref: '#/components/schemas/Switch_Dhcp-connect-point_List'
         display-name:
           description: display name to use in GUI or CLI
           maxLength: 80
@@ -215,6 +258,8 @@ components:
             - undefined
             - leaf
             - spine
+        state:
+          $ref: '#/components/schemas/Switch_State'
         switch-id:
           description: unique identifier for the switch
           maxLength: 253
@@ -236,7 +281,7 @@ components:
       x-list-multiple: true
     Switch-model:
       additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
+        $ref: '#/components/schemas/AdditionalPropertyFabric-Id'
       description: A model of switch (single)
       properties:
         attribute:
@@ -253,16 +298,6 @@ components:
           minLength: 1
           title: display-name
           type: string
-        form-factor:
-          description: The form factor for the switch
-          title: form-factor
-          type: string
-          enum:
-            - undefined
-            - pizza-box
-            - smart-nic
-            - v-switch
-            - ipu
         pipeline:
           description: Pipeline configuration - dual or quad
           title: pipeline
@@ -282,7 +317,6 @@ components:
           type: string
           x-go-type: ListKey
       required:
-      - form-factor
       - switch-model-id
       title: Switch-model
       type: object
@@ -431,41 +465,6 @@ components:
       x-keys:
       - attribute-key
       x-list-multiple: true
-    Switch_Dhcp-connect-point:
-      description: A collection of DHCP endpoints (single)
-      properties:
-        connect-point:
-          $ref: '#/components/schemas/Switch_Dhcp-connect-point_Connect-point'
-        dhcp-id:
-          description: id of the DHCP CP collection
-          maxLength: 18446744073709551615
-          minLength: 1
-          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
-          title: dhcp-id
-          type: string
-          x-go-type: ListKey
-      required:
-      - dhcp-id
-      title: Switch_Dhcp-connect-point
-      type: object
-      x-list-multiple: true
-    Switch_Dhcp-connect-point_Connect-point:
-      items:
-        description: a list of ip addresses
-        pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?
-        title: connect-point
-        type: string
-      title: leaf-list-connect-point
-      type: array
-    Switch_Dhcp-connect-point_List:
-      description: A collection of DHCP endpoints (list)
-      items:
-        $ref: '#/components/schemas/Switch_Dhcp-connect-point'
-      type: array
-      uniqueItems: true
-      x-keys:
-      - dhcp-id
-      x-list-multiple: true
     Switch_List:
       description: A managed device in the fabric (list)
       items:
@@ -515,10 +514,7 @@ components:
           title: description
           type: string
         dhcp-connect-point:
-          description: Reference to DHCP connect point
-          title: dhcp-connect-point
-          type: string
-          x-leafref: ../../sw:dhcp-connect-point/sw:dhcp-id
+          $ref: '#/components/schemas/Switch_Port_Dhcp-connect-point'
         display-name:
           description: display name to use in GUI or CLI
           maxLength: 80
@@ -539,14 +535,25 @@ components:
           - speed-autoneg
           title: speed
           type: string
+        state:
+          $ref: '#/components/schemas/Switch_Port_State'
         vlans:
           $ref: '#/components/schemas/Switch_Port_Vlans'
       required:
       - cage-number
       - channel-number
+      - speed
       title: Switch_Port
       type: object
       x-list-multiple: true
+    Switch_Port_Dhcp-connect-point:
+      items:
+        description: Reference to DHCP connect point
+        title: dhcp-connect-point
+        type: string
+        x-leafref: /dhcp:dhcp-server/dhcp:dhcp-id
+      title: leaf-list-dhcp-connect-point
+      type: array
     Switch_Port_List:
       description: A port in a switch (list)
       items:
@@ -557,6 +564,19 @@ components:
       - cage-number
       - channel-number
       x-list-multiple: true
+    Switch_Port_State:
+      description: Op state attributes
+      properties:
+        connected:
+          description: 'status of the port: up|down'
+          title: connected
+          type: string
+        observed-speed:
+          description: the speed reported by the port
+          title: observed-speed
+          type: string
+      title: Switch_Port_State
+      type: object
     Switch_Port_Vlans:
       description: untagged and tagged vlans per port
       properties:
@@ -575,29 +595,75 @@ components:
           x-leafref: ../../../sw:vlan/sw:vlan-id
       title: Switch_Port_Vlans
       type: object
+    Switch_State:
+      description: Op state attributes
+      properties:
+        connected:
+          description: 'status of the port: up|down'
+          title: connected
+          type: string
+        last-connected:
+          description: Last known time the switch was connected
+          pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
+          title: last-connected
+          type: string
+      title: Switch_State
+      type: object
     Switch_Switch-pair:
       description: A Switch pairing. A switch can participate on 0-1 pairings
+      properties:
+        paired-switch:
+          description: |-
+            Paired switch identifier. A guard rail will require that
+            this field is present when the pairing-port list has at least 1 elements
+          title: paired-switch
+          type: string
+          x-leafref: /sw:switch/sw:switch-id
+        pairing-port:
+          $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
+      title: Switch_Switch-pair
+      type: object
+    Switch_Switch-pair_Pairing-port:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: |-
+        The port on the local switch to establish the paired link
+        In future there may be more than 1 port to provide redundancy.
+        For the initial version this is limited to 1 (single)
       properties:
         cage-number:
           description: 'Port cage number used for connecting to '
           title: cage-number
           type: string
-          x-leafref: ../../sw:port/sw:cage-number
+          x-go-type: ListKey
+          x-leafref: ../../../sw:port/sw:cage-number
         channel-number:
           description: Port channel number used for Switch A
           title: channel-number
           type: string
-          x-leafref: ../../sw:port/sw:channel-number
-        paired-switch:
-          description: Paired switch identifier
-          title: paired-switch
-          type: string
-          x-leafref: /sw:switch/sw:switch-id
-      title: Switch_Switch-pair
+          x-go-type: ListKey
+          x-leafref: ../../../sw:port/sw:channel-number
+      required:
+      - cage-number
+      - channel-number
+      title: Switch_Switch-pair_Pairing-port
       type: object
+      x-list-multiple: true
+    Switch_Switch-pair_Pairing-port_List:
+      description: |-
+        The port on the local switch to establish the paired link
+        In future there may be more than 1 port to provide redundancy.
+        For the initial version this is limited to 1 (list)
+      items:
+        $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port'
+      maxItems: 1
+      type: array
+      uniqueItems: true
+      x-keys:
+      - cage-number
+      - channel-number
+      x-list-multiple: true
     Switch_Vlan:
-      additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: a list of VLANs (single)
       properties:
         description:
@@ -613,10 +679,7 @@ components:
           title: display-name
           type: string
         subnet:
-          description: Network subnet for VLAN
-          pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))
-          title: subnet
-          type: string
+          $ref: '#/components/schemas/Switch_Vlan_Subnet'
         vlan-id:
           description: the VLAN ID
           maximum: 4096
@@ -625,7 +688,6 @@ components:
           type: integer
           x-go-type: ListKey
       required:
-      - subnet
       - vlan-id
       title: Switch_Vlan
       type: object
@@ -639,6 +701,14 @@ components:
       x-keys:
       - vlan-id
       x-list-multiple: true
+    Switch_Vlan_Subnet:
+      items:
+        description: Network subnets for VLAN
+        pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))
+        title: subnet
+        type: string
+      title: leaf-list-subnet
+      type: array
 info:
   contact:
     email: info@opennetworking.org
@@ -653,6 +723,62 @@ info:
   version: 0.1.x
 openapi: 3.0.0
 paths:
+  /sdn-fabric/v0.1.x/{fabric-id}/dhcp-server:
+    description: A list of DHCP Servers
+    get:
+      operationId: getDhcp-server_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dhcp-server_List'
+          description: GET OK 200
+      summary: GET /dhcp-server List
+      tags:
+      - Dhcp-server
+      - List
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+  /sdn-fabric/v0.1.x/{fabric-id}/dhcp-server/{dhcp-id}:
+    delete:
+      operationId: deleteDhcp-server
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /dhcp-server
+    description: A list of DHCP Servers
+    get:
+      operationId: getDhcp-server
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dhcp-server'
+          description: GET OK 200
+      summary: GET /dhcp-server Container
+      tags:
+      - Dhcp-server
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {dhcp-id}
+      in: path
+      name: dhcp-id
+      required: true
+    post:
+      operationId: postDhcp-server
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Dhcp-server'
+      responses:
+        "201":
+          description: created
+      summary: POST /dhcp-server
   /sdn-fabric/v0.1.x/{fabric-id}/route:
     description: A list of routes
     get:
@@ -709,78 +835,6 @@ paths:
         "201":
           description: created
       summary: POST /route
-  /sdn-fabric/v0.1.x/{fabric-id}/route/{route-id}/nexthop:
-    description: ordered list of next hops
-    get:
-      operationId: getRoute_Nexthop_List
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route_Nexthop_List'
-          description: GET OK 200
-      summary: GET /route/{route-id}/nexthop List
-      tags:
-      - Route_Nexthop
-      - List
-    parameters:
-    - $ref: '#/components/parameters/fabric-id'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {route-id}
-      in: path
-      name: route-id
-      required: true
-  /sdn-fabric/v0.1.x/{fabric-id}/route/{route-id}/nexthop/{index}:
-    delete:
-      operationId: deleteRoute_Nexthop
-      responses:
-        "200":
-          description: DELETE 200 OK
-      summary: DELETE /route/{route-id}/nexthop
-    description: ordered list of next hops
-    get:
-      operationId: getRoute_Nexthop
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route_Nexthop'
-          description: GET OK 200
-      summary: GET /route/{route-id}/nexthop Container
-      tags:
-      - Route_Nexthop
-      - Container
-    parameters:
-    - $ref: '#/components/parameters/fabric-id'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {route-id}
-      in: path
-      name: route-id
-      required: true
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {index}
-      in: path
-      name: index
-      required: true
-    post:
-      operationId: postRoute_Nexthop
-      requestBody:
-        $ref: '#/components/requestBodies/RequestBody_Route_Nexthop'
-      responses:
-        "201":
-          description: created
-      summary: POST /route/{route-id}/nexthop
   /sdn-fabric/v0.1.x/{fabric-id}/switch:
     description: A managed device in the fabric
     get:
@@ -1117,78 +1171,6 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/attribute
-  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/dhcp-connect-point:
-    description: A collection of DHCP endpoints
-    get:
-      operationId: getSwitch_Dhcp-connect-point_List
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch_Dhcp-connect-point_List'
-          description: GET OK 200
-      summary: GET /switch/{switch-id}/dhcp-connect-point List
-      tags:
-      - Switch_Dhcp-connect-point
-      - List
-    parameters:
-    - $ref: '#/components/parameters/fabric-id'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {switch-id}
-      in: path
-      name: switch-id
-      required: true
-  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/dhcp-connect-point/{dhcp-id}:
-    delete:
-      operationId: deleteSwitch_Dhcp-connect-point
-      responses:
-        "200":
-          description: DELETE 200 OK
-      summary: DELETE /switch/{switch-id}/dhcp-connect-point
-    description: A collection of DHCP endpoints
-    get:
-      operationId: getSwitch_Dhcp-connect-point
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Switch_Dhcp-connect-point'
-          description: GET OK 200
-      summary: GET /switch/{switch-id}/dhcp-connect-point Container
-      tags:
-      - Switch_Dhcp-connect-point
-      - Container
-    parameters:
-    - $ref: '#/components/parameters/fabric-id'
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {switch-id}
-      in: path
-      name: switch-id
-      required: true
-    - content:
-        text/plain; charset=utf-8:
-          schema:
-            type: string
-      description: key {dhcp-id}
-      in: path
-      name: dhcp-id
-      required: true
-    post:
-      operationId: postSwitch_Dhcp-connect-point
-      requestBody:
-        $ref: '#/components/requestBodies/RequestBody_Switch_Dhcp-connect-point'
-      responses:
-        "201":
-          description: created
-      summary: POST /switch/{switch-id}/dhcp-connect-point
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/management:
     delete:
       operationId: deleteSwitch_Management
@@ -1308,6 +1290,47 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/state:
+    description: Op state attributes
+    get:
+      operationId: getSwitch_Port_State
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Port_State'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/state Container
+      tags:
+      - Switch_Port
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans:
     delete:
       operationId: deleteSwitch_Port_Vlans
@@ -1363,6 +1386,31 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/state:
+    description: Op state attributes
+    get:
+      operationId: getSwitch_State
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_State'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/state Container
+      tags:
+      - Switch
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair:
     delete:
       operationId: deleteSwitch_Switch-pair
@@ -1402,6 +1450,92 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/switch-pair
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port:
+    description: |-
+      The port on the local switch to establish the paired link
+      In future there may be more than 1 port to provide redundancy.
+      For the initial version this is limited to 1
+    get:
+      operationId: getSwitch_Switch-pair_Pairing-port_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/pairing-port List
+      tags:
+      - Switch_Switch-pair_Pairing-port
+      - List
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}:
+    delete:
+      operationId: deleteSwitch_Switch-pair_Pairing-port
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch/{switch-id}/switch-pair/pairing-port
+    description: |-
+      The port on the local switch to establish the paired link
+      In future there may be more than 1 port to provide redundancy.
+      For the initial version this is limited to 1
+    get:
+      operationId: getSwitch_Switch-pair_Pairing-port
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/pairing-port Container
+      tags:
+      - Switch_Switch-pair_Pairing-port
+      - Container
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    post:
+      operationId: postSwitch_Switch-pair_Pairing-port
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch_Switch-pair_Pairing-port'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch/{switch-id}/switch-pair/pairing-port
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/vlan:
     description: a list of VLANs
     get:

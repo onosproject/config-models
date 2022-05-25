@@ -15,6 +15,7 @@ var modelData = []*gnmi.ModelData{
 	{Name: "onf-switch", Organization: "Open Networking Foundation", Version: "2022-05-10"},
 	{Name: "onf-switch-model", Organization: "Open Networking Foundation", Version: "2022-05-10"},
 	{Name: "onf-route", Organization: "Open Networking Foundation", Version: "2022-05-10"},
+	{Name: "onf-dhcp-server", Organization: "Open Networking Foundation", Version: "2022-05-10"},
 }
 
 var encodings = []gnmi.Encoding{gnmi.Encoding_JSON_IETF}

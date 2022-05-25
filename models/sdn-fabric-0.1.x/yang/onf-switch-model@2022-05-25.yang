@@ -35,33 +35,6 @@ module onf-switch-model {
 
     uses st:map-of-attributes;
 
-    leaf form-factor {
-      type enumeration {
-        enum undefined {
-            value 0;
-            description "Generic switch";
-        }
-        enum pizza-box {
-            value 1;
-            description "Rack mount form factor";
-        }
-        enum smart-nic {
-            value 2;
-            description "Smart Network Interface Card";
-        }
-        enum v-switch {
-            value 3;
-            description "Virtual switch";
-        }
-        enum ipu {
-            value 4;
-            description "Infrastructure Processing unit";
-        }
-      }
-      mandatory true;
-      description "The form factor for the switch";
-    }
-
     leaf pipeline {
       type enumeration {
         enum unknown {

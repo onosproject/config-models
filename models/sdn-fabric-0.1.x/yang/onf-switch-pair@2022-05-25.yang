@@ -17,28 +17,36 @@ submodule onf-switch-pair {
   }
 
   grouping switch-pair-grouping {
-    // TODO: consider moving this definition under port with guardrail that
-    //  only one port can have a paired switch
+
     container switch-pair {
-      leaf cage-number {
-          type leafref {
-            path "../../sw:port/sw:cage-number";
-          }
-          description "Port cage number used for connecting to ";
-      }
-
-      leaf channel-number {
-          type leafref {
-            path "../../sw:port/sw:channel-number";
-          }
-          description "Port channel number used for Switch A";
-      }
-
       leaf paired-switch {
         type leafref {
           path "/sw:switch/sw:switch-id";
         }
-        description "Paired switch identifier";
+        description "Paired switch identifier. A guard rail will require that
+        this field is present when the pairing-port list has at least 1 elements";
+      }
+
+      list pairing-port {
+          key "cage-number channel-number";
+          max-elements 1;
+          leaf cage-number {
+              type leafref {
+                path "../../../sw:port/sw:cage-number";
+              }
+              description "Port cage number used for connecting to ";
+          }
+
+          leaf channel-number {
+              type leafref {
+                path "../../../sw:port/sw:channel-number";
+              }
+              description "Port channel number used for Switch A";
+          }
+
+          description "The port on the local switch to establish the paired link
+          In future there may be more than 1 port to provide redundancy.
+          For the initial version this is limited to 1";
       }
 
       description "A Switch pairing. A switch can participate on 0-1 pairings";

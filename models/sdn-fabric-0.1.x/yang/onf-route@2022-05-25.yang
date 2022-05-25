@@ -6,6 +6,7 @@ module onf-route {
     namespace "http://opennetworking.org/oran/onf-route";
     prefix rt;
 
+    import onf-sdn-fabric-types { prefix st; }
     import ietf-inet-types{ prefix inet; }
     import ietf-yang-types{ prefix yt; }
 
@@ -26,27 +27,24 @@ module onf-route {
         description "The ID of the route";
       }
 
+      uses st:desc-display-name;
+
       leaf prefix {
         type inet:ip-prefix;
         mandatory true;
         description "subnet to match packet";
       }
 
-      list nexthop {
-        key index;
+      leaf address {
+        type inet:ip-address-no-zone;
+        mandatory true;
+        description "IP address of hop";
+      }
 
-        leaf index {
-          type uint32;
-          description "the order of the next hops";
-        }
-
-        leaf address {
-          type inet:ip-address-no-zone;
-          mandatory true;
-          description "IP address of hop";
-        }
-
-        description "ordered list of next hops";
+      leaf metric {
+        type uint8;
+        mandatory true;
+        description "Metric specifies the priority";
       }
 
       description "A list of routes";

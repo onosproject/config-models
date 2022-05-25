@@ -1,0 +1,39 @@
+// SPDX-FileCopyrightText: 2022-present Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-dhcp-server {
+    namespace "http://opennetworking.org/oran/onf-dhcp-server";
+    prefix dhcp;
+
+    import onf-sdn-fabric-types { prefix st; }
+    import ietf-inet-types{ prefix inet; }
+    import ietf-yang-types{ prefix yt; }
+
+    organization "Intel Corporation";
+    contact "ROC Engineering";
+    description "Configuration of DHCP Server";
+
+    revision "2022-05-25" {
+        description "Initial Version";
+        reference "ROC SD-Fabric Notes";
+    }
+
+    list dhcp-server {
+      key dhcp-id;
+
+      leaf dhcp-id {
+        type yt:yang-identifier;
+        description "The ID of the DHCP Server";
+      }
+
+      uses st:desc-display-name;
+
+      leaf address {
+        type inet:ipv4-address-no-zone;
+        description "a list of ip addresses";
+      }
+
+      description "A list of DHCP Servers";
+    }
+}

@@ -1,13 +1,13 @@
 module: onf-switch
   +--rw switch* [switch-id]
-     +--rw switch-id             inet:domain-name
-     +--rw display-name?         string
-     +--rw description?          string
+     +--rw switch-id       inet:domain-name
+     +--rw display-name?   string
+     +--rw description?    string
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
      |  +--rw value            string
-     +--rw model                 -> /sm:switch-model/switch-model-id
-     +--rw role                  enumeration
+     +--rw model           -> /sm:switch-model/switch-model-id
+     +--rw role            enumeration
      +--rw management
      |  +--rw address?       inet:ipv4-address-no-zone
      |  +--rw port-number?   inet:port-number
@@ -16,23 +16,27 @@ module: onf-switch
      |  +--rw channel-number        -> /sm:switch-model/port/channel-number
      |  +--rw display-name?         string
      |  +--rw description?          string
-     |  +--rw speed?                identityref
-     |  +--rw dhcp-connect-point?   -> ../../dhcp-connect-point/dhcp-id
+     |  +--rw speed                 identityref
+     |  +--rw dhcp-connect-point*   -> /dhcp:dhcp-server/dhcp-id
      |  +--rw vlans
-     |     +--rw untagged?   -> ../../../vlan/vlan-id
-     |     +--rw tagged*     -> ../../../vlan/vlan-id
+     |  |  +--rw untagged?   -> ../../../vlan/vlan-id
+     |  |  +--rw tagged*     -> ../../../vlan/vlan-id
+     |  +--ro state
+     |     +--ro observed-speed?   string
+     |     +--ro connected?        string
      +--rw switch-pair
-     |  +--rw cage-number?      -> ../../port/cage-number
-     |  +--rw channel-number?   -> ../../port/channel-number
-     |  +--rw paired-switch?    -> /switch/switch-id
+     |  +--rw paired-switch?   -> /switch/switch-id
+     |  +--rw pairing-port* [cage-number channel-number]
+     |     +--rw cage-number       -> ../../../port/cage-number
+     |     +--rw channel-number    -> ../../../port/channel-number
      +--rw vlan* [vlan-id]
      |  +--rw vlan-id         st:vlan
      |  +--rw display-name?   string
      |  +--rw description?    string
-     |  +--rw subnet          inet:ipv4-prefix
-     +--rw dhcp-connect-point* [dhcp-id]
-        +--rw dhcp-id          yt:yang-identifier
-        +--rw connect-point*   inet:ipv4-address-no-zone
+     |  +--rw subnet*         inet:ipv4-prefix
+     +--ro state
+        +--ro connected?        string
+        +--ro last-connected?   yt:date-and-time
 
 module: onf-switch-model
   +--rw switch-model* [switch-model-id]
@@ -42,7 +46,6 @@ module: onf-switch-model
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
      |  +--rw value            string
-     +--rw form-factor        enumeration
      +--rw pipeline?          enumeration
      +--rw port* [cage-number channel-number]
         +--rw cage-number       uint8
@@ -53,8 +56,16 @@ module: onf-switch-model
 
 module: onf-route
   +--rw route* [route-id]
-     +--rw route-id    yt:yang-identifier
-     +--rw prefix      inet:ip-prefix
-     +--rw nexthop* [index]
-        +--rw index      uint32
-        +--rw address    inet:ip-address-no-zone
+     +--rw route-id        yt:yang-identifier
+     +--rw display-name?   string
+     +--rw description?    string
+     +--rw prefix          inet:ip-prefix
+     +--rw address         inet:ip-address-no-zone
+     +--rw metric          uint8
+
+module: onf-dhcp-server
+  +--rw dhcp-server* [dhcp-id]
+     +--rw dhcp-id         yt:yang-identifier
+     +--rw display-name?   string
+     +--rw description?    string
+     +--rw address?        inet:ipv4-address-no-zone

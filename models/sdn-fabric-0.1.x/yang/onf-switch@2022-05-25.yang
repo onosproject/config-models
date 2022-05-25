@@ -3,49 +3,49 @@
 // SPDX-License-Identifier: Apache-2.0
 
 module onf-switch {
-    namespace "http://opennetworking.org/oran/onf-switch";
-    prefix sw;
+  namespace "http://opennetworking.org/oran/onf-switch";
+  prefix sw;
 
-    import onf-sdn-fabric-types { prefix st; }
-    import onf-switch-model { prefix sm; }
-    import ietf-inet-types{ prefix inet; }
-    import ietf-yang-types{ prefix yt; }
+  import onf-sdn-fabric-types { prefix st; }
+  import onf-switch-model { prefix sm; }
+  import ietf-inet-types{ prefix inet; }
+  import ietf-yang-types{ prefix yt; }
 
-    include onf-switch-port;
-    include onf-switch-pair;
-    include onf-switch-vlan;
+  include onf-switch-port;
+  include onf-switch-pair;
+  include onf-switch-vlan;
 
-    organization "Intel Corporation";
-    contact "ROC Engineering";
-    description "Configuration of switch components";
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "Configuration of switch components";
 
-    revision "2022-05-25" {
-        description "Initial Version";
-        reference "ROC SD-Fabric Notes";
-    }
+  revision "2022-05-25" {
+    description "Initial Version";
+    reference "ROC SD-Fabric Notes";
+  }
 
   list switch {
-      key "switch-id";
-      description "A managed device in the fabric";
+    key "switch-id";
+    description "A managed device in the fabric";
 
-      leaf switch-id {
-        type inet:domain-name;
-        description "unique identifier for the switch";
-      }
+    leaf switch-id {
+      type inet:domain-name;
+      description "unique identifier for the switch";
+    }
 
-      uses st:desc-display-name;
+    uses st:desc-display-name;
 
-      uses st:map-of-attributes;
+    uses st:map-of-attributes;
 
-      leaf model {
+    leaf model {
         type leafref {
           path "/sm:switch-model/sm:switch-model-id";
         }
         mandatory true;
         description "link to switch model";
-      }
+    }
 
-      leaf role {
+    leaf role {
         type enumeration {
             enum undefined {
                 value 0;
@@ -62,9 +62,9 @@ module onf-switch {
         }
         mandatory true;
         description "The role of the switch in the fabric";
-      }
+    }
 
-      container management {
+    container management {
         leaf address {
           type inet:ipv4-address-no-zone;
           description "The management IPv4 address";
@@ -76,25 +76,26 @@ module onf-switch {
         }
 
         description "configuration of the management port";
+    }
+
+    uses ports-grouping;
+
+    uses switch-pair-grouping;
+
+    uses vlan-grouping;
+
+    container state {
+      config false;
+
+      leaf connected {
+        type string;
+        description "status of the port: up|down";
       }
-
-      uses ports-grouping;
-
-      uses switch-pair-grouping;
-
-      uses vlan-grouping;
-
-      list dhcp-connect-point {
-        key dhcp-id;
-        leaf dhcp-id {
-          type yt:yang-identifier;
-          description "id of the DHCP CP collection";
-        }
-        leaf-list connect-point {
-          type inet:ipv4-address-no-zone;
-          description "a list of ip addresses";
-        }
-        description "A collection of DHCP endpoints";
+      leaf last-connected {
+        type yt:date-and-time;
+        description "Last known time the switch was connected";
       }
+      description "Op state attributes";
+    }
   }
 }

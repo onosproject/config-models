@@ -28,10 +28,10 @@ submodule onf-switch-vlan {
 
       uses st:desc-display-name;
 
-      leaf subnet {
+      leaf-list subnet {
         type inet:ipv4-prefix;
-        mandatory true;
-        description "Network subnet for VLAN";
+        min-elements 1;
+        description "Network subnets for VLAN";
       }
       description "a list of VLANs";
     }

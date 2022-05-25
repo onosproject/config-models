@@ -12,23 +12,6 @@
         }
       ],
       "description": "San Jose Edge Top of Rack Leaf 1",
-      "dhcp-connect-point": [
-        {
-          "connect-point": [
-            "10.20.30.1",
-            "10.20.30.2"
-          ],
-          "dhcp-id": "dhcp-1"
-        },
-        {
-          "connect-point": [
-            "10.20.40.1",
-            "10.20.40.2",
-            "10.20.40.3"
-          ],
-          "dhcp-id": "dhcp-2"
-        }
-      ],
       "display-name": "SJ TOR L1",
       "management": {
         "address": "117.182.160.150",
@@ -39,7 +22,14 @@
         {
           "cage-number": 1,
           "channel-number": 0,
-          "display-name": "Port 1/0"
+          "display-name": "Port 1/0",
+          "dhcp-connect-point": [
+            "dhcp-1",
+            "dhcp-2"
+          ],
+          "vlans": {
+            "untagged": 1
+          }
         }
       ],
       "role": "leaf",
@@ -48,22 +38,30 @@
         {
           "description": "the default vlan for untagged packets for some ports",
           "display-name": "VLAN 1",
-          "subnet": "10.20.1.0/24",
+          "subnet": [
+            "10.20.1.0/24"
+          ],
           "vlan-id": 1
         },
         {
           "display-name": "VLAN 30",
-          "subnet": "10.20.30.0/24",
+          "subnet": [
+            "10.20.30.0/24"
+          ],
           "vlan-id": 30
         },
         {
           "display-name": "VLAN 31",
-          "subnet": "10.20.31.0/24",
+          "subnet": [
+            "10.20.31.0/24"
+          ],
           "vlan-id": 31
         },
         {
           "display-name": "VLAN 32",
-          "subnet": "10.20.32.0/24",
+          "subnet": [
+            "10.20.32.0/24"
+          ],
           "vlan-id": 32
         }
       ]
@@ -79,11 +77,14 @@
         {
           "attribute-key": "year",
           "value": "2022"
+        },
+        {
+          "attribute-key": "form-factor",
+          "value": "pizza-box"
         }
       ],
       "description": "Super Switch Model 1610 16-port 10Gb",
       "display-name": "Super Switch 1610",
-      "form-factor": "pizza-box",
       "pipeline": "dual",
       "port": [
         {
@@ -106,6 +107,16 @@
         }
       ],
       "switch-model-id": "super-switch-1610"
+    }
+  ],
+  "dhcp-server": [
+    {
+      "address": "10.20.30.1",
+      "dhcp-id": "dhcp-1"
+    },
+    {
+      "address": "10.20.40.1",
+      "dhcp-id": "dhcp-2"
     }
   ]
 }

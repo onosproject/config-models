@@ -7,6 +7,7 @@ submodule onf-switch-port {
 
   import onf-sdn-fabric-types { prefix st; }
   import onf-switch-model { prefix sm; }
+  import onf-dhcp-server { prefix dhcp; }
 
   include onf-switch-vlan;
 
@@ -44,12 +45,13 @@ submodule onf-switch-port {
         type identityref {
           base st:speed;
         }
+        mandatory true;
         description "configured port speed";
       }
 
-      leaf dhcp-connect-point {
+      leaf-list dhcp-connect-point {
         type leafref {
-          path "../../sw:dhcp-connect-point/sw:dhcp-id";
+          path "/dhcp:dhcp-server/dhcp:dhcp-id";
         }
         description "Reference to DHCP connect point";
       }
@@ -69,6 +71,21 @@ submodule onf-switch-port {
           description "multiple tagged vlans";
         }
         description "untagged and tagged vlans per port";
+      }
+
+      container state {
+        config false;
+
+        leaf observed-speed {
+          type string;
+          description "the speed reported by the port";
+        }
+
+        leaf connected {
+          type string;
+          description "status of the port: up|down";
+        }
+        description "Op state attributes";
       }
     }
     description "ports grouping";
