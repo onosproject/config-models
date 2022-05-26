@@ -10,6 +10,7 @@ package api
 
 import (
     "context"
+    "fmt"
     "github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
     "github.com/openconfig/gnmi/proto/gnmi"
     "google.golang.org/grpc"
@@ -55,7 +56,7 @@ key string,
                     Name: "node",
                     Key: map[string]string{
                         
-                        "id": string(key),
+                        "id": fmt.Sprint(key),
                         
                         },
                 },
@@ -120,7 +121,7 @@ key string,
                     Name: "node",
                     Key: map[string]string{
                         
-                        "id": string(key),
+                        "id": fmt.Sprint(key),
                         
                         },
                 },
@@ -166,7 +167,7 @@ func (c *GnmiClient) UpdateNodes_Node_Item(ctx context.Context, target string,  
             {
                     Name: "node",
                     Key: map[string]string{
-                        "id": string(*data.Id),
+                        "id": fmt.Sprint(*data.Id),
                         },
                 },
             },
@@ -295,7 +296,7 @@ func (c *GnmiClient) UpdateNodes_Node(ctx context.Context, target string,  list 
             Elem: append(basePathElems, &gnmi.PathElem{
                 Name: "list2a",
                 Key: map[string]string{
-                    "id": string(*item.Id),
+                    "id": fmt.Sprint(*item.Id),
                     },
             }),
             Target: target,
