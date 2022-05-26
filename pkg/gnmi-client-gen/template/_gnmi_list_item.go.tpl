@@ -17,7 +17,7 @@ key {{ .Type }}
 
 {{ $ep := . }}
 {{ $path_length := len $ep.Path }}
-func (c *GnmiClient) {{ $ep.MethodName }}_Item(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}{{ template "keys_parameters" $ep.Key }},{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModelName}},{{end}}
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}{{ template "keys_parameters" $ep.Key }},{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}*{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()

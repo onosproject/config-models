@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/SeanCondon/xpath v0.0.0-20220225125014-419de017925c
+	github.com/gertd/go-pluralize v0.2.1
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/onosproject/onos-api/go v0.9.14
