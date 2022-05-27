@@ -58,6 +58,7 @@ openapi: mod-update # @HELP Generate OpenApi specs
 .PHONY: gnmi-gen
 gnmi-gen: mod-update # @HELP Generate gNMI Client
 	go run gnmi-gen/gnmi-gen.go
+	go fmt api/gnmi_client.go
 
 test: mod-update # @HELP Run the unit tests
 	go test ./...
