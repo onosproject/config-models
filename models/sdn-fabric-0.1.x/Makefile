@@ -47,7 +47,7 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
 	go mod vendor
 
-image: mod-update openapi gnmi-gen # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+image: mod-update openapi # gnmi-gen # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${LATEST_VERSION}
 
