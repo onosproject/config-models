@@ -66,6 +66,7 @@ check-models-tag: # @HELP check that the
 	@make -C models/devicesim-1.0.x check-tag
 	@make -C models/testdevice-1.0.x check-tag
 	@make -C models/testdevice-2.0.x check-tag
+	@make -C models/sdn-fabric-0.1.x check-tag
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: deps mod-update build linters license check-models-tag images models
@@ -95,6 +96,7 @@ jenkins-publish: docker-login # @HELP Jenkins calls this to publish artifacts
 	make -C models/devicesim-1.0.x publish
 	make -C models/testdevice-1.0.x publish
 	make -C models/testdevice-2.0.x publish
+	make -C models/sdn-fabric-0.1.x publish
 	./build/build-tools/release-merge-commit
 
 clean:: # @HELP remove all the build artifacts
