@@ -26,6 +26,11 @@ func (c *ModelCompiler) applyTemplate(name, tplPath, outPath string) error {
 			caser := cases.Title(language.English)
 			return caser.String(s)
 		},
+		"sanitize": func(s string) string {
+			// replace all characters which are not valid in function names,
+			// will be extended as needed
+			return strings.ReplaceAll(s, "-", "")
+		},
 	}
 
 	tpl, err := template.New(name).

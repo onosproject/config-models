@@ -47,7 +47,7 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
 	go mod vendor
 
-image: mod-update openapi # gnmi-gen # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+image: mod-update openapi gnmi-gen # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${VERSION} ${DOCKER_REPOSITORY}sdn-fabric-0.1.x:${LATEST_VERSION}
 
@@ -58,6 +58,7 @@ openapi: mod-update # @HELP Generate OpenApi specs
 .PHONY: gnmi-gen
 gnmi-gen: mod-update # @HELP Generate gNMI Client
 	go run gnmi-gen/gnmi-gen.go
+	go fmt api/gnmi_client.go
 
 test: mod-update # @HELP Run the unit tests
 	go test ./...

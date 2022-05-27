@@ -8,6 +8,7 @@ package gnmi_client_gen
 
 import (
 	"fmt"
+	p "github.com/gertd/go-pluralize"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen/template"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
@@ -23,6 +24,7 @@ import (
 const templateFile = "gnmi_client.go.tpl"
 
 var log = logging.GetLogger("gnmi-client-gen")
+var pluralize = p.NewClient()
 
 type GnmiEndpoints struct {
 	LeavesEndpoints    []LeavesEndpoint
@@ -35,7 +37,7 @@ type GnmiEndpoints struct {
 // elements which are at the end of the tree (leaves) and thus are simple types.
 type LeavesEndpoint struct {
 	Method            string // GET or SET (NOTE: do we need an Enum?)
-	MethodName        string // Get, Update, List and Delete
+	MethodName        string // Get, Update and Delete
 	ModelName         string
 	Path              []string // A string representing the gNMI path (/ separated)
 	GoType            string
@@ -44,12 +46,11 @@ type LeavesEndpoint struct {
 }
 
 type ContainerEndpoint struct {
-	//ModuleName      string
 	ModelName       string
 	ModelPath       string
 	ParentModelPath string
 	Method          string   // GET or SET (NOTE: do we need an Enum?)
-	MethodName      string   // Get, Update, List and Delete
+	MethodName      string   // Get, Update and Delete + itemName
 	Path            []string // A list of strings representing the gNMI path
 }
 
@@ -65,8 +66,9 @@ type Key struct {
 
 type ListEndpoint struct {
 	ContainerEndpoint
-	Key        ListKey
-	ParentPath []string // A list of strings representing the gNMI path to the parent model
+	Key              ListKey
+	ParentPath       []string // A list of strings representing the gNMI path to the parent model
+	PluralMethodName string   // Used for the methods that apply to the entire list
 }
 
 func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPath []string) (*GnmiEndpoints, error) {
@@ -150,7 +152,7 @@ func generateGnmiEndpointsForLeaf(item *yang.Entry, path []string) ([]LeavesEndp
 		ep := LeavesEndpoint{
 			Method:            m,
 			ModelName:         itemName,
-			MethodName:        fmt.Sprintf("%s%s", epName, itemName),
+			MethodName:        fmt.Sprintf("%s_%s", epName, itemName),
 			Path:              path,
 			GoType:            t,
 			GoReturnType:      yangTypeToGoReturnVal(item.Type.Kind),
@@ -180,7 +182,7 @@ func generateGnmiEndpointsForContainer(item *yang.Entry, path []string) ([]Conta
 
 		ep := ContainerEndpoint{
 			Method:          m,
-			MethodName:      fmt.Sprintf("%s%s", epName, itemName),
+			MethodName:      fmt.Sprintf("%s_%s", epName, itemName),
 			Path:            path,
 			ModelName:       fmt.Sprintf("%s", item.Annotation["structname"]),
 			ModelPath:       pathInModel,
@@ -223,14 +225,15 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 		ep := ListEndpoint{
 			ContainerEndpoint: ContainerEndpoint{
 				Method:          m,
-				MethodName:      fmt.Sprintf("%s%s", epName, itemName),
+				MethodName:      fmt.Sprintf("%s_%s", epName, itemName),
 				Path:            path,
 				ModelName:       fmt.Sprintf("%s", item.Annotation["structname"]),
 				ModelPath:       pathInModel,
 				ParentModelPath: parentModelPath,
 			},
-			ParentPath: path[:len(path)-1],
-			Key:        key,
+			PluralMethodName: fmt.Sprintf("%s_%s", epName, pluralize.Plural(itemName)),
+			ParentPath:       path[:len(path)-1],
+			Key:              key,
 		}
 		eps = append(eps, ep)
 	}
