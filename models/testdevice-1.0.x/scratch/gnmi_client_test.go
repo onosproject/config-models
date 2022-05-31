@@ -72,24 +72,24 @@ func TestLeafAtTopLevel(t *testing.T) {
 	val := &gnmi.TypedValue{
 		Value: &gnmi.TypedValue_StringVal{StringVal: str},
 	}
-	setRes, err := client.UpdateLeafAtTopLevel(ctx, target, val)
+	setRes, err := client.Update_LeafAtTopLevel(ctx, target, val)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err := client.GetLeafAtTopLevel(ctx, target)
+	getRes, err := client.Get_LeafAtTopLevel(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, str, getRes)
 
-	delRes, err := client.DeleteLeafAtTopLevel(ctx, target)
+	delRes, err := client.Delete_LeafAtTopLevel(ctx, target)
 	assert.NoError(t, err)
 	resId, err = gnmi_utils.ExtractResponseID(delRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err = client.GetLeafAtTopLevel(ctx, target)
+	getRes, err = client.Get_LeafAtTopLevel(ctx, target)
 	assert.Error(t, err)
 	assert.Equal(t, "", getRes)
 	s, _ := status.FromError(err)
@@ -104,24 +104,24 @@ func TestNestedLeaf(t *testing.T) {
 	val := &gnmi.TypedValue{
 		Value: &gnmi.TypedValue_UintVal{UintVal: uint64(v)},
 	}
-	setRes, err := client.UpdateCont1ACont2ALeaf2A(ctx, target, val)
+	setRes, err := client.Update_Cont1ACont2ALeaf2A(ctx, target, val)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err := client.GetCont1ACont2ALeaf2A(ctx, target)
+	getRes, err := client.Get_Cont1ACont2ALeaf2A(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, v, getRes)
 
-	delRes, err := client.DeleteCont1ACont2ALeaf2A(ctx, target)
+	delRes, err := client.Delete_Cont1ACont2ALeaf2A(ctx, target)
 	assert.NoError(t, err)
 	resId, err = gnmi_utils.ExtractResponseID(delRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err = client.GetCont1ACont2ALeaf2A(ctx, target)
+	getRes, err = client.Get_Cont1ACont2ALeaf2A(ctx, target)
 	assert.Error(t, err)
 	assert.Equal(t, uint8(0), getRes)
 	s, _ := status.FromError(err)
@@ -137,25 +137,25 @@ func TestBasicContainer(t *testing.T) {
 	c1a_c2a := testdevice.OnfTest1_Cont1A_Cont2A{
 		Leaf2A: &leaf2a,
 	}
-	setRes, err := client.UpdateCont1A_Cont2A(ctx, target, c1a_c2a)
+	setRes, err := client.Update_Cont1A_Cont2A(ctx, target, c1a_c2a)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err := client.GetCont1A_Cont2A(context.TODO(), target)
+	getRes, err := client.Get_Cont1A_Cont2A(context.TODO(), target)
 
 	assert.NoError(t, err)
 	assert.Equal(t, c1a_c2a.Leaf2A, getRes.Leaf2A)
 
-	delRes, err := client.DeleteCont1A_Cont2A(ctx, target)
+	delRes, err := client.Delete_Cont1A_Cont2A(ctx, target)
 	assert.NoError(t, err)
 	resId, err = gnmi_utils.ExtractResponseID(delRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err = client.GetCont1A_Cont2A(ctx, target)
+	getRes, err = client.Get_Cont1A_Cont2A(ctx, target)
 	assert.Error(t, err)
 	assert.Nil(t, getRes)
 	s, _ := status.FromError(err)
@@ -176,26 +176,26 @@ func TestNestedContainer(t *testing.T) {
 		Leaf1A: &str,
 		Cont2A: &c1a_c2a,
 	}
-	setRes, err := client.UpdateCont1A(ctx, target, c1a)
+	setRes, err := client.Update_Cont1A(ctx, target, c1a)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err := client.GetCont1A(context.TODO(), target)
+	getRes, err := client.Get_Cont1A(context.TODO(), target)
 
 	assert.NoError(t, err)
 	assert.Equal(t, c1a.Cont2A.Leaf2A, getRes.Cont2A.Leaf2A)
 	assert.Equal(t, c1a.Leaf1A, getRes.Leaf1A)
 
-	delRes, err := client.DeleteCont1A(ctx, target)
+	delRes, err := client.Delete_Cont1A(ctx, target)
 	assert.NoError(t, err)
 	resId, err = gnmi_utils.ExtractResponseID(delRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes, err = client.GetCont1A(ctx, target)
+	getRes, err = client.Get_Cont1A(ctx, target)
 	assert.Error(t, err)
 	assert.Nil(t, getRes)
 	s, _ := status.FromError(err)
@@ -215,33 +215,33 @@ func TestListSingleKeyItem(t *testing.T) {
 	listItem := testdevice.OnfTest1_Cont1A_List2A{Name: &item, RangeMax: &rm}
 
 	// for some reason the delete is breaking the test, so read the list and delete every entry in it
-	//_, err := client.DeleteCont1A_List2A(ctx, target)
+	//_, err := client.Delete_Cont1A_List2A(ctx, target)
 	//assert.NoError(t, err)
 
-	res, err := client.GetCont1A_List2A(ctx, target)
+	res, err := client.Get_Cont1A_List2AS(ctx, target)
 	if code, ok := status.FromError(err); !ok && code.Code() != codes.NotFound {
 		// the only error we accept is not found
 		assert.NoError(t, err)
 	}
 
 	for _, item := range res {
-		_, err := client.DeleteCont1A_List2A_Item(ctx, target, *item.Name)
+		_, err := client.Delete_Cont1A_List2A(ctx, target, *item.Name)
 		assert.NoError(t, err)
 	}
 
-	setRes, err := client.UpdateCont1A_List2A_Item(ctx, target, listItem)
+	setRes, err := client.Update_Cont1A_List2A(ctx, target, listItem)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes1, err := client.GetCont1A_List2A_Item(context.TODO(), target, item)
+	getRes1, err := client.Get_Cont1A_List2A(context.TODO(), target, item)
 	assert.NoError(t, err)
 	assert.Equal(t, listItem.Name, getRes1.Name, "item name is wrong")
 	assert.Equal(t, listItem.RangeMax, getRes1.RangeMax, "item range-max is wrong")
 
-	getRes2, err := client.GetCont1A_List2A_Item(context.TODO(), target, missingItem)
+	getRes2, err := client.Get_Cont1A_List2A(context.TODO(), target, missingItem)
 	assert.Error(t, err)
 	assert.Nil(t, getRes2)
 	s, _ := status.FromError(err)
@@ -259,22 +259,22 @@ func TestListSingleKey(t *testing.T) {
 		item2: {Name: &item2},
 	}
 
-	res, err := client.GetCont1A_List2A(ctx, target)
+	res, err := client.Get_Cont1A_List2AS(ctx, target)
 	assert.NoError(t, err)
 
 	for _, item := range res {
-		_, err := client.DeleteCont1A_List2A_Item(ctx, target, *item.Name)
+		_, err := client.Delete_Cont1A_List2A(ctx, target, *item.Name)
 		assert.NoError(t, err)
 	}
 
-	setRes, err := client.UpdateCont1A_List2A(ctx, target, list)
+	setRes, err := client.Update_Cont1A_List2AS(ctx, target, list)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes1, err := client.GetCont1A_List2A(ctx, target)
+	getRes1, err := client.Get_Cont1A_List2AS(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(getRes1))
 	assert.Equal(t, list[item1].Name, getRes1[item1].Name, "item1 is missing")
