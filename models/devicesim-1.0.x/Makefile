@@ -51,15 +51,6 @@ image: mod-update # @HELP Build the docker image (available parameters: DOCKER_R
 	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}devicesim:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}devicesim:${VERSION} ${DOCKER_REPOSITORY}devicesim:${LATEST_VERSION}
 
-.PHONY: openapi
-openapi: mod-update # @HELP Generate OpenApi specs
-	go run openapi/openapi-gen.go -o openapi.yaml
-
-.PHONY: gnmi-gen
-gnmi-gen: mod-update # @HELP Generate gNMI Client
-	go run gnmi-gen/gnmi-gen.go
-	go fmt api/gnmi_client.go
-
 test: mod-update # @HELP Run the unit tests
 	go test ./...
 

@@ -127,7 +127,7 @@ func (c *ModelCompiler) Compile(path string) error {
 	}
 
 	// Generate OpenAPI
-	err = c.generateOpenApi(path)
+	err = c.generateOpenApiGen(path)
 	if err != nil {
 		log.Errorf("Unable to generate OpenApi specs: %+v", err)
 		return err
@@ -140,12 +140,26 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
-	// Now generate the gNMI client itself
-	//err = c.generateGnmiClient(path)
-	//if err != nil {
-	//	log.Errorf("Unable to generate gNMI Client: %+v", err)
-	//	return err
-	//}
+	// Vendor the GO Modules
+	err = c.vendorModules(path)
+	if err != nil {
+		log.Errorf("Unable to vendor GO Modules: %+v", err)
+		return err
+	}
+
+	// Generate the OpenAPI specs
+	err = c.generateOpenApi(path)
+	if err != nil {
+		log.Errorf("Unable to generate gNMI Client: %+v", err)
+		return err
+	}
+
+	// Generate the gNMI client
+	err = c.generateGnmiClient(path)
+	if err != nil {
+		log.Errorf("Unable to generate gNMI Client: %+v", err)
+		return err
+	}
 
 	return nil
 }
@@ -335,7 +349,7 @@ func (c *ModelCompiler) generateDockerfile(path string) error {
 
 // TODO we should be able to run this generated code right after we generate it,
 // so that we can remove a step from `make models-images`
-func (c *ModelCompiler) generateOpenApi(path string) error {
+func (c *ModelCompiler) generateOpenApiGen(path string) error {
 	// the Schema we need to import is generated at runtime, so we need to generate the tool
 	// to import such schema and generate the OpenApi specs
 	dir := filepath.Join(path, "openapi")
@@ -344,6 +358,28 @@ func (c *ModelCompiler) generateOpenApi(path string) error {
 
 	log.Infof("Generating plugin OpenApi Gen file '%s'", openapiGenFile)
 	return c.applyTemplate(openapiGenTemplate, c.getTemplatePath(openapiGenTemplate), openapiGenFile)
+}
+
+func (c *ModelCompiler) generateOpenApi(path string) error {
+	generatorPath := filepath.Join(path, "openapi/openapi-gen.go")
+
+	args := []string{
+		"run",
+		generatorPath,
+		"-o", "openapi.yaml",
+	}
+
+	log.Infof("Executing: %s %s", generatorPath, strings.Join(args, " "))
+	cmd := exec.Command("go", args...)
+	cmd.Env = os.Environ()
+	cmd.Dir = path
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
@@ -357,23 +393,54 @@ func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
 	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
 }
 
-//func (c *ModelCompiler) generateGnmiClient(path string) error {
-//	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
-//
-//	args := []string{
-//		"run",
-//		generatorPath,
-//		"--debug",
-//	}
-//
-//	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
-//	cmd := exec.Command("go", args...)
-//	cmd.Env = os.Environ()
-//	cmd.Stdout = os.Stdout
-//	cmd.Stderr = os.Stderr
-//	err := cmd.Run()
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
+func (c *ModelCompiler) vendorModules(path string) error {
+	cmd := exec.Command("go", "mod", "vendor")
+	cmd.Dir = path
+	cmd.Env = os.Environ()
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ModelCompiler) generateGnmiClient(path string) error {
+	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
+	outFile := filepath.Join(path, "api/gnmi_client.go")
+
+	err := exec.Command("rm", outFile).Run()
+	if err != nil {
+		return err
+	}
+
+	args := []string{
+		"run",
+		generatorPath,
+		"--debug",
+	}
+
+	log.Infof("Executing: %s %s", generatorPath, strings.Join(args, " "))
+	cmd := exec.Command("go", args...)
+	cmd.Env = os.Environ()
+	cmd.Dir = path
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	log.Infof("Executing: go %s", strings.Join(args, " "))
+	format := exec.Command("go", "fmt", "./api/gnmi_client.go")
+	format.Env = os.Environ()
+	format.Dir = path
+	format.Stdout = os.Stdout
+	format.Stderr = os.Stderr
+	err = format.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}

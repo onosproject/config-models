@@ -34,12 +34,6 @@ models: # @HELP make demo and test device models
 models:
 	@cd models && for model in *; do echo "Generating $$model:"; docker run ${PLATFORM} -v $$(pwd)/$$model:/config-model onosproject/model-compiler:latest; done
 
-models-openapi: # @HELP generates the openapi specs for the models
-	@cd models && for model in *; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
-
-models-gnmi-client: # @HELP generates the gnmi-client for the models
-	@cd models && for model in *; do echo -e "Building gNMI Client for $$model:\n"; pushd $$model; rm -f api/gnmi_client.go; make gnmi-gen; popd; echo -e "\n\n"; done
-
 models-images: models models-openapi # @HELP Build Docker containers for all the models
 	@cd models && for model in *; do echo -e "Building container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
 

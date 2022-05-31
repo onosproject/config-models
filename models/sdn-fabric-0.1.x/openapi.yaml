@@ -140,7 +140,7 @@ components:
           type: string
         dhcp-id:
           description: The ID of the DHCP Server
-          maxLength: 18446744073709551615
+          maxLength: 9223372036854775808
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: dhcp-id
@@ -199,7 +199,7 @@ components:
           type: string
         route-id:
           description: The ID of the route
-          maxLength: 18446744073709551615
+          maxLength: 9223372036854775808
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: route-id
@@ -254,10 +254,6 @@ components:
           description: The role of the switch in the fabric
           title: role
           type: string
-          enum:
-            - undefined
-            - leaf
-            - spine
         state:
           $ref: '#/components/schemas/Switch_State'
         switch-id:
@@ -302,10 +298,6 @@ components:
           description: Pipeline configuration - dual or quad
           title: pipeline
           type: string
-          enum:
-            - unknown
-            - dual
-            - quad
         port:
           $ref: '#/components/schemas/Switch-model_Port_List'
         switch-model-id:
