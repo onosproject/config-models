@@ -29,7 +29,7 @@ func NewRicGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) GetNodes_Node_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_Nodes_Node(ctx context.Context, target string,
 	key string,
 ) (*Xapp_Nodes_Node, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -83,7 +83,7 @@ func (c *GnmiClient) GetNodes_Node_Item(ctx context.Context, target string,
 	return nil, status.Error(codes.NotFound, "Xapp_Nodes_Node-not-found")
 }
 
-func (c *GnmiClient) DeleteNodes_Node_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Nodes_Node(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -118,7 +118,7 @@ func (c *GnmiClient) DeleteNodes_Node_Item(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateNodes_Node_Item(ctx context.Context, target string, data Xapp_Nodes_Node,
+func (c *GnmiClient) Update_Nodes_Node(ctx context.Context, target string, data Xapp_Nodes_Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -148,7 +148,7 @@ func (c *GnmiClient) UpdateNodes_Node_Item(ctx context.Context, target string, d
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetNodes_Node(ctx context.Context, target string,
+func (c *GnmiClient) Get_Nodes_Nodes(ctx context.Context, target string,
 ) (map[string]*Xapp_Nodes_Node, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -196,7 +196,7 @@ func (c *GnmiClient) GetNodes_Node(ctx context.Context, target string,
 	return st.Nodes.Node, nil
 }
 
-func (c *GnmiClient) DeleteNodes_Node(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Nodes_Nodes(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -225,7 +225,7 @@ func (c *GnmiClient) DeleteNodes_Node(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateNodes_Node(ctx context.Context, target string, list map[string]*Xapp_Nodes_Node,
+func (c *GnmiClient) Update_Nodes_Nodes(ctx context.Context, target string, list map[string]*Xapp_Nodes_Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -262,7 +262,7 @@ func (c *GnmiClient) UpdateNodes_Node(ctx context.Context, target string, list m
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetNodes(ctx context.Context, target string,
+func (c *GnmiClient) Get_Nodes(ctx context.Context, target string,
 ) (*Xapp_Nodes, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -306,7 +306,7 @@ func (c *GnmiClient) GetNodes(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteNodes(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Nodes(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -333,7 +333,7 @@ func (c *GnmiClient) DeleteNodes(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateNodes(ctx context.Context, target string, data Xapp_Nodes,
+func (c *GnmiClient) Update_Nodes(ctx context.Context, target string, data Xapp_Nodes,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -357,7 +357,7 @@ func (c *GnmiClient) UpdateNodes(ctx context.Context, target string, data Xapp_N
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetReportPeriod(ctx context.Context, target string,
+func (c *GnmiClient) Get_ReportPeriod(ctx context.Context, target string,
 ) (*KpimonXapp_ReportPeriod, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -401,7 +401,7 @@ func (c *GnmiClient) GetReportPeriod(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteReportPeriod(ctx context.Context, target string,
+func (c *GnmiClient) Delete_ReportPeriod(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -428,7 +428,7 @@ func (c *GnmiClient) DeleteReportPeriod(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateReportPeriod(ctx context.Context, target string, data KpimonXapp_ReportPeriod,
+func (c *GnmiClient) Update_ReportPeriod(ctx context.Context, target string, data KpimonXapp_ReportPeriod,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -452,7 +452,7 @@ func (c *GnmiClient) UpdateReportPeriod(ctx context.Context, target string, data
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetReportPeriodInterval(ctx context.Context, target string,
+func (c *GnmiClient) Get_ReportPeriodInterval(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -494,7 +494,7 @@ func (c *GnmiClient) GetReportPeriodInterval(ctx context.Context, target string,
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteReportPeriodInterval(ctx context.Context, target string,
+func (c *GnmiClient) Delete_ReportPeriodInterval(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -524,7 +524,7 @@ func (c *GnmiClient) DeleteReportPeriodInterval(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateReportPeriodInterval(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_ReportPeriodInterval(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()

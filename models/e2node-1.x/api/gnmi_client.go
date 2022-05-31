@@ -28,7 +28,7 @@ func NewE2nodeGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) GetE2Node_Intervals(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2Node_Intervals(ctx context.Context, target string,
 ) (*E2Node_E2Node_Intervals, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -78,7 +78,7 @@ func (c *GnmiClient) GetE2Node_Intervals(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteE2Node_Intervals(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2Node_Intervals(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -108,7 +108,7 @@ func (c *GnmiClient) DeleteE2Node_Intervals(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2Node_Intervals(ctx context.Context, target string, data E2Node_E2Node_Intervals,
+func (c *GnmiClient) Update_E2Node_Intervals(ctx context.Context, target string, data E2Node_E2Node_Intervals,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -135,7 +135,7 @@ func (c *GnmiClient) UpdateE2Node_Intervals(ctx context.Context, target string, 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2Node(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2Node(ctx context.Context, target string,
 ) (*E2Node_E2Node, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -179,7 +179,7 @@ func (c *GnmiClient) GetE2Node(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteE2Node(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2Node(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -206,7 +206,7 @@ func (c *GnmiClient) DeleteE2Node(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2Node(ctx context.Context, target string, data E2Node_E2Node,
+func (c *GnmiClient) Update_E2Node(ctx context.Context, target string, data E2Node_E2Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -230,7 +230,7 @@ func (c *GnmiClient) UpdateE2Node(ctx context.Context, target string, data E2Nod
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -275,7 +275,7 @@ func (c *GnmiClient) GetE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, 
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -308,7 +308,7 @@ func (c *GnmiClient) DeleteE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_E2NodeIntervalsPdcpMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -341,7 +341,7 @@ func (c *GnmiClient) UpdateE2NodeIntervalsPdcpMeasReportPerUe(ctx context.Contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -386,7 +386,7 @@ func (c *GnmiClient) GetE2NodeIntervalsRadioMeasReportPerCell(ctx context.Contex
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteE2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -419,7 +419,7 @@ func (c *GnmiClient) DeleteE2NodeIntervalsRadioMeasReportPerCell(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_E2NodeIntervalsRadioMeasReportPerCell(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -452,7 +452,7 @@ func (c *GnmiClient) UpdateE2NodeIntervalsRadioMeasReportPerCell(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -497,7 +497,7 @@ func (c *GnmiClient) GetE2NodeIntervalsRadioMeasReportPerUe(ctx context.Context,
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteE2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -530,7 +530,7 @@ func (c *GnmiClient) DeleteE2NodeIntervalsRadioMeasReportPerUe(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_E2NodeIntervalsRadioMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -563,7 +563,7 @@ func (c *GnmiClient) UpdateE2NodeIntervalsRadioMeasReportPerUe(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -608,7 +608,7 @@ func (c *GnmiClient) GetE2NodeIntervalsSchedMeasReportPerCell(ctx context.Contex
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteE2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -641,7 +641,7 @@ func (c *GnmiClient) DeleteE2NodeIntervalsSchedMeasReportPerCell(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_E2NodeIntervalsSchedMeasReportPerCell(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -674,7 +674,7 @@ func (c *GnmiClient) UpdateE2NodeIntervalsSchedMeasReportPerCell(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetE2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Get_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -719,7 +719,7 @@ func (c *GnmiClient) GetE2NodeIntervalsSchedMeasReportPerUe(ctx context.Context,
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteE2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
+func (c *GnmiClient) Delete_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -752,7 +752,7 @@ func (c *GnmiClient) DeleteE2NodeIntervalsSchedMeasReportPerUe(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateE2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
