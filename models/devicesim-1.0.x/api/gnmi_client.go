@@ -10,7 +10,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"google.golang.org/grpc"
@@ -29,7 +28,7 @@ func NewDevicesimGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) GetComponents_Component_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_Components_Component(ctx context.Context, target string,
 	key string,
 ) (*OpenconfigPlatform_Components_Component, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -83,7 +82,7 @@ func (c *GnmiClient) GetComponents_Component_Item(ctx context.Context, target st
 	return nil, status.Error(codes.NotFound, "OpenconfigPlatform_Components_Component-not-found")
 }
 
-func (c *GnmiClient) DeleteComponents_Component_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Components_Component(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -118,7 +117,7 @@ func (c *GnmiClient) DeleteComponents_Component_Item(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateComponents_Component_Item(ctx context.Context, target string, data OpenconfigPlatform_Components_Component,
+func (c *GnmiClient) Update_Components_Component(ctx context.Context, target string, data OpenconfigPlatform_Components_Component,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -148,7 +147,7 @@ func (c *GnmiClient) UpdateComponents_Component_Item(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetInterfaces_Interface_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_Interfaces_Interface(ctx context.Context, target string,
 	key string,
 ) (*OpenconfigInterfaces_Interfaces_Interface, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -202,7 +201,7 @@ func (c *GnmiClient) GetInterfaces_Interface_Item(ctx context.Context, target st
 	return nil, status.Error(codes.NotFound, "OpenconfigInterfaces_Interfaces_Interface-not-found")
 }
 
-func (c *GnmiClient) DeleteInterfaces_Interface_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Interfaces_Interface(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -237,7 +236,7 @@ func (c *GnmiClient) DeleteInterfaces_Interface_Item(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateInterfaces_Interface_Item(ctx context.Context, target string, data OpenconfigInterfaces_Interfaces_Interface,
+func (c *GnmiClient) Update_Interfaces_Interface(ctx context.Context, target string, data OpenconfigInterfaces_Interfaces_Interface,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -267,9 +266,9 @@ func (c *GnmiClient) UpdateInterfaces_Interface_Item(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string,
 	key string,
-) (*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error) {
+) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -280,16 +279,16 @@ func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry_Item(ctx context.Contex
 					Name: "system",
 				},
 				{
-					Name: "dns",
+					Name: "aaa",
 				},
 				{
-					Name: "host-entries",
+					Name: "server-groups",
 				},
 				{
-					Name: "host-entry",
+					Name: "server-group",
 					Key: map[string]string{
 
-						"hostname": fmt.Sprint(key),
+						"name": fmt.Sprint(key),
 					},
 				},
 			},
@@ -317,17 +316,17 @@ func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry_Item(ctx context.Contex
 	st := Device{}
 	Unmarshal(json, &st)
 
-	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
 	}
-	if res, ok := st.System.Dns.HostEntries.HostEntry[key]; ok {
+	if res, ok := st.System.Aaa.ServerGroups.ServerGroup[key]; ok {
 		return res, nil
 	}
 
-	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
 }
 
-func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -340,16 +339,16 @@ func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry_Item(ctx context.Con
 					Name: "system",
 				},
 				{
-					Name: "dns",
+					Name: "aaa",
 				},
 				{
-					Name: "host-entries",
+					Name: "server-groups",
 				},
 				{
-					Name: "host-entry",
+					Name: "server-group",
 					Key: map[string]string{
 
-						"hostname": fmt.Sprint(key),
+						"name": fmt.Sprint(key),
 					},
 				},
 			},
@@ -368,7 +367,7 @@ func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry_Item(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry_Item(ctx context.Context, target string, data OpenconfigSystem_System_Dns_HostEntries_HostEntry,
+func (c *GnmiClient) Update_System_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -380,15 +379,15 @@ func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry_Item(ctx context.Con
 					Name: "system",
 				},
 				{
-					Name: "dns",
+					Name: "aaa",
 				},
 				{
-					Name: "host-entries",
+					Name: "server-groups",
 				},
 				{
-					Name: "host-entry",
+					Name: "server-group",
 					Key: map[string]string{
-						"hostname": fmt.Sprint(*data.Hostname),
+						"name": fmt.Sprint(*data.Name),
 					},
 				},
 			},
@@ -404,135 +403,7 @@ func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry_Item(ctx context.Con
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Processes_Process_Item(ctx context.Context, target string,
-	key uint64,
-) (*OpenconfigSystem_System_Processes_Process, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-				{
-					Name: "process",
-					Key: map[string]string{
-
-						"pid": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
-	}
-	if res, ok := st.System.Processes.Process[key]; ok {
-		return res, nil
-	}
-
-	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
-}
-
-func (c *GnmiClient) DeleteSystem_Processes_Process_Item(ctx context.Context, target string,
-	key uint64,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-				{
-					Name: "process",
-					Key: map[string]string{
-
-						"pid": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Processes_Process_Item(ctx context.Context, target string, data OpenconfigSystem_System_Processes_Process,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-				{
-					Name: "process",
-					Key: map[string]string{
-						"pid": fmt.Sprint(*data.Pid),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Authentication_Users_User_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_Users_User(ctx context.Context, target string,
 	key string,
 ) (*OpenconfigSystem_System_Aaa_Authentication_Users_User, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -595,7 +466,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_Users_User_Item(ctx context.Co
 	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_Users_User-not-found")
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Users_User_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_Users_User(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -639,7 +510,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Users_User_Item(ctx context
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Users_User_Item(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Users_User,
+func (c *GnmiClient) Update_System_Aaa_Authentication_Users_User(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Users_User,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -678,9 +549,9 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Users_User_Item(ctx context
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.Context, target string,
-	key string,
-) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error) {
+func (c *GnmiClient) Get_System_Processes_Process(ctx context.Context, target string,
+	key uint64,
+) (*OpenconfigSystem_System_Processes_Process, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -691,16 +562,13 @@ func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.Con
 					Name: "system",
 				},
 				{
-					Name: "aaa",
+					Name: "processes",
 				},
 				{
-					Name: "server-groups",
-				},
-				{
-					Name: "server-group",
+					Name: "process",
 					Key: map[string]string{
 
-						"name": fmt.Sprint(key),
+						"pid": fmt.Sprint(key),
 					},
 				},
 			},
@@ -728,18 +596,18 @@ func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.Con
 	st := Device{}
 	Unmarshal(json, &st)
 
-	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
+	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
 	}
-	if res, ok := st.System.Aaa.ServerGroups.ServerGroup[key]; ok {
+	if res, ok := st.System.Processes.Process[key]; ok {
 		return res, nil
 	}
 
-	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
+	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.Context, target string,
-	key string,
+func (c *GnmiClient) Delete_System_Processes_Process(ctx context.Context, target string,
+	key uint64,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -751,16 +619,13 @@ func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.
 					Name: "system",
 				},
 				{
-					Name: "aaa",
+					Name: "processes",
 				},
 				{
-					Name: "server-groups",
-				},
-				{
-					Name: "server-group",
+					Name: "process",
 					Key: map[string]string{
 
-						"name": fmt.Sprint(key),
+						"pid": fmt.Sprint(key),
 					},
 				},
 			},
@@ -779,7 +644,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup,
+func (c *GnmiClient) Update_System_Processes_Process(ctx context.Context, target string, data OpenconfigSystem_System_Processes_Process,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -791,15 +656,12 @@ func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.
 					Name: "system",
 				},
 				{
-					Name: "aaa",
+					Name: "processes",
 				},
 				{
-					Name: "server-groups",
-				},
-				{
-					Name: "server-group",
+					Name: "process",
 					Key: map[string]string{
-						"name": fmt.Sprint(*data.Name),
+						"pid": fmt.Sprint(*data.Pid),
 					},
 				},
 			},
@@ -815,7 +677,144 @@ func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup_Item(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Dns_HostEntries_HostEntry(ctx context.Context, target string,
+	key string,
+) (*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+				{
+					Name: "host-entry",
+					Key: map[string]string{
+
+						"hostname": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	}
+	if res, ok := st.System.Dns.HostEntries.HostEntry[key]; ok {
+		return res, nil
+	}
+
+	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+}
+
+func (c *GnmiClient) Delete_System_Dns_HostEntries_HostEntry(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+				{
+					Name: "host-entry",
+					Key: map[string]string{
+
+						"hostname": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_HostEntries_HostEntry(ctx context.Context, target string, data OpenconfigSystem_System_Dns_HostEntries_HostEntry,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+				{
+					Name: "host-entry",
+					Key: map[string]string{
+						"hostname": fmt.Sprint(*data.Hostname),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Ntp_NtpKeys_NtpKey(ctx context.Context, target string,
 	key uint16,
 ) (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -875,7 +874,7 @@ func (c *GnmiClient) GetSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, targ
 	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Ntp_NtpKeys_NtpKey-not-found")
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_NtpKeys_NtpKey(ctx context.Context, target string,
 	key uint16,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -916,7 +915,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_NtpKeys_NtpKey,
+func (c *GnmiClient) Update_System_Ntp_NtpKeys_NtpKey(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_NtpKeys_NtpKey,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -952,7 +951,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys_NtpKey_Item(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Controllers_Controller_Item(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Controllers_Controller(ctx context.Context, target string,
 	key string,
 ) (*OpenconfigSystem_System_Openflow_Controllers_Controller, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -1012,7 +1011,7 @@ func (c *GnmiClient) GetSystem_Openflow_Controllers_Controller_Item(ctx context.
 	return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Openflow_Controllers_Controller-not-found")
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Controllers_Controller_Item(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Controllers_Controller(ctx context.Context, target string,
 	key string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -1053,7 +1052,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Controllers_Controller_Item(ctx conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Controllers_Controller_Item(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Controllers_Controller,
+func (c *GnmiClient) Update_System_Openflow_Controllers_Controller(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Controllers_Controller,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1089,7 +1088,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Controllers_Controller_Item(ctx conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetComponents_Component(ctx context.Context, target string,
+func (c *GnmiClient) Get_Components_Components(ctx context.Context, target string,
 ) (map[string]*OpenconfigPlatform_Components_Component, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1137,7 +1136,7 @@ func (c *GnmiClient) GetComponents_Component(ctx context.Context, target string,
 	return st.Components.Component, nil
 }
 
-func (c *GnmiClient) DeleteComponents_Component(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Components_Components(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1166,7 +1165,7 @@ func (c *GnmiClient) DeleteComponents_Component(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateComponents_Component(ctx context.Context, target string, list map[string]*OpenconfigPlatform_Components_Component,
+func (c *GnmiClient) Update_Components_Components(ctx context.Context, target string, list map[string]*OpenconfigPlatform_Components_Component,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1203,7 +1202,7 @@ func (c *GnmiClient) UpdateComponents_Component(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetInterfaces_Interface(ctx context.Context, target string,
+func (c *GnmiClient) Get_Interfaces_Interfaces(ctx context.Context, target string,
 ) (map[string]*OpenconfigInterfaces_Interfaces_Interface, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1251,7 +1250,7 @@ func (c *GnmiClient) GetInterfaces_Interface(ctx context.Context, target string,
 	return st.Interfaces.Interface, nil
 }
 
-func (c *GnmiClient) DeleteInterfaces_Interface(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Interfaces_Interfaces(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1280,7 +1279,7 @@ func (c *GnmiClient) DeleteInterfaces_Interface(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateInterfaces_Interface(ctx context.Context, target string, list map[string]*OpenconfigInterfaces_Interfaces_Interface,
+func (c *GnmiClient) Update_Interfaces_Interfaces(ctx context.Context, target string, list map[string]*OpenconfigInterfaces_Interfaces_Interface,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1317,8 +1316,8 @@ func (c *GnmiClient) UpdateInterfaces_Interface(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry(ctx context.Context, target string,
-) (map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error) {
+func (c *GnmiClient) Get_System_Aaa_ServerGroups_ServerGroups(ctx context.Context, target string,
+) (map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -1329,13 +1328,13 @@ func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry(ctx context.Context, ta
 					Name: "system",
 				},
 				{
-					Name: "dns",
+					Name: "aaa",
 				},
 				{
-					Name: "host-entries",
+					Name: "server-groups",
 				},
 				{
-					Name: "host-entry",
+					Name: "server-group",
 				},
 			},
 			Target: target,
@@ -1361,17 +1360,17 @@ func (c *GnmiClient) GetSystem_Dns_HostEntries_HostEntry(ctx context.Context, ta
 	st := Device{}
 	Unmarshal(json, &st)
 
-	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
 	}
-	if reflect.ValueOf(st.System.Dns.HostEntries.HostEntry).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries.HostEntry).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	if reflect.ValueOf(st.System.Aaa.ServerGroups.ServerGroup).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups.ServerGroup).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
 	}
 
-	return st.System.Dns.HostEntries.HostEntry, nil
+	return st.System.Aaa.ServerGroups.ServerGroup, nil
 }
 
-func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_ServerGroups_ServerGroups(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1383,13 +1382,13 @@ func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry(ctx context.Context,
 					Name: "system",
 				},
 				{
-					Name: "dns",
+					Name: "aaa",
 				},
 				{
-					Name: "host-entries",
+					Name: "server-groups",
 				},
 				{
-					Name: "host-entry",
+					Name: "server-group",
 				},
 			},
 			Target: target,
@@ -1406,7 +1405,7 @@ func (c *GnmiClient) DeleteSystem_Dns_HostEntries_HostEntry(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry,
+func (c *GnmiClient) Update_System_Aaa_ServerGroups_ServerGroups(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1416,10 +1415,10 @@ func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry(ctx context.Context,
 			Name: "system",
 		},
 		{
-			Name: "dns",
+			Name: "aaa",
 		},
 		{
-			Name: "host-entries",
+			Name: "server-groups",
 		},
 	}
 	req := &gnmi.SetRequest{
@@ -1431,7 +1430,7 @@ func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry(ctx context.Context,
 			Elem: append(basePathElems, &gnmi.PathElem{
 				Name: "list2a",
 				Key: map[string]string{
-					"hostname": fmt.Sprint(*item.Hostname),
+					"name": fmt.Sprint(*item.Name),
 				},
 			}),
 			Target: target,
@@ -1449,130 +1448,7 @@ func (c *GnmiClient) UpdateSystem_Dns_HostEntries_HostEntry(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Processes_Process(ctx context.Context, target string,
-) (map[uint64]*OpenconfigSystem_System_Processes_Process, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-				{
-					Name: "process",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
-	}
-	if reflect.ValueOf(st.System.Processes.Process).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes.Process).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
-	}
-
-	return st.System.Processes.Process, nil
-}
-
-func (c *GnmiClient) DeleteSystem_Processes_Process(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-				{
-					Name: "process",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Processes_Process(ctx context.Context, target string, list map[uint64]*OpenconfigSystem_System_Processes_Process,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	basePathElems := []*gnmi.PathElem{
-		{
-			Name: "system",
-		},
-		{
-			Name: "processes",
-		},
-	}
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{},
-	}
-	for _, item := range list {
-
-		path := &gnmi.Path{
-			Elem: append(basePathElems, &gnmi.PathElem{
-				Name: "list2a",
-				Key: map[string]string{
-					"pid": fmt.Sprint(*item.Pid),
-				},
-			}),
-			Target: target,
-		}
-
-		// TODO if it's pointer, pass the value
-		// if it's a value pass it directly
-		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
-		if err != nil {
-			return nil, err
-		}
-		req.Update = append(req.Update, r.Update...)
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Authentication_Users_User(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_Users_Users(ctx context.Context, target string,
 ) (map[string]*OpenconfigSystem_System_Aaa_Authentication_Users_User, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1629,7 +1505,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_Users_User(ctx context.Context
 	return st.System.Aaa.Authentication.Users.User, nil
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Users_User(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_Users_Users(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1667,7 +1543,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Users_User(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Users_User(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Aaa_Authentication_Users_User,
+func (c *GnmiClient) Update_System_Aaa_Authentication_Users_Users(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Aaa_Authentication_Users_User,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1713,8 +1589,8 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Users_User(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string,
-) (map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error) {
+func (c *GnmiClient) Get_System_Processes_Processes(ctx context.Context, target string,
+) (map[uint64]*OpenconfigSystem_System_Processes_Process, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -1725,13 +1601,10 @@ func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup(ctx context.Context,
 					Name: "system",
 				},
 				{
-					Name: "aaa",
+					Name: "processes",
 				},
 				{
-					Name: "server-groups",
-				},
-				{
-					Name: "server-group",
+					Name: "process",
 				},
 			},
 			Target: target,
@@ -1757,17 +1630,17 @@ func (c *GnmiClient) GetSystem_Aaa_ServerGroups_ServerGroup(ctx context.Context,
 	st := Device{}
 	Unmarshal(json, &st)
 
-	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
+	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
 	}
-	if reflect.ValueOf(st.System.Aaa.ServerGroups.ServerGroup).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups.ServerGroup).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup-not-found")
+	if reflect.ValueOf(st.System.Processes.Process).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes.Process).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes_Process-not-found")
 	}
 
-	return st.System.Aaa.ServerGroups.ServerGroup, nil
+	return st.System.Processes.Process, nil
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Processes_Processes(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1779,13 +1652,10 @@ func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup(ctx context.Conte
 					Name: "system",
 				},
 				{
-					Name: "aaa",
+					Name: "processes",
 				},
 				{
-					Name: "server-groups",
-				},
-				{
-					Name: "server-group",
+					Name: "process",
 				},
 			},
 			Target: target,
@@ -1802,7 +1672,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups_ServerGroup(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup,
+func (c *GnmiClient) Update_System_Processes_Processes(ctx context.Context, target string, list map[uint64]*OpenconfigSystem_System_Processes_Process,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1812,10 +1682,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup(ctx context.Conte
 			Name: "system",
 		},
 		{
-			Name: "aaa",
-		},
-		{
-			Name: "server-groups",
+			Name: "processes",
 		},
 	}
 	req := &gnmi.SetRequest{
@@ -1827,7 +1694,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup(ctx context.Conte
 			Elem: append(basePathElems, &gnmi.PathElem{
 				Name: "list2a",
 				Key: map[string]string{
-					"name": fmt.Sprint(*item.Name),
+					"pid": fmt.Sprint(*item.Pid),
 				},
 			}),
 			Target: target,
@@ -1845,7 +1712,139 @@ func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups_ServerGroup(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Dns_HostEntries_HostEntries(ctx context.Context, target string,
+) (map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+				{
+					Name: "host-entry",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns.HostEntries.HostEntry).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries.HostEntry).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries_HostEntry-not-found")
+	}
+
+	return st.System.Dns.HostEntries.HostEntry, nil
+}
+
+func (c *GnmiClient) Delete_System_Dns_HostEntries_HostEntries(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+				{
+					Name: "host-entry",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_HostEntries_HostEntries(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	basePathElems := []*gnmi.PathElem{
+		{
+			Name: "system",
+		},
+		{
+			Name: "dns",
+		},
+		{
+			Name: "host-entries",
+		},
+	}
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{},
+	}
+	for _, item := range list {
+
+		path := &gnmi.Path{
+			Elem: append(basePathElems, &gnmi.PathElem{
+				Name: "list2a",
+				Key: map[string]string{
+					"hostname": fmt.Sprint(*item.Hostname),
+				},
+			}),
+			Target: target,
+		}
+
+		// TODO if it's pointer, pass the value
+		// if it's a value pass it directly
+		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
+		if err != nil {
+			return nil, err
+		}
+		req.Update = append(req.Update, r.Update...)
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Ntp_NtpKeys_NtpKeys(ctx context.Context, target string,
 ) (map[uint16]*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1899,7 +1898,7 @@ func (c *GnmiClient) GetSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target st
 	return st.System.Ntp.NtpKeys.NtpKey, nil
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_NtpKeys_NtpKeys(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1934,7 +1933,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target string, list map[uint16]*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey,
+func (c *GnmiClient) Update_System_Ntp_NtpKeys_NtpKeys(ctx context.Context, target string, list map[uint16]*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1977,7 +1976,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys_NtpKey(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Controllers_Controller(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Controllers_Controllers(ctx context.Context, target string,
 ) (map[string]*OpenconfigSystem_System_Openflow_Controllers_Controller, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2031,7 +2030,7 @@ func (c *GnmiClient) GetSystem_Openflow_Controllers_Controller(ctx context.Conte
 	return st.System.Openflow.Controllers.Controller, nil
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Controllers_Controller(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Controllers_Controllers(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2066,7 +2065,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Controllers_Controller(ctx context.Co
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Controllers_Controller(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Openflow_Controllers_Controller,
+func (c *GnmiClient) Update_System_Openflow_Controllers_Controllers(ctx context.Context, target string, list map[string]*OpenconfigSystem_System_Openflow_Controllers_Controller,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2109,7 +2108,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Controllers_Controller(ctx context.Co
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetComponents(ctx context.Context, target string,
+func (c *GnmiClient) Get_Components(ctx context.Context, target string,
 ) (*OpenconfigPlatform_Components, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2153,7 +2152,7 @@ func (c *GnmiClient) GetComponents(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteComponents(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Components(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2180,7 +2179,7 @@ func (c *GnmiClient) DeleteComponents(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateComponents(ctx context.Context, target string, data OpenconfigPlatform_Components,
+func (c *GnmiClient) Update_Components(ctx context.Context, target string, data OpenconfigPlatform_Components,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2204,7 +2203,7 @@ func (c *GnmiClient) UpdateComponents(ctx context.Context, target string, data O
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetInterfaces(ctx context.Context, target string,
+func (c *GnmiClient) Get_Interfaces(ctx context.Context, target string,
 ) (*OpenconfigInterfaces_Interfaces, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2248,7 +2247,7 @@ func (c *GnmiClient) GetInterfaces(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteInterfaces(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Interfaces(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2275,7 +2274,7 @@ func (c *GnmiClient) DeleteInterfaces(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateInterfaces(ctx context.Context, target string, data OpenconfigInterfaces_Interfaces,
+func (c *GnmiClient) Update_Interfaces(ctx context.Context, target string, data OpenconfigInterfaces_Interfaces,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -2299,2077 +2298,7 @@ func (c *GnmiClient) UpdateInterfaces(ctx context.Context, target string, data O
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Clock_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Clock_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Clock.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_State-not-found")
-	}
-
-	return st.System.Clock.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Clock_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Clock_State(ctx context.Context, target string, data OpenconfigSystem_System_Clock_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Clock_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Clock_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.Clock.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_Config-not-found")
-	}
-
-	return st.System.Clock.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Clock_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Clock_Config(ctx context.Context, target string, data OpenconfigSystem_System_Clock_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Clock(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Clock, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock-not-found")
-	}
-	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock-not-found")
-	}
-
-	return st.System.Clock, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Clock(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Clock(ctx context.Context, target string, data OpenconfigSystem_System_Clock,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Dns_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Dns_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.Dns.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Config-not-found")
-	}
-
-	return st.System.Dns.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Dns_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Dns_Config(ctx context.Context, target string, data OpenconfigSystem_System_Dns_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Dns_HostEntries(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Dns_HostEntries, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "host-entries",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries-not-found")
-	}
-	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries-not-found")
-	}
-
-	return st.System.Dns.HostEntries, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Dns_HostEntries(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "host-entries",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Dns_HostEntries(ctx context.Context, target string, data OpenconfigSystem_System_Dns_HostEntries,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "host-entries",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Dns_Servers(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Dns_Servers, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Servers-not-found")
-	}
-	if reflect.ValueOf(st.System.Dns.Servers).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.Servers).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Servers-not-found")
-	}
-
-	return st.System.Dns.Servers, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Dns_Servers(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Dns_Servers(ctx context.Context, target string, data OpenconfigSystem_System_Dns_Servers,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Dns_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Dns_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Dns.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_State-not-found")
-	}
-
-	return st.System.Dns.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Dns_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Dns_State(ctx context.Context, target string, data OpenconfigSystem_System_Dns_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Dns(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Dns, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns-not-found")
-	}
-	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns-not-found")
-	}
-
-	return st.System.Dns, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Dns(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Dns(ctx context.Context, target string, data OpenconfigSystem_System_Dns,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging_RemoteServers(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging_RemoteServers, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "remote-servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_RemoteServers-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging.RemoteServers).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.RemoteServers).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_RemoteServers-not-found")
-	}
-
-	return st.System.Logging.RemoteServers, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging_RemoteServers(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "remote-servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging_RemoteServers(ctx context.Context, target string, data OpenconfigSystem_System_Logging_RemoteServers,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "remote-servers",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging_Console_Selectors(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging_Console_Selectors, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Selectors-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging.Console.Selectors).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.Selectors).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Selectors-not-found")
-	}
-
-	return st.System.Logging.Console.Selectors, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging_Console_Selectors(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging_Console_Selectors(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_Selectors,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging_Console_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging_Console_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging.Console.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_State-not-found")
-	}
-
-	return st.System.Logging.Console.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging_Console_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging_Console_State(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging_Console_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging_Console_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging.Console.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Config-not-found")
-	}
-
-	return st.System.Logging.Console.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging_Console_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging_Console_Config(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging_Console(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging_Console, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console-not-found")
-	}
-
-	return st.System.Logging.Console, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging_Console(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging_Console(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-				{
-					Name: "console",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Logging(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Logging, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging-not-found")
-	}
-	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging-not-found")
-	}
-
-	return st.System.Logging, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Logging(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Logging(ctx context.Context, target string, data OpenconfigSystem_System_Logging,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "logging",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Memory_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Memory_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.Memory.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_Config-not-found")
-	}
-
-	return st.System.Memory.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Memory_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Memory_Config(ctx context.Context, target string, data OpenconfigSystem_System_Memory_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Memory_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Memory_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Memory.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_State-not-found")
-	}
-
-	return st.System.Memory.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Memory_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Memory_State(ctx context.Context, target string, data OpenconfigSystem_System_Memory_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Memory(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Memory, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory-not-found")
-	}
-	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory-not-found")
-	}
-
-	return st.System.Memory, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Memory(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Memory(ctx context.Context, target string, data OpenconfigSystem_System_Memory,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Processes(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Processes, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes-not-found")
-	}
-	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes-not-found")
-	}
-
-	return st.System.Processes, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Processes(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Processes(ctx context.Context, target string, data OpenconfigSystem_System_Processes,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "processes",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_SshServer_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_SshServer_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_SshServer_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4422,7 +2351,7 @@ func (c *GnmiClient) GetSystem_SshServer_Config(ctx context.Context, target stri
 
 }
 
-func (c *GnmiClient) DeleteSystem_SshServer_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_SshServer_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4455,7 +2384,7 @@ func (c *GnmiClient) DeleteSystem_SshServer_Config(ctx context.Context, target s
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_SshServer_Config(ctx context.Context, target string, data OpenconfigSystem_System_SshServer_Config,
+func (c *GnmiClient) Update_System_SshServer_Config(ctx context.Context, target string, data OpenconfigSystem_System_SshServer_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4485,7 +2414,7 @@ func (c *GnmiClient) UpdateSystem_SshServer_Config(ctx context.Context, target s
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_SshServer_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_SshServer_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_SshServer_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4538,7 +2467,7 @@ func (c *GnmiClient) GetSystem_SshServer_State(ctx context.Context, target strin
 
 }
 
-func (c *GnmiClient) DeleteSystem_SshServer_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_SshServer_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4571,7 +2500,7 @@ func (c *GnmiClient) DeleteSystem_SshServer_State(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_SshServer_State(ctx context.Context, target string, data OpenconfigSystem_System_SshServer_State,
+func (c *GnmiClient) Update_System_SshServer_State(ctx context.Context, target string, data OpenconfigSystem_System_SshServer_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4601,7 +2530,7 @@ func (c *GnmiClient) UpdateSystem_SshServer_State(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_SshServer(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_SshServer(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_SshServer, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4651,7 +2580,7 @@ func (c *GnmiClient) GetSystem_SshServer(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_SshServer(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_SshServer(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4681,7 +2610,7 @@ func (c *GnmiClient) DeleteSystem_SshServer(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_SshServer(ctx context.Context, target string, data OpenconfigSystem_System_SshServer,
+func (c *GnmiClient) Update_System_SshServer(ctx context.Context, target string, data OpenconfigSystem_System_SshServer,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4708,7 +2637,7 @@ func (c *GnmiClient) UpdateSystem_SshServer(ctx context.Context, target string, 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4758,7 +2687,7 @@ func (c *GnmiClient) GetSystem_State(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4788,7 +2717,7 @@ func (c *GnmiClient) DeleteSystem_State(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_State(ctx context.Context, target string, data OpenconfigSystem_System_State,
+func (c *GnmiClient) Update_System_State(ctx context.Context, target string, data OpenconfigSystem_System_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4815,8 +2744,8 @@ func (c *GnmiClient) UpdateSystem_State(ctx context.Context, target string, data
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Accounting_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Accounting_Config, error) {
+func (c *GnmiClient) Get_System_Aaa_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -4830,7 +2759,236 @@ func (c *GnmiClient) GetSystem_Aaa_Accounting_Config(ctx context.Context, target
 					Name: "aaa",
 				},
 				{
-					Name: "accounting",
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Config-not-found")
+	}
+
+	return st.System.Aaa.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_ServerGroups(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_ServerGroups, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "server-groups",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups-not-found")
+	}
+
+	return st.System.Aaa.ServerGroups, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_ServerGroups(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "server-groups",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_ServerGroups(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_ServerGroups,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "server-groups",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
 				},
 				{
 					Name: "state",
@@ -4860,18 +3018,18 @@ func (c *GnmiClient) GetSystem_Aaa_Accounting_Config(ctx context.Context, target
 	st := Device{}
 	Unmarshal(json, &st)
 
-	if reflect.ValueOf(st.System.Aaa.Accounting).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Config-not-found")
+	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_State-not-found")
 	}
-	if reflect.ValueOf(st.System.Aaa.Accounting.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Config-not-found")
+	if reflect.ValueOf(st.System.Aaa.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_State-not-found")
 	}
 
-	return st.System.Aaa.Accounting.Config, nil
+	return st.System.Aaa.State, nil
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Accounting_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4884,9 +3042,6 @@ func (c *GnmiClient) DeleteSystem_Aaa_Accounting_Config(ctx context.Context, tar
 				},
 				{
 					Name: "aaa",
-				},
-				{
-					Name: "accounting",
 				},
 				{
 					Name: "state",
@@ -4907,7 +3062,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Accounting_Config(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Accounting_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_Config,
+func (c *GnmiClient) Update_System_Aaa_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -4920,9 +3075,6 @@ func (c *GnmiClient) UpdateSystem_Aaa_Accounting_Config(ctx context.Context, tar
 				},
 				{
 					Name: "aaa",
-				},
-				{
-					Name: "accounting",
 				},
 				{
 					Name: "state",
@@ -4940,132 +3092,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Accounting_Config(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Accounting_Events(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Accounting_Events, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "accounting",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa.Accounting).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Events-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.Accounting.Events).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting.Events).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Events-not-found")
-	}
-
-	return st.System.Aaa.Accounting.Events, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_Accounting_Events(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "accounting",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_Accounting_Events(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_Events,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "accounting",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Accounting_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Accounting_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Accounting_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5083,7 +3110,7 @@ func (c *GnmiClient) GetSystem_Aaa_Accounting_State(ctx context.Context, target 
 					Name: "accounting",
 				},
 				{
-					Name: "state",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -5121,7 +3148,7 @@ func (c *GnmiClient) GetSystem_Aaa_Accounting_State(ctx context.Context, target 
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Accounting_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Accounting_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5139,7 +3166,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Accounting_State(ctx context.Context, targ
 					Name: "accounting",
 				},
 				{
-					Name: "state",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -5157,7 +3184,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Accounting_State(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Accounting_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_State,
+func (c *GnmiClient) Update_System_Aaa_Accounting_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5175,7 +3202,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Accounting_State(ctx context.Context, targ
 					Name: "accounting",
 				},
 				{
-					Name: "state",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -5190,7 +3217,257 @@ func (c *GnmiClient) UpdateSystem_Aaa_Accounting_State(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Accounting(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Accounting_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Accounting_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa.Accounting).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Accounting.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Config-not-found")
+	}
+
+	return st.System.Aaa.Accounting.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Accounting_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Accounting_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_Accounting_Events(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Accounting_Events, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa.Accounting).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Events-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Accounting.Events).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Accounting.Events).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Accounting_Events-not-found")
+	}
+
+	return st.System.Aaa.Accounting.Events, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Accounting_Events(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Accounting_Events(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting_Events,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "accounting",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_Accounting(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Accounting, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5243,7 +3520,7 @@ func (c *GnmiClient) GetSystem_Aaa_Accounting(ctx context.Context, target string
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Accounting(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Accounting(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5276,7 +3553,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Accounting(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Accounting(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting,
+func (c *GnmiClient) Update_System_Aaa_Accounting(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Accounting,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5306,257 +3583,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Accounting(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authentication_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Authentication_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa.Authentication).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.Authentication.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_State-not-found")
-	}
-
-	return st.System.Aaa.Authentication.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Authentication_Users(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Authentication_Users, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa.Authentication).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_Users-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.Authentication.Users).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication.Users).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_Users-not-found")
-	}
-
-	return st.System.Aaa.Authentication.Users, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Users(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Users(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Users,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5615,7 +3642,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser_Config(ctx context.C
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5654,7 +3681,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser_Config(ctx contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config,
+func (c *GnmiClient) Update_System_Aaa_Authentication_AdminUser_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5690,7 +3717,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser_Config(ctx contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_AdminUser_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authentication_AdminUser_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5749,7 +3776,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser_State(ctx context.Co
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_AdminUser_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5788,7 +3815,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser_State(ctx context
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser_State,
+func (c *GnmiClient) Update_System_Aaa_Authentication_AdminUser_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5824,7 +3851,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser_State(ctx context
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_AdminUser(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authentication_AdminUser, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5842,7 +3869,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -5880,7 +3907,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_AdminUser(ctx context.Context,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_AdminUser(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5898,7 +3925,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser(ctx context.Conte
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -5916,7 +3943,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_AdminUser(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser,
+func (c *GnmiClient) Update_System_Aaa_Authentication_AdminUser(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_AdminUser,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5934,7 +3961,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser(ctx context.Conte
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -5949,7 +3976,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_AdminUser(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authentication_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authentication_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -5967,7 +3994,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_Config(ctx context.Context, ta
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -6005,7 +4032,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication_Config(ctx context.Context, ta
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6023,7 +4050,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Config(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -6041,7 +4068,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication_Config(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Config,
+func (c *GnmiClient) Update_System_Aaa_Authentication_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6059,7 +4086,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Config(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "config",
+					Name: "users",
 				},
 			},
 			Target: target,
@@ -6074,7 +4101,257 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication_Config(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authentication(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authentication_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Authentication_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa.Authentication).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_State-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Authentication.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_State-not-found")
+	}
+
+	return st.System.Aaa.Authentication.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Authentication_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Authentication_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_Authentication_Users(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Authentication_Users, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa.Authentication).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_Users-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Authentication.Users).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authentication.Users).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authentication_Users-not-found")
+	}
+
+	return st.System.Aaa.Authentication.Users, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Authentication_Users(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Authentication_Users(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication_Users,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "users",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_Authentication(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authentication, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6127,7 +4404,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authentication(ctx context.Context, target st
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authentication(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authentication(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6160,7 +4437,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authentication(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authentication(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication,
+func (c *GnmiClient) Update_System_Aaa_Authentication(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authentication,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6190,132 +4467,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authentication(ctx context.Context, target
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authorization_Events(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Authorization_Events, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authorization",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa.Authorization).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authorization).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authorization_Events-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.Authorization.Events).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authorization.Events).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authorization_Events-not-found")
-	}
-
-	return st.System.Aaa.Authorization.Events, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_Authorization_Events(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authorization",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_Authorization_Events(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_Events,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authorization",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_Authorization_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authorization_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authorization_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6333,7 +4485,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authorization_State(ctx context.Context, targ
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6371,7 +4523,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authorization_State(ctx context.Context, targ
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authorization_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authorization_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6389,7 +4541,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authorization_State(ctx context.Context, t
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6407,7 +4559,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authorization_State(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authorization_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_State,
+func (c *GnmiClient) Update_System_Aaa_Authorization_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6425,7 +4577,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authorization_State(ctx context.Context, t
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6440,7 +4592,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authorization_State(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authorization_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authorization_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authorization_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6458,7 +4610,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authorization_Config(ctx context.Context, tar
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6496,7 +4648,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authorization_Config(ctx context.Context, tar
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authorization_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authorization_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6514,7 +4666,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authorization_Config(ctx context.Context, 
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6532,7 +4684,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authorization_Config(ctx context.Context, 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authorization_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_Config,
+func (c *GnmiClient) Update_System_Aaa_Authorization_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6550,7 +4702,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authorization_Config(ctx context.Context, 
 					Name: "authorization",
 				},
 				{
-					Name: "config",
+					Name: "events",
 				},
 			},
 			Target: target,
@@ -6565,7 +4717,132 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authorization_Config(ctx context.Context, 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Authorization(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa_Authorization_Events(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Aaa_Authorization_Events, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authorization",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Aaa.Authorization).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authorization).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authorization_Events-not-found")
+	}
+	if reflect.ValueOf(st.System.Aaa.Authorization.Events).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Authorization.Events).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Authorization_Events-not-found")
+	}
+
+	return st.System.Aaa.Authorization.Events, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Aaa_Authorization_Events(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authorization",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Aaa_Authorization_Events(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization_Events,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authorization",
+				},
+				{
+					Name: "events",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Aaa_Authorization(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa_Authorization, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6618,7 +4895,7 @@ func (c *GnmiClient) GetSystem_Aaa_Authorization(ctx context.Context, target str
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa_Authorization(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa_Authorization(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6651,7 +4928,7 @@ func (c *GnmiClient) DeleteSystem_Aaa_Authorization(ctx context.Context, target 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa_Authorization(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization,
+func (c *GnmiClient) Update_System_Aaa_Authorization(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Authorization,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -6681,355 +4958,7 @@ func (c *GnmiClient) UpdateSystem_Aaa_Authorization(ctx context.Context, target 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Aaa_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_Config-not-found")
-	}
-
-	return st.System.Aaa.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_Config(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_ServerGroups(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_ServerGroups, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "server-groups",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.ServerGroups).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.ServerGroups).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_ServerGroups-not-found")
-	}
-
-	return st.System.Aaa.ServerGroups, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_ServerGroups(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "server-groups",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_ServerGroups(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_ServerGroups,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "server-groups",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_Aaa_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.Aaa).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_State-not-found")
-	}
-	if reflect.ValueOf(st.System.Aaa.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Aaa.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Aaa_State-not-found")
-	}
-
-	return st.System.Aaa.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_Aaa_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_Aaa_State(ctx context.Context, target string, data OpenconfigSystem_System_Aaa_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_Aaa(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Aaa(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Aaa, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7079,7 +5008,7 @@ func (c *GnmiClient) GetSystem_Aaa(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Aaa(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Aaa(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7109,7 +5038,7 @@ func (c *GnmiClient) DeleteSystem_Aaa(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Aaa(ctx context.Context, target string, data OpenconfigSystem_System_Aaa,
+func (c *GnmiClient) Update_System_Aaa(ctx context.Context, target string, data OpenconfigSystem_System_Aaa,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7136,7 +5065,346 @@ func (c *GnmiClient) UpdateSystem_Aaa(ctx context.Context, target string, data O
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Clock_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Clock_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Clock.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_Config-not-found")
+	}
+
+	return st.System.Clock.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Clock_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Clock_Config(ctx context.Context, target string, data OpenconfigSystem_System_Clock_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Clock_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Clock_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_State-not-found")
+	}
+	if reflect.ValueOf(st.System.Clock.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock_State-not-found")
+	}
+
+	return st.System.Clock.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Clock_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Clock_State(ctx context.Context, target string, data OpenconfigSystem_System_Clock_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Clock(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Clock, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock-not-found")
+	}
+	if reflect.ValueOf(st.System.Clock).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Clock).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Clock-not-found")
+	}
+
+	return st.System.Clock, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Clock(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Clock(ctx context.Context, target string, data OpenconfigSystem_System_Clock,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7186,7 +5454,7 @@ func (c *GnmiClient) GetSystem_Config(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7216,7 +5484,7 @@ func (c *GnmiClient) DeleteSystem_Config(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Config(ctx context.Context, target string, data OpenconfigSystem_System_Config,
+func (c *GnmiClient) Update_System_Config(ctx context.Context, target string, data OpenconfigSystem_System_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7243,7 +5511,2077 @@ func (c *GnmiClient) UpdateSystem_Config(ctx context.Context, target string, dat
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Memory_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Memory_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Memory.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_Config-not-found")
+	}
+
+	return st.System.Memory.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Memory_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Memory_Config(ctx context.Context, target string, data OpenconfigSystem_System_Memory_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Memory_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Memory_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_State-not-found")
+	}
+	if reflect.ValueOf(st.System.Memory.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory_State-not-found")
+	}
+
+	return st.System.Memory.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Memory_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Memory_State(ctx context.Context, target string, data OpenconfigSystem_System_Memory_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Memory(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Memory, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory-not-found")
+	}
+	if reflect.ValueOf(st.System.Memory).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Memory).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Memory-not-found")
+	}
+
+	return st.System.Memory, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Memory(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Memory(ctx context.Context, target string, data OpenconfigSystem_System_Memory,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Processes(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Processes, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "processes",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes-not-found")
+	}
+	if reflect.ValueOf(st.System.Processes).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Processes).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Processes-not-found")
+	}
+
+	return st.System.Processes, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Processes(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "processes",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Processes(ctx context.Context, target string, data OpenconfigSystem_System_Processes,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "processes",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_TelnetServer_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_TelnetServer_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.TelnetServer.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_Config-not-found")
+	}
+
+	return st.System.TelnetServer.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_TelnetServer_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_TelnetServer_Config(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_TelnetServer_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_TelnetServer_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_State-not-found")
+	}
+	if reflect.ValueOf(st.System.TelnetServer.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_State-not-found")
+	}
+
+	return st.System.TelnetServer.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_TelnetServer_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_TelnetServer_State(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_TelnetServer(ctx context.Context, target string,
+) (*OpenconfigSystem_System_TelnetServer, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer-not-found")
+	}
+	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer-not-found")
+	}
+
+	return st.System.TelnetServer, nil
+
+}
+
+func (c *GnmiClient) Delete_System_TelnetServer(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_TelnetServer(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Dns_Servers(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Dns_Servers, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Servers-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns.Servers).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.Servers).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Servers-not-found")
+	}
+
+	return st.System.Dns.Servers, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Dns_Servers(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_Servers(ctx context.Context, target string, data OpenconfigSystem_System_Dns_Servers,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Dns_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Dns_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_State-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_State-not-found")
+	}
+
+	return st.System.Dns.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Dns_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_State(ctx context.Context, target string, data OpenconfigSystem_System_Dns_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Dns_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Dns_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_Config-not-found")
+	}
+
+	return st.System.Dns.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Dns_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_Config(ctx context.Context, target string, data OpenconfigSystem_System_Dns_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Dns_HostEntries(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Dns_HostEntries, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns.HostEntries).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns.HostEntries).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns_HostEntries-not-found")
+	}
+
+	return st.System.Dns.HostEntries, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Dns_HostEntries(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns_HostEntries(ctx context.Context, target string, data OpenconfigSystem_System_Dns_HostEntries,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "host-entries",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Dns(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Dns, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns-not-found")
+	}
+	if reflect.ValueOf(st.System.Dns).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Dns).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Dns-not-found")
+	}
+
+	return st.System.Dns, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Dns(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Dns(ctx context.Context, target string, data OpenconfigSystem_System_Dns,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging_Console_Selectors(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging_Console_Selectors, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Selectors-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging.Console.Selectors).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.Selectors).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Selectors-not-found")
+	}
+
+	return st.System.Logging.Console.Selectors, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging_Console_Selectors(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging_Console_Selectors(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_Selectors,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging_Console_State(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging_Console_State, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_State-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging.Console.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.State).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_State-not-found")
+	}
+
+	return st.System.Logging.Console.State, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging_Console_State(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging_Console_State(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_State,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging_Console_Config(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging_Console_Config, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Config-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging.Console.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console.Config).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console_Config-not-found")
+	}
+
+	return st.System.Logging.Console.Config, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging_Console_Config(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging_Console_Config(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console_Config,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+				{
+					Name: "config",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging_Console(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging_Console, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging.Console).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.Console).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_Console-not-found")
+	}
+
+	return st.System.Logging.Console, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging_Console(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging_Console(ctx context.Context, target string, data OpenconfigSystem_System_Logging_Console,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "console",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging_RemoteServers(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging_RemoteServers, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "remote-servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_RemoteServers-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging.RemoteServers).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging.RemoteServers).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging_RemoteServers-not-found")
+	}
+
+	return st.System.Logging.RemoteServers, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging_RemoteServers(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "remote-servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging_RemoteServers(ctx context.Context, target string, data OpenconfigSystem_System_Logging_RemoteServers,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+				{
+					Name: "remote-servers",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Logging(ctx context.Context, target string,
+) (*OpenconfigSystem_System_Logging, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging-not-found")
+	}
+	if reflect.ValueOf(st.System.Logging).Kind() == reflect.Ptr && reflect.ValueOf(st.System.Logging).IsNil() {
+		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_Logging-not-found")
+	}
+
+	return st.System.Logging, nil
+
+}
+
+func (c *GnmiClient) Delete_System_Logging(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_System_Logging(ctx context.Context, target string, data OpenconfigSystem_System_Logging,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "logging",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_System_Ntp_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Ntp_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7296,7 +7634,7 @@ func (c *GnmiClient) GetSystem_Ntp_Config(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7329,7 +7667,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_Config(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_Config(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_Config,
+func (c *GnmiClient) Update_System_Ntp_Config(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7359,7 +7697,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_Config(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_NtpKeys(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Ntp_NtpKeys(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Ntp_NtpKeys, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7412,7 +7750,7 @@ func (c *GnmiClient) GetSystem_Ntp_NtpKeys(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_NtpKeys(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7445,7 +7783,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_NtpKeys(ctx context.Context, target string
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_NtpKeys,
+func (c *GnmiClient) Update_System_Ntp_NtpKeys(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_NtpKeys,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7475,7 +7813,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_NtpKeys(ctx context.Context, target string
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_Servers(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Ntp_Servers(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Ntp_Servers, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7528,7 +7866,7 @@ func (c *GnmiClient) GetSystem_Ntp_Servers(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_Servers(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_Servers(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7561,7 +7899,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_Servers(ctx context.Context, target string
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_Servers(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_Servers,
+func (c *GnmiClient) Update_System_Ntp_Servers(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_Servers,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7591,7 +7929,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_Servers(ctx context.Context, target string
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Ntp_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Ntp_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7644,7 +7982,7 @@ func (c *GnmiClient) GetSystem_Ntp_State(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7677,7 +8015,7 @@ func (c *GnmiClient) DeleteSystem_Ntp_State(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp_State(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_State,
+func (c *GnmiClient) Update_System_Ntp_State(ctx context.Context, target string, data OpenconfigSystem_System_Ntp_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7707,7 +8045,7 @@ func (c *GnmiClient) UpdateSystem_Ntp_State(ctx context.Context, target string, 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Ntp(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Ntp(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Ntp, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7757,7 +8095,7 @@ func (c *GnmiClient) GetSystem_Ntp(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Ntp(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Ntp(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7787,7 +8125,7 @@ func (c *GnmiClient) DeleteSystem_Ntp(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Ntp(ctx context.Context, target string, data OpenconfigSystem_System_Ntp,
+func (c *GnmiClient) Update_System_Ntp(ctx context.Context, target string, data OpenconfigSystem_System_Ntp,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7814,7 +8152,7 @@ func (c *GnmiClient) UpdateSystem_Ntp(ctx context.Context, target string, data O
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Agent_Config(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Agent_Config(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Openflow_Agent_Config, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7870,7 +8208,7 @@ func (c *GnmiClient) GetSystem_Openflow_Agent_Config(ctx context.Context, target
 
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Agent_Config(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Agent_Config(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7906,7 +8244,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Agent_Config(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Agent_Config(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent_Config,
+func (c *GnmiClient) Update_System_Openflow_Agent_Config(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent_Config,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7939,7 +8277,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Agent_Config(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Agent_State(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Agent_State(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Openflow_Agent_State, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -7995,7 +8333,7 @@ func (c *GnmiClient) GetSystem_Openflow_Agent_State(ctx context.Context, target 
 
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Agent_State(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Agent_State(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8031,7 +8369,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Agent_State(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Agent_State(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent_State,
+func (c *GnmiClient) Update_System_Openflow_Agent_State(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent_State,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8064,7 +8402,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Agent_State(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Agent(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Agent(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Openflow_Agent, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8117,7 +8455,7 @@ func (c *GnmiClient) GetSystem_Openflow_Agent(ctx context.Context, target string
 
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Agent(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Agent(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8150,7 +8488,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Agent(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Agent(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent,
+func (c *GnmiClient) Update_System_Openflow_Agent(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Agent,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8180,7 +8518,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Agent(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow_Controllers(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow_Controllers(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Openflow_Controllers, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8233,7 +8571,7 @@ func (c *GnmiClient) GetSystem_Openflow_Controllers(ctx context.Context, target 
 
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow_Controllers(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow_Controllers(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8266,7 +8604,7 @@ func (c *GnmiClient) DeleteSystem_Openflow_Controllers(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow_Controllers(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Controllers,
+func (c *GnmiClient) Update_System_Openflow_Controllers(ctx context.Context, target string, data OpenconfigSystem_System_Openflow_Controllers,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8296,7 +8634,7 @@ func (c *GnmiClient) UpdateSystem_Openflow_Controllers(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_Openflow(ctx context.Context, target string,
+func (c *GnmiClient) Get_System_Openflow(ctx context.Context, target string,
 ) (*OpenconfigSystem_System_Openflow, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8346,7 +8684,7 @@ func (c *GnmiClient) GetSystem_Openflow(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem_Openflow(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System_Openflow(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8376,7 +8714,7 @@ func (c *GnmiClient) DeleteSystem_Openflow(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem_Openflow(ctx context.Context, target string, data OpenconfigSystem_System_Openflow,
+func (c *GnmiClient) Update_System_Openflow(ctx context.Context, target string, data OpenconfigSystem_System_Openflow,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8403,346 +8741,7 @@ func (c *GnmiClient) UpdateSystem_Openflow(ctx context.Context, target string, d
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystem_TelnetServer_Config(ctx context.Context, target string,
-) (*OpenconfigSystem_System_TelnetServer_Config, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_Config-not-found")
-	}
-	if reflect.ValueOf(st.System.TelnetServer.Config).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer.Config).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_Config-not-found")
-	}
-
-	return st.System.TelnetServer.Config, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_TelnetServer_Config(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_TelnetServer_Config(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer_Config,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_TelnetServer_State(ctx context.Context, target string,
-) (*OpenconfigSystem_System_TelnetServer_State, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_State-not-found")
-	}
-	if reflect.ValueOf(st.System.TelnetServer.State).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer.State).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer_State-not-found")
-	}
-
-	return st.System.TelnetServer.State, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_TelnetServer_State(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_TelnetServer_State(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer_State,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem_TelnetServer(ctx context.Context, target string,
-) (*OpenconfigSystem_System_TelnetServer, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_JSON,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return nil, err
-	}
-
-	json := val.GetJsonVal()
-	st := Device{}
-	Unmarshal(json, &st)
-
-	if reflect.ValueOf(st.System).Kind() == reflect.Ptr && reflect.ValueOf(st.System).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer-not-found")
-	}
-	if reflect.ValueOf(st.System.TelnetServer).Kind() == reflect.Ptr && reflect.ValueOf(st.System.TelnetServer).IsNil() {
-		return nil, status.Error(codes.NotFound, "OpenconfigSystem_System_TelnetServer-not-found")
-	}
-
-	return st.System.TelnetServer, nil
-
-}
-
-func (c *GnmiClient) DeleteSystem_TelnetServer(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystem_TelnetServer(ctx context.Context, target string, data OpenconfigSystem_System_TelnetServer,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystem(ctx context.Context, target string,
+func (c *GnmiClient) Get_System(ctx context.Context, target string,
 ) (*OpenconfigSystem_System, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8786,7 +8785,7 @@ func (c *GnmiClient) GetSystem(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) DeleteSystem(ctx context.Context, target string,
+func (c *GnmiClient) Delete_System(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8813,7 +8812,7 @@ func (c *GnmiClient) DeleteSystem(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystem(ctx context.Context, target string, data OpenconfigSystem_System,
+func (c *GnmiClient) Update_System(ctx context.Context, target string, data OpenconfigSystem_System,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -8837,1087 +8836,7 @@ func (c *GnmiClient) UpdateSystem(ctx context.Context, target string, data Openc
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemClockStateTimezoneName(ctx context.Context, target string,
-) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemClockStateTimezoneName-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemClockStateTimezoneName(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemClockStateTimezoneName(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemClockConfigTimezoneName(ctx context.Context, target string,
-) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemClockConfigTimezoneName-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemClockConfigTimezoneName(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemClockConfigTimezoneName(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "clock",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timezone-name",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemDnsConfigSearch(ctx context.Context, target string,
-) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemDnsConfigSearch-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemDnsConfigSearch(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemDnsConfigSearch(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemDnsStateSearch(ctx context.Context, target string,
-) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemDnsStateSearch-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemDnsStateSearch(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemDnsStateSearch(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "search",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemMemoryStatePhysical(ctx context.Context, target string,
-) (uint64, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint64(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemMemoryStatePhysical-not-found")
-	}
-
-	return uint64(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemMemoryStatePhysical(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemMemoryStatePhysical(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemMemoryStateReserved(ctx context.Context, target string,
-) (uint64, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint64(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemMemoryStateReserved-not-found")
-	}
-
-	return uint64(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemMemoryStateReserved(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemMemoryStateReserved(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "memory",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "reserved",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemSshServerConfigSessionLimit(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemSshServerConfigSessionLimit-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemSshServerConfigSessionLimit(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemSshServerConfigSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemSshServerConfigTimeout(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemSshServerConfigTimeout-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemSshServerConfigTimeout(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemSshServerConfigTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemSshServerConfigEnable(ctx context.Context, target string,
-) (bool, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return false, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return false, err
-	}
-
-	if val.GetBoolVal() == false {
-		return false, status.Error(codes.NotFound, "SystemSshServerConfigEnable-not-found")
-	}
-
-	return val.GetBoolVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemSshServerConfigEnable(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemSshServerConfigEnable(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "ssh-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "rate-limit",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemSshServerConfigProtocolVersion(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerConfigProtocolVersion(ctx context.Context, target string,
 ) (int64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -9935,7 +8854,7 @@ func (c *GnmiClient) GetSystemSshServerConfigProtocolVersion(ctx context.Context
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -9965,7 +8884,7 @@ func (c *GnmiClient) GetSystemSshServerConfigProtocolVersion(ctx context.Context
 	return int64(val.GetIntVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerConfigProtocolVersion(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerConfigProtocolVersion(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -9983,7 +8902,7 @@ func (c *GnmiClient) DeleteSystemSshServerConfigProtocolVersion(ctx context.Cont
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10001,7 +8920,7 @@ func (c *GnmiClient) DeleteSystemSshServerConfigProtocolVersion(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerConfigProtocolVersion(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerConfigProtocolVersion(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10019,7 +8938,7 @@ func (c *GnmiClient) UpdateSystemSshServerConfigProtocolVersion(ctx context.Cont
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10037,7 +8956,7 @@ func (c *GnmiClient) UpdateSystemSshServerConfigProtocolVersion(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerConfigRateLimit(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerConfigRateLimit(ctx context.Context, target string,
 ) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10055,7 +8974,7 @@ func (c *GnmiClient) GetSystemSshServerConfigRateLimit(ctx context.Context, targ
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10085,7 +9004,7 @@ func (c *GnmiClient) GetSystemSshServerConfigRateLimit(ctx context.Context, targ
 	return uint16(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerConfigRateLimit(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerConfigRateLimit(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10103,7 +9022,7 @@ func (c *GnmiClient) DeleteSystemSshServerConfigRateLimit(ctx context.Context, t
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10121,7 +9040,7 @@ func (c *GnmiClient) DeleteSystemSshServerConfigRateLimit(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerConfigRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerConfigRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10139,7 +9058,7 @@ func (c *GnmiClient) UpdateSystemSshServerConfigRateLimit(ctx context.Context, t
 					Name: "config",
 				},
 				{
-					Name: "rate-limit",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10157,7 +9076,7 @@ func (c *GnmiClient) UpdateSystemSshServerConfigRateLimit(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerStateRateLimit(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerConfigSessionLimit(ctx context.Context, target string,
 ) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10172,10 +9091,10 @@ func (c *GnmiClient) GetSystemSshServerStateRateLimit(ctx context.Context, targe
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10199,13 +9118,13 @@ func (c *GnmiClient) GetSystemSshServerStateRateLimit(ctx context.Context, targe
 	}
 
 	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemSshServerStateRateLimit-not-found")
+		return 0, status.Error(codes.NotFound, "SystemSshServerConfigSessionLimit-not-found")
 	}
 
 	return uint16(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerStateRateLimit(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerConfigSessionLimit(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10220,10 +9139,10 @@ func (c *GnmiClient) DeleteSystemSshServerStateRateLimit(ctx context.Context, ta
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10241,7 +9160,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateRateLimit(ctx context.Context, ta
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerStateRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerConfigSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10256,10 +9175,10 @@ func (c *GnmiClient) UpdateSystemSshServerStateRateLimit(ctx context.Context, ta
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10277,7 +9196,7 @@ func (c *GnmiClient) UpdateSystemSshServerStateRateLimit(ctx context.Context, ta
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerStateSessionLimit(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerConfigTimeout(ctx context.Context, target string,
 ) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10292,10 +9211,10 @@ func (c *GnmiClient) GetSystemSshServerStateSessionLimit(ctx context.Context, ta
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10319,13 +9238,13 @@ func (c *GnmiClient) GetSystemSshServerStateSessionLimit(ctx context.Context, ta
 	}
 
 	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemSshServerStateSessionLimit-not-found")
+		return 0, status.Error(codes.NotFound, "SystemSshServerConfigTimeout-not-found")
 	}
 
 	return uint16(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerStateSessionLimit(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerConfigTimeout(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10340,10 +9259,10 @@ func (c *GnmiClient) DeleteSystemSshServerStateSessionLimit(ctx context.Context,
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10361,7 +9280,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateSessionLimit(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerStateSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerConfigTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10376,10 +9295,10 @@ func (c *GnmiClient) UpdateSystemSshServerStateSessionLimit(ctx context.Context,
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10397,8 +9316,8 @@ func (c *GnmiClient) UpdateSystemSshServerStateSessionLimit(ctx context.Context,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerStateTimeout(ctx context.Context, target string,
-) (uint16, error) {
+func (c *GnmiClient) Get_SystemSshServerConfigEnable(ctx context.Context, target string,
+) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -10412,10 +9331,10 @@ func (c *GnmiClient) GetSystemSshServerStateTimeout(ctx context.Context, target 
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10429,23 +9348,23 @@ func (c *GnmiClient) GetSystemSshServerStateTimeout(ctx context.Context, target 
 	res, err := c.client.Get(gnmiCtx, req)
 
 	if err != nil {
-		return 0, err
+		return false, err
 	}
 
 	val, err := gnmi_utils.GetResponseUpdate(res)
 
 	if err != nil {
-		return 0, err
+		return false, err
 	}
 
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemSshServerStateTimeout-not-found")
+	if val.GetBoolVal() == false {
+		return false, status.Error(codes.NotFound, "SystemSshServerConfigEnable-not-found")
 	}
 
-	return uint16(val.GetUintVal()), nil
+	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerStateTimeout(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerConfigEnable(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10460,10 +9379,10 @@ func (c *GnmiClient) DeleteSystemSshServerStateTimeout(ctx context.Context, targ
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10481,7 +9400,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateTimeout(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerStateTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerConfigEnable(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10496,10 +9415,10 @@ func (c *GnmiClient) UpdateSystemSshServerStateTimeout(ctx context.Context, targ
 					Name: "ssh-server",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "protocol-version",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10517,7 +9436,7 @@ func (c *GnmiClient) UpdateSystemSshServerStateTimeout(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerStateEnable(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerStateEnable(ctx context.Context, target string,
 ) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10535,7 +9454,7 @@ func (c *GnmiClient) GetSystemSshServerStateEnable(ctx context.Context, target s
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10565,7 +9484,7 @@ func (c *GnmiClient) GetSystemSshServerStateEnable(ctx context.Context, target s
 	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerStateEnable(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerStateEnable(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10583,7 +9502,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateEnable(ctx context.Context, targe
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10601,7 +9520,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateEnable(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerStateEnable(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerStateEnable(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10619,7 +9538,7 @@ func (c *GnmiClient) UpdateSystemSshServerStateEnable(ctx context.Context, targe
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10637,7 +9556,7 @@ func (c *GnmiClient) UpdateSystemSshServerStateEnable(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemSshServerStateProtocolVersion(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerStateProtocolVersion(ctx context.Context, target string,
 ) (int64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10655,7 +9574,7 @@ func (c *GnmiClient) GetSystemSshServerStateProtocolVersion(ctx context.Context,
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10685,7 +9604,7 @@ func (c *GnmiClient) GetSystemSshServerStateProtocolVersion(ctx context.Context,
 	return int64(val.GetIntVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemSshServerStateProtocolVersion(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerStateProtocolVersion(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10703,7 +9622,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateProtocolVersion(ctx context.Conte
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10721,7 +9640,7 @@ func (c *GnmiClient) DeleteSystemSshServerStateProtocolVersion(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemSshServerStateProtocolVersion(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerStateProtocolVersion(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10739,7 +9658,7 @@ func (c *GnmiClient) UpdateSystemSshServerStateProtocolVersion(ctx context.Conte
 					Name: "state",
 				},
 				{
-					Name: "protocol-version",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10757,8 +9676,8 @@ func (c *GnmiClient) UpdateSystemSshServerStateProtocolVersion(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateHostname(ctx context.Context, target string,
-) (string, error) {
+func (c *GnmiClient) Get_SystemSshServerStateRateLimit(ctx context.Context, target string,
+) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -10769,10 +9688,13 @@ func (c *GnmiClient) GetSystemStateHostname(ctx context.Context, target string,
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "hostname",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10786,23 +9708,23 @@ func (c *GnmiClient) GetSystemStateHostname(ctx context.Context, target string,
 	res, err := c.client.Get(gnmiCtx, req)
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	val, err := gnmi_utils.GetResponseUpdate(res)
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemStateHostname-not-found")
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemSshServerStateRateLimit-not-found")
 	}
 
-	return val.GetStringVal(), nil
+	return uint16(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateHostname(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerStateRateLimit(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10814,10 +9736,13 @@ func (c *GnmiClient) DeleteSystemStateHostname(ctx context.Context, target strin
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "hostname",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10835,7 +9760,7 @@ func (c *GnmiClient) DeleteSystemStateHostname(ctx context.Context, target strin
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateHostname(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerStateRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10847,10 +9772,13 @@ func (c *GnmiClient) UpdateSystemStateHostname(ctx context.Context, target strin
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "hostname",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10868,8 +9796,8 @@ func (c *GnmiClient) UpdateSystemStateHostname(ctx context.Context, target strin
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateLoginBanner(ctx context.Context, target string,
-) (string, error) {
+func (c *GnmiClient) Get_SystemSshServerStateSessionLimit(ctx context.Context, target string,
+) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -10880,10 +9808,13 @@ func (c *GnmiClient) GetSystemStateLoginBanner(ctx context.Context, target strin
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "login-banner",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10897,23 +9828,23 @@ func (c *GnmiClient) GetSystemStateLoginBanner(ctx context.Context, target strin
 	res, err := c.client.Get(gnmiCtx, req)
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	val, err := gnmi_utils.GetResponseUpdate(res)
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemStateLoginBanner-not-found")
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemSshServerStateSessionLimit-not-found")
 	}
 
-	return val.GetStringVal(), nil
+	return uint16(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateLoginBanner(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemSshServerStateSessionLimit(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10925,10 +9856,13 @@ func (c *GnmiClient) DeleteSystemStateLoginBanner(ctx context.Context, target st
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "login-banner",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10946,7 +9880,7 @@ func (c *GnmiClient) DeleteSystemStateLoginBanner(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateLoginBanner(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemSshServerStateSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -10958,10 +9892,13 @@ func (c *GnmiClient) UpdateSystemStateLoginBanner(ctx context.Context, target st
 					Name: "system",
 				},
 				{
+					Name: "ssh-server",
+				},
+				{
 					Name: "state",
 				},
 				{
-					Name: "login-banner",
+					Name: "timeout",
 				},
 			},
 			Target: target,
@@ -10979,7 +9916,127 @@ func (c *GnmiClient) UpdateSystemStateLoginBanner(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateMotdBanner(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemSshServerStateTimeout(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "ssh-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemSshServerStateTimeout-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemSshServerStateTimeout(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "ssh-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemSshServerStateTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "ssh-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemStateMotdBanner(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11024,7 +10081,7 @@ func (c *GnmiClient) GetSystemStateMotdBanner(ctx context.Context, target string
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateMotdBanner(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemStateMotdBanner(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11057,7 +10114,7 @@ func (c *GnmiClient) DeleteSystemStateMotdBanner(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateMotdBanner(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemStateMotdBanner(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11090,7 +10147,7 @@ func (c *GnmiClient) UpdateSystemStateMotdBanner(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateBootTime(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemStateBootTime(ctx context.Context, target string,
 ) (uint64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11135,7 +10192,7 @@ func (c *GnmiClient) GetSystemStateBootTime(ctx context.Context, target string,
 	return uint64(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateBootTime(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemStateBootTime(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11168,7 +10225,7 @@ func (c *GnmiClient) DeleteSystemStateBootTime(ctx context.Context, target strin
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateBootTime(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemStateBootTime(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11201,7 +10258,7 @@ func (c *GnmiClient) UpdateSystemStateBootTime(ctx context.Context, target strin
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateCurrentDatetime(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemStateCurrentDatetime(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11246,7 +10303,7 @@ func (c *GnmiClient) GetSystemStateCurrentDatetime(ctx context.Context, target s
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateCurrentDatetime(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemStateCurrentDatetime(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11279,7 +10336,7 @@ func (c *GnmiClient) DeleteSystemStateCurrentDatetime(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateCurrentDatetime(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemStateCurrentDatetime(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11312,7 +10369,7 @@ func (c *GnmiClient) UpdateSystemStateCurrentDatetime(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemStateDomainName(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemStateDomainName(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11357,7 +10414,7 @@ func (c *GnmiClient) GetSystemStateDomainName(ctx context.Context, target string
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemStateDomainName(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemStateDomainName(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11390,7 +10447,7 @@ func (c *GnmiClient) DeleteSystemStateDomainName(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemStateDomainName(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemStateDomainName(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11423,7 +10480,229 @@ func (c *GnmiClient) UpdateSystemStateDomainName(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemStateHostname(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "hostname",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemStateHostname-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemStateHostname(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "hostname",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemStateHostname(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "hostname",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemStateLoginBanner(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "login-banner",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemStateLoginBanner-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemStateLoginBanner(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "login-banner",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemStateLoginBanner(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "login-banner",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11477,7 +10756,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserConfigAdminPassword(ctx 
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11519,7 +10798,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserConfigAdminPassword(c
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserConfigAdminPassword(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11561,7 +10840,7 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserConfigAdminPassword(c
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11615,7 +10894,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserConfigAdminPasswordHashe
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11657,7 +10936,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserConfigAdminPasswordHa
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserConfigAdminPasswordHashed(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11699,7 +10978,7 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserConfigAdminPasswordHa
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11723,145 +11002,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminUsername(ctx c
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemAaaAuthenticationAdminUserStateAdminUsername-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "admin-user",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "admin-password-hashed",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "admin-user",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "admin-password-hashed",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string,
-) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "aaa",
-				},
-				{
-					Name: "authentication",
-				},
-				{
-					Name: "admin-user",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -11891,7 +11032,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminPassword(ctx c
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11915,7 +11056,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPassword(ct
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -11933,7 +11074,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPassword(ct
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminPassword(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11957,7 +11098,7 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPassword(ct
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -11975,7 +11116,7 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPassword(ct
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -11999,7 +11140,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminPasswordHashed
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -12029,7 +11170,7 @@ func (c *GnmiClient) GetSystemAaaAuthenticationAdminUserStateAdminPasswordHashed
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12053,7 +11194,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPasswordHas
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -12071,7 +11212,7 @@ func (c *GnmiClient) DeleteSystemAaaAuthenticationAdminUserStateAdminPasswordHas
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminPasswordHashed(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12095,7 +11236,7 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPasswordHas
 					Name: "state",
 				},
 				{
-					Name: "admin-password-hashed",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -12113,7 +11254,385 @@ func (c *GnmiClient) UpdateSystemAaaAuthenticationAdminUserStateAdminPasswordHas
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemConfigDomainName(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "admin-user",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "admin-username",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemAaaAuthenticationAdminUserStateAdminUsername-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "admin-user",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "admin-username",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminUsername(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "aaa",
+				},
+				{
+					Name: "authentication",
+				},
+				{
+					Name: "admin-user",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "admin-username",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemClockConfigTimezoneName(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemClockConfigTimezoneName-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemClockConfigTimezoneName(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemClockConfigTimezoneName(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemClockStateTimezoneName(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemClockStateTimezoneName-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemClockStateTimezoneName(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemClockStateTimezoneName(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "clock",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timezone-name",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemConfigDomainName(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12158,7 +11677,7 @@ func (c *GnmiClient) GetSystemConfigDomainName(ctx context.Context, target strin
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemConfigDomainName(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemConfigDomainName(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12191,7 +11710,7 @@ func (c *GnmiClient) DeleteSystemConfigDomainName(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemConfigDomainName(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemConfigDomainName(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12224,7 +11743,7 @@ func (c *GnmiClient) UpdateSystemConfigDomainName(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemConfigHostname(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemConfigHostname(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12269,7 +11788,7 @@ func (c *GnmiClient) GetSystemConfigHostname(ctx context.Context, target string,
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemConfigHostname(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemConfigHostname(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12302,7 +11821,7 @@ func (c *GnmiClient) DeleteSystemConfigHostname(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemConfigHostname(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemConfigHostname(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12335,7 +11854,7 @@ func (c *GnmiClient) UpdateSystemConfigHostname(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemConfigLoginBanner(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemConfigLoginBanner(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12380,7 +11899,7 @@ func (c *GnmiClient) GetSystemConfigLoginBanner(ctx context.Context, target stri
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemConfigLoginBanner(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemConfigLoginBanner(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12413,7 +11932,7 @@ func (c *GnmiClient) DeleteSystemConfigLoginBanner(ctx context.Context, target s
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemConfigLoginBanner(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemConfigLoginBanner(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12446,7 +11965,7 @@ func (c *GnmiClient) UpdateSystemConfigLoginBanner(ctx context.Context, target s
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemConfigMotdBanner(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemConfigMotdBanner(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12491,7 +12010,7 @@ func (c *GnmiClient) GetSystemConfigMotdBanner(ctx context.Context, target strin
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemConfigMotdBanner(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemConfigMotdBanner(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12524,7 +12043,7 @@ func (c *GnmiClient) DeleteSystemConfigMotdBanner(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemConfigMotdBanner(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemConfigMotdBanner(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12557,7 +12076,1447 @@ func (c *GnmiClient) UpdateSystemConfigMotdBanner(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemNtpConfigEnableNtpAuth(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemMemoryStatePhysical(ctx context.Context, target string,
+) (uint64, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint64(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemMemoryStatePhysical-not-found")
+	}
+
+	return uint64(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemMemoryStatePhysical(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemMemoryStatePhysical(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemMemoryStateReserved(ctx context.Context, target string,
+) (uint64, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint64(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemMemoryStateReserved-not-found")
+	}
+
+	return uint64(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemMemoryStateReserved(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemMemoryStateReserved(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "memory",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "reserved",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerConfigEnable(ctx context.Context, target string,
+) (bool, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return false, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return false, err
+	}
+
+	if val.GetBoolVal() == false {
+		return false, status.Error(codes.NotFound, "SystemTelnetServerConfigEnable-not-found")
+	}
+
+	return val.GetBoolVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerConfigEnable(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerConfigEnable(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerConfigRateLimit(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigRateLimit-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerConfigRateLimit(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerConfigRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerConfigSessionLimit(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigSessionLimit-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerConfigSessionLimit(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerConfigSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerConfigTimeout(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigTimeout-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerConfigTimeout(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerConfigTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerStateEnable(ctx context.Context, target string,
+) (bool, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return false, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return false, err
+	}
+
+	if val.GetBoolVal() == false {
+		return false, status.Error(codes.NotFound, "SystemTelnetServerStateEnable-not-found")
+	}
+
+	return val.GetBoolVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerStateEnable(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerStateEnable(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerStateRateLimit(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateRateLimit-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerStateRateLimit(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerStateRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerStateSessionLimit(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateSessionLimit-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerStateSessionLimit(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerStateSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemTelnetServerStateTimeout(ctx context.Context, target string,
+) (uint16, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint16(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateTimeout-not-found")
+	}
+
+	return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_SystemTelnetServerStateTimeout(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemTelnetServerStateTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "telnet-server",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "timeout",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemDnsStateSearch(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemDnsStateSearch-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemDnsStateSearch(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemDnsStateSearch(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "state",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemDnsConfigSearch(ctx context.Context, target string,
+) (string, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return "", err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return "", err
+	}
+
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemDnsConfigSearch-not-found")
+	}
+
+	return val.GetStringVal(), nil
+}
+
+func (c *GnmiClient) Delete_SystemDnsConfigSearch(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_SystemDnsConfigSearch(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "system",
+				},
+				{
+					Name: "dns",
+				},
+				{
+					Name: "config",
+				},
+				{
+					Name: "search",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_SystemNtpConfigEnableNtpAuth(ctx context.Context, target string,
 ) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12605,7 +13564,7 @@ func (c *GnmiClient) GetSystemNtpConfigEnableNtpAuth(ctx context.Context, target
 	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemNtpConfigEnableNtpAuth(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemNtpConfigEnableNtpAuth(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12641,7 +13600,7 @@ func (c *GnmiClient) DeleteSystemNtpConfigEnableNtpAuth(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemNtpConfigEnableNtpAuth(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemNtpConfigEnableNtpAuth(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12677,7 +13636,7 @@ func (c *GnmiClient) UpdateSystemNtpConfigEnableNtpAuth(ctx context.Context, tar
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemNtpConfigEnabled(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemNtpConfigEnabled(ctx context.Context, target string,
 ) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12725,7 +13684,7 @@ func (c *GnmiClient) GetSystemNtpConfigEnabled(ctx context.Context, target strin
 	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemNtpConfigEnabled(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemNtpConfigEnabled(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12761,7 +13720,7 @@ func (c *GnmiClient) DeleteSystemNtpConfigEnabled(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemNtpConfigEnabled(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemNtpConfigEnabled(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12797,7 +13756,7 @@ func (c *GnmiClient) UpdateSystemNtpConfigEnabled(ctx context.Context, target st
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemNtpStateAuthMismatch(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemNtpStateAuthMismatch(ctx context.Context, target string,
 ) (uint64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12845,7 +13804,7 @@ func (c *GnmiClient) GetSystemNtpStateAuthMismatch(ctx context.Context, target s
 	return uint64(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemNtpStateAuthMismatch(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemNtpStateAuthMismatch(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12881,7 +13840,7 @@ func (c *GnmiClient) DeleteSystemNtpStateAuthMismatch(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemNtpStateAuthMismatch(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemNtpStateAuthMismatch(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12917,7 +13876,7 @@ func (c *GnmiClient) UpdateSystemNtpStateAuthMismatch(ctx context.Context, targe
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemNtpStateEnableNtpAuth(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemNtpStateEnableNtpAuth(ctx context.Context, target string,
 ) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -12965,7 +13924,7 @@ func (c *GnmiClient) GetSystemNtpStateEnableNtpAuth(ctx context.Context, target 
 	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemNtpStateEnableNtpAuth(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemNtpStateEnableNtpAuth(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13001,7 +13960,7 @@ func (c *GnmiClient) DeleteSystemNtpStateEnableNtpAuth(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemNtpStateEnableNtpAuth(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemNtpStateEnableNtpAuth(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13037,7 +13996,7 @@ func (c *GnmiClient) UpdateSystemNtpStateEnableNtpAuth(ctx context.Context, targ
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemNtpStateEnabled(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemNtpStateEnabled(ctx context.Context, target string,
 ) (bool, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13085,7 +14044,7 @@ func (c *GnmiClient) GetSystemNtpStateEnabled(ctx context.Context, target string
 	return val.GetBoolVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemNtpStateEnabled(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemNtpStateEnabled(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13121,7 +14080,7 @@ func (c *GnmiClient) DeleteSystemNtpStateEnabled(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemNtpStateEnabled(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemNtpStateEnabled(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13157,136 +14116,7 @@ func (c *GnmiClient) UpdateSystemNtpStateEnabled(ctx context.Context, target str
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string,
-) (uint32, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "max-backoff",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint32(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemOpenflowAgentConfigMaxBackoff-not-found")
-	}
-
-	return uint32(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "max-backoff",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "max-backoff",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13337,7 +14167,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentConfigBackoffInterval(ctx context.Con
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13376,7 +14206,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentConfigBackoffInterval(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentConfigBackoffInterval(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13415,7 +14245,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentConfigBackoffInterval(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentConfigDatapathId(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentConfigDatapathId(ctx context.Context, target string,
 ) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13466,7 +14296,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentConfigDatapathId(ctx context.Context,
 	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentConfigDatapathId(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentConfigDatapathId(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13505,7 +14335,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentConfigDatapathId(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentConfigDatapathId(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentConfigDatapathId(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13544,7 +14374,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentConfigDatapathId(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentConfigFailureMode(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentConfigFailureMode(ctx context.Context, target string,
 ) (int64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13595,7 +14425,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentConfigFailureMode(ctx context.Context
 	return int64(val.GetIntVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentConfigFailureMode(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentConfigFailureMode(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13634,7 +14464,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentConfigFailureMode(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentConfigFailureMode(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentConfigFailureMode(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13673,7 +14503,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentConfigFailureMode(ctx context.Cont
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13724,7 +14554,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentConfigInactivityProbe(ctx context.Con
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13763,7 +14593,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentConfigInactivityProbe(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentConfigInactivityProbe(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -13802,8 +14632,8 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentConfigInactivityProbe(ctx context.
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentStateDatapathId(ctx context.Context, target string,
-) (string, error) {
+func (c *GnmiClient) Get_SystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string,
+) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -13820,139 +14650,10 @@ func (c *GnmiClient) GetSystemOpenflowAgentStateDatapathId(ctx context.Context, 
 					Name: "agent",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "datapath-id",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "SystemOpenflowAgentStateDatapathId-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemOpenflowAgentStateDatapathId(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "datapath-id",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemOpenflowAgentStateDatapathId(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "datapath-id",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemOpenflowAgentStateFailureMode(ctx context.Context, target string,
-) (int64, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "openflow",
-				},
-				{
-					Name: "agent",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "failure-mode",
+					Name: "max-backoff",
 				},
 			},
 			Target: target,
@@ -13975,14 +14676,14 @@ func (c *GnmiClient) GetSystemOpenflowAgentStateFailureMode(ctx context.Context,
 		return 0, err
 	}
 
-	if int64(val.GetIntVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemOpenflowAgentStateFailureMode-not-found")
+	if uint32(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemOpenflowAgentConfigMaxBackoff-not-found")
 	}
 
-	return int64(val.GetIntVal()), nil
+	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentStateFailureMode(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14000,10 +14701,10 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentStateFailureMode(ctx context.Conte
 					Name: "agent",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "failure-mode",
+					Name: "max-backoff",
 				},
 			},
 			Target: target,
@@ -14021,7 +14722,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentStateFailureMode(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentStateFailureMode(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentConfigMaxBackoff(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14039,10 +14740,10 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentStateFailureMode(ctx context.Conte
 					Name: "agent",
 				},
 				{
-					Name: "state",
+					Name: "config",
 				},
 				{
-					Name: "failure-mode",
+					Name: "max-backoff",
 				},
 			},
 			Target: target,
@@ -14060,7 +14761,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentStateFailureMode(ctx context.Conte
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14111,7 +14812,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentStateInactivityProbe(ctx context.Cont
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14150,7 +14851,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentStateInactivityProbe(ctx context.C
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentStateInactivityProbe(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14189,7 +14890,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentStateInactivityProbe(ctx context.C
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14240,7 +14941,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentStateMaxBackoff(ctx context.Context, 
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14279,7 +14980,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentStateMaxBackoff(ctx context.Contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentStateMaxBackoff(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14318,7 +15019,7 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentStateMaxBackoff(ctx context.Contex
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string,
+func (c *GnmiClient) Get_SystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string,
 ) (uint32, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14369,7 +15070,7 @@ func (c *GnmiClient) GetSystemOpenflowAgentStateBackoffInterval(ctx context.Cont
 	return uint32(val.GetUintVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14408,7 +15109,7 @@ func (c *GnmiClient) DeleteSystemOpenflowAgentStateBackoffInterval(ctx context.C
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentStateBackoffInterval(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14447,8 +15148,8 @@ func (c *GnmiClient) UpdateSystemOpenflowAgentStateBackoffInterval(ctx context.C
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemTelnetServerConfigEnable(ctx context.Context, target string,
-) (bool, error) {
+func (c *GnmiClient) Get_SystemOpenflowAgentStateDatapathId(ctx context.Context, target string,
+) (string, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -14459,13 +15160,16 @@ func (c *GnmiClient) GetSystemTelnetServerConfigEnable(ctx context.Context, targ
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
+					Name: "agent",
 				},
 				{
-					Name: "timeout",
+					Name: "state",
+				},
+				{
+					Name: "datapath-id",
 				},
 			},
 			Target: target,
@@ -14479,23 +15183,23 @@ func (c *GnmiClient) GetSystemTelnetServerConfigEnable(ctx context.Context, targ
 	res, err := c.client.Get(gnmiCtx, req)
 
 	if err != nil {
-		return false, err
+		return "", err
 	}
 
 	val, err := gnmi_utils.GetResponseUpdate(res)
 
 	if err != nil {
-		return false, err
+		return "", err
 	}
 
-	if val.GetBoolVal() == false {
-		return false, status.Error(codes.NotFound, "SystemTelnetServerConfigEnable-not-found")
+	if val.GetStringVal() == "" {
+		return "", status.Error(codes.NotFound, "SystemOpenflowAgentStateDatapathId-not-found")
 	}
 
-	return val.GetBoolVal(), nil
+	return val.GetStringVal(), nil
 }
 
-func (c *GnmiClient) DeleteSystemTelnetServerConfigEnable(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentStateDatapathId(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14507,13 +15211,16 @@ func (c *GnmiClient) DeleteSystemTelnetServerConfigEnable(ctx context.Context, t
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
+					Name: "agent",
 				},
 				{
-					Name: "timeout",
+					Name: "state",
+				},
+				{
+					Name: "datapath-id",
 				},
 			},
 			Target: target,
@@ -14531,7 +15238,7 @@ func (c *GnmiClient) DeleteSystemTelnetServerConfigEnable(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemTelnetServerConfigEnable(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentStateDatapathId(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14543,13 +15250,16 @@ func (c *GnmiClient) UpdateSystemTelnetServerConfigEnable(ctx context.Context, t
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
+					Name: "agent",
 				},
 				{
-					Name: "timeout",
+					Name: "state",
+				},
+				{
+					Name: "datapath-id",
 				},
 			},
 			Target: target,
@@ -14567,8 +15277,8 @@ func (c *GnmiClient) UpdateSystemTelnetServerConfigEnable(ctx context.Context, t
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) GetSystemTelnetServerConfigRateLimit(ctx context.Context, target string,
-) (uint16, error) {
+func (c *GnmiClient) Get_SystemOpenflowAgentStateFailureMode(ctx context.Context, target string,
+) (int64, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -14579,13 +15289,16 @@ func (c *GnmiClient) GetSystemTelnetServerConfigRateLimit(ctx context.Context, t
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
+					Name: "agent",
 				},
 				{
-					Name: "timeout",
+					Name: "state",
+				},
+				{
+					Name: "failure-mode",
 				},
 			},
 			Target: target,
@@ -14608,14 +15321,14 @@ func (c *GnmiClient) GetSystemTelnetServerConfigRateLimit(ctx context.Context, t
 		return 0, err
 	}
 
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigRateLimit-not-found")
+	if int64(val.GetIntVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "SystemOpenflowAgentStateFailureMode-not-found")
 	}
 
-	return uint16(val.GetUintVal()), nil
+	return int64(val.GetIntVal()), nil
 }
 
-func (c *GnmiClient) DeleteSystemTelnetServerConfigRateLimit(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SystemOpenflowAgentStateFailureMode(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14627,13 +15340,16 @@ func (c *GnmiClient) DeleteSystemTelnetServerConfigRateLimit(ctx context.Context
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
+					Name: "agent",
 				},
 				{
-					Name: "timeout",
+					Name: "state",
+				},
+				{
+					Name: "failure-mode",
 				},
 			},
 			Target: target,
@@ -14651,7 +15367,7 @@ func (c *GnmiClient) DeleteSystemTelnetServerConfigRateLimit(ctx context.Context
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) UpdateSystemTelnetServerConfigRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
+func (c *GnmiClient) Update_SystemOpenflowAgentStateFailureMode(ctx context.Context, target string, val *gnmi.TypedValue,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -14663,733 +15379,16 @@ func (c *GnmiClient) UpdateSystemTelnetServerConfigRateLimit(ctx context.Context
 					Name: "system",
 				},
 				{
-					Name: "telnet-server",
+					Name: "openflow",
 				},
 				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerConfigSessionLimit(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigSessionLimit-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerConfigSessionLimit(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerConfigSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerConfigTimeout(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerConfigTimeout-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerConfigTimeout(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerConfigTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "config",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerStateEnable(ctx context.Context, target string,
-) (bool, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
+					Name: "agent",
 				},
 				{
 					Name: "state",
 				},
 				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return false, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return false, err
-	}
-
-	if val.GetBoolVal() == false {
-		return false, status.Error(codes.NotFound, "SystemTelnetServerStateEnable-not-found")
-	}
-
-	return val.GetBoolVal(), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerStateEnable(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerStateEnable(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerStateRateLimit(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateRateLimit-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerStateRateLimit(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerStateRateLimit(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerStateSessionLimit(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateSessionLimit-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerStateSessionLimit(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerStateSessionLimit(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) GetSystemTelnetServerStateTimeout(ctx context.Context, target string,
-) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "SystemTelnetServerStateTimeout-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) DeleteSystemTelnetServerStateTimeout(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) UpdateSystemTelnetServerStateTimeout(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "system",
-				},
-				{
-					Name: "telnet-server",
-				},
-				{
-					Name: "state",
-				},
-				{
-					Name: "timeout",
+					Name: "failure-mode",
 				},
 			},
 			Target: target,
