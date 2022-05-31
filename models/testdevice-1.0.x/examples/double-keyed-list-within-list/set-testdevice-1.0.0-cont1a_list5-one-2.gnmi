@@ -1,0 +1,30 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Populate the cont1a/list5a list with one-2
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list5' key:<key:'key1' value:'one' > key:<key:'key2' value:'2' >>
+>
+update: <
+  path: <
+    elem: <name: 'key1' >
+  >
+  val: <string_val: 'one'>
+>
+update: <
+  path: <
+    elem: <name: 'key2' >
+  >
+  val: <uint_val: 2>
+>
+update: <
+  path: <
+    elem: <name: 'leaf5a' >
+  >
+  val: <string_val: '5a one-2'>
+>

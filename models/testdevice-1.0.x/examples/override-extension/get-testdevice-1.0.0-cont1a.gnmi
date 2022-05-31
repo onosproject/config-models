@@ -1,0 +1,19 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read all the 'cont1a' attributes (incl list2a instances) for v0.1.x
+#
+prefix: <
+  target: 'test-target',
+>
+path: <
+  elem: <name: 'cont1a'>
+>
+extension:<
+  registered_ext:<
+    id:112
+    msg:"\x0a\x22\x0a\x0btest-target\x12\x13\x0a\x0atestdevice\x12\x051.0.x"
+  >
+>

@@ -1,0 +1,36 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Populate the cont1a/cont2a container
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'cont2a'>
+>
+update: <
+  path: <
+    elem: <name: 'leaf2a' >
+  >
+  val: <uint_val: 1>
+>
+update: <
+  path: <
+    elem: <name: 'leaf2b' >
+  >
+  val: <float_val: 0.4321>
+>
+update: <
+  path: <
+    elem: <name: 'leaf2d' >
+  >
+  val: <float_val: 1.54>
+>
+update: <
+  path: <
+    elem: <name: 'leaf2g' >
+  >
+  val: <bool_val: true>
+>

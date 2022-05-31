@@ -1,5 +1,5 @@
 prefix: <
-    target: 'new-fabric',
+    target: 'mars',
     elem: <name: 'switch-model' key:<key:'switch-model-id' value:'super-switch-1610' >>
 >
 update: <
@@ -7,12 +7,6 @@ update: <
     elem: <name: 'switch-model-id' >
   >
   val: <string_val: 'super-switch-1610'>
->
-update: <
-  path: <
-    elem: <name: 'form-factor' >
-  >
-  val: <string_val: 'pizza-box'>
 >
 update: <
   path: <
@@ -33,6 +27,13 @@ update: <
     elem: <name: 'value' >
   >
   val: <string_val: '2022'>
+>
+update: <
+  path: <
+    elem: <name: 'attribute' key:<key:'attribute-key' value:'form-factor' >>
+    elem: <name: 'value' >
+  >
+  val: <string_val: 'pizza-box'>
 >
 update: <
   path: <

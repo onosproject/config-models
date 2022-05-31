@@ -1,0 +1,17 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read all the 'leaf5a' attributes under all cont1a/list5 instances
+# This gets the correct values "5a two-2", "5a one-2", "5a three-3", but there is that weird
+# problem with the indices e.g. "=3]"
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list5' key:<key:'key1' value:'*' > key:<key:'key2' value:'*' >>
+>
+path: <
+  elem: <name: 'leaf5a' >
+>

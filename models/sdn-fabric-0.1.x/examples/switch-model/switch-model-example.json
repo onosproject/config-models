@@ -1,5 +1,4 @@
 {
-  "form-factor": "pizza-box",
   "switch-model-id": "super-switch-1610",
   "attribute": [
     {
@@ -9,6 +8,10 @@
     {
       "attribute-key": "year",
       "value": "2022"
+    },
+    {
+      "attribute-key": "form-factor",
+      "value": "pizza-box"
     }
   ],
   "description": "Super Switch Model 1610 16-port 10Gb",

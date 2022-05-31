@@ -1,0 +1,36 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Populate the cont1a/list2a list with 2a-1
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list2a' key:<key:'name' value:'2a-1' >>
+>
+update: <
+  path: <
+    elem: <name: 'name' >
+  >
+  val: <string_val: '2a-1'>
+>
+update: <
+  path: <
+    elem: <name: 'tx-power' >
+  >
+  val: <uint_val: 5>
+>
+update: <
+  path: <
+    elem: <name: 'range-min' >
+  >
+  val: <uint_val: 20>
+>
+update: <
+  path: <
+    elem: <name: 'range-max' >
+  >
+  val: <uint_val: 21>
+>

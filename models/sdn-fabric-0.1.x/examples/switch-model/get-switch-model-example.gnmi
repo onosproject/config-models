@@ -1,0 +1,4 @@
+prefix: <
+    target: 'mars',
+    elem: <name: 'switch-model' key:<key:'switch-model-id' value:'super-switch-1610' >>
+>

@@ -23,15 +23,8 @@ models/*/_bin
 coverage.xml
 report.xml
 
-modelplugin/aether-*/openapi-gen
-modelplugin/aether-*/aether-*.tree
-modelplugin/aether-*/aether-*-openapi3.yaml
-
-modelplugin/plproxy-*/openapi-gen
-modelplugin/plproxy-*/plproxy-*.tree
-modelplugin/plproxy-*/plproxy-*-openapi3.yaml
-
 models/*/vendor
+models/*/examples/*/*.out
 
 build/build-tools
 .idea

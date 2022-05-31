@@ -1,0 +1,16 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read all the leaf4b under cont1a/list4 all instances
+# This gets the right entries, but there is a problem in the response key e.g. name: "2]"
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list4' key:<key:'id' value:'*' >>
+>
+path: <
+  elem: <name: 'leaf4b' >
+>

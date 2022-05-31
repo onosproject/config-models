@@ -1,0 +1,68 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Populate the cont1a/list4 list with 2a-1 and 3 child entries in list4a
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list4' key:<key:'id' value:'2a-1' >>
+>
+update: <
+  path: <
+    elem: <name: 'id' >
+  >
+  val: <string_val: '2a-1'>
+>
+update: <
+  path: <
+    elem: <name: 'leaf4b' >
+  >
+  val: <string_val: 'test for list4 2a-1'>
+>
+
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'one' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'fkey1' >
+  >
+  val: <string_val: 'one'>
+>
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'one' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'fkey2' >
+  >
+  val: <uint_val: 2>
+>
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'one' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'displayname' >
+  >
+  val: <string_val: 'Value 2a-1-one-2'>
+>
+
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'two' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'fkey1' >
+  >
+  val: <string_val: 'two'>
+>
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'two' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'fkey2' >
+  >
+  val: <uint_val: 2>
+>
+update: <
+  path: <
+    elem: <name: 'list4a' key:<key:'fkey1' value:'two' > key:<key:'fkey2' value:'2' >>
+    elem: <name: 'displayname' >
+  >
+  val: <string_val: 'Value 2a-1-two-2'>
+>

@@ -1,0 +1,10 @@
+prefix: <
+    target: 'mars',
+    elem: <name: 'route' key:<key:'route-id' value:'*' >>
+>
+path: <
+    elem: <name: 'display-name'>
+>
+path: <
+    elem: <name: 'description'>
+>
