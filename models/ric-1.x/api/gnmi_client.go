@@ -148,7 +148,7 @@ func (c *GnmiClient) Update_Nodes_Node(ctx context.Context, target string, data 
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_Nodes_Nodes(ctx context.Context, target string,
+func (c *GnmiClient) Get_Nodes_Node_List(ctx context.Context, target string,
 ) (map[string]*Xapp_Nodes_Node, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -196,7 +196,7 @@ func (c *GnmiClient) Get_Nodes_Nodes(ctx context.Context, target string,
 	return st.Nodes.Node, nil
 }
 
-func (c *GnmiClient) Delete_Nodes_Nodes(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Nodes_Node_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -225,7 +225,7 @@ func (c *GnmiClient) Delete_Nodes_Nodes(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_Nodes_Nodes(ctx context.Context, target string, list map[string]*Xapp_Nodes_Node,
+func (c *GnmiClient) Update_Nodes_Node_List(ctx context.Context, target string, list map[string]*Xapp_Nodes_Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()

@@ -10,6 +10,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"google.golang.org/grpc"
@@ -227,6 +228,117 @@ func (c *GnmiClient) Update_E2Node(ctx context.Context, target string, data E2No
 		return nil, err
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
+) (uint32, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "e2node",
+				},
+				{
+					Name: "intervals",
+				},
+				{
+					Name: "SchedMeasReportPerUe",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if uint32(val.GetUintVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "E2NodeIntervalsSchedMeasReportPerUe-not-found")
+	}
+
+	return uint32(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Delete_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "e2node",
+				},
+				{
+					Name: "intervals",
+				},
+				{
+					Name: "SchedMeasReportPerUe",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "e2node",
+				},
+				{
+					Name: "intervals",
+				},
+				{
+					Name: "SchedMeasReportPerUe",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -657,117 +769,6 @@ func (c *GnmiClient) Update_E2NodeIntervalsSchedMeasReportPerCell(ctx context.Co
 				},
 				{
 					Name: "SchedMeasReportPerCell",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Get_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
-) (uint32, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "e2node",
-				},
-				{
-					Name: "intervals",
-				},
-				{
-					Name: "SchedMeasReportPerUe",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint32(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "E2NodeIntervalsSchedMeasReportPerUe-not-found")
-	}
-
-	return uint32(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) Delete_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "e2node",
-				},
-				{
-					Name: "intervals",
-				},
-				{
-					Name: "SchedMeasReportPerUe",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_E2NodeIntervalsSchedMeasReportPerUe(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "e2node",
-				},
-				{
-					Name: "intervals",
-				},
-				{
-					Name: "SchedMeasReportPerUe",
 				},
 			},
 			Target: target,

@@ -272,7 +272,7 @@ func (c *GnmiClient) Update_Cont1BState_List2B(ctx context.Context, target strin
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_Cont1A_List2AS(ctx context.Context, target string,
+func (c *GnmiClient) Get_Cont1A_List2A_List(ctx context.Context, target string,
 ) (map[string]*OnfTest1_Cont1A_List2A, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -320,7 +320,7 @@ func (c *GnmiClient) Get_Cont1A_List2AS(ctx context.Context, target string,
 	return st.Cont1A.List2A, nil
 }
 
-func (c *GnmiClient) Delete_Cont1A_List2AS(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Cont1A_List2A_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -349,7 +349,7 @@ func (c *GnmiClient) Delete_Cont1A_List2AS(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_Cont1A_List2AS(ctx context.Context, target string, list map[string]*OnfTest1_Cont1A_List2A,
+func (c *GnmiClient) Update_Cont1A_List2A_List(ctx context.Context, target string, list map[string]*OnfTest1_Cont1A_List2A,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -386,7 +386,7 @@ func (c *GnmiClient) Update_Cont1A_List2AS(ctx context.Context, target string, l
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_Cont1BState_List2BS(ctx context.Context, target string,
+func (c *GnmiClient) Get_Cont1BState_List2B_List(ctx context.Context, target string,
 ) (map[OnfTest1_Cont1BState_List2B_Key]*OnfTest1_Cont1BState_List2B, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -434,7 +434,7 @@ func (c *GnmiClient) Get_Cont1BState_List2BS(ctx context.Context, target string,
 	return st.Cont1BState.List2B, nil
 }
 
-func (c *GnmiClient) Delete_Cont1BState_List2BS(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Cont1BState_List2B_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -463,7 +463,7 @@ func (c *GnmiClient) Delete_Cont1BState_List2BS(ctx context.Context, target stri
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_Cont1BState_List2BS(ctx context.Context, target string, list map[OnfTest1_Cont1BState_List2B_Key]*OnfTest1_Cont1BState_List2B,
+func (c *GnmiClient) Update_Cont1BState_List2B_List(ctx context.Context, target string, list map[OnfTest1_Cont1BState_List2B_Key]*OnfTest1_Cont1BState_List2B,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1009,6 +1009,117 @@ func (c *GnmiClient) Update_Cont1BState(ctx context.Context, target string, data
 		return nil, err
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Get_Cont1ACont2ALeaf2B(ctx context.Context, target string,
+) (float64, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+				{
+					Name: "cont2a",
+				},
+				{
+					Name: "leaf2b",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_PROTO,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return 0, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if float64(val.GetFloatVal()) == 0 {
+		return 0, status.Error(codes.NotFound, "Cont1ACont2ALeaf2B-not-found")
+	}
+
+	return float64(val.GetFloatVal()), nil
+}
+
+func (c *GnmiClient) Delete_Cont1ACont2ALeaf2B(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+				{
+					Name: "cont2a",
+				},
+				{
+					Name: "leaf2b",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_Cont1ACont2ALeaf2B(ctx context.Context, target string, val *gnmi.TypedValue,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+				{
+					Name: "cont2a",
+				},
+				{
+					Name: "leaf2b",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{
+			{
+				Path: path[0],
+				Val:  val,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -1661,117 +1772,6 @@ func (c *GnmiClient) Update_Cont1ACont2ALeaf2A(ctx context.Context, target strin
 				},
 				{
 					Name: "leaf2a",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{
-			{
-				Path: path[0],
-				Val:  val,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Get_Cont1ACont2ALeaf2B(ctx context.Context, target string,
-) (float64, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-				{
-					Name: "cont2a",
-				},
-				{
-					Name: "leaf2b",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if float64(val.GetFloatVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "Cont1ACont2ALeaf2B-not-found")
-	}
-
-	return float64(val.GetFloatVal()), nil
-}
-
-func (c *GnmiClient) Delete_Cont1ACont2ALeaf2B(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-				{
-					Name: "cont2a",
-				},
-				{
-					Name: "leaf2b",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Cont1ACont2ALeaf2B(ctx context.Context, target string, val *gnmi.TypedValue,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-				{
-					Name: "cont2a",
-				},
-				{
-					Name: "leaf2b",
 				},
 			},
 			Target: target,
