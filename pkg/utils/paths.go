@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
-	"github.com/onosproject/onos-config/pkg/utils/path"
 	"github.com/openconfig/goyang/pkg/yang"
 	"math"
 	"regexp"
@@ -41,25 +40,192 @@ const matchOnIndex = `(\[.*?]).*?`
 var rOnIndex = regexp.MustCompile(matchOnIndex)
 
 // Native r/o and r/w path maps
-var roPathMap path.ReadOnlyPathMap
-var rwPathMap path.ReadWritePathMap
+var roPathMap ReadOnlyPathMap
+var rwPathMap ReadWritePathMap
 
 // ExtractPaths parse the schema entries out in to flat paths
 func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath) {
 
-	roPathMap, rwPathMap = path.ExtractPaths(entries["Device"], yang.TSUnset, "", "")
-
-	roPaths := make([]*admin.ReadOnlyPath, 0, len(roPathMap))
-	for k, p := range roPathMap {
-		roPaths = append(roPaths, ConvertRoPath(k, p))
+	roPaths, rwPaths, err := extractPaths(entries["Device"], yang.TSUnset, "", "")
+	if err != nil {
+		log.Errorf(err.Error())
+		panic(err)
 	}
-
-	rwPaths := make([]*admin.ReadWritePath, 0, len(rwPathMap))
-	for k, p := range rwPathMap {
-		rwPaths = append(rwPaths, ConvertRwPath(k, p))
-	}
-
 	return roPaths, rwPaths
+}
+
+// extractPaths - recursive function that walks the YGOT tree to extract paths
+func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string,
+	subpathPrefix string) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath, error) {
+
+	readOnlyPaths := make([]*admin.ReadOnlyPath, 0)
+	readWritePaths := make([]*admin.ReadWritePath, 0)
+
+	for _, dirEntry := range deviceEntry.Dir {
+		itemPath := formatName(dirEntry, false, parentPath, subpathPrefix)
+		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
+			// No need to recurse
+			t, typeOpts, err := toValueType(dirEntry.Type, dirEntry.IsLeafList())
+			if err != nil {
+				return nil, nil, err
+			}
+			tObj := admin.ReadOnlySubPath{
+				SubPath:     itemPath,
+				ValueType:   t,
+				TypeOpts:    typeOpts,
+				Description: dirEntry.Description,
+				Units:       dirEntry.Units,
+				IsAKey:      false,
+				AttrName:    dirEntry.Name,
+			}
+			var enum map[int]string
+			if dirEntry.Type.Kind == yang.Yidentityref {
+				enum = handleIdentity(dirEntry.Type)
+			}
+			fmt.Println(enum)
+			// Check to see if this attribute is a key in a list
+			if dirEntry.Parent.IsList() {
+				keyNames := strings.Split(dirEntry.Parent.Key, " ")
+				itemPathParts := strings.Split(itemPath, "/")
+				attrName := itemPathParts[len(itemPathParts)-1]
+				for _, k := range keyNames {
+					if strings.EqualFold(attrName, k) {
+						tObj.IsAKey = true
+						break
+					}
+				}
+			}
+			if parentState == yang.TSFalse {
+				//leafMap, ok := readOnlyPaths[parentPath]
+				//if !ok {
+				//	leafMap = make(ReadOnlySubPathMap)
+				//	readOnlyPaths[parentPath] = leafMap
+				//}
+				//leafMap[strings.Replace(itemPath, parentPath, "", 1)] = tObj
+			} else if dirEntry.Config == yang.TSFalse {
+				//leafMap := make(ReadOnlySubPathMap)
+				//leafMap["/"] = tObj
+				//readOnlyPaths[itemPath] = leafMap
+			} else {
+				ranges := make([]string, 0)
+				for _, r := range dirEntry.Type.Range {
+					ranges = append(ranges, fmt.Sprintf("%v", r))
+				}
+				lengths := make([]string, 0)
+				for _, l := range dirEntry.Type.Length {
+					lengths = append(lengths, fmt.Sprintf("%v", l))
+				}
+				rwElem := admin.ReadWritePath{
+					Path:        "",
+					ValueType:   tObj.ValueType,
+					Units:       tObj.Units,
+					Description: tObj.Description,
+					Mandatory:   dirEntry.Mandatory == yang.TSTrue,
+					Default:     dirEntry.Default,
+					Range:       ranges,
+					Length:      lengths,
+					TypeOpts:    nil,
+					IsAKey:      false,
+					AttrName:    "",
+				}
+				readWritePaths = append(readWritePaths, &rwElem)
+			}
+		} else if dirEntry.IsContainer() {
+			if dirEntry.Config == yang.TSFalse || parentState == yang.TSFalse {
+				subpathPfx := subpathPrefix
+				if parentState == yang.TSFalse {
+					subpathPfx = itemPath[len(parentPath):]
+				}
+				subPaths, _, err := extractPaths(dirEntry, yang.TSFalse, itemPath, subpathPfx)
+				if err != nil {
+					return nil, nil, err
+				}
+				subPathsMap := make([]*admin.ReadOnlySubPath, 0)
+				for _, v := range subPaths {
+					for _, u := range v.SubPath {
+						subPathsMap = append(subPathsMap, u)
+					}
+				}
+				continue
+			}
+			readOnlyPathsTemp, readWritePathTemp, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
+			if err != nil {
+				return nil, nil, err
+			}
+			for k, v := range readOnlyPathsTemp {
+				readOnlyPaths[k] = v
+			}
+			for k, v := range readWritePathTemp {
+				readWritePaths[k] = v
+			}
+		} else if dirEntry.IsList() {
+			itemPath = formatName(dirEntry, true, parentPath, subpathPrefix)
+			if dirEntry.Config == yang.TSFalse || parentState == yang.TSFalse {
+				subpathPfx := subpathPrefix
+				if parentState == yang.TSFalse {
+					subpathPfx = itemPath[len(parentPath):]
+				}
+				subPaths, _, err := extractPaths(dirEntry, yang.TSFalse, parentPath, subpathPfx)
+				if err != nil {
+					return nil, nil, err
+				}
+				subPathsMap := make([]*admin.ReadOnlySubPath, 0)
+				for _, v := range subPaths {
+					for _, v := range v.SubPath {
+						subPathsMap = append(subPathsMap, v)
+					}
+				}
+				//readOnlyPaths = append(readOnlyPaths, subPathsMap)
+				continue
+			}
+			readOnlyPathsTemp, readWritePathsTemp, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
+			if err != nil {
+				return nil, nil, err
+			}
+			for k, v := range readOnlyPathsTemp {
+				readOnlyPaths[k] = v
+			}
+			for k, v := range readWritePathsTemp {
+				readWritePaths[k] = v
+				// Need to copy the index of the list across to the RO list too
+				//roIdxName := k[:strings.LastIndex(k, "/")]
+				//roIdxSubPath := k[strings.LastIndex(k, "/"):]
+				//indices, _ := ExtractIndexNames(itemPath[strings.LastIndex(itemPath, "/"):])
+				//isIdxAttr := false
+				//for _, idx := range indices {
+				//	if roIdxSubPath == fmt.Sprintf("/%s", idx) {
+				//		isIdxAttr = true
+				//	}
+				//}
+				//if roIdxName == itemPath && isIdxAttr {
+				//	roIdx := ReadOnlyAttrib{
+				//		ValueType:   v.ValueType,
+				//		Description: v.Description,
+				//		Units:       v.Units,
+				//	}
+				//	readOnlyPaths[roIdxName] = make(map[string]ReadOnlyAttrib)
+				//	readOnlyPaths[roIdxName][roIdxSubPath] = roIdx
+				//}
+			}
+
+		} else if dirEntry.IsChoice() || dirEntry.IsCase() {
+			// Recurse down through Choice and Case
+			readOnlyPathsTemp, readWritePathsTemp, err := extractPaths(dirEntry, dirEntry.Config, parentPath, "")
+			if err != nil {
+				return nil, nil, err
+			}
+			for k, v := range readOnlyPathsTemp {
+				readOnlyPaths[k] = v
+			}
+			for k, v := range readWritePathsTemp {
+				readWritePaths[k] = v
+			}
+		} else {
+			log.Warnf("Unexpected type of leaf for %s %v", itemPath, dirEntry)
+		}
+	}
+
+	return readOnlyPaths, readWritePaths, nil
 }
 
 func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValue, error) {
@@ -248,8 +414,8 @@ func handleAttribute(value interface{}, parentPath string) (*configapi.PathValue
 	var modeltype configapi.ValueType
 	var modelPath string
 	var ok bool
-	var pathElem *path.ReadWritePathElem
-	var subPath *path.ReadOnlyAttrib
+	var pathElem *ReadWritePathElem
+	var subPath *ReadOnlyAttrib
 	var enum map[int]string
 	var typeOpts []uint8
 	var err error
@@ -455,7 +621,7 @@ func handleAttributeLeafList(modeltype configapi.ValueType,
 	return typedValue, nil
 }
 
-func findModelRwPathNoIndices(searchpath string) (*path.ReadWritePathElem, string, bool) {
+func findModelRwPathNoIndices(searchpath string) (*ReadWritePathElem, string, bool) {
 	searchpath = removeDoubleSlash(searchpath)
 	searchpathNoIndices := removePathIndices(searchpath)
 	for path, value := range rwPathMap {
@@ -470,7 +636,7 @@ func findModelRwPathNoIndices(searchpath string) (*path.ReadWritePathElem, strin
 	return nil, "", false
 }
 
-func findModelRoPathNoIndices(searchpath string) (*path.ReadOnlyAttrib, string, bool) {
+func findModelRoPathNoIndices(searchpath string) (*ReadOnlyAttrib, string, bool) {
 	searchpathNoIndices := removePathIndices(searchpath)
 	for path, value := range roPathMap {
 		for subpath, subpathValue := range value {
@@ -500,7 +666,7 @@ func indicesOfPath(searchpath string) []string {
 		pathNoIndices := removePathIndices(p)
 		// Find a short path
 		if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
-			idxNames, _ := path.ExtractIndexNames(p)
+			idxNames, _ := ExtractIndexNames(p)
 			return idxNames
 		}
 	}
@@ -517,7 +683,7 @@ func indicesOfPath(searchpath string) []string {
 			pathNoIndices := removePathIndices(fullpath)
 			// Find a short path
 			if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
-				idxNames, _ := path.ExtractIndexNames(fullpath)
+				idxNames, _ := ExtractIndexNames(fullpath)
 				return idxNames
 			}
 		}
@@ -562,7 +728,7 @@ func prefixLength(objPath string, parentPath string) int {
 	return len(strings.Join(objPathParts[:len(parentPathParts)], "/"))
 }
 
-func ConvertRoPath(path string, psm path.ReadOnlySubPathMap) *admin.ReadOnlyPath {
+func ConvertRoPath(path string, psm ReadOnlySubPathMap) *admin.ReadOnlyPath {
 	sm := make([]*admin.ReadOnlySubPath, 0)
 
 	for k, s := range psm {
@@ -587,10 +753,14 @@ func ConvertRoPath(path string, psm path.ReadOnlySubPathMap) *admin.ReadOnlyPath
 	}
 }
 
-func ConvertRwPath(path string, pe path.ReadWritePathElem) *admin.ReadWritePath {
+func ConvertRwPath(path string, pe ReadWritePathElem) *admin.ReadWritePath {
 	tos := make([]uint64, 0, len(pe.TypeOpts))
 	for _, to := range pe.TypeOpts {
 		tos = append(tos, uint64(to))
+	}
+	var firstDefault string // TODO convert the Default to []string in onos-api
+	if len(pe.Default) > 0 {
+		firstDefault = pe.Default[0]
 	}
 	return &admin.ReadWritePath{
 		Path:        path,
@@ -598,7 +768,7 @@ func ConvertRwPath(path string, pe path.ReadWritePathElem) *admin.ReadWritePath 
 		Units:       pe.Units,
 		Description: pe.Description,
 		Mandatory:   pe.Mandatory,
-		Default:     pe.Default,
+		Default:     firstDefault,
 		Range:       pe.Range,
 		Length:      pe.Length,
 		TypeOpts:    tos,
