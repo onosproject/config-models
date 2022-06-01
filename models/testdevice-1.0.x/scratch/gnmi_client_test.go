@@ -218,7 +218,7 @@ func TestListSingleKeyItem(t *testing.T) {
 	//_, err := client.Delete_Cont1A_List2A(ctx, target)
 	//assert.NoError(t, err)
 
-	res, err := client.Get_Cont1A_List2AS(ctx, target)
+	res, err := client.Get_Cont1A_List2A_List(ctx, target)
 	if code, ok := status.FromError(err); !ok && code.Code() != codes.NotFound {
 		// the only error we accept is not found
 		assert.NoError(t, err)
@@ -259,7 +259,7 @@ func TestListSingleKey(t *testing.T) {
 		item2: {Name: &item2},
 	}
 
-	res, err := client.Get_Cont1A_List2AS(ctx, target)
+	res, err := client.Get_Cont1A_List2A_List(ctx, target)
 	assert.NoError(t, err)
 
 	for _, item := range res {
@@ -267,14 +267,14 @@ func TestListSingleKey(t *testing.T) {
 		assert.NoError(t, err)
 	}
 
-	setRes, err := client.Update_Cont1A_List2AS(ctx, target, list)
+	setRes, err := client.Update_Cont1A_List2A_List(ctx, target, list)
 	assert.NoError(t, err)
 
 	resId, err := gnmi_utils.ExtractResponseID(setRes)
 	assert.NoError(t, err)
 	assert.NotNil(t, resId)
 
-	getRes1, err := client.Get_Cont1A_List2AS(ctx, target)
+	getRes1, err := client.Get_Cont1A_List2A_List(ctx, target)
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(getRes1))
 	assert.Equal(t, list[item1].Name, getRes1[item1].Name, "item1 is missing")

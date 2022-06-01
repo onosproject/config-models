@@ -457,7 +457,7 @@ func (c *GnmiClient) Update_SwitchModel(ctx context.Context, target string, data
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_DhcpServers(ctx context.Context, target string,
+func (c *GnmiClient) Get_DhcpServer_List(ctx context.Context, target string,
 ) (map[string]*OnfDhcpServer_DhcpServer, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -499,7 +499,7 @@ func (c *GnmiClient) Get_DhcpServers(ctx context.Context, target string,
 	return st.DhcpServer, nil
 }
 
-func (c *GnmiClient) Delete_DhcpServers(ctx context.Context, target string,
+func (c *GnmiClient) Delete_DhcpServer_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -525,7 +525,7 @@ func (c *GnmiClient) Delete_DhcpServers(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_DhcpServers(ctx context.Context, target string, list map[string]*OnfDhcpServer_DhcpServer,
+func (c *GnmiClient) Update_DhcpServer_List(ctx context.Context, target string, list map[string]*OnfDhcpServer_DhcpServer,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -558,7 +558,7 @@ func (c *GnmiClient) Update_DhcpServers(ctx context.Context, target string, list
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_Routes(ctx context.Context, target string,
+func (c *GnmiClient) Get_Route_List(ctx context.Context, target string,
 ) (map[string]*OnfRoute_Route, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -600,7 +600,7 @@ func (c *GnmiClient) Get_Routes(ctx context.Context, target string,
 	return st.Route, nil
 }
 
-func (c *GnmiClient) Delete_Routes(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Route_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -626,7 +626,7 @@ func (c *GnmiClient) Delete_Routes(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_Routes(ctx context.Context, target string, list map[string]*OnfRoute_Route,
+func (c *GnmiClient) Update_Route_List(ctx context.Context, target string, list map[string]*OnfRoute_Route,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -659,7 +659,7 @@ func (c *GnmiClient) Update_Routes(ctx context.Context, target string, list map[
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_Switches(ctx context.Context, target string,
+func (c *GnmiClient) Get_Switch_List(ctx context.Context, target string,
 ) (map[string]*OnfSwitch_Switch, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -701,7 +701,7 @@ func (c *GnmiClient) Get_Switches(ctx context.Context, target string,
 	return st.Switch, nil
 }
 
-func (c *GnmiClient) Delete_Switches(ctx context.Context, target string,
+func (c *GnmiClient) Delete_Switch_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -727,7 +727,7 @@ func (c *GnmiClient) Delete_Switches(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_Switches(ctx context.Context, target string, list map[string]*OnfSwitch_Switch,
+func (c *GnmiClient) Update_Switch_List(ctx context.Context, target string, list map[string]*OnfSwitch_Switch,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -760,7 +760,7 @@ func (c *GnmiClient) Update_Switches(ctx context.Context, target string, list ma
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Get_SwitchModels(ctx context.Context, target string,
+func (c *GnmiClient) Get_SwitchModel_List(ctx context.Context, target string,
 ) (map[string]*OnfSwitchModel_SwitchModel, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -802,7 +802,7 @@ func (c *GnmiClient) Get_SwitchModels(ctx context.Context, target string,
 	return st.SwitchModel, nil
 }
 
-func (c *GnmiClient) Delete_SwitchModels(ctx context.Context, target string,
+func (c *GnmiClient) Delete_SwitchModel_List(ctx context.Context, target string,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -828,7 +828,7 @@ func (c *GnmiClient) Delete_SwitchModels(ctx context.Context, target string,
 	return c.client.Set(gnmiCtx, req)
 }
 
-func (c *GnmiClient) Update_SwitchModels(ctx context.Context, target string, list map[string]*OnfSwitchModel_SwitchModel,
+func (c *GnmiClient) Update_SwitchModel_List(ctx context.Context, target string, list map[string]*OnfSwitchModel_SwitchModel,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
