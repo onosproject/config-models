@@ -1,0 +1,17 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read all the 'displayname' attributes under all cont1a/list4[2a-1]/list4a[one-2] all instances
+# This gets the correct value "Value 2a-1-one-2"
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list4' key:<key:'id' value:'2a-1' >>
+>
+path: <
+  elem: <name: 'list4a' key:<key:'fkey1' value:'one' > key:<key:'fkey2' value:'2' >>
+  elem: <name: 'displayname'>
+>

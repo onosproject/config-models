@@ -1,0 +1,28 @@
+prefix: <
+    target: 'mars',
+    elem: <name: 'switch' key:<key:'switch-id' value:'san-jose-edge-tor-1L' >>
+    elem: <name: 'vlan' key:<key:'vlan-id' value:'100'>>
+>
+update: <
+  path: <
+    elem: <name: 'vlan-id' >
+  >
+  val: <uint_val: 100>
+>
+update: <
+  path: <
+    elem: <name: 'display-name' >
+  >
+  val: <string_val: 'VLAN 100'>
+>
+update: <
+  path: <
+    elem: <name: 'subnet' >
+  >
+  val: <leaflist_val:
+    <
+      element: <string_val: '10.100.20.240/28'>
+      element: <string_val: '10.100.21.240/28'>
+    >
+  >
+>

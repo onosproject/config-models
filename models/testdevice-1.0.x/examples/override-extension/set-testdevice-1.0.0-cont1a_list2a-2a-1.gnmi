@@ -1,0 +1,44 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Populate the cont1a/list2a with 2a-1 on version 1.0.x
+# Note: Version 1.0.x does not have any rx-power
+# and Version 2.0.x does not have range-min and range-max
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+    elem: <name: 'list2a' key:<key:'name' value:'2a-1' >>
+>
+update: <
+  path: <
+    elem: <name: 'name' >
+  >
+  val: <string_val: '2a-1'>
+>
+update: <
+  path: <
+    elem: <name: 'tx-power' >
+  >
+  val: <uint_val: 5>
+>
+update: <
+  path: <
+    elem: <name: 'range-min' >
+  >
+  val: <uint_val: 20>
+>
+update: <
+  path: <
+    elem: <name: 'range-max' >
+  >
+  val: <uint_val: 21>
+>
+extension:<
+  registered_ext:<
+    id:112
+    msg:"\x0a\x22\x0a\x0btest-target\x12\x13\x0a\x0atestdevice\x12\x051.0.x"
+  >
+>

@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read everything under cont1a - there should be 4 instances of "Value .." here from the double
+# keyed list4a inside list4
+#
+prefix: <
+  target: 'test-target',
+>
+path: <
+  elem: <name: 'cont1a'>
+>

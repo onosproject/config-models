@@ -1,0 +1,11 @@
+prefix: <
+    target: 'mars',
+    elem: <name: 'switch-model' key:<key:'switch-model-id' value:'super-switch-1610' >>
+    elem: <name: 'port' key:<key:'cage-number' value:'1'> key:<key:'channel-number' value:'0'>>
+>
+path: <
+    elem: <name: 'display-name' >
+>
+path: <
+    elem: <name: 'speeds' >
+>

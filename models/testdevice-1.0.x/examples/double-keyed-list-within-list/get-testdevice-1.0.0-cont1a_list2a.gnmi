@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read everything under cont1a/list2a instance 2a-1
+#
+prefix: <
+    target: 'test-target',
+    elem: <name: 'cont1a'>
+>
+path: <
+    elem: <name: 'list2a' key:<key:'name' value:'2a-1' >>
+>

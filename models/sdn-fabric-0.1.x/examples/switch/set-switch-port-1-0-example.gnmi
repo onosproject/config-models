@@ -1,5 +1,5 @@
 prefix: <
-    target: 'new-fabric',
+    target: 'mars',
     elem: <name: 'switch' key:<key:'switch-id' value:'san-jose-edge-tor-1L' >>
     elem: <name: 'port' key:<key:'cage-number' value:'1'> key:<key:'channel-number' value:'0'>>
 >
@@ -21,5 +21,9 @@ update: <
   >
   val: <string_val: 'Port 1/0'>
 >
-
-
+update: <
+  path: <
+    elem: <name: 'speed' >
+  >
+  val: <string_val: 'speed-1g'>
+>
