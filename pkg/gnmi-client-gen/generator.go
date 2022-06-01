@@ -8,7 +8,6 @@ package gnmi_client_gen
 
 import (
 	"fmt"
-	p "github.com/gertd/go-pluralize"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen/template"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
@@ -24,7 +23,6 @@ import (
 const templateFile = "gnmi_client.go.tpl"
 
 var log = logging.GetLogger("gnmi-client-gen")
-var pluralize = p.NewClient()
 
 type GnmiEndpoints struct {
 	LeavesEndpoints    []LeavesEndpoint
@@ -222,6 +220,7 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 				return nil, err
 			}
 		}
+
 		ep := ListEndpoint{
 			ContainerEndpoint: ContainerEndpoint{
 				Method:          m,
@@ -231,7 +230,7 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 				ModelPath:       pathInModel,
 				ParentModelPath: parentModelPath,
 			},
-			PluralMethodName: fmt.Sprintf("%s_%s", epName, pluralize.Plural(itemName)),
+			PluralMethodName: fmt.Sprintf("%s_%s_List", epName, itemName),
 			ParentPath:       path[:len(path)-1],
 			Key:              key,
 		}
