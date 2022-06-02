@@ -29,6 +29,41 @@ func NewRicGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
+func (c *GnmiClient) Delete_Nodes_Node(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "nodes",
+				},
+				{
+					Name: "node",
+					Key: map[string]string{
+
+						"id": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
 func (c *GnmiClient) Get_Nodes_Node(ctx context.Context, target string,
 	key string,
 ) (*Xapp_Nodes_Node, error) {
@@ -83,41 +118,6 @@ func (c *GnmiClient) Get_Nodes_Node(ctx context.Context, target string,
 	return nil, status.Error(codes.NotFound, "Xapp_Nodes_Node-not-found")
 }
 
-func (c *GnmiClient) Delete_Nodes_Node(ctx context.Context, target string,
-	key string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "nodes",
-				},
-				{
-					Name: "node",
-					Key: map[string]string{
-
-						"id": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Update_Nodes_Node(ctx context.Context, target string, data Xapp_Nodes_Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -145,6 +145,35 @@ func (c *GnmiClient) Update_Nodes_Node(ctx context.Context, target string, data 
 		return nil, err
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Nodes_Node_List(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "nodes",
+				},
+				{
+					Name: "node",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -196,35 +225,6 @@ func (c *GnmiClient) Get_Nodes_Node_List(ctx context.Context, target string,
 	return st.Nodes.Node, nil
 }
 
-func (c *GnmiClient) Delete_Nodes_Node_List(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "nodes",
-				},
-				{
-					Name: "node",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Update_Nodes_Node_List(ctx context.Context, target string, list map[string]*Xapp_Nodes_Node,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -259,6 +259,60 @@ func (c *GnmiClient) Update_Nodes_Node_List(ctx context.Context, target string, 
 		req.Update = append(req.Update, r.Update...)
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Nodes(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "nodes",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_ReportPeriod(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "report_period",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -306,57 +360,6 @@ func (c *GnmiClient) Get_Nodes(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) Delete_Nodes(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "nodes",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Nodes(ctx context.Context, target string, data Xapp_Nodes,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "nodes",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Get_ReportPeriod(ctx context.Context, target string,
 ) (*KpimonXapp_ReportPeriod, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -401,7 +404,7 @@ func (c *GnmiClient) Get_ReportPeriod(ctx context.Context, target string,
 
 }
 
-func (c *GnmiClient) Delete_ReportPeriod(ctx context.Context, target string,
+func (c *GnmiClient) Update_Nodes(ctx context.Context, target string, data Xapp_Nodes,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -410,21 +413,18 @@ func (c *GnmiClient) Delete_ReportPeriod(ctx context.Context, target string,
 		{
 			Elem: []*gnmi.PathElem{
 				{
-					Name: "report_period",
+					Name: "nodes",
 				},
 			},
 			Target: target,
 		},
 	}
 
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
 	}
+
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -449,6 +449,36 @@ func (c *GnmiClient) Update_ReportPeriod(ctx context.Context, target string, dat
 		return nil, err
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_ReportPeriodInterval(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "report_period",
+				},
+				{
+					Name: "interval",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -492,36 +522,6 @@ func (c *GnmiClient) Get_ReportPeriodInterval(ctx context.Context, target string
 	}
 
 	return uint32(val.GetUintVal()), nil
-}
-
-func (c *GnmiClient) Delete_ReportPeriodInterval(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "report_period",
-				},
-				{
-					Name: "interval",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
 }
 
 func (c *GnmiClient) Update_ReportPeriodInterval(ctx context.Context, target string, val *gnmi.TypedValue,
