@@ -4,26 +4,60 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package utils
+package path
 
 import (
-	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
-func Test_ExtractPaths(t *testing.T) {
-	var schemaTree map[string]*yang.Entry
+func TestMain(m *testing.M) {
 	var err error
-	schemaTree, err = ygot.GzipToSchema(testdevice10XSchema)
-	assert.NoError(t, err)
-	assert.NotNil(t, schemaTree)
+	schemaTree, err := ygot.GzipToSchema(testdevice10XSchema)
+	if err != nil {
+		panic(err)
+	}
 
-	roPaths, rwPaths := ExtractPaths(schemaTree)
-	assert.NotNil(t, roPaths)
-	assert.NotNil(t, rwPaths)
+	roPaths, rwPaths = ExtractPaths(schemaTree)
+	if err != nil {
+		panic(err)
+	}
 
+	exitVal := m.Run()
+
+	os.Exit(exitVal)
+}
+
+func Test_ExtractPaths(t *testing.T) {
+	assert.Equal(t, 2, len(roPaths))
+	for _, roPath := range roPaths {
+		switch path := roPath.Path; path {
+		case "/cont1a/cont2a/leaf2c":
+			assert.Equal(t, 1, len(roPath.SubPath))
+			sp := roPath.SubPath[0]
+			assert.Equal(t, "leaf2c", sp.AttrName)
+		case "/cont1b-state":
+			assert.Equal(t, 3, len(roPath.SubPath))
+			for _, sp := range roPath.SubPath {
+				switch subPath := sp.SubPath; subPath {
+				case "/leaf2d":
+					assert.Equal(t, "leaf2d", sp.AttrName)
+				case "/list2b[index=*]/index":
+					assert.Equal(t, "index", sp.AttrName)
+				case "/list2b[index=*]/leaf3c":
+					assert.Equal(t, "leaf3c", sp.AttrName)
+				default:
+					t.Fatalf("unexpected subpath %s for RO path %s", subPath, path)
+				}
+			}
+		default:
+			t.Fatalf("unexpected RO path %s", path)
+		}
+	}
+
+	assert.Equal(t, 21, len(rwPaths))
 }
 
 var (
