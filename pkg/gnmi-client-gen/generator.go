@@ -16,6 +16,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"os"
+	"sort"
 	"strings"
 	"text/template"
 )
@@ -120,7 +121,8 @@ func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPat
 			return nil, fmt.Errorf("unhandled item %v.Type %v", item.Name, item.Type)
 		}
 	}
-	return g, nil
+	ep, err := sortByName(*g)
+	return &ep, err
 }
 
 const gnmiGet = "get"
@@ -241,6 +243,16 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 	return eps, nil
 }
 
+// sortByName will order the lists based on the MethodName
+// a possible future improvement is to order them by ModelName while retaining the order Get, Update, Delete
+// but the main reason to have this is to make it easier to compare diffs in PRs for an easier review process
+func sortByName(endpoints GnmiEndpoints) (GnmiEndpoints, error) {
+	sort.Sort(leavesByMethodName(endpoints.LeavesEndpoints))
+	sort.Sort(containersByMethodName(endpoints.ContainerEndpoints))
+	sort.Sort(listsByMethodName(endpoints.ListEndpoints))
+	return endpoints, nil
+}
+
 func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 
 	var funcs template.FuncMap = map[string]interface{}{
@@ -270,4 +282,69 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 	defer file.Close()
 
 	return t.Execute(file, epList)
+}
+
+// helpers to the sortByName method
+func less(s []interface{}, i, j int) bool {
+	ok1 := false
+	ok2 := false
+
+	// cast to LeavesEndpoint
+	leaf1, ok1 := s[i].(LeavesEndpoint)
+	leaf2, ok2 := s[j].(LeavesEndpoint)
+	if ok1 && ok2 {
+		return leaf1.MethodName < leaf2.MethodName
+	}
+
+	cont1, ok1 := s[i].(ContainerEndpoint)
+	cont2, ok2 := s[j].(ContainerEndpoint)
+	if ok1 && ok2 {
+		return cont1.MethodName < cont2.MethodName
+	}
+
+	list1, ok1 := s[i].(ListEndpoint)
+	list2, ok2 := s[j].(ListEndpoint)
+	if ok1 && ok2 {
+		return list1.MethodName < list2.MethodName
+	}
+	panic(fmt.Sprintf("type-%T-not-supported-for-ordering", s[i]))
+}
+
+type leavesByMethodName []LeavesEndpoint
+
+func (s leavesByMethodName) Len() int      { return len(s) }
+func (s leavesByMethodName) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s leavesByMethodName) Less(i, j int) bool {
+	// we have to manually convert to a list of interfaces
+	b := make([]interface{}, len(s))
+	for i := range s {
+		b[i] = s[i]
+	}
+	return less(b, i, j)
+}
+
+type containersByMethodName []ContainerEndpoint
+
+func (s containersByMethodName) Len() int      { return len(s) }
+func (s containersByMethodName) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s containersByMethodName) Less(i, j int) bool {
+	// we have to manually convert to a list of interfaces
+	b := make([]interface{}, len(s))
+	for i := range s {
+		b[i] = s[i]
+	}
+	return less(b, i, j)
+}
+
+type listsByMethodName []ListEndpoint
+
+func (s listsByMethodName) Len() int      { return len(s) }
+func (s listsByMethodName) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s listsByMethodName) Less(i, j int) bool {
+	// we have to manually convert to a list of interfaces
+	b := make([]interface{}, len(s))
+	for i := range s {
+		b[i] = s[i]
+	}
+	return less(b, i, j)
 }

@@ -64,6 +64,13 @@ func setup(t *testing.T) *testdevice.GnmiClient {
 	return testdevice.NewTestdeviceGnmiClient(gnmiConn)
 }
 
+func TestReadSchema(t *testing.T) {
+	skipIfNotEnabled(t)
+	schemaMap, err := testdevice.Schema()
+	assert.NoError(t, err)
+	fmt.Println(schemaMap.SchemaTree["Device"])
+}
+
 func TestLeafAtTopLevel(t *testing.T) {
 	client := setup(t)
 	ctx := context.TODO()
