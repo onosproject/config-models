@@ -29,6 +29,134 @@ func NewSdnfabricGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
+func (c *GnmiClient) Delete_DhcpServer(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "dhcp-server",
+					Key: map[string]string{
+
+						"dhcp-id": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Route(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "route",
+					Key: map[string]string{
+
+						"route-id": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Switch(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "switch",
+					Key: map[string]string{
+
+						"switch-id": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_SwitchModel(ctx context.Context, target string,
+	key string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "switch-model",
+					Key: map[string]string{
+
+						"switch-model-id": fmt.Sprint(key),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
 func (c *GnmiClient) Get_DhcpServer(ctx context.Context, target string,
 	key string,
 ) (*OnfDhcpServer_DhcpServer, error) {
@@ -75,65 +203,6 @@ func (c *GnmiClient) Get_DhcpServer(ctx context.Context, target string,
 	}
 
 	return nil, status.Error(codes.NotFound, "OnfDhcpServer_DhcpServer-not-found")
-}
-
-func (c *GnmiClient) Delete_DhcpServer(ctx context.Context, target string,
-	key string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "dhcp-server",
-					Key: map[string]string{
-
-						"dhcp-id": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_DhcpServer(ctx context.Context, target string, data OnfDhcpServer_DhcpServer,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "dhcp-server",
-					Key: map[string]string{
-						"dhcp-id": fmt.Sprint(*data.DhcpId),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
 }
 
 func (c *GnmiClient) Get_Route(ctx context.Context, target string,
@@ -184,65 +253,6 @@ func (c *GnmiClient) Get_Route(ctx context.Context, target string,
 	return nil, status.Error(codes.NotFound, "OnfRoute_Route-not-found")
 }
 
-func (c *GnmiClient) Delete_Route(ctx context.Context, target string,
-	key string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "route",
-					Key: map[string]string{
-
-						"route-id": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Route(ctx context.Context, target string, data OnfRoute_Route,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "route",
-					Key: map[string]string{
-						"route-id": fmt.Sprint(*data.RouteId),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Get_Switch(ctx context.Context, target string,
 	key string,
 ) (*OnfSwitch_Switch, error) {
@@ -289,65 +299,6 @@ func (c *GnmiClient) Get_Switch(ctx context.Context, target string,
 	}
 
 	return nil, status.Error(codes.NotFound, "OnfSwitch_Switch-not-found")
-}
-
-func (c *GnmiClient) Delete_Switch(ctx context.Context, target string,
-	key string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "switch",
-					Key: map[string]string{
-
-						"switch-id": fmt.Sprint(key),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Switch(ctx context.Context, target string, data OnfSwitch_Switch,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "switch",
-					Key: map[string]string{
-						"switch-id": fmt.Sprint(*data.SwitchId),
-					},
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.client.Set(gnmiCtx, req)
 }
 
 func (c *GnmiClient) Get_SwitchModel(ctx context.Context, target string,
@@ -398,8 +349,7 @@ func (c *GnmiClient) Get_SwitchModel(ctx context.Context, target string,
 	return nil, status.Error(codes.NotFound, "OnfSwitchModel_SwitchModel-not-found")
 }
 
-func (c *GnmiClient) Delete_SwitchModel(ctx context.Context, target string,
-	key string,
+func (c *GnmiClient) Update_DhcpServer(ctx context.Context, target string, data OnfDhcpServer_DhcpServer,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -408,10 +358,9 @@ func (c *GnmiClient) Delete_SwitchModel(ctx context.Context, target string,
 		{
 			Elem: []*gnmi.PathElem{
 				{
-					Name: "switch-model",
+					Name: "dhcp-server",
 					Key: map[string]string{
-
-						"switch-model-id": fmt.Sprint(key),
+						"dhcp-id": fmt.Sprint(*data.DhcpId),
 					},
 				},
 			},
@@ -419,14 +368,65 @@ func (c *GnmiClient) Delete_SwitchModel(ctx context.Context, target string,
 		},
 	}
 
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_Route(ctx context.Context, target string, data OnfRoute_Route,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "route",
+					Key: map[string]string{
+						"route-id": fmt.Sprint(*data.RouteId),
+					},
+				},
 			},
+			Target: target,
 		},
 	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_Switch(ctx context.Context, target string, data OnfSwitch_Switch,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "switch",
+					Key: map[string]string{
+						"switch-id": fmt.Sprint(*data.SwitchId),
+					},
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, data, path[0], target)
+	if err != nil {
+		return nil, err
+	}
+
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -454,6 +454,110 @@ func (c *GnmiClient) Update_SwitchModel(ctx context.Context, target string, data
 		return nil, err
 	}
 
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_DhcpServer_List(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "dhcp-server",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Route_List(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "route",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_Switch_List(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "switch",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_SwitchModel_List(ctx context.Context, target string,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "switch-model",
+				},
+			},
+			Target: target,
+		},
+	}
+	req := &gnmi.SetRequest{
+		Delete: []*gnmi.Path{
+			{
+				Elem:   path[0].Elem,
+				Target: target,
+			},
+		},
+	}
 	return c.client.Set(gnmiCtx, req)
 }
 
@@ -499,65 +603,6 @@ func (c *GnmiClient) Get_DhcpServer_List(ctx context.Context, target string,
 	return st.DhcpServer, nil
 }
 
-func (c *GnmiClient) Delete_DhcpServer_List(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "dhcp-server",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_DhcpServer_List(ctx context.Context, target string, list map[string]*OnfDhcpServer_DhcpServer,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	basePathElems := []*gnmi.PathElem{}
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{},
-	}
-	for _, item := range list {
-
-		path := &gnmi.Path{
-			Elem: append(basePathElems, &gnmi.PathElem{
-				Name: "list2a",
-				Key: map[string]string{
-					"dhcp-id": fmt.Sprint(*item.DhcpId),
-				},
-			}),
-			Target: target,
-		}
-
-		// TODO if it's pointer, pass the value
-		// if it's a value pass it directly
-		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
-		if err != nil {
-			return nil, err
-		}
-		req.Update = append(req.Update, r.Update...)
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Get_Route_List(ctx context.Context, target string,
 ) (map[string]*OnfRoute_Route, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -598,65 +643,6 @@ func (c *GnmiClient) Get_Route_List(ctx context.Context, target string,
 	}
 
 	return st.Route, nil
-}
-
-func (c *GnmiClient) Delete_Route_List(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "route",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Route_List(ctx context.Context, target string, list map[string]*OnfRoute_Route,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	basePathElems := []*gnmi.PathElem{}
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{},
-	}
-	for _, item := range list {
-
-		path := &gnmi.Path{
-			Elem: append(basePathElems, &gnmi.PathElem{
-				Name: "list2a",
-				Key: map[string]string{
-					"route-id": fmt.Sprint(*item.RouteId),
-				},
-			}),
-			Target: target,
-		}
-
-		// TODO if it's pointer, pass the value
-		// if it's a value pass it directly
-		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
-		if err != nil {
-			return nil, err
-		}
-		req.Update = append(req.Update, r.Update...)
-	}
-
-	return c.client.Set(gnmiCtx, req)
 }
 
 func (c *GnmiClient) Get_Switch_List(ctx context.Context, target string,
@@ -701,65 +687,6 @@ func (c *GnmiClient) Get_Switch_List(ctx context.Context, target string,
 	return st.Switch, nil
 }
 
-func (c *GnmiClient) Delete_Switch_List(ctx context.Context, target string,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "switch",
-				},
-			},
-			Target: target,
-		},
-	}
-	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
-	}
-	return c.client.Set(gnmiCtx, req)
-}
-
-func (c *GnmiClient) Update_Switch_List(ctx context.Context, target string, list map[string]*OnfSwitch_Switch,
-) (*gnmi.SetResponse, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	basePathElems := []*gnmi.PathElem{}
-	req := &gnmi.SetRequest{
-		Update: []*gnmi.Update{},
-	}
-	for _, item := range list {
-
-		path := &gnmi.Path{
-			Elem: append(basePathElems, &gnmi.PathElem{
-				Name: "list2a",
-				Key: map[string]string{
-					"switch-id": fmt.Sprint(*item.SwitchId),
-				},
-			}),
-			Target: target,
-		}
-
-		// TODO if it's pointer, pass the value
-		// if it's a value pass it directly
-		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
-		if err != nil {
-			return nil, err
-		}
-		req.Update = append(req.Update, r.Update...)
-	}
-
-	return c.client.Set(gnmiCtx, req)
-}
-
 func (c *GnmiClient) Get_SwitchModel_List(ctx context.Context, target string,
 ) (map[string]*OnfSwitchModel_SwitchModel, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -802,29 +729,102 @@ func (c *GnmiClient) Get_SwitchModel_List(ctx context.Context, target string,
 	return st.SwitchModel, nil
 }
 
-func (c *GnmiClient) Delete_SwitchModel_List(ctx context.Context, target string,
+func (c *GnmiClient) Update_DhcpServer_List(ctx context.Context, target string, list map[string]*OnfDhcpServer_DhcpServer,
 ) (*gnmi.SetResponse, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "switch-model",
-				},
-			},
-			Target: target,
-		},
-	}
+	basePathElems := []*gnmi.PathElem{}
 	req := &gnmi.SetRequest{
-		Delete: []*gnmi.Path{
-			{
-				Elem:   path[0].Elem,
-				Target: target,
-			},
-		},
+		Update: []*gnmi.Update{},
 	}
+	for _, item := range list {
+
+		path := &gnmi.Path{
+			Elem: append(basePathElems, &gnmi.PathElem{
+				Name: "list2a",
+				Key: map[string]string{
+					"dhcp-id": fmt.Sprint(*item.DhcpId),
+				},
+			}),
+			Target: target,
+		}
+
+		// TODO if it's pointer, pass the value
+		// if it's a value pass it directly
+		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
+		if err != nil {
+			return nil, err
+		}
+		req.Update = append(req.Update, r.Update...)
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_Route_List(ctx context.Context, target string, list map[string]*OnfRoute_Route,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	basePathElems := []*gnmi.PathElem{}
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{},
+	}
+	for _, item := range list {
+
+		path := &gnmi.Path{
+			Elem: append(basePathElems, &gnmi.PathElem{
+				Name: "list2a",
+				Key: map[string]string{
+					"route-id": fmt.Sprint(*item.RouteId),
+				},
+			}),
+			Target: target,
+		}
+
+		// TODO if it's pointer, pass the value
+		// if it's a value pass it directly
+		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
+		if err != nil {
+			return nil, err
+		}
+		req.Update = append(req.Update, r.Update...)
+	}
+
+	return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Update_Switch_List(ctx context.Context, target string, list map[string]*OnfSwitch_Switch,
+) (*gnmi.SetResponse, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	basePathElems := []*gnmi.PathElem{}
+	req := &gnmi.SetRequest{
+		Update: []*gnmi.Update{},
+	}
+	for _, item := range list {
+
+		path := &gnmi.Path{
+			Elem: append(basePathElems, &gnmi.PathElem{
+				Name: "list2a",
+				Key: map[string]string{
+					"switch-id": fmt.Sprint(*item.SwitchId),
+				},
+			}),
+			Target: target,
+		}
+
+		// TODO if it's pointer, pass the value
+		// if it's a value pass it directly
+		r, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *item, path, target)
+		if err != nil {
+			return nil, err
+		}
+		req.Update = append(req.Update, r.Update...)
+	}
+
 	return c.client.Set(gnmiCtx, req)
 }
 
