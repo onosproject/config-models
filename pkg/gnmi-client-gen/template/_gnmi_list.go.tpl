@@ -7,6 +7,7 @@
 {{/*This template generates methods to interact with the list object*/}}
 
 {{ $ep := . }}
+// TODO account for recursive keys as parameters (needed for nested lists)
 func (c *GnmiClient) {{ $ep.PluralMethodName }}(ctx context.Context, target string, {{ if eq $ep.Method "update"}} list map[{{ $ep.Key.Type }}]*{{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}map[{{ $ep.Key.Type }}]*{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)

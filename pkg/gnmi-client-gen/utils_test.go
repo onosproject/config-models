@@ -165,3 +165,22 @@ func TestYangTypeToGoType(t *testing.T) {
 		})
 	}
 }
+
+func TestPathToYgotModelPath(t *testing.T) {
+	type args struct {
+		path []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"test1", args{path: []string{"foo"}}, "Foo"},
+		{"test1", args{path: []string{"foo", "bar"}}, "Foo.Bar"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, PathToYgotModelPath(tt.args.path), "PathToYgotModelPath(%v)", tt.args.path)
+		})
+	}
+}

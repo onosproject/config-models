@@ -54,8 +54,11 @@ type ContainerEndpoint struct {
 }
 
 type ListKey struct {
-	Type string // the generated Key type (can be a Go type, eg: string)
-	Keys []Key  // a list of keys that we need to set in the path
+	Type      string   // the generated Key type (can be a Go type, eg: string)
+	Keys      []Key    // a list of keys that we need to set in the path
+	ParentKey *ListKey // a reference to a parent key, this is needed in case of nested lists
+	// FIXME we need to carry the Name of the key (aka the name in the path for this particular key, otherwise recursion is madness)
+	Name string
 }
 type Key struct {
 	Name string
@@ -70,7 +73,7 @@ type ListEndpoint struct {
 	PluralMethodName string   // Used for the methods that apply to the entire list
 }
 
-func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPath []string) (*GnmiEndpoints, error) {
+func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPath []string, parentKey *ListKey) (*GnmiEndpoints, error) {
 
 	if debug {
 		log.SetLevel(logging.DebugLevel)
@@ -97,7 +100,7 @@ func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPat
 			// FIXME add support
 			log.Warn("item-is-choice-entry")
 		} else if item.IsContainer() {
-			_g, err := BuildGnmiStruct(debug, pluginName, item, itemPath)
+			_g, err := BuildGnmiStruct(debug, pluginName, item, itemPath, parentKey)
 			if err != nil {
 				return nil, err
 			}
@@ -112,7 +115,33 @@ func BuildGnmiStruct(debug bool, pluginName string, entry *yang.Entry, parentPat
 			}
 			g.ContainerEndpoints = append(g.ContainerEndpoints, eps...)
 		} else if item.IsList() {
-			eps, err := generateGnmiEndpointsForLists(item, itemPath)
+			// generate the key for this list
+			key, err := GetListKey(item)
+			if err != nil {
+				if s, ok := status.FromError(err); ok && s.Code() == codes.Unimplemented {
+					log.Warnw("skipping-generation-for-list", "item", item.Name, "err", err.Error())
+					continue
+				} else {
+					return nil, err
+				}
+			}
+
+			// if there is parent key add it to key for this item
+			if parentKey != nil {
+				key.ParentKey = parentKey
+			}
+
+			// recurse down the spec
+			_g, err := BuildGnmiStruct(debug, pluginName, item, itemPath, &key)
+			if err != nil {
+				return nil, err
+			}
+			g.LeavesEndpoints = append(g.LeavesEndpoints, _g.LeavesEndpoints...)
+			g.ContainerEndpoints = append(g.ContainerEndpoints, _g.ContainerEndpoints...)
+			g.ListEndpoints = append(g.ListEndpoints, _g.ListEndpoints...)
+
+			// generate endpoints for lists
+			eps, err := generateGnmiEndpointsForLists(item, itemPath, &key)
 			if err != nil {
 				return nil, err
 			}
@@ -196,7 +225,7 @@ func generateGnmiEndpointsForContainer(item *yang.Entry, path []string) ([]Conta
 }
 
 // I assume that a list always contains Yang containers, we can't have a list of strings
-func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpoint, error) {
+func generateGnmiEndpointsForLists(item *yang.Entry, path []string, key *ListKey) ([]ListEndpoint, error) {
 
 	eps := []ListEndpoint{}
 
@@ -213,16 +242,6 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 
 		epName := caser.String(m)
 
-		key, err := GetListKey(item)
-		if err != nil {
-			if s, ok := status.FromError(err); ok && s.Code() == codes.Unimplemented {
-				log.Warnw("skipping-generation-for-list", "item", item.Name, "err", err.Error())
-				continue
-			} else {
-				return nil, err
-			}
-		}
-
 		ep := ListEndpoint{
 			ContainerEndpoint: ContainerEndpoint{
 				Method:          m,
@@ -234,7 +253,7 @@ func generateGnmiEndpointsForLists(item *yang.Entry, path []string) ([]ListEndpo
 			},
 			PluralMethodName: fmt.Sprintf("%s_%s_List", epName, itemName),
 			ParentPath:       path[:len(path)-1],
-			Key:              key,
+			Key:              *key,
 		}
 		eps = append(eps, ep)
 	}
@@ -266,6 +285,9 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 			return a - b
 		},
 		"lower": strings.ToLower,
+		"hasParentKey": func(key ListKey) bool {
+			return key.ParentKey != nil
+		},
 	}
 
 	t, err := template.New(templateFile).
