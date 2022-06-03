@@ -41,8 +41,9 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 	readWritePaths := make([]*admin.ReadWritePath, 0)
 
 	for _, dirEntry := range deviceEntry.Dir {
-		itemPath := formatName(dirEntry, false, parentPath, subpathPrefix)
+		itemPath := formatNameAsPath(dirEntry, parentPath, subpathPrefix)
 		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
+			roBase, roSubPath, isReadOnly := earliestRoAncestor(dirEntry)
 			// No need to recurse
 			t, typeOpts, err := toValueType(dirEntry.Type, dirEntry.IsLeafList())
 			if err != nil {
@@ -75,30 +76,23 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 					}
 				}
 			}
-			if parentState == yang.TSFalse {
-				// Try to find the RO pathWithIdx of parent
+			if isReadOnly {
+				roBasePath := fmt.Sprintf("/%s", strings.Join(roBase[1:], "/"))
 				var parentPathObj *admin.ReadOnlyPath
 				var existing bool
 				for _, roPath := range readOnlyPaths {
-					if roPath.Path == parentPath {
+					if roPath.Path == roBasePath {
 						parentPathObj = roPath
 						existing = true
 					}
 				}
-				tObj.SubPath = itemPath[len(parentPath):]
+				tObj.SubPath = fmt.Sprintf("/%s", strings.Join(roSubPath, "/"))
 				if !existing {
 					parentPathObj = new(admin.ReadOnlyPath)
-					parentPathObj.Path = parentPath
+					parentPathObj.Path = roBasePath
 					readOnlyPaths = append(readOnlyPaths, parentPathObj)
 				}
 				parentPathObj.SubPath = append(parentPathObj.SubPath, &tObj)
-			} else if dirEntry.Config == yang.TSFalse {
-				// Because this is a leaf it will have only one subpath - itself
-				singleRoPath := new(admin.ReadOnlyPath)
-				singleRoPath.Path = itemPath
-				tObj.SubPath = "/"
-				singleRoPath.SubPath = []*admin.ReadOnlySubPath{&tObj}
-				readOnlyPaths = append(readOnlyPaths, singleRoPath)
 			} else {
 				ranges := make([]string, 0)
 				for _, r := range dirEntry.Type.Range {
@@ -157,7 +151,7 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 			readOnlyPaths = append(readOnlyPaths, readOnlyPathsChildren...)
 			readWritePaths = append(readWritePaths, readWritePathChildren...)
 		} else if dirEntry.IsList() {
-			itemPath = formatName(dirEntry, true, parentPath, subpathPrefix)
+			itemPath = formatNameAsPath(dirEntry, parentPath, subpathPrefix)
 			if dirEntry.Config == yang.TSFalse || parentState == yang.TSFalse {
 				subpathPfx := subpathPrefix
 				if parentState == yang.TSFalse {
@@ -167,7 +161,20 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				if err != nil {
 					return nil, nil, err
 				}
-				readOnlyPaths = append(readOnlyPaths, readOnlyPathsChildren...)
+			next_child:
+				for _, readOnlyPathsChild := range readOnlyPathsChildren {
+					sameParent := false
+					for _, readOnlyPath := range readOnlyPaths {
+						if readOnlyPath.Path == readOnlyPathsChild.Path {
+							readOnlyPath.SubPath = append(readOnlyPath.SubPath, readOnlyPathsChild.SubPath...)
+							sameParent = true
+							continue next_child
+						}
+					}
+					if !sameParent {
+						readOnlyPaths = append(readOnlyPaths, readOnlyPathsChild)
+					}
+				}
 				continue
 			}
 			readOnlyPathsChildren, readWritePathsChildren, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
@@ -177,25 +184,6 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 
 			readOnlyPaths = append(readOnlyPaths, readOnlyPathsChildren...)
 			readWritePaths = append(readWritePaths, readWritePathsChildren...)
-			// Need to copy the index of the list across to the RO list too
-			//roIdxName := k[:strings.LastIndex(k, "/")]
-			//roIdxSubPath := k[strings.LastIndex(k, "/"):]
-			//indices, _ := ExtractIndexNames(itemPath[strings.LastIndex(itemPath, "/"):])
-			//isIdxAttr := false
-			//for _, idx := range indices {
-			//	if roIdxSubPath == fmt.Sprintf("/%s", idx) {
-			//		isIdxAttr = true
-			//	}
-			//}
-			//if roIdxName == itemPath && isIdxAttr {
-			//	roIdx := ReadOnlyAttrib{
-			//		ValueType:   v.ValueType,
-			//		Description: v.Description,
-			//		Units:       v.Units,
-			//	}
-			//	readOnlyPaths[roIdxName] = make(map[string]ReadOnlyAttrib)
-			//	readOnlyPaths[roIdxName][roIdxSubPath] = roIdx
-			//}
 
 		} else if dirEntry.IsChoice() || dirEntry.IsCase() {
 			// Recurse down through Choice and Case
@@ -213,25 +201,28 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 	return readOnlyPaths, readWritePaths, nil
 }
 
-func formatName(dirEntry *yang.Entry, isList bool, parentPath string, subpathPrefix string) string {
+func formatNameAsPath(dirEntry *yang.Entry, parentPath string, subpathPrefix string) string {
 	parentAndSubPath := parentPath
 	if subpathPrefix != "/" {
 		parentAndSubPath = fmt.Sprintf("%s%s", parentPath, subpathPrefix)
 	}
 
-	var name string
-	if isList {
+	name := formatNameOfChildEntry(dirEntry)
+
+	return fmt.Sprintf("%s/%s", parentAndSubPath, name)
+}
+
+func formatNameOfChildEntry(dirEntry *yang.Entry) string {
+	name := dirEntry.Name
+	if dirEntry.IsList() {
 		//have to ensure index order is consistent where there's more than one
 		keyParts := strings.Split(dirEntry.Key, " ")
 		sort.Slice(keyParts, func(i, j int) bool {
 			return keyParts[i] < keyParts[j]
 		})
-		name = fmt.Sprintf("%s/%s", parentAndSubPath, dirEntry.Name)
 		for _, k := range keyParts {
 			name += fmt.Sprintf("[%s=*]", k)
 		}
-	} else {
-		name = fmt.Sprintf("%s/%s", parentAndSubPath, dirEntry.Name)
 	}
 
 	return name
@@ -302,4 +293,26 @@ func extractIntegerWidth(typeName string) configapi.Width {
 	default:
 		return configapi.WidthThirtyTwo
 	}
+}
+
+// earliestRoAncestor - recursive function to get to the base of the config only ancestor
+func earliestRoAncestor(dirEntry *yang.Entry) ([]string, []string, bool) {
+	var configFalse bool
+	if dirEntry.Parent == nil {
+		if dirEntry.Config == yang.TSFalse {
+			configFalse = true
+		}
+		return []string{dirEntry.Name}, nil, configFalse
+	}
+	itemName := formatNameOfChildEntry(dirEntry)
+	base, subPath, parentFalse := earliestRoAncestor(dirEntry.Parent)
+	if parentFalse {
+		subPath = append(subPath, itemName)
+		return base, subPath, parentFalse
+	} else if dirEntry.Config == yang.TSFalse {
+		base = append(base, itemName)
+		return base, nil, true
+	}
+	base = append(base, itemName)
+	return base, nil, configFalse
 }

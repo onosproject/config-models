@@ -7,6 +7,7 @@
 package path
 
 import (
+	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -58,6 +59,310 @@ func Test_ExtractPaths(t *testing.T) {
 	}
 
 	assert.Equal(t, 21, len(rwPaths))
+	for _, rwPath := range rwPaths {
+		switch path := rwPath.Path; path {
+		case "/leafAtTopLevel":
+			assert.Equal(t, "leafAtTopLevel", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2a":
+			assert.Equal(t, "leaf2a", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2b":
+			assert.Equal(t, "leaf2b", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2d":
+			assert.Equal(t, "leaf2d", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2e":
+			assert.Equal(t, "leaf2e", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2f":
+			assert.Equal(t, "leaf2f", rwPath.AttrName)
+		case "/cont1a/cont2a/leaf2g":
+			assert.Equal(t, "leaf2g", rwPath.AttrName)
+		case "/cont1a/leaf1a":
+			assert.Equal(t, "leaf1a", rwPath.AttrName)
+		case "/cont1a/list4[id=*]/id":
+			assert.Equal(t, "id", rwPath.AttrName)
+		case "/cont1a/list4[id=*]/leaf4b":
+			assert.Equal(t, "leaf4b", rwPath.AttrName)
+		case "/cont1a/list4[id=*]/list4a[fkey1=*][fkey2=*]/fkey1":
+			assert.Equal(t, "fkey1", rwPath.AttrName)
+		case "/cont1a/list4[id=*]/list4a[fkey1=*][fkey2=*]/fkey2":
+			assert.Equal(t, "fkey2", rwPath.AttrName)
+		case "/cont1a/list4[id=*]/list4a[fkey1=*][fkey2=*]/displayname":
+			assert.Equal(t, "displayname", rwPath.AttrName)
+		case "/cont1a/list2a[name=*]/name":
+			assert.Equal(t, "name", rwPath.AttrName)
+		case "/cont1a/list2a[name=*]/tx-power":
+			assert.Equal(t, "tx-power", rwPath.AttrName)
+		case "/cont1a/list2a[name=*]/ref2d":
+			assert.Equal(t, "ref2d", rwPath.AttrName)
+		case "/cont1a/list2a[name=*]/range-min":
+			assert.Equal(t, "range-min", rwPath.AttrName)
+		case "/cont1a/list2a[name=*]/range-max":
+			assert.Equal(t, "range-max", rwPath.AttrName)
+		case "/cont1a/list5[key1=*][key2=*]/key1":
+			assert.Equal(t, "key1", rwPath.AttrName)
+		case "/cont1a/list5[key1=*][key2=*]/key2":
+			assert.Equal(t, "key2", rwPath.AttrName)
+		case "/cont1a/list5[key1=*][key2=*]/leaf5a":
+			assert.Equal(t, "leaf5a", rwPath.AttrName)
+		default:
+			t.Fatalf("unexpected RW path %s", path)
+		}
+	}
+}
+
+func Test_formatNameAsPath(t *testing.T) {
+	type formatNameTest struct {
+		testName      string
+		name          string
+		key           string
+		parent        string
+		subpathPrefix string
+		expected      string
+	}
+	tests := []formatNameTest{
+		{
+			testName:      "3 indices",
+			name:          "test-entry-1",
+			key:           "test-index1 test-index2 test-index3",
+			parent:        "test-parent",
+			subpathPrefix: "/spp",
+			expected:      "test-parent/spp/test-entry-1[test-index1=*][test-index2=*][test-index3=*]",
+		},
+		{
+			testName: "simple",
+			name:     "test-entry-2",
+			parent:   "test-parent",
+			expected: "test-parent/test-entry-2",
+		}, {
+			testName: "basic",
+			name:     "foo",
+			expected: "/foo",
+		},
+		{
+			testName:      "parent-and-subpath",
+			name:          "foo",
+			parent:        "/parentPath",
+			subpathPrefix: "/subpathPrefix",
+			expected:      "/parentPath/subpathPrefix/foo",
+		},
+		{
+			testName: "list",
+			name:     "foo",
+			key:      "key1 key2",
+			expected: "/foo[key1=*][key2=*]",
+		},
+	}
+
+	for _, tt := range tests {
+		dirEntry := &yang.Entry{
+			Name: tt.name,
+			Key:  tt.key,
+		}
+		if tt.key != "" {
+			dirEntry.ListAttr = new(yang.ListAttr)
+			dirEntry.Dir = make(map[string]*yang.Entry)
+		}
+		formatted := formatNameAsPath(dirEntry, tt.parent, tt.subpathPrefix)
+		assert.Equal(t, tt.expected, formatted, tt.testName)
+	}
+}
+
+func Test_earliestRoAncestor(t *testing.T) {
+	type earliestAncestorTest struct {
+		name            string
+		dirEntry        *yang.Entry
+		expectedBase    []string
+		expectedSubpath []string
+		expectedFalse   bool
+	}
+	tests := []earliestAncestorTest{
+		{
+			name: "level 3 of 4",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSUnset, // This stays at config=false because of it parent (below)
+				Parent: &yang.Entry{
+					Name:   "parent",
+					Config: yang.TSUnset, // This stays at config=false because of it parent (below)
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSFalse, // This is the one that changes it to config=false
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent"},
+			expectedSubpath: []string{"parent", "child"},
+			expectedFalse:   true,
+		},
+		{
+			name: "level 3 of 4 - double marked",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSFalse, // This is marked specifically as config=false. unnecessary because of its parent (below), but can happen
+				Parent: &yang.Entry{
+					Name:   "parent",
+					Config: yang.TSFalse, // This is marked specifically as config=false. unnecessary because of its parent (below), but can happen
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSFalse, // This is the one that changes it to config=false
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent"},
+			expectedSubpath: []string{"parent", "child"},
+			expectedFalse:   true,
+		},
+		{
+			name: "level 2 of 4",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSUnset, // This stays at config=false because of it parent (below)
+				Parent: &yang.Entry{
+					Name:   "parent",
+					Config: yang.TSFalse, // This is the one that changes it to config=false
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSUnset, // This is a config=true node by default
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config=true node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent", "parent"},
+			expectedSubpath: []string{"child"},
+			expectedFalse:   true,
+		},
+		{
+			name: "level 1 of 4",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSFalse, // This stays at config=false because of it parent (below)
+				Parent: &yang.Entry{
+					Name:   "parent",
+					Config: yang.TSUnset, // This is the one that changes it to config=false
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSUnset, // This is a config=true node by default
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent", "parent", "child"},
+			expectedSubpath: nil,
+			expectedFalse:   true,
+		},
+		{
+			name: "with list index",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSFalse, // This stays at config=false because of it parent (below)
+				Parent: &yang.Entry{
+					Name:   "parent-list",
+					Config: yang.TSUnset, // This is the one that changes it to config=false
+					ListAttr: &yang.ListAttr{
+						MinElements: 0,
+						MaxElements: 0,
+						OrderedBy:   nil,
+					},
+					Key: "id",
+					Dir: make(map[string]*yang.Entry),
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSUnset, // This is a config=true node by default
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent", "parent-list[id=*]", "child"},
+			expectedSubpath: nil,
+			expectedFalse:   true,
+		},
+		{
+			name: "no readonly",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSUnset, // This is a config=true node by default
+				Parent: &yang.Entry{
+					Name:   "parent",
+					Config: yang.TSUnset, // This is a config=true node by default
+					Parent: &yang.Entry{
+						Name:   "grandparent",
+						Config: yang.TSUnset, // This is a config=true node by default
+						Parent: &yang.Entry{
+							Name:   "great-grandparent",
+							Config: yang.TSUnset, // This is a config=true node by default
+						},
+					},
+				},
+			},
+			expectedBase:    []string{"great-grandparent", "grandparent", "parent", "child"},
+			expectedSubpath: nil,
+			expectedFalse:   false,
+		},
+		{
+			name: "top level",
+			dirEntry: &yang.Entry{
+				Name:   "child",
+				Config: yang.TSFalse, // This is the one that changes it to config=false
+			},
+			expectedBase:    []string{"child"},
+			expectedSubpath: nil,
+			expectedFalse:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		base, subpath, configFalse := earliestRoAncestor(tt.dirEntry)
+		assert.Equal(t, tt.expectedBase, base, tt.name)
+		assert.Equal(t, tt.expectedSubpath, subpath, tt.name)
+		assert.Equal(t, tt.expectedFalse, configFalse, tt.name)
+	}
+}
+
+func Test_formatNameOfChildEntry(t *testing.T) {
+	type testFormat struct {
+		testName string
+		dirEntry *yang.Entry
+		expected string
+	}
+	tests := []testFormat{
+		{
+			testName: "simple",
+			dirEntry: &yang.Entry{
+				Name: "test",
+			},
+			expected: "test",
+		},
+		{
+			testName: "with double key",
+			dirEntry: &yang.Entry{
+				Name:     "test",
+				ListAttr: new(yang.ListAttr),
+				Dir:      make(map[string]*yang.Entry),
+				Key:      "idx1 idx2",
+			},
+			expected: "test[idx1=*][idx2=*]",
+		},
+	}
+
+	for _, tt := range tests {
+		assert.Equal(t, tt.expected, formatNameOfChildEntry(tt.dirEntry), tt.testName)
+	}
 }
 
 var (
