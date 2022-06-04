@@ -8,23 +8,36 @@ package testdevice_2
 
 import (
 	"github.com/onosproject/config-models/pkg/path"
+	"github.com/onosproject/onos-api/go/onos/config/admin"
+	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/openconfig/ygot/ygot"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"os"
 	"testing"
 )
 
-func Test_ExtractPaths(t *testing.T) {
+var td20xRoPaths []*admin.ReadOnlyPath
+var td20xRwPaths []*admin.ReadWritePath
+
+func TestMain(m *testing.M) {
 	var err error
 	schemaTree, err := ygot.GzipToSchema(testdevice20XSchema)
-	assert.NoError(t, err, "schema could not be unzipped. If ygot has been "+
-		"upgraded, please copy over the schema byte array again from generated.go")
-
-	td20xRoPaths, td20xRwPaths := path.ExtractPaths(schemaTree)
 	if err != nil {
 		panic(err)
 	}
 
-	assert.Equal(t, 2, len(td20xRoPaths))
+	td20xRoPaths, td20xRwPaths = path.ExtractPaths(schemaTree)
+	if err != nil {
+		panic(err)
+	}
+
+	exitVal := m.Run()
+
+	os.Exit(exitVal)
+}
+
+func Test_ExtractPaths(t *testing.T) {
 	for _, roPath := range td20xRoPaths {
 		switch path := roPath.Path; path {
 		case "/cont1a/cont2a/leaf2c":
@@ -60,6 +73,113 @@ func Test_ExtractPaths(t *testing.T) {
 
 	assert.Equal(t, 15, len(td20xRwPaths))
 
+}
+
+func Test_GetPathValuesConfig(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
+	assert.NoError(t, err)
+
+	pathValues, err := path.GetPathValues("", sampleConfig)
+	assert.NoError(t, err)
+	assert.Equal(t, 12, len(pathValues))
+
+	for _, pathValue := range pathValues {
+		value := pathValue.GetValue()
+		switch path := pathValue.Path; path {
+		case `/cont1a/cont2a/leaf2a`:
+			assert.Equal(t, "1", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case "/cont1a/cont2a/leaf2b":
+			assert.Equal(t, "0.432", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
+		case "/cont1a/cont2a/leaf2e":
+			assert.Equal(t, "[5 4 3 2 1] 32", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_LEAFLIST_INT, (&value).Type)
+		case "/cont1a/cont2a/leaf2f":
+			assert.Equal(t, "dGhpcyBpcyBhIHRlc3QgdGVzdAo=", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_BYTES, (&value).Type)
+		case "/cont1a/cont2a/leaf2g":
+			assert.Equal(t, "true", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_BOOL, (&value).Type)
+		case "/cont1a/leaf1a":
+			assert.Equal(t, "leaf1aval", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case "/cont1a/list2a[name=0]/name":
+			assert.Equal(t, "l2a1", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case "/cont1a/list2a[name=0]/tx-power":
+			assert.Equal(t, "5", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case "/cont1a/list2a[name=0]/rx-power":
+			assert.Equal(t, "25", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case "/cont1a/list2a[name=1]/name":
+			assert.Equal(t, "l2a2", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case "/cont1a/list2a[name=1]/tx-power":
+			assert.Equal(t, "6", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case "/cont1a/list2a[name=1]/rx-power":
+			assert.Equal(t, "26", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		default:
+			t.Fatalf("unexpected path %s", path)
+		}
+	}
+
+}
+
+func Test_GetPathValuesOpstate(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-opstate.json")
+	assert.NoError(t, err)
+
+	pathValues, err := path.GetPathValues("", sampleConfig)
+	assert.NoError(t, err)
+	assert.Equal(t, 12, len(pathValues))
+
+	for _, pathValue := range pathValues {
+		value := pathValue.GetValue()
+		switch path := pathValue.Path; path {
+		case `/cont1a/cont2a/leaf2c`:
+			assert.Equal(t, "Mock leaf2c value", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case `/cont1b-state/leaf2d`:
+			assert.Equal(t, "10001", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case `/cont1b-state/cont2c/leaf3a`:
+			assert.Equal(t, "true", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_BOOL, (&value).Type)
+		case `/cont1b-state/cont2c/leaf3b`:
+			assert.Equal(t, "l3bvalue", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case `/cont1b-state/list2b[index1=0][index2=*]/index1`:
+			assert.Equal(t, "101", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case `/cont1b-state/list2b[index1=0][index2=*]/index2`:
+			assert.Equal(t, "102", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case `/cont1b-state/list2b[index1=0][index2=*]/leaf3c`:
+			assert.Equal(t, "mock Value in JSON", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case `/cont1b-state/list2b[index1=0][index2=*]/leaf3d`:
+			assert.Equal(t, "1", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case `/cont1b-state/list2b[index1=1][index2=*]/index1`:
+			assert.Equal(t, "101", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case `/cont1b-state/list2b[index1=1][index2=*]/index2`:
+			assert.Equal(t, "103", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
+		case `/cont1b-state/list2b[index1=1][index2=*]/leaf3c`:
+			assert.Equal(t, "Second mock Value", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		case `/cont1b-state/list2b[index1=1][index2=*]/leaf3d`:
+			assert.Equal(t, "2", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
+		default:
+			t.Fatalf("unexpected path %s", path)
+		}
+	}
 }
 
 var (
