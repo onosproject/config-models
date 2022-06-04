@@ -49,8 +49,9 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 
 	if len(keys) > 1 {
 		key := ListKey{
-			Type: fmt.Sprintf("%s_Key", modelName),
-			Keys: []Key{},
+			ModelName: entry.Name,
+			Type:      fmt.Sprintf("%s_Key", modelName),
+			Keys:      []Key{},
 		}
 
 		for _, k := range keys {
@@ -73,7 +74,8 @@ func GetListKey(entry *yang.Entry) (ListKey, error) {
 				return ListKey{}, err
 			}
 			return ListKey{
-				Type: t,
+				ModelName: entry.Name,
+				Type:      t,
 				Keys: []Key{
 					{
 						Name: caser.String(keys[0]),

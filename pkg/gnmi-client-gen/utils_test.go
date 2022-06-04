@@ -23,15 +23,21 @@ func TestGetListKey(t *testing.T) {
 		args args
 		want ListKey
 	}{
-		{name: "simple-key", args: args{entry: &yang.Entry{
-			Key: "id",
-			Dir: map[string]*yang.Entry{
-				"id": {Type: &yang.YangType{Kind: yang.Ystring}},
+		{
+			name: "simple-key",
+			args: args{
+				entry: &yang.Entry{
+					Name: "foo",
+					Key:  "id",
+					Dir: map[string]*yang.Entry{
+						"id": {Type: &yang.YangType{Kind: yang.Ystring}},
+					},
+					Annotation: map[string]interface{}{
+						"structname": "OnfTest1_Cont1A_List5",
+					},
+				},
 			},
-			Annotation: map[string]interface{}{
-				"structname": "OnfTest1_Cont1A_List5",
-			},
-		}}, want: ListKey{Type: "string", Keys: []Key{{Name: "Id", Type: "string"}}}},
+			want: ListKey{ModelName: "foo", Type: "string", Keys: []Key{{Name: "Id", Type: "string"}}}},
 		{
 			name: "composite-key",
 			args: args{
@@ -48,7 +54,8 @@ func TestGetListKey(t *testing.T) {
 				},
 			},
 			want: ListKey{
-				Type: "OnfTest1_Cont1A_List5_Key",
+				ModelName: "list5",
+				Type:      "OnfTest1_Cont1A_List5_Key",
 				Keys: []Key{
 					{Name: "Key1", Type: "string"},
 					{Name: "Key2", Type: "string"},
@@ -61,6 +68,7 @@ func TestGetListKey(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			res, err := GetListKey(tt.args.entry)
 			assert.NoError(t, err)
+			assert.Equal(t, tt.want.ModelName, res.ModelName)
 			assert.Equal(t, tt.want.Type, res.Type)
 			assert.Equal(t, len(tt.want.Keys), len(res.Keys))
 			for i, k := range res.Keys {

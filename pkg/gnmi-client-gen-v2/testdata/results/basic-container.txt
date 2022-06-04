@@ -1,0 +1,114 @@
+/*
+* SPDX-FileCopyrightText: 2022-present Intel Corporation
+*
+* SPDX-License-Identifier: Apache-2.0
+*/
+
+// Generated via gnmi-gen.go, do NOT edit
+
+package api
+
+import (
+    "context"
+    "fmt"
+    "github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
+    "github.com/openconfig/gnmi/proto/gnmi"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/codes"
+    "google.golang.org/grpc/status"
+    "reflect"
+    "time"
+)
+
+type GnmiClient struct {
+    client gnmi.GNMIClient
+}
+
+func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
+    gnmi_client := gnmi.NewGNMIClient(conn)
+    return &GnmiClient{client: gnmi_client}
+}
+
+// FIXME generate methods for directories
+
+
+func (c *GnmiClient) Get_Cont1_Cont1leaf1(ctx context.Context, target string) (string, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1",
+                },
+                {
+                    Name: "cont1leaf1",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_PROTO,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return "", err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return "", err
+    }
+
+    if val.GetStringVal() == "" {
+        return "", status.Error(codes.NotFound, "cont1leaf1-not-found")
+    }
+
+    return val.GetStringVal(), nil
+}
+func (c *GnmiClient) Get_Cont1_Cont1leaf2(ctx context.Context, target string) (uint16, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1",
+                },
+                {
+                    Name: "cont1leaf2",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_PROTO,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return 0, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return 0, err
+    }
+
+    if uint16(val.GetUintVal()) == 0 {
+        return 0, status.Error(codes.NotFound, "cont1leaf2-not-found")
+    }
+
+    return uint16(val.GetUintVal()), nil
+}

@@ -7,10 +7,12 @@
 package gnmi_client_gen
 
 import (
+	"errors"
 	"fmt"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen/template"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/openconfig/ygot/genutil"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"google.golang.org/grpc/codes"
@@ -57,8 +59,7 @@ type ListKey struct {
 	Type      string   // the generated Key type (can be a Go type, eg: string)
 	Keys      []Key    // a list of keys that we need to set in the path
 	ParentKey *ListKey // a reference to a parent key, this is needed in case of nested lists
-	// FIXME we need to carry the Name of the key (aka the name in the path for this particular key, otherwise recursion is madness)
-	Name string
+	ModelName string   // represent the model in the path, to simplify recursion
 }
 type Key struct {
 	Name string
@@ -285,8 +286,27 @@ func ApplyTemplate(epList *GnmiEndpoints, outPath string) error {
 			return a - b
 		},
 		"lower": strings.ToLower,
+		"toName": func(s string) string {
+			return genutil.EntryCamelCaseName(&yang.Entry{Name: s})
+		},
 		"hasParentKey": func(key ListKey) bool {
 			return key.ParentKey != nil
+		},
+		// takes tuple of parameters and returns a map
+		// it's used to pass multiple values to a template
+		"dict": func(values ...interface{}) (map[string]interface{}, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("invalid dict call")
+			}
+			dict := make(map[string]interface{}, len(values)/2)
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
 		},
 	}
 

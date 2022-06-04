@@ -1,0 +1,1180 @@
+{
+  "Name": "device",
+  "Kind": 1,
+  "Config": 0,
+  "Dir": {
+    "cont1a": {
+      "Name": "cont1a",
+      "Description": "The top level container",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "t1",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "t1"
+        }
+      },
+      "Dir": {
+        "cont2a": {
+          "Name": "cont2a",
+          "Description": "The 2nd level container",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1"
+            }
+          },
+          "Dir": {
+            "leaf2a": {
+              "Name": "leaf2a",
+              "Description": "Numeric leaf inside Container 2a",
+              "Default": "2",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 3,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  },
+                  {
+                    "Min": {
+                      "Value": 11,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 13,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              },
+              "extra-unstable": {
+                "reference": [
+                  {
+                    "Name": "RFC 6040",
+                    "Source": {
+                      "Argument": "RFC 6040",
+                      "HasArgument": true,
+                      "Keyword": "reference"
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf2b": {
+              "Name": "leaf2b",
+              "Description": "Voltage leaf inside Container 2a",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "decimal64",
+                "Kind": 12,
+                "FractionDigits": 3,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 3,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 2000,
+                      "FractionDigits": 3,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf2c": {
+              "Name": "leaf2c",
+              "Description": "Read only leaf inside Container 2a",
+              "Kind": 0,
+              "Config": 2,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18
+              }
+            },
+            "leaf2d": {
+              "Name": "leaf2d",
+              "Description": "Another decimal inside Container 2a",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "decimal64",
+                "Kind": 12,
+                "FractionDigits": 3,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 3,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 2000,
+                      "FractionDigits": 3,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf2e": {
+              "Name": "leaf2e",
+              "Description": "leaf list inside Container 2a",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "int16",
+                "Kind": 2,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 100,
+                      "FractionDigits": 0,
+                      "Negative": true
+                    },
+                    "Max": {
+                      "Value": 200,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              },
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              }
+            },
+            "leaf2f": {
+              "Name": "leaf2f",
+              "Description": "binary leaf inside container 2a",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "binary",
+                "Kind": 9,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf2g": {
+              "Name": "leaf2g",
+              "Description": "Boolean leaf inside Container 2a",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "boolean",
+                "Kind": 11
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-test1/cont1a/cont2a",
+            "structname": "OnfTest1_Cont1A_Cont2A"
+          }
+        },
+        "leaf1a": {
+          "Name": "leaf1a",
+          "Description": "Leaf inside Container 1a",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 5,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 10,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "list2a": {
+          "Name": "list2a",
+          "Description": "A simple list of configuration items",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1"
+            }
+          },
+          "Dir": {
+            "name": {
+              "Name": "name",
+              "Description": "The list is keyed by name",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 4,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 8,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "range-max": {
+              "Name": "range-max",
+              "Description": "A max value for the range",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "range-min": {
+              "Name": "range-min",
+              "Description": "A simple range to test rules in YANG. Min must be \u003c= max",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "ref2d": {
+              "Name": "ref2d",
+              "Description": "A reference to leaf2d in the 2a container",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/cont1a/cont2a/leaf2d"
+              }
+            },
+            "tx-power": {
+              "Name": "tx-power",
+              "Description": "Transmit power",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "uint16",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "name",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 4,
+            "OrderedBy": null
+          },
+          "extra-unstable": {
+            "must": [
+              {
+                "Description": {
+                  "Name": "this is a must statement",
+                  "Source": {
+                    "Argument": "this is a must statement",
+                    "HasArgument": true,
+                    "Keyword": "description"
+                  }
+                },
+                "ErrorAppTag": {
+                  "Name": "range must",
+                  "Source": {
+                    "Argument": "range must",
+                    "HasArgument": true,
+                    "Keyword": "error-app-tag"
+                  }
+                },
+                "ErrorMessage": {
+                  "Name": "range-min must be less than or equal to range-max",
+                  "Source": {
+                    "Argument": "range-min must be less than or equal to range-max",
+                    "HasArgument": true,
+                    "Keyword": "error-message"
+                  }
+                },
+                "Name": "number(./t1:range-min) \u003c= number(./t1:range-max)"
+              }
+            ]
+          },
+          "Annotation": {
+            "schemapath": "/onf-test1/cont1a/list2a",
+            "structname": "OnfTest1_Cont1A_List2A"
+          }
+        },
+        "list4": {
+          "Name": "list4",
+          "Description": "A list with a leafref index",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1e",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1e"
+            }
+          },
+          "Dir": {
+            "id": {
+              "Name": "id",
+              "Description": "Link to list2a names",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/t1:cont1a/t1:list2a/t1:name"
+              }
+            },
+            "leaf4b": {
+              "Name": "leaf4b",
+              "Description": "leaf 4a on list4a elements",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "list4a": {
+              "Name": "list4a",
+              "Description": "A list within a list with 2 keys as leaf refs",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Dir": {
+                "displayname": {
+                  "Name": "displayname",
+                  "Description": "an optional display name attribute with 2 different length ranges",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "t1e",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "t1e"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 5,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      },
+                      {
+                        "Min": {
+                          "Value": 10,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 20,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "fkey1": {
+                  "Name": "fkey1",
+                  "Description": "foreign key 1 - ref to list5a/key1",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "t1e",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "t1e"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/t1:cont1a/t1e:list5/t1e:key1"
+                  }
+                },
+                "fkey2": {
+                  "Name": "fkey2",
+                  "Description": "foreign key 2 - ref to list5a/key2",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "t1e",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "t1e"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/t1:cont1a/t1e:list5/t1e:key2"
+                  }
+                }
+              },
+              "Key": "fkey1 fkey2",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "extra-unstable": {
+                "must": [
+                  {
+                    "Description": {
+                      "Name": "this is a sample must statement",
+                      "Source": {
+                        "Argument": "this is a sample must statement",
+                        "HasArgument": true,
+                        "Keyword": "description"
+                      }
+                    },
+                    "ErrorAppTag": {
+                      "Name": "displayname format",
+                      "Source": {
+                        "Argument": "displayname format",
+                        "HasArgument": true,
+                        "Keyword": "error-app-tag"
+                      }
+                    },
+                    "ErrorMessage": {
+                      "Name": "displayname must be formatted string like 'Value \u003c../id\u003e-\u003cfkey1\u003e-\u003cfkey2\u003e'",
+                      "Source": {
+                        "Argument": "displayname must be formatted string like 'Value \u003c../id\u003e-\u003cfkey1\u003e-\u003cfkey2\u003e'",
+                        "HasArgument": true,
+                        "Keyword": "error-message"
+                      }
+                    },
+                    "Name": "concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1), '-', string(./@t1e:fkey2)) = string(./t1e:displayname)"
+                  }
+                ]
+              },
+              "Annotation": {
+                "schemapath": "/onf-test1/cont1a/list4/list4a",
+                "structname": "OnfTest1_Cont1A_List4_List4A"
+              }
+            }
+          },
+          "Key": "id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-test1/cont1a/list4",
+            "structname": "OnfTest1_Cont1A_List4"
+          }
+        },
+        "list5": {
+          "Name": "list5",
+          "Description": "A list with 2 keys",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1e",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1e"
+            }
+          },
+          "Dir": {
+            "key1": {
+              "Name": "key1",
+              "Description": "key1 of list 5 - string",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "key2": {
+              "Name": "key2",
+              "Description": "key2 of list 5 - number",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 2,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 10,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf5a": {
+              "Name": "leaf5a",
+              "Description": "non key attribute of list 5 - string",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "key1 key2",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "extra-unstable": {
+            "must": [
+              {
+                "Description": {
+                  "Name": "this is a sample must statement",
+                  "Source": {
+                    "Argument": "this is a sample must statement",
+                    "HasArgument": true,
+                    "Keyword": "description"
+                  }
+                },
+                "ErrorAppTag": {
+                  "Name": "leaf5a format",
+                  "Source": {
+                    "Argument": "leaf5a format",
+                    "HasArgument": true,
+                    "Keyword": "error-app-tag"
+                  }
+                },
+                "ErrorMessage": {
+                  "Name": "leaf5a must be formatted string like '5a \u003ckey1\u003e-\u003ckey2\u003e'",
+                  "Source": {
+                    "Argument": "leaf5a must be formatted string like '5a \u003ckey1\u003e-\u003ckey2\u003e'",
+                    "HasArgument": true,
+                    "Keyword": "error-message"
+                  }
+                },
+                "Name": "concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)"
+              }
+            ]
+          },
+          "Annotation": {
+            "schemapath": "/onf-test1/cont1a/list5",
+            "structname": "OnfTest1_Cont1A_List5"
+          }
+        }
+      },
+      "Augmented": [
+        {
+          "Name": "/t1:cont1a",
+          "Description": "Add a couple of new lists to cont1a",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "t1e",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1e"
+            }
+          },
+          "Dir": {
+            "list4": {
+              "Name": "list4",
+              "Description": "A list with a leafref index",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Key": "id",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              }
+            },
+            "list5": {
+              "Name": "list5",
+              "Description": "A list with 2 keys",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1e",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1e"
+                }
+              },
+              "Key": "key1 key2",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "extra-unstable": {
+                "must": [
+                  {
+                    "Description": {
+                      "Name": "this is a sample must statement",
+                      "Source": {
+                        "Argument": "this is a sample must statement",
+                        "HasArgument": true,
+                        "Keyword": "description"
+                      }
+                    },
+                    "ErrorAppTag": {
+                      "Name": "leaf5a format",
+                      "Source": {
+                        "Argument": "leaf5a format",
+                        "HasArgument": true,
+                        "Keyword": "error-app-tag"
+                      }
+                    },
+                    "ErrorMessage": {
+                      "Name": "leaf5a must be formatted string like '5a \u003ckey1\u003e-\u003ckey2\u003e'",
+                      "Source": {
+                        "Argument": "leaf5a must be formatted string like '5a \u003ckey1\u003e-\u003ckey2\u003e'",
+                        "HasArgument": true,
+                        "Keyword": "error-message"
+                      }
+                    },
+                    "Name": "concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "extra-unstable": {
+        "must": [
+          {
+            "Description": {
+              "Name": "validation fails if tx-power is not unique within list2a",
+              "Source": {
+                "Argument": "validation fails if tx-power is not unique within list2a",
+                "HasArgument": true,
+                "Keyword": "description"
+              }
+            },
+            "ErrorAppTag": {
+              "Name": "list2a must",
+              "Source": {
+                "Argument": "list2a must",
+                "HasArgument": true,
+                "Keyword": "error-app-tag"
+              }
+            },
+            "ErrorMessage": {
+              "Name": "tx-power must not be repeated in list2a",
+              "Source": {
+                "Argument": "tx-power must not be repeated in list2a",
+                "HasArgument": true,
+                "Keyword": "error-message"
+              }
+            },
+            "Name": "not(t1:list2a[set-contains(following-sibling::t1:list2a/t1:tx-power, t1:tx-power)])"
+          }
+        ],
+        "presence": [
+          {
+            "Name": "Top level is present",
+            "Source": {
+              "Argument": "Top level is present",
+              "HasArgument": true,
+              "Keyword": "presence"
+            }
+          }
+        ]
+      },
+      "Annotation": {
+        "schemapath": "/onf-test1/cont1a",
+        "structname": "OnfTest1_Cont1A"
+      }
+    },
+    "cont1b-state": {
+      "Name": "cont1b-state",
+      "Description": "A second top level container - this one for state attributes. Edit symbol should not be visible",
+      "Kind": 1,
+      "Config": 2,
+      "Prefix": {
+        "Name": "t1",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "t1"
+        }
+      },
+      "Dir": {
+        "leaf2d": {
+          "Name": "leaf2d",
+          "Description": "A state attribute",
+          "Kind": 0,
+          "Config": 2,
+          "Prefix": {
+            "Name": "t1",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1"
+            }
+          },
+          "Type": {
+            "Name": "uint16",
+            "Kind": 6,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 10000,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 20000,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "list2b": {
+          "Name": "list2b",
+          "Description": "A simple list of state items",
+          "Kind": 1,
+          "Config": 2,
+          "Prefix": {
+            "Name": "t1",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "t1"
+            }
+          },
+          "Dir": {
+            "index": {
+              "Name": "index",
+              "Description": "The list index",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "leaf3c": {
+              "Name": "leaf3c",
+              "Description": "A string attribute in the list",
+              "Kind": 0,
+              "Config": 2,
+              "Prefix": {
+                "Name": "t1",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "t1"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "index",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-test1/cont1b-state/list2b",
+            "structname": "OnfTest1_Cont1BState_List2B"
+          }
+        }
+      },
+      "Annotation": {
+        "schemapath": "/onf-test1/cont1b-state",
+        "structname": "OnfTest1_Cont1BState"
+      }
+    },
+    "leafAtTopLevel": {
+      "Name": "leafAtTopLevel",
+      "Description": "A leaf at the top level (not recommended but must be supported)",
+      "Kind": 0,
+      "Config": 0,
+      "Prefix": {
+        "Name": "t1",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "t1"
+        }
+      },
+      "Type": {
+        "Name": "string",
+        "Kind": 18,
+        "Pattern": [
+          "[A-Z]{3}-[0-9]*"
+        ]
+      }
+    }
+  },
+  "Annotation": {
+    "isFakeRoot": true,
+    "schemapath": "/",
+    "structname": "Device"
+  }
+}

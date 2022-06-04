@@ -2,7 +2,7 @@
 * SPDX-FileCopyrightText: 2022-present Intel Corporation
 *
 * SPDX-License-Identifier: Apache-2.0
-*/
+ */
 
 package main
 
@@ -10,13 +10,14 @@ import (
 	"flag"
 	"fmt"
 	"github.com/onosproject/config-models/models/testdevice-1.0.x/api"
-	gnmi_client_gen "github.com/onosproject/config-models/pkg/gnmi-client-gen"
+	gnmi_client_gen_v2 "github.com/onosproject/config-models/pkg/gnmi-client-gen-v2"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"os"
 	"path/filepath"
 )
 
 const outputFolder = "api"
+
 var outputFile string
 var log = logging.GetLogger("testdevice-gnmi-gen")
 
@@ -32,18 +33,25 @@ func main() {
 
 	schemaMap, err := api.Schema()
 	if err != nil {
-	fmt.Println(err)
+		fmt.Println(err)
 		os.Exit(-1)
 	}
 
 	topEntry := schemaMap.SchemaTree["Device"]
-	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Testdevice", topEntry, []string{})
-	if err != nil {
-		log.Errorw("failed to generate gNMI Endpoint list", "err", err)
-	}
+	//res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Testdevice", topEntry, []string{})
+	//if err != nil {
+	//	log.Errorw("failed to generate gNMI Endpoint list", "err", err)
+	//}
 
 	outPath := filepath.Join(outputFolder, outputFile)
-	err = gnmi_client_gen.ApplyTemplate(res, outPath)
+	//err = gnmi_client_gen.ApplyTemplate(res, outPath)
+	file, err := os.Create(outPath)
+	if err != nil {
+		log.Panicw("cannot create file", "path", outPath)
+	}
+	defer file.Close()
+
+	err = gnmi_client_gen_v2.Generate("Aether", topEntry, file)
 	if err != nil {
 		log.Errorw("failed to generate Go code for gNMI client", "err", err)
 		os.Exit(1)

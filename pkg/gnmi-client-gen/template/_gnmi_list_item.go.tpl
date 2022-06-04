@@ -7,44 +7,55 @@
 {{/*This template generates methods to interact with a single item in the list*/}}
 
 {{ define "keys_parameters"}}
-   // {{ .ParentKey }}
-{{ $kl := len .Keys }}
+    {{- $key := . -}}
+    {{- $has_parent := hasParentKey $key -}}
+    {{ if $has_parent }}
+        {{ template "keys_parameters" $key.ParentKey }}
+    {{ end }}
+{{ $kl := len $key.Keys }}
 {{- if eq $kl 0 -}}
-key {{ lower (index .Keys 0).Type }}
+    {{ replace "-" "" (index $key.Keys 0).Name }} {{ lower (index $key.Keys 0).Type }}
 {{- else -}}
-key {{ .Type }}
+    {{ replace "-" "" $key.ModelName }} {{ $key.Type }},
 {{- end -}}
 {{ end }}
 
+{{/* takes a map {methdo: string, key: ListKey}*/}}
 {{ define "parent_key" }}
-{{ $ep := .}}
-{{ $key := .Key }}
-{{ $has_parent := hasParentKey $key }}
+{{- $key := .key -}}
+{{- $method := .method -}}
+{{- $has_parent := hasParentKey $key -}}
 {{ if $has_parent }}
-    {
-        Name: {{ $key.Name }}
-        Key: map[string]string{
-        {{ range $k := $key.Keys -}}
-            {{ if or (eq $ep.Method "get") (eq $ep.Method "delete") -}}
-                {{ if eq (len $key.Keys) 1}}
-                    "{{ lower $k.Name }}": fmt.Sprint(key),
-                {{ else }}
-                    "{{ lower $k.Name }}": fmt.Sprint(key.{{ replace "-" "" $k.Name }}),
-                {{ end }}
-            {{ else if eq $ep.Method "update" -}}
-                "{{ lower $k.Name }}": fmt.Sprint(*data.{{ replace "-" "" $k.Name }}),
-            {{ end -}}
-        {{ end -}}
-        },
-    },
-{{ template "parent_key" .ParentKey }}
+    {{ template "parent_key" dict "method" $method "key" $key.ParentKey }}
 {{ end }}
+{
+Name: "{{ $key.ModelName }}",
+Key: map[string]string{
+{{ range $k := $key.Keys -}}
+    {{ if or (eq $method "get") (eq $method "delete") -}}
+        {{ if eq (len $key.Keys) 1}}
+            "{{ lower $k.Name }}": fmt.Sprint({{ replace "-" "" $key.ModelName }}),
+        {{ else }}
+            "{{ lower $k.Name }}": fmt.Sprint(key.{{ replace "-" "" $k.Name }}),
+        {{ end }}
+    {{ else if eq $method "update" -}}
+        "{{ lower $k.Name }}": fmt.Sprint(*data.{{ replace "-" "" $k.Name }}),
+    {{ end -}}
+{{ end -}}
+},
+},
 {{ end }}
+
+{{/* take a ListKey as a paramenter*/}}
+{{ define "return_value" }}
+    {{- $key := . -}}
+    {{- $has_parent := hasParentKey $key -}}
+    {{- if $has_parent -}}{{- template "return_value" $key.ParentKey -}}{{- end -}}.{{ toName $key.ModelName }}[{{ replace "-" "" $key.ModelName }}]
+{{- end -}}
 
 {{ $ep := . }}
 {{ $path_length := len $ep.Path }}
-// TODO account for recursive keys as parameters (needed for nested lists)
-func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}{{ template "keys_parameters" $ep.Key }},{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModelName}},{{end}}
+func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{ if or (eq $ep.Method "get") (eq $ep.Method "delete")}}{{ template "keys_parameters" $ep.Key }}{{end}}{{ if eq $ep.Method "update"}} data {{$ep.ModelName}},{{end}}
 ) ({{ if eq $ep.Method "get"}}*{{ $ep.ModelName }}{{ else }}*gnmi.SetResponse{{ end }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
@@ -57,28 +68,7 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
     path :=  []*gnmi.Path{
         {
             Elem: []*gnmi.PathElem{
-            {{  range $p := $ep.ParentPath -}}
-                {
-                    Name: "{{ $p }}",
-                },
-            {{ end -}}
-            {{ template "parent_key" $ep }}
-                {
-                    Name: "{{index $ep.Path (sub $path_length 1)}}",
-                    Key: map[string]string{
-                        {{ range $k := $ep.Key.Keys -}}
-                        {{ if or (eq $ep.Method "get") (eq $ep.Method "delete") -}}
-                        {{ if eq (len $ep.Key.Keys) 1}}
-                        "{{ lower $k.Name }}": fmt.Sprint(key),
-                        {{ else }}
-                        "{{ lower $k.Name }}": fmt.Sprint(key.{{ replace "-" "" $k.Name }}),
-                        {{ end }}
-                        {{ else if eq $ep.Method "update" -}}
-                        "{{ lower $k.Name }}": fmt.Sprint(*data.{{ replace "-" "" $k.Name }}),
-                        {{ end -}}
-                        {{ end -}}
-                    },
-                },
+                {{ template "parent_key" dict "method" $ep.Method "key" $ep.Key }}
             },
             Target: target,
         },
@@ -105,13 +95,13 @@ func (c *GnmiClient) {{ $ep.MethodName }}(ctx context.Context, target string, {{
     st := Device{}
     Unmarshal(json, &st)
 
-    {{ if not (eq $ep.ParentModelPath "") -}}
-    if reflect.ValueOf(st.{{ $ep.ParentModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ParentModelPath }}).IsNil() {
-        return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")
-    }
-    {{ end -}}
+{{/*    {{ if not (eq $ep.ParentModelPath "") -}}*/}}
+{{/*    if reflect.ValueOf(st.{{ $ep.ParentModelPath }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ $ep.ParentModelPath }}).IsNil() {*/}}
+{{/*        return nil, status.Error(codes.NotFound, "{{ $ep.ModelName }}-not-found")*/}}
+{{/*    }*/}}
+{{/*    {{ end -}}*/}}
 
-    if res, ok := st.{{ $ep.ModelPath }}[key]; ok {
+    if res, ok := st{{ template "return_value" .Key}}; ok {
         return res, nil
     }
 

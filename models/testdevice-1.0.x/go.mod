@@ -7,7 +7,6 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/onosproject/config-models v0.10.12
 	github.com/onosproject/onos-api/go v0.9.14
-	github.com/onosproject/onos-config v0.10.34 // indirect
 	github.com/onosproject/onos-lib-go v0.8.13
 	github.com/openconfig/gnmi v0.0.0-20210914185457-51254b657b7d
 	github.com/openconfig/goyang v0.4.0
@@ -16,3 +15,5 @@ require (
 	google.golang.org/grpc v1.41.0
 	gotest.tools v2.2.0+incompatible
 )
+
+replace github.com/onosproject/config-models => ../../
