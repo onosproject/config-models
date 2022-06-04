@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package utils
+package path
 
 import (
 	"encoding/base64"
@@ -12,8 +12,6 @@ import (
 	"fmt"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
-	"github.com/onosproject/onos-config/pkg/utils/path"
-	"github.com/openconfig/goyang/pkg/yang"
 	"math"
 	"regexp"
 	"sort"
@@ -40,28 +38,6 @@ const matchOnIndex = `(\[.*?]).*?`
 
 var rOnIndex = regexp.MustCompile(matchOnIndex)
 
-// Native r/o and r/w path maps
-var roPathMap path.ReadOnlyPathMap
-var rwPathMap path.ReadWritePathMap
-
-// ExtractPaths parse the schema entries out in to flat paths
-func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath) {
-
-	roPathMap, rwPathMap = path.ExtractPaths(entries["Device"], yang.TSUnset, "", "")
-
-	roPaths := make([]*admin.ReadOnlyPath, 0, len(roPathMap))
-	for k, p := range roPathMap {
-		roPaths = append(roPaths, ConvertRoPath(k, p))
-	}
-
-	rwPaths := make([]*admin.ReadWritePath, 0, len(rwPathMap))
-	for k, p := range rwPathMap {
-		rwPaths = append(rwPaths, ConvertRwPath(k, p))
-	}
-
-	return roPaths, rwPaths
-}
-
 func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValue, error) {
 	var f interface{}
 	err := json.Unmarshal(genericJSON, &f)
@@ -74,6 +50,9 @@ func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValu
 				f = fResultAsMap[0]
 			}
 		}
+	}
+	if prefixPath == "/" {
+		prefixPath = ""
 	}
 	values, err := extractValuesWithPaths(f, removeIndexNames(prefixPath))
 	if err != nil {
@@ -139,7 +118,7 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 		attr, err := handleAttribute(value, parentPath)
 		if err != nil {
 			return nil, fmt.Errorf("error handling json attribute value %v. Parent %s. #RO:%d #RW:%d %s",
-				value, parentPath, len(roPathMap), len(rwPathMap), err.Error())
+				value, parentPath, len(roPaths), len(rwPaths), err.Error())
 		}
 		if attr != nil {
 			changes = append(changes, attr)
@@ -248,32 +227,32 @@ func handleAttribute(value interface{}, parentPath string) (*configapi.PathValue
 	var modeltype configapi.ValueType
 	var modelPath string
 	var ok bool
-	var pathElem *path.ReadWritePathElem
-	var subPath *path.ReadOnlyAttrib
+	var pathElem *admin.ReadWritePath
+	var subPath *admin.ReadOnlySubPath
 	var enum map[int]string
-	var typeOpts []uint8
+	var typeOpts []uint64
 	var err error
 	pathElem, modelPath, ok = findModelRwPathNoIndices(parentPath)
 	if !ok {
 		subPath, modelPath, ok = findModelRoPathNoIndices(parentPath)
 		if !ok {
-			if roPathMap == nil || rwPathMap == nil {
-				// If RO paths was not given - then we assume this missing path was a RO path
+			if roPaths == nil || rwPaths == nil {
+				// If RO paths was not given - then we assume this missing pathWithIdx was a RO pathWithIdx
 				return nil, nil
 			}
 			return nil, fmt.Errorf("unable to locate %s in model", parentPath)
 		}
 		modeltype = subPath.ValueType
-		enum = subPath.Enum
+		// enum = subPath.Enum  // TODO - fix this
 		if subPath.TypeOpts != nil {
-			typeOpts = make([]uint8, len(subPath.TypeOpts))
+			typeOpts = make([]uint64, len(subPath.TypeOpts))
 			copy(typeOpts, subPath.TypeOpts)
 		}
 	} else {
 		modeltype = pathElem.ValueType
-		enum = pathElem.Enum
+		//enum = pathElem.Enum // TODO - fix this
 		if pathElem.TypeOpts != nil {
-			typeOpts = make([]uint8, len(pathElem.TypeOpts))
+			typeOpts = make([]uint64, len(pathElem.TypeOpts))
 			copy(typeOpts, pathElem.TypeOpts)
 		}
 	}
@@ -360,7 +339,7 @@ func handleAttribute(value interface{}, parentPath string) (*configapi.PathValue
 		if len(typeOpts) == 0 {
 			return nil, fmt.Errorf("expected DECIMAL to have a precision")
 		}
-		typedValue = configapi.NewTypedValueDecimal(digits, precision)
+		typedValue = configapi.NewTypedValueDecimal(digits, uint8(precision))
 	case configapi.ValueType_BYTES:
 		var dstBytes []byte
 		switch valueTyped := value.(type) {
@@ -455,37 +434,37 @@ func handleAttributeLeafList(modeltype configapi.ValueType,
 	return typedValue, nil
 }
 
-func findModelRwPathNoIndices(searchpath string) (*path.ReadWritePathElem, string, bool) {
+func findModelRwPathNoIndices(searchpath string) (*admin.ReadWritePath, string, bool) {
 	searchpath = removeDoubleSlash(searchpath)
 	searchpathNoIndices := removePathIndices(searchpath)
-	for path, value := range rwPathMap {
-		if removePathIndices(path) == searchpathNoIndices {
-			pathWithNumericalIdx, err := insertNumericalIndices(path, searchpath)
+	for _, rwPath := range rwPaths {
+		if removePathIndices(rwPath.Path) == searchpathNoIndices {
+			pathWithNumericalIdx, err := insertNumericalIndices(rwPath.Path, searchpath)
 			if err != nil {
-				return nil, fmt.Sprintf("could not replace wildcards in model path with numerical ids %v", err), false
+				return nil, fmt.Sprintf("could not replace wildcards in model pathWithIdx with numerical ids %v", err), false
 			}
-			return &value, pathWithNumericalIdx, true
+			return rwPath, pathWithNumericalIdx, true
 		}
 	}
 	return nil, "", false
 }
 
-func findModelRoPathNoIndices(searchpath string) (*path.ReadOnlyAttrib, string, bool) {
+func findModelRoPathNoIndices(searchpath string) (*admin.ReadOnlySubPath, string, bool) {
 	searchpathNoIndices := removePathIndices(searchpath)
-	for path, value := range roPathMap {
-		for subpath, subpathValue := range value {
+	for _, roPath := range roPaths {
+		for _, subpathValue := range roPath.SubPath {
 			var fullpath string
-			if subpath == "/" {
-				fullpath = path
+			if subpathValue.SubPath == "/" {
+				fullpath = roPath.Path
 			} else {
-				fullpath = fmt.Sprintf("%s%s", path, subpath)
+				fullpath = fmt.Sprintf("%s%s", roPath.Path, subpathValue.SubPath)
 			}
 			if removePathIndices(fullpath) == searchpathNoIndices {
 				pathWithNumericalIdx, err := insertNumericalIndices(fullpath, searchpath)
 				if err != nil {
-					return nil, fmt.Sprintf("could not replace wildcards in model path with numerical ids %v", err), false
+					return nil, fmt.Sprintf("could not replace wildcards in model pathWithIdx with numerical ids %v", err), false
 				}
-				return &subpathValue, pathWithNumericalIdx, true
+				return subpathValue, pathWithNumericalIdx, true
 			}
 		}
 	}
@@ -496,28 +475,28 @@ func findModelRoPathNoIndices(searchpath string) (*path.ReadOnlyAttrib, string, 
 func indicesOfPath(searchpath string) []string {
 	searchpathNoIndices := removePathIndices(searchpath)
 	// First search through the RW paths
-	for p := range rwPathMap {
-		pathNoIndices := removePathIndices(p)
-		// Find a short path
+	for _, p := range roPaths {
+		pathNoIndices := removePathIndices(p.Path)
+		// Find a short pathWithIdx
 		if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
-			idxNames, _ := path.ExtractIndexNames(p)
+			idxNames, _ := ExtractIndexNames(p.Path)
 			return idxNames
 		}
 	}
 
 	// If not found then search through the RO paths
-	for p, value := range roPathMap {
-		for subpath := range value {
+	for _, value := range roPaths {
+		for _, subpath := range value.SubPath {
 			var fullpath string
-			if subpath == "/" {
-				fullpath = p
+			if subpath.SubPath == "/" {
+				fullpath = value.Path
 			} else {
-				fullpath = fmt.Sprintf("%s%s", p, subpath)
+				fullpath = fmt.Sprintf("%s%s", value.Path, subpath)
 			}
 			pathNoIndices := removePathIndices(fullpath)
-			// Find a short path
+			// Find a short pathWithIdx
 			if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
-				idxNames, _ := path.ExtractIndexNames(fullpath)
+				idxNames, _ := ExtractIndexNames(fullpath)
 				return idxNames
 			}
 		}
@@ -549,7 +528,7 @@ func insertNumericalIndices(modelPath string, jsonPath string) (string, error) {
 	for idx, jsonPart := range jsonParts {
 		brktIdx := strings.LastIndex(jsonPart, bracketsq)
 		if brktIdx > 0 {
-			modelParts[idx] = strings.ReplaceAll(modelParts[idx], "*", jsonPart[brktIdx+1:len(jsonPart)-1])
+			modelParts[idx] = strings.Replace(modelParts[idx], "*", jsonPart[brktIdx+1:len(jsonPart)-1], 1)
 		}
 	}
 
@@ -560,51 +539,6 @@ func prefixLength(objPath string, parentPath string) int {
 	objPathParts := strings.Split(objPath, "/")
 	parentPathParts := strings.Split(parentPath, "/")
 	return len(strings.Join(objPathParts[:len(parentPathParts)], "/"))
-}
-
-func ConvertRoPath(path string, psm path.ReadOnlySubPathMap) *admin.ReadOnlyPath {
-	sm := make([]*admin.ReadOnlySubPath, 0)
-
-	for k, s := range psm {
-		tos := make([]uint64, 0, len(s.TypeOpts))
-		for _, to := range s.TypeOpts {
-			tos = append(tos, uint64(to))
-		}
-
-		sm = append(sm, &admin.ReadOnlySubPath{
-			SubPath:     k,
-			ValueType:   s.ValueType,
-			Description: s.Description,
-			TypeOpts:    tos,
-			IsAKey:      s.IsAKey,
-			AttrName:    s.AttrName,
-		})
-	}
-
-	return &admin.ReadOnlyPath{
-		Path:    path,
-		SubPath: sm,
-	}
-}
-
-func ConvertRwPath(path string, pe path.ReadWritePathElem) *admin.ReadWritePath {
-	tos := make([]uint64, 0, len(pe.TypeOpts))
-	for _, to := range pe.TypeOpts {
-		tos = append(tos, uint64(to))
-	}
-	return &admin.ReadWritePath{
-		Path:        path,
-		ValueType:   pe.ValueType,
-		Units:       pe.Units,
-		Description: pe.Description,
-		Mandatory:   pe.Mandatory,
-		Default:     pe.Default,
-		Range:       pe.Range,
-		Length:      pe.Length,
-		TypeOpts:    tos,
-		IsAKey:      pe.IsAKey,
-		AttrName:    pe.AttrName,
-	}
 }
 
 // There might not be an index for everything
@@ -668,7 +602,7 @@ func convertEnumIdx(valueTyped string, enum map[int]string,
 	return stringVal, nil
 }
 
-// for a path like
+// for a pathWithIdx like
 // "/interfaces/interface[name=eth1]/subinterfaces/subinterface[index=120]/config/description",
 // Remove the "name=" and "index="
 func removeIndexNames(prefixPath string) string {
@@ -696,4 +630,18 @@ func removeDoubleSlash(path string) string {
 		return path[1:]
 	}
 	return path
+}
+
+// ExtractIndexNames - get an ordered array of index names and index values
+func ExtractIndexNames(path string) ([]string, []string) {
+	indexNames := make([]string, 0)
+	indexValues := make([]string, 0)
+	jsonMatches := rOnIndex.FindAllStringSubmatch(path, -1)
+	for _, m := range jsonMatches {
+		idxName := m[1][1:strings.LastIndex(m[1], "=")]
+		indexNames = append(indexNames, idxName)
+		idxValue := m[1][strings.LastIndex(m[1], "=")+1 : len(m[1])-1]
+		indexValues = append(indexValues, idxValue)
+	}
+	return indexNames, indexValues
 }
