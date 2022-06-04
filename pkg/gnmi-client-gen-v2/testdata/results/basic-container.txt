@@ -29,8 +29,49 @@ func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-// FIXME generate methods for directories
+func (c *GnmiClient) Get_Cont1(ctx context.Context, target string) (*Test_Cont1A, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
 
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "cont1",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.Cont1).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
+        return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
+    }
+
+    return st.Cont1, nil
+
+}
 
 func (c *GnmiClient) Get_Cont1_Cont1leaf1(ctx context.Context, target string) (string, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)

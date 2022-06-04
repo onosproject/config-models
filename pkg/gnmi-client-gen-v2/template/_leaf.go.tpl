@@ -5,14 +5,8 @@
 */ -}}
 {{/*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 
-{{ define "leaf_name" -}}
 {{ $entry := . -}}
-{{ $has_parent := hasParent $entry -}}
-{{ if $has_parent -}}{{ if ne $entry.Parent.Name "device" -}}{{ template "leaf_name" $entry.Parent -}}_{{ end -}}{{ end -}}{{ sanitize (capitalize $entry.Name) -}}
-{{ end -}}
-
-{{ $entry := . -}}
-func (c *GnmiClient) Get_{{ template "leaf_name" $entry }}(ctx context.Context, target string) ({{ goType $entry }}, error) {
+func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string) ({{ goType $entry }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 

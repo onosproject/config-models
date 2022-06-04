@@ -11,6 +11,7 @@ import (
 	"fmt"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen-v2/template"
 	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/openconfig/ygot/genutil"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"google.golang.org/grpc/codes"
@@ -25,6 +26,14 @@ const templateFile = "gnmi_client.go.tpl"
 type templateData struct {
 	PluginName string
 	Entry      *yang.Entry
+}
+
+func isContainer(e *yang.Entry) bool {
+	return e.IsContainer()
+}
+
+func isList(e *yang.Entry) bool {
+	return e.IsList()
 }
 
 // remove all chars that are not valid in variables/methods names
@@ -176,6 +185,34 @@ func goType(entry *yang.Entry) (string, error) {
 	return "", status.Error(codes.Unimplemented, fmt.Sprintf("%s type is not supported yet", entry.Type.Kind.String()))
 }
 
+// extracts the structname from a yang entry
+func structName(entry *yang.Entry) (string, error) {
+	if name, ok := entry.Annotation["structname"]; ok {
+		return fmt.Sprintf("%s", name), nil
+	}
+	return "", status.Errorf(codes.NotFound, "structname not found in annotations")
+}
+
+// return the path to a model from the root
+func devicePath(entry *yang.Entry) (string, error) {
+
+	if entry.IsList() {
+		return "", status.Errorf(codes.InvalidArgument, "lists are not supported yet")
+	}
+
+	if entry.Parent != nil && entry.Parent.Name != "device" {
+		parentName, err := devicePath(entry.Parent)
+		if err != nil {
+			return "", err
+		}
+
+		name := genutil.EntryCamelCaseName(entry)
+
+		return fmt.Sprintf("%s.%s", parentName, name), nil
+	}
+	return genutil.EntryCamelCaseName(entry), nil
+}
+
 func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
 
 	if entry == nil {
@@ -183,12 +220,16 @@ func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
 	}
 
 	templateFunctions := template.FuncMap{
+		"isContainer":      isContainer,
+		"isList":           isList,
 		"sanitize":         sanitize,
 		"capitalize":       capitalize,
 		"hasParent":        hasParent,
 		"goReturnVal":      goReturnVal,
 		"goEmptyReturnVal": goEmptyReturnVal,
 		"goType":           goType,
+		"structName":       structName,
+		"devicePath":       devicePath,
 	}
 
 	t, err := template.New(templateFile).

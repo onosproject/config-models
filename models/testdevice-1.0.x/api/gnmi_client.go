@@ -10,11 +10,13 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"reflect"
 	"time"
 )
 
@@ -27,9 +29,95 @@ func NewAetherGnmiClient(conn *grpc.ClientConn) *GnmiClient {
 	return &GnmiClient{client: gnmi_client}
 }
 
-// FIXME generate methods for directories
+func (c *GnmiClient) Get_Cont1a(ctx context.Context, target string) (*OnfTest1_Cont1A, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
-// FIXME generate methods for directories
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.Cont1A).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
+		return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
+	}
+
+	return st.Cont1A, nil
+
+}
+
+func (c *GnmiClient) Get_Cont1a_Cont2a(ctx context.Context, target string) (*OnfTest1_Cont1A_Cont2A, error) {
+	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	path := []*gnmi.Path{
+		{
+			Elem: []*gnmi.PathElem{
+				{
+					Name: "cont1a",
+				},
+
+				{
+					Name: "cont2a",
+				},
+			},
+			Target: target,
+		},
+	}
+
+	req := &gnmi.GetRequest{
+		Encoding: gnmi.Encoding_JSON,
+		Path:     path,
+	}
+	res, err := c.client.Get(gnmiCtx, req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	val, err := gnmi_utils.GetResponseUpdate(res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.Cont1A.Cont2A).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
+		return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
+	}
+
+	return st.Cont1A.Cont2A, nil
+
+}
 
 func (c *GnmiClient) Get_Cont1a_Cont2a_Leaf2a(ctx context.Context, target string) (uint8, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -389,9 +477,7 @@ func (c *GnmiClient) Get_Cont1a_Leaf1a(ctx context.Context, target string) (stri
 	return val.GetStringVal(), nil
 }
 
-// FIXME generate methods for directories
-
-func (c *GnmiClient) Get_Cont1a_List2a_Name(ctx context.Context, target string) (string, error) {
+func (c *GnmiClient) Get_Cont1bState(ctx context.Context, target string) (*OnfTest1_Cont1BState, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -399,15 +485,7 @@ func (c *GnmiClient) Get_Cont1a_List2a_Name(ctx context.Context, target string) 
 		{
 			Elem: []*gnmi.PathElem{
 				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list2a",
-				},
-
-				{
-					Name: "name",
+					Name: "cont1b-state",
 				},
 			},
 			Target: target,
@@ -415,590 +493,32 @@ func (c *GnmiClient) Get_Cont1a_List2a_Name(ctx context.Context, target string) 
 	}
 
 	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
+		Encoding: gnmi.Encoding_JSON,
 		Path:     path,
 	}
 	res, err := c.client.Get(gnmiCtx, req)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	val, err := gnmi_utils.GetResponseUpdate(res)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "name-not-found")
+	json := val.GetJsonVal()
+	st := Device{}
+	Unmarshal(json, &st)
+
+	if reflect.ValueOf(st.Cont1BState).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
+		return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
 	}
 
-	return val.GetStringVal(), nil
+	return st.Cont1BState, nil
+
 }
-func (c *GnmiClient) Get_Cont1a_List2a_RangeMax(ctx context.Context, target string) (uint8, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list2a",
-				},
-
-				{
-					Name: "range-max",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint8(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "range-max-not-found")
-	}
-
-	return uint8(val.GetUintVal()), nil
-}
-func (c *GnmiClient) Get_Cont1a_List2a_RangeMin(ctx context.Context, target string) (uint8, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list2a",
-				},
-
-				{
-					Name: "range-min",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint8(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "range-min-not-found")
-	}
-
-	return uint8(val.GetUintVal()), nil
-}
-func (c *GnmiClient) Get_Cont1a_List2a_Ref2d(ctx context.Context, target string) (float64, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list2a",
-				},
-
-				{
-					Name: "ref2d",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if float64(val.GetFloatVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "ref2d-not-found")
-	}
-
-	return float64(val.GetFloatVal()), nil
-}
-func (c *GnmiClient) Get_Cont1a_List2a_TxPower(ctx context.Context, target string) (uint16, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list2a",
-				},
-
-				{
-					Name: "tx-power",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint16(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "tx-power-not-found")
-	}
-
-	return uint16(val.GetUintVal()), nil
-}
-
-// FIXME generate methods for directories
-
-func (c *GnmiClient) Get_Cont1a_List4_Id(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list4",
-				},
-
-				{
-					Name: "id",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "id-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-func (c *GnmiClient) Get_Cont1a_List4_Leaf4b(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list4",
-				},
-
-				{
-					Name: "leaf4b",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "leaf4b-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-// FIXME generate methods for directories
-
-func (c *GnmiClient) Get_Cont1a_List4_List4a_Displayname(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list4",
-				},
-
-				{
-					Name: "list4a",
-				},
-
-				{
-					Name: "displayname",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "displayname-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-func (c *GnmiClient) Get_Cont1a_List4_List4a_Fkey1(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list4",
-				},
-
-				{
-					Name: "list4a",
-				},
-
-				{
-					Name: "fkey1",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "fkey1-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-func (c *GnmiClient) Get_Cont1a_List4_List4a_Fkey2(ctx context.Context, target string) (uint8, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list4",
-				},
-
-				{
-					Name: "list4a",
-				},
-
-				{
-					Name: "fkey2",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint8(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "fkey2-not-found")
-	}
-
-	return uint8(val.GetUintVal()), nil
-}
-
-// FIXME generate methods for directories
-
-func (c *GnmiClient) Get_Cont1a_List5_Key1(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list5",
-				},
-
-				{
-					Name: "key1",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "key1-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-func (c *GnmiClient) Get_Cont1a_List5_Key2(ctx context.Context, target string) (uint8, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list5",
-				},
-
-				{
-					Name: "key2",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint8(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "key2-not-found")
-	}
-
-	return uint8(val.GetUintVal()), nil
-}
-func (c *GnmiClient) Get_Cont1a_List5_Leaf5a(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1a",
-				},
-
-				{
-					Name: "list5",
-				},
-
-				{
-					Name: "leaf5a",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "leaf5a-not-found")
-	}
-
-	return val.GetStringVal(), nil
-}
-
-// FIXME generate methods for directories
 
 func (c *GnmiClient) Get_Cont1bState_Leaf2d(ctx context.Context, target string) (uint16, error) {
 	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -1040,99 +560,6 @@ func (c *GnmiClient) Get_Cont1bState_Leaf2d(ctx context.Context, target string) 
 	}
 
 	return uint16(val.GetUintVal()), nil
-}
-
-// FIXME generate methods for directories
-
-func (c *GnmiClient) Get_Cont1bState_List2b_Index(ctx context.Context, target string) (uint8, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1b-state",
-				},
-
-				{
-					Name: "list2b",
-				},
-
-				{
-					Name: "index",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return 0, err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return 0, err
-	}
-
-	if uint8(val.GetUintVal()) == 0 {
-		return 0, status.Error(codes.NotFound, "index-not-found")
-	}
-
-	return uint8(val.GetUintVal()), nil
-}
-func (c *GnmiClient) Get_Cont1bState_List2b_Leaf3c(ctx context.Context, target string) (string, error) {
-	gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	path := []*gnmi.Path{
-		{
-			Elem: []*gnmi.PathElem{
-				{
-					Name: "cont1b-state",
-				},
-
-				{
-					Name: "list2b",
-				},
-
-				{
-					Name: "leaf3c",
-				},
-			},
-			Target: target,
-		},
-	}
-
-	req := &gnmi.GetRequest{
-		Encoding: gnmi.Encoding_PROTO,
-		Path:     path,
-	}
-	res, err := c.client.Get(gnmiCtx, req)
-
-	if err != nil {
-		return "", err
-	}
-
-	val, err := gnmi_utils.GetResponseUpdate(res)
-
-	if err != nil {
-		return "", err
-	}
-
-	if val.GetStringVal() == "" {
-		return "", status.Error(codes.NotFound, "leaf3c-not-found")
-	}
-
-	return val.GetStringVal(), nil
 }
 
 func (c *GnmiClient) Get_Leafattoplevel(ctx context.Context, target string) (string, error) {

@@ -11,8 +11,7 @@
 {{ if eq $entry.Kind 0 -}}
 {{ template "_leaf.go.tpl" $entry }}
 {{ end -}}
-{{/*    Kind 1 is DirectoryEntry     */ -}}
-{{ if eq $entry.Kind 1 -}}
+{{ if isContainer $entry  -}}
 {{ template "_directory.go.tpl" $entry }}
 {{ end -}}
 {{ end -}}

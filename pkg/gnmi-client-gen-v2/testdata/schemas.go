@@ -61,6 +61,9 @@ func GetSchema(testname string) (*yang.Entry, error) {
 			"cont1leaf1": cont1leaf1,
 			"cont1leaf2": cont1leaf2,
 		},
+		Annotation: map[string]interface{}{
+			"structname": "Test_Cont1A",
+		},
 	}
 	cont1leaf1.Parent = cont1
 	cont1leaf2.Parent = cont1

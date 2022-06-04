@@ -100,7 +100,8 @@ func TestGenerate(t *testing.T) {
 			if debug == "true" {
 				// when debugging keep whitespaces, they might fail the test
 				// but it's more readable
-				assert.Equal(t, wantOutput, output.String())
+				fmt.Println(output)
+				//assert.Equal(t, wantOutput, output.String())
 			} else {
 				// when not debugging strip whitespaces as they're not relevant
 				assert.Equalf(t, testdata.RemoveAllWhitespaces(wantOutput), testdata.RemoveAllWhitespaces(output.String()), "Failed to generate template for test: %s", tt.name)
