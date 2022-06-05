@@ -10,7 +10,7 @@ package main
 import (
 	"context"
 	"github.com/onosproject/config-models/models/devicesim/api"
-    "github.com/onosproject/config-models/pkg/utils"
+    "github.com/onosproject/config-models/pkg/path"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/onosproject/onos-api/go/onos/config/admin"
 	"github.com/onosproject/onos-lib-go/pkg/errors"
@@ -59,7 +59,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to extract model schema: %+v", err)
 	}
-	roPaths, rwPaths = utils.ExtractPaths(entries)
+	roPaths, rwPaths = path.ExtractPaths(entries)
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -125,7 +125,7 @@ func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfi
 
 func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequest) (*admin.PathValuesResponse, error) {
 	log.Infof("Received path values request: %+v", request)
-	pathValues, err := utils.GetPathValues(request.PathPrefix, request.Json)
+	pathValues, err := path.GetPathValues(request.PathPrefix, request.Json)
 	if err != nil {
 		return nil, errors.Status(errors.NewInvalid("Unable to get path values: %+v", err)).Err()
 	}
