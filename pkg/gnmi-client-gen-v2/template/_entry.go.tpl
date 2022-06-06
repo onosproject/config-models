@@ -14,4 +14,7 @@
 {{ if isContainer $entry  -}}
 {{ template "_directory.go.tpl" $entry }}
 {{ end -}}
+{{ if isList $entry  -}}
+{{ template "_list.go.tpl" $entry }}
+{{ end -}}
 {{ end -}}

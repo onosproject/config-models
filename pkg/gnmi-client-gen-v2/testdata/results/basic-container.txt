@@ -65,8 +65,8 @@ func (c *GnmiClient) Get_Cont1(ctx context.Context, target string) (*Test_Cont1A
     st := Device{}
     Unmarshal(json, &st)
 
-    if reflect.ValueOf(st.Cont1).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
-        return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
+    if reflect.ValueOf(st.Cont1).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1).IsNil() {
+        return nil, status.Error(codes.NotFound, "Cont1-not-found")
     }
 
     return st.Cont1, nil

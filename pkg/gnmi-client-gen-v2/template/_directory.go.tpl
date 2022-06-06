@@ -32,11 +32,11 @@ func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.
     st := Device{}
     Unmarshal(json, &st)
 
-    if reflect.ValueOf(st.{{ devicePath $entry }}).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1A).IsNil() {
-        return nil, status.Error(codes.NotFound, "OnfTest1_Cont1A-not-found")
+    if reflect.ValueOf(st.{{ devicePath $entry false }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ devicePath $entry false }}).IsNil() {
+        return nil, status.Error(codes.NotFound, "{{ template "_entry_name.go.tpl" $entry }}-not-found")
     }
 
-    return st.{{ devicePath $entry }}, nil
+    return st.{{ devicePath $entry false }}, nil
 
 }
 

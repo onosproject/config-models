@@ -35,5 +35,6 @@ func GetTestResult(t *testing.T, testname string) string {
 func RemoveAllWhitespaces(s string) string {
 	s = strings.ReplaceAll(s, " ", "")
 	s = strings.ReplaceAll(s, "\n", "")
+	s = strings.ReplaceAll(s, "\t", "")
 	return s
 }

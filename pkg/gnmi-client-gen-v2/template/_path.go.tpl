@@ -15,6 +15,14 @@
 {{ end -}}
             {
                 Name: "{{ $entry.Name }}",
+                {{ if isList $entry -}}
+                Key: map[string]string{
+
+                    {{ range $i, $k := listKeys $entry -}}
+                    "{{ $k.Name }}": fmt.Sprint({{ sanitize $k.Name }}),
+                    {{ end -}}
+                },
+                {{ end -}}
             },
 {{ end -}}
 

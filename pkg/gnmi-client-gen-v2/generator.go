@@ -194,23 +194,66 @@ func structName(entry *yang.Entry) (string, error) {
 }
 
 // return the path to a model from the root
-func devicePath(entry *yang.Entry) (string, error) {
+func devicePath(entry *yang.Entry, forParent bool) (string, error) {
 
+	name := genutil.EntryCamelCaseName(entry)
 	if entry.IsList() {
-		return "", status.Errorf(codes.InvalidArgument, "lists are not supported yet")
+		// if the item is a list, we need to return the element in the list based on the key
+		keys := strings.Split(entry.Key, " ")
+		if len(keys) > 1 {
+			return "", fmt.Errorf("Multi keyed list nor supported (entry: %s, key: %s)", entry.Name, entry.Key)
+		} else {
+			if !forParent {
+				name = sanitize(fmt.Sprintf("%s[%s]", name, fmt.Sprintf("%s_%s", entry.Name, entry.Key)))
+			}
+		}
 	}
 
-	if entry.Parent != nil && entry.Parent.Name != "device" {
-		parentName, err := devicePath(entry.Parent)
+	if entry.Parent != nil && entry.Parent.Annotation["isFakeRoot"] != true {
+		// forParent applies only for the last level,
+		// in a structure like item1 -> item2 -> item3
+		// we return:
+		// - forParent = false => Item1.Item2.Item3
+		// - forParent = true => Item1.Item2
+		parentName, err := devicePath(entry.Parent, false)
 		if err != nil {
 			return "", err
 		}
-
-		name := genutil.EntryCamelCaseName(entry)
-
-		return fmt.Sprintf("%s.%s", parentName, name), nil
+		if !forParent {
+			return fmt.Sprintf("%s.%s", parentName, name), nil
+		}
+		return parentName, nil
 	}
-	return genutil.EntryCamelCaseName(entry), nil
+
+	return name, nil
+}
+
+// extract the list keys from a yang entry
+// and returns the tuples
+type YangKey struct {
+	Name   string
+	Gotype string
+}
+
+func listKeys(entry *yang.Entry) ([]YangKey, error) {
+	if !entry.IsList() {
+		return nil, fmt.Errorf("Yang entry '%s' is not a list", entry.Name)
+	}
+	list := []YangKey{}
+	for _, k := range strings.Split(entry.Key, " ") {
+		// find the child entry the key refers to get the type
+		if e, ok := entry.Dir[k]; ok {
+			// the only error case is for unsupported types, ignore for now
+			if t, err := goType(e); err == nil {
+				list = append(list, YangKey{
+					Name:   fmt.Sprintf("%s_%s", entry.Name, k),
+					Gotype: t,
+				})
+			}
+
+		}
+	}
+	return list, nil
 }
 
 func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
@@ -230,6 +273,7 @@ func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
 		"goType":           goType,
 		"structName":       structName,
 		"devicePath":       devicePath,
+		"listKeys":         listKeys,
 	}
 
 	t, err := template.New(templateFile).
