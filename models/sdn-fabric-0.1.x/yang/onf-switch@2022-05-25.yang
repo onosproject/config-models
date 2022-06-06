@@ -37,7 +37,7 @@ module onf-switch {
 
     uses st:map-of-attributes;
 
-    leaf model {
+    leaf model-id {
         type leafref {
           path "/sm:switch-model/sm:switch-model-id";
         }

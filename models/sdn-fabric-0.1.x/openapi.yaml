@@ -243,9 +243,9 @@ components:
           type: string
         management:
           $ref: '#/components/schemas/Switch_Management'
-        model:
+        model-id:
           description: link to switch model
-          title: model
+          title: model-id
           type: string
           x-leafref: /sm:switch-model/sm:switch-model-id
         port:
@@ -254,10 +254,6 @@ components:
           description: The role of the switch in the fabric
           title: role
           type: string
-          enum:
-            - undefined
-            - leaf
-            - spine
         state:
           $ref: '#/components/schemas/Switch_State'
         switch-id:
@@ -273,7 +269,7 @@ components:
         vlan:
           $ref: '#/components/schemas/Switch_Vlan_List'
       required:
-      - model
+      - model-id
       - role
       - switch-id
       title: Switch
@@ -302,10 +298,6 @@ components:
           description: Pipeline configuration - dual or quad
           title: pipeline
           type: string
-          enum:
-            - unknown
-            - dual
-            - quad
         port:
           $ref: '#/components/schemas/Switch-model_Port_List'
         switch-model-id:

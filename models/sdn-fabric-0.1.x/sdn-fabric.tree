@@ -6,7 +6,7 @@ module: onf-switch
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
      |  +--rw value            string
-     +--rw model           -> /sm:switch-model/switch-model-id
+     +--rw model-id        -> /sm:switch-model/switch-model-id
      +--rw role            enumeration
      +--rw management
      |  +--rw address?       inet:ipv4-address-no-zone
