@@ -102,6 +102,10 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				for _, l := range dirEntry.Type.Length {
 					lengths = append(lengths, fmt.Sprintf("%v", l))
 				}
+				firstDefault := ""
+				if len(dirEntry.Default) > 0 {
+					firstDefault = dirEntry.Default[0]
+				}
 				rwElem := admin.ReadWritePath{
 					Path:        itemPath,
 					ValueType:   tObj.ValueType,
@@ -111,7 +115,7 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 					IsAKey:      tObj.IsAKey,
 					AttrName:    tObj.AttrName,
 					Mandatory:   dirEntry.Mandatory == yang.TSTrue,
-					Default:     dirEntry.Default,
+					Default:     firstDefault,
 					Range:       ranges,
 					Length:      lengths,
 				}
