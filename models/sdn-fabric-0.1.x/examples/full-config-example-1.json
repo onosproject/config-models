@@ -17,7 +17,7 @@
         "address": "117.182.160.150",
         "port-number": 8080
       },
-      "model": "super-switch-1610",
+      "model-id": "super-switch-1610",
       "port": [
         {
           "cage-number": 1,
