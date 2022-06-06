@@ -10,7 +10,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"google.golang.org/grpc"
