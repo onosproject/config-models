@@ -260,7 +260,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					})
 				}
 			case yang.Ybool:
-				//schemaVal = openapi3.NewBoolSchema() // TODO comment me back in after YGOT upgrade
+				schemaVal = openapi3.NewBoolSchema()
 				// default is now a []string - since this is not a leaf-list there will only be 1 entry
 				for _, def := range dirEntry.Default {
 					if def == "true" {
