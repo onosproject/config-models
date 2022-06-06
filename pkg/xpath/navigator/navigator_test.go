@@ -28,6 +28,10 @@ func (td testDevice) ΛEnumTypeMap() map[string][]reflect.Type {
 	return nil
 }
 
+func (td testDevice) ΛBelongingModule() string {
+	return ""
+}
+
 type testDevice_testStruct struct {
 	A interface{} `path:"a"`
 	B interface{} `path:"b"`
@@ -236,7 +240,7 @@ func Test_deepCopyDir(t *testing.T) {
 		Node:        nil,
 		Name:        "sample-dir",
 		Description: "this is a sample yang entry",
-		Default:     "2",
+		Default:     []string{"2"},
 		Units:       "mm",
 		Errors:      nil,
 		Kind:        yang.LeafEntry,
@@ -283,7 +287,7 @@ func Test_deepCopyDir(t *testing.T) {
 	assert.Equal(t, "sample-parent", copiedDir.Parent.Name)
 	assert.Equal(t, "sample-dir", copiedDir.Name)
 	assert.Equal(t, "this is a sample yang entry", copiedDir.Description)
-	assert.Equal(t, "2", copiedDir.Default)
+	assert.Equal(t, []string{"2"}, copiedDir.Default)
 	assert.Equal(t, "mm", copiedDir.Units)
 	assert.Equal(t, yang.LeafEntry, copiedDir.Kind)
 	assert.Equal(t, "t1", copiedDir.Prefix.Name)
