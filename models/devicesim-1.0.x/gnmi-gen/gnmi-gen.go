@@ -2,7 +2,7 @@
 * SPDX-FileCopyrightText: 2022-present Intel Corporation
 *
 * SPDX-License-Identifier: Apache-2.0
-*/
+ */
 
 package main
 
@@ -17,6 +17,7 @@ import (
 )
 
 const outputFolder = "api"
+
 var outputFile string
 var log = logging.GetLogger("devicesim-gnmi-gen")
 
@@ -32,12 +33,12 @@ func main() {
 
 	schemaMap, err := api.Schema()
 	if err != nil {
-	fmt.Println(err)
+		fmt.Println(err)
 		os.Exit(-1)
 	}
 
 	topEntry := schemaMap.SchemaTree["Device"]
-	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Devicesim", topEntry, []string{}, nil)
+	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Devicesim", topEntry, []string{})
 	if err != nil {
 		log.Errorw("failed to generate gNMI Endpoint list", "err", err)
 	}

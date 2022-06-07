@@ -6,8 +6,7 @@ require (
 	github.com/SeanCondon/xpath v0.0.0-20220225125014-419de017925c
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/gogo/protobuf v1.3.2
-	github.com/onosproject/aether-models/models/aether-2.1.x v0.0.0-20220525152402-1716df674f0b
-	github.com/onosproject/config-models/models/testdevice-1.0.x v0.5.15
+	github.com/onosproject/config-models/models/testdevice-1.0.x v0.5.16
 	github.com/onosproject/onos-api/go v0.9.14
 	github.com/onosproject/onos-lib-go v0.8.13
 	github.com/openconfig/gnmi v0.0.0-20210914185457-51254b657b7d

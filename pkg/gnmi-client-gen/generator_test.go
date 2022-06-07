@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	aether_2_1_x "github.com/onosproject/aether-models/models/aether-2.1.x/api"
 	testdevice "github.com/onosproject/config-models/models/testdevice-1.0.x/api"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/testdata"
 	"github.com/openconfig/goyang/pkg/yang"
@@ -29,12 +28,8 @@ func TestExtractSchema(t *testing.T) {
 	testdevice, err := testdevice.Schema()
 	assert.NoError(t, err)
 
-	a21x, err := aether_2_1_x.Schema()
-	assert.NoError(t, err)
-
 	schemas := map[string]*ytypes.Schema{
 		"testdevice-1": testdevice,
-		"aether-2.1.x": a21x,
 	}
 
 	for name, schema := range schemas {
