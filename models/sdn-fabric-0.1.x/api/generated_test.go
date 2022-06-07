@@ -25,5 +25,5 @@ func Test_Validate(t *testing.T) {
 	assert.NoError(t, err)
 
 	err = device.Validate()
-	assert.Error(t, err, "expected an error here like 'could not find path in tree beyond schema node port'")
+	assert.NoError(t, err)
 }

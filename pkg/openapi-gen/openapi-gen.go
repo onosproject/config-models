@@ -261,10 +261,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			case yang.Ybool:
 				schemaVal = openapi3.NewBoolSchema()
-				if dirEntry.Type.Default == "true" || dirEntry.Default == "true" {
-					schemaVal.Default = true
-				} else if dirEntry.Type.Default == "false" || dirEntry.Default == "false" {
-					schemaVal.Default = false
+				// default is now a []string - since this is not a leaf-list there will only be 1 entry
+				for _, def := range dirEntry.Default {
+					if def == "true" {
+						schemaVal.Default = true
+						break
+					} else if def == "false" {
+						schemaVal.Default = false
+						break
+					}
 				}
 			case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16, yang.Yuint32, yang.Yint32, yang.Yuint64, yang.Yint64, yang.Ydecimal64:
 				switch dirEntry.Type.Kind {

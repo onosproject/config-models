@@ -9,11 +9,10 @@ require (
 	github.com/onosproject/aether-models/models/aether-2.1.x v0.0.0-20220525152402-1716df674f0b
 	github.com/onosproject/config-models/models/testdevice-1.0.x v0.5.15
 	github.com/onosproject/onos-api/go v0.9.14
-	github.com/onosproject/onos-config v0.10.34
 	github.com/onosproject/onos-lib-go v0.8.13
 	github.com/openconfig/gnmi v0.0.0-20210914185457-51254b657b7d
-	github.com/openconfig/goyang v0.4.0
-	github.com/openconfig/ygot v0.14.0
+	github.com/openconfig/goyang v1.0.0
+	github.com/openconfig/ygot v0.22.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
 	github.com/stretchr/testify v1.7.0

@@ -37,7 +37,7 @@ func main() {
 	}
 
 	topEntry := schemaMap.SchemaTree["Device"]
-	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Sdnfabric", topEntry, []string{})
+	res, err := gnmi_client_gen.BuildGnmiStruct(debug, "Sdnfabric", topEntry, []string{}, nil)
 	if err != nil {
 		log.Errorw("failed to generate gNMI Endpoint list", "err", err)
 	}
