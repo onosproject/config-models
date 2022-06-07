@@ -7,345 +7,266 @@
 package gnmi_client_gen
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	aether_2_1_x "github.com/onosproject/aether-models/models/aether-2.1.x/api"
+	testdevice "github.com/onosproject/config-models/models/testdevice-1.0.x/api"
+	"github.com/onosproject/config-models/pkg/gnmi-client-gen/testdata"
 	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/openconfig/ygot/ytypes"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
-func setup(t *testing.T) {
-	// Make sure the default is restored as some tests change it
-	methods = []string{gnmiGet, gnmiDelete, gnmiUpdate}
+func TestExtractSchema(t *testing.T) {
+	// uncomment this to manually run the test to regenerate the sample schema
+	// not needed otherwise
+	t.Skip()
+	folder := "sampleSchemas"
+
+	testdevice, err := testdevice.Schema()
+	assert.NoError(t, err)
+
+	a21x, err := aether_2_1_x.Schema()
+	assert.NoError(t, err)
+
+	schemas := map[string]*ytypes.Schema{
+		"testdevice-1": testdevice,
+		"aether-2.1.x": a21x,
+	}
+
+	for name, schema := range schemas {
+		empJSON, err := json.MarshalIndent(schema.SchemaTree["Device"], "", "  ")
+		assert.NoError(t, err)
+
+		file, err := os.Create(fmt.Sprintf("%s/%s.json", folder, name))
+		if err != nil {
+			t.Fail()
+		}
+		_, err = file.WriteString(string(empJSON))
+		assert.NoError(t, err)
+		defer file.Close()
+	}
+
 }
 
-func Test_generateGnmiEndpointsForLists(t *testing.T) {
-	setup(t)
-	// only generate endpoinds for the GET method
-	methods = []string{gnmiGet}
-
-	type args struct {
-		item *yang.Entry
-		path []string
+func TestGenerate(t *testing.T) {
+	type arguments struct {
+		pluginName string
+		entry      *yang.Entry
 	}
 	tests := []struct {
 		name    string
-		args    args
-		want    []ListEndpoint
 		wantErr assert.ErrorAssertionFunc
 	}{
-		{"list-endpoint-plural",
-			args{
-				item: &yang.Entry{
-					Name: "application",
-					Key:  "id",
-					Annotation: map[string]interface{}{
-						"structname": "Test_Application",
-					},
-					Dir: map[string]*yang.Entry{
-						"id": {Type: &yang.YangType{Kind: yang.Ystring}},
-					},
-				},
-				path: []string{"application"},
+		{
+			"empty-entry",
+			func(t assert.TestingT, err error, msgAndArgs ...interface{}) bool {
+				return assert.Equal(t, "entry-cannot-be-nil", err.Error())
 			},
-			[]ListEndpoint{
-				{
-					ContainerEndpoint{
-						ModelName:       "Test_Application",
-						ModelPath:       "Application",
-						ParentModelPath: "",
-						Method:          "get",
-						MethodName:      "Get_Application",
-						Path:            []string{"application"},
-					},
-					ListKey{
-						Type: "string",
-						Keys: []Key{
-							{Name: "Id", Type: "string", Ptr: false},
-						},
-					},
-					[]string{},
-					"Get_Application_List",
-				},
-			},
+		},
+		{
+			"simple-leaves",
 			assert.NoError,
 		},
-		{"list-endpoint-plural-s",
-			args{
-				item: &yang.Entry{
-					Name: "vcs",
-					Key:  "id",
-					Annotation: map[string]interface{}{
-						"structname": "Test_Vcs",
-					},
-					Dir: map[string]*yang.Entry{
-						"id": {Type: &yang.YangType{Kind: yang.Ystring}},
-					},
-				},
-				path: []string{"vcs"},
-			},
-			[]ListEndpoint{
-				{
-					ContainerEndpoint{
-						ModelName:       "Test_Vcs",
-						ModelPath:       "Vcs",
-						ParentModelPath: "",
-						Method:          "get",
-						MethodName:      "Get_Vcs",
-						Path:            []string{"vcs"},
-					},
-					ListKey{
-						Type: "string",
-						Keys: []Key{
-							{Name: "Id", Type: "string", Ptr: false},
-						},
-					},
-					[]string{},
-					"Get_Vcs_List",
-				},
-			},
+		{
+			"basic-container",
+			assert.NoError,
+		},
+		{
+			"basic-list",
+			assert.NoError,
+		},
+		{
+			"nested-list",
 			assert.NoError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := generateGnmiEndpointsForLists(tt.args.item, tt.args.path, nil)
-			if !tt.wantErr(t, err, fmt.Sprintf("generateGnmiEndpointsForLists(%v, %v)", tt.args.item, tt.args.path)) {
+
+			schema, err := testdata.GetSchema(tt.name)
+			if err != nil {
+				t.Fatalf(err.Error())
+			}
+
+			wantOutput := testdata.GetTestResult(t, tt.name)
+
+			args := arguments{
+				pluginName: "Test",
+				entry:      schema,
+			}
+
+			output := &bytes.Buffer{}
+			err = Generate(args.pluginName, args.entry, output)
+			if !tt.wantErr(t, err, fmt.Sprintf("Generate(%v, %v, %v)", args.pluginName, args.entry, output)) {
 				return
 			}
-			assert.Equal(t, len(methods), len(got), "more than expected endpoints have been generated")
-			assert.Equalf(t, tt.want, got, "generateGnmiEndpointsForLists(%v, %v)", tt.args.item, tt.args.path)
+
+			debug := os.Getenv("DEBUG")
+			if debug == "true" {
+				// when debugging keep whitespaces, they might fail the test
+				// but it's more readable
+				fmt.Println(output)
+				assert.Equal(t, wantOutput, output.String())
+			} else {
+				// when not debugging strip whitespaces as they're not relevant
+				assert.Equalf(t, testdata.RemoveAllWhitespaces(wantOutput), testdata.RemoveAllWhitespaces(output.String()), "Failed to generate template for test: %s", tt.name)
+			}
+
 		})
 	}
 }
 
-func TestBuildGnmiStruct_ordering(t *testing.T) {
-	setup(t)
+func Test_devicePath(t *testing.T) {
 	type args struct {
-		debug      bool
-		pluginName string
-		entry      *yang.Entry
-		parentPath []string
+		entry     *yang.Entry
+		forParent bool
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    *GnmiEndpoints
+		want    string
 		wantErr assert.ErrorAssertionFunc
 	}{
 		{
-			"leaves-order",
+			"leaf-at-top-level",
 			args{
-				debug:      false,
-				pluginName: "Test",
 				entry: &yang.Entry{
-					Name: "Device",
-					Dir: map[string]*yang.Entry{
-						"b_leaf": {Name: "b_leaf", Kind: yang.LeafEntry, Type: &yang.YangType{Kind: yang.Ystring}},
-						"a_leaf": {Name: "a_leaf", Kind: yang.LeafEntry, Type: &yang.YangType{Kind: yang.Ystring}},
+					Name: "leaf1",
+					Kind: yang.LeafEntry,
+					Parent: &yang.Entry{
+						Name: "device",
+						Annotation: map[string]interface{}{
+							"isFakeRoot": true,
+						},
 					},
 				},
-				parentPath: []string{},
+				forParent: false,
 			},
-			&GnmiEndpoints{
-				LeavesEndpoints: []LeavesEndpoint{
-					{Method: gnmiDelete, MethodName: "Delete_ALeaf", ModelName: "ALeaf", Path: []string{"a_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiDelete, MethodName: "Delete_BLeaf", ModelName: "BLeaf", Path: []string{"b_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiGet, MethodName: "Get_ALeaf", ModelName: "ALeaf", Path: []string{"a_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiGet, MethodName: "Get_BLeaf", ModelName: "BLeaf", Path: []string{"b_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiUpdate, MethodName: "Update_ALeaf", ModelName: "ALeaf", Path: []string{"a_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiUpdate, MethodName: "Update_BLeaf", ModelName: "BLeaf", Path: []string{"b_leaf"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-				},
-				ContainerEndpoints: []ContainerEndpoint{},
-				ListEndpoints:      []ListEndpoint{},
-				PluginName:         "Test",
-			},
+			"Leaf1",
 			assert.NoError,
 		},
 		{
-			"container-order",
+			"path-for-parent-model",
 			args{
-				debug:      false,
-				pluginName: "Test",
 				entry: &yang.Entry{
-					Name: "Device",
-					Dir: map[string]*yang.Entry{
-						"b_cont": {Name: "b_cont", Kind: yang.DirectoryEntry, Annotation: map[string]interface{}{"structname": "Bcont"}},
-						"a_cont": {Name: "a_cont", Kind: yang.DirectoryEntry, Annotation: map[string]interface{}{"structname": "Acont"}},
+					Name: "leaf3",
+					Kind: yang.LeafEntry,
+					Parent: &yang.Entry{
+						Name: "leaf2",
+						Kind: yang.DirectoryEntry,
+						Parent: &yang.Entry{
+							Name: "leaf1",
+							Kind: yang.DirectoryEntry,
+						},
 					},
 				},
-				parentPath: []string{},
+				forParent: true,
 			},
-			&GnmiEndpoints{
-				LeavesEndpoints: []LeavesEndpoint{},
-				ContainerEndpoints: []ContainerEndpoint{
-					{Method: gnmiDelete, MethodName: "Delete_ACont", ModelName: "Acont", Path: []string{"a_cont"}, ModelPath: "ACont"},
-					{Method: gnmiDelete, MethodName: "Delete_BCont", ModelName: "Bcont", Path: []string{"b_cont"}, ModelPath: "BCont"},
-					{Method: gnmiGet, MethodName: "Get_ACont", ModelName: "Acont", Path: []string{"a_cont"}, ModelPath: "ACont"},
-					{Method: gnmiGet, MethodName: "Get_BCont", ModelName: "Bcont", Path: []string{"b_cont"}, ModelPath: "BCont"},
-					{Method: gnmiUpdate, MethodName: "Update_ACont", ModelName: "Acont", Path: []string{"a_cont"}, ModelPath: "ACont"},
-					{Method: gnmiUpdate, MethodName: "Update_BCont", ModelName: "Bcont", Path: []string{"b_cont"}, ModelPath: "BCont"},
+			"Leaf1.Leaf2",
+			assert.NoError,
+		},
+		{
+			"basic-list",
+			args{
+				entry: &yang.Entry{
+					Name:     "list1",
+					Kind:     yang.DirectoryEntry,
+					ListAttr: &yang.ListAttr{MinElements: 1},
+					Key:      "id",
+					Dir: map[string]*yang.Entry{
+						"id": {},
+					},
 				},
-				ListEndpoints: []ListEndpoint{},
-				PluginName:    "Test",
+				forParent: false,
 			},
+			"List1[list1_id]",
+			assert.NoError,
+		},
+		{
+			"double-keyed-list",
+			args{
+				entry: &yang.Entry{
+					Name:     "list1",
+					Kind:     yang.DirectoryEntry,
+					ListAttr: &yang.ListAttr{MinElements: 1},
+					Key:      "foo bar",
+					Dir: map[string]*yang.Entry{
+						"foo": {},
+						"bar": {},
+					},
+				},
+				forParent: false,
+			},
+			"List1[list1_key]",
+			assert.NoError,
+		},
+		{
+			"nested-list",
+			args{
+				entry: &yang.Entry{
+					Name:     "list2",
+					Kind:     yang.DirectoryEntry,
+					ListAttr: &yang.ListAttr{MinElements: 1},
+					Key:      "foo bar",
+					Dir: map[string]*yang.Entry{
+						"foo": {},
+						"bar": {},
+					},
+					Parent: &yang.Entry{
+						Name:     "list1",
+						Kind:     yang.DirectoryEntry,
+						ListAttr: &yang.ListAttr{MinElements: 1},
+						Key:      "id",
+						Dir: map[string]*yang.Entry{
+							"id":    {},
+							"list2": {},
+						},
+					},
+				},
+				forParent: false,
+			},
+			"List1[list1_id].List2[list2_key]",
+			assert.NoError,
+		},
+		{
+			"nested-list-for-parent",
+			args{
+				entry: &yang.Entry{
+					Name:     "list2",
+					Kind:     yang.DirectoryEntry,
+					ListAttr: &yang.ListAttr{MinElements: 1},
+					Key:      "foo",
+					Dir: map[string]*yang.Entry{
+						"foo": {},
+					},
+					Parent: &yang.Entry{
+						Name:     "list1",
+						Kind:     yang.DirectoryEntry,
+						ListAttr: &yang.ListAttr{MinElements: 1},
+						Key:      "id",
+						Dir: map[string]*yang.Entry{
+							"id":    {},
+							"list2": {},
+						},
+					},
+				},
+				forParent: true,
+			},
+			"List1[list1_id].List2",
 			assert.NoError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// NOTE we need to repeat the test multiple times as the order is not guaranteed and can randomly be correct on a single run
-			count := 10
-
-			for i := 1; i <= count; i++ {
-				got, err := BuildGnmiStruct(tt.args.debug, tt.args.pluginName, tt.args.entry, tt.args.parentPath, nil)
-				if !tt.wantErr(t, err, fmt.Sprintf("BuildGnmiStruct(%v, %v, %v, %v)", tt.args.debug, tt.args.pluginName, tt.args.entry, tt.args.parentPath)) {
-					return
-				}
-				assert.Equalf(t, tt.want, got, "gnmi-endpoint-were-not-correctly-generated-on-run-%d: BuildGnmiStruct(%v, %v, %v, %v)", i, tt.args.debug, tt.args.pluginName, tt.args.entry, tt.args.parentPath)
-			}
-		})
-	}
-}
-
-func TestBuildGnmiStruct_nested_lists(t *testing.T) {
-
-	setup(t)
-	// only generate endpoinds for the GET method
-	methods = []string{gnmiGet}
-
-	listAttr := &yang.ListAttr{
-		MinElements: 0,
-		MaxElements: 10,
-	}
-
-	type args struct {
-		debug      bool
-		pluginName string
-		entry      *yang.Entry
-		parentPath []string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    *GnmiEndpoints
-		wantErr assert.ErrorAssertionFunc
-	}{
-		{
-			"nested-lists-single-keyed",
-			args{
-				debug:      false,
-				pluginName: "Test",
-				entry: &yang.Entry{
-					Name: "Device",
-					Dir: map[string]*yang.Entry{
-						"rootlist": {
-							Name: "rootlist",
-							Annotation: map[string]interface{}{
-								"structname": "Test_RootList",
-							},
-							Key: "rootlist_id",
-							Dir: map[string]*yang.Entry{
-								"rootlist_id": {
-									Name: "rootlist_id",
-									Type: &yang.YangType{Kind: yang.Ystring},
-								},
-								"childlist": {
-									Name: "childlist",
-									Annotation: map[string]interface{}{
-										"structname": "Test_ChildList",
-									},
-									Key: "childlist_id",
-									Dir: map[string]*yang.Entry{
-										"childlist_id": {
-											Name: "childlist_id",
-											Type: &yang.YangType{Kind: yang.Ystring},
-										},
-									},
-									ListAttr: listAttr,
-								},
-							},
-							ListAttr: listAttr,
-						},
-					},
-				},
-				parentPath: []string{},
-			},
-			&GnmiEndpoints{
-				LeavesEndpoints: []LeavesEndpoint{
-					{Method: gnmiGet, MethodName: "Get_RootlistChildlistChildlistId", ModelName: "RootlistChildlistChildlistId", Path: []string{"rootlist", "childlist", "childlist_id"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-					{Method: gnmiGet, MethodName: "Get_RootlistRootlistId", ModelName: "RootlistRootlistId", Path: []string{"rootlist", "rootlist_id"}, GoType: "string", GoReturnType: "val.GetStringVal()", GoEmptyReturnType: "\"\""},
-				},
-				ContainerEndpoints: []ContainerEndpoint{},
-				ListEndpoints: []ListEndpoint{
-					{
-						ContainerEndpoint{
-							ModelName:  "Test_RootList",
-							ModelPath:  "Rootlist",
-							Method:     gnmiGet,
-							MethodName: "Get_Rootlist",
-							Path:       []string{"rootlist"},
-						},
-						ListKey{
-							Type: "string",
-							Keys: []Key{
-								{Name: "Rootlist_id", Type: "string", Ptr: false},
-							},
-						},
-						[]string{},
-						"Get_Rootlist_List",
-					},
-					{
-						ContainerEndpoint{
-							ModelName:       "Test_ChildList",
-							ModelPath:       "Rootlist.Childlist",
-							ParentModelPath: "Rootlist",
-							Method:          gnmiGet,
-							MethodName:      "Get_Rootlist_Childlist",
-							Path:            []string{"rootlist", "childlist"},
-						},
-						ListKey{
-							Type: "string",
-							Keys: []Key{
-								{Name: "Childlist_id", Type: "string", Ptr: false},
-							},
-							ParentKey: &ListKey{
-								Type: "string",
-								Keys: []Key{
-									{Name: "Rootlist_id", Type: "string", Ptr: false},
-								},
-							},
-						},
-						[]string{"rootlist"},
-						"Get_Rootlist_Childlist_List",
-					},
-				},
-				PluginName: "Test",
-			},
-			assert.NoError,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := BuildGnmiStruct(tt.args.debug, tt.args.pluginName, tt.args.entry, tt.args.parentPath, nil)
-			if !tt.wantErr(t, err, fmt.Sprintf("BuildGnmiStruct(%v, %v, %v, %v)", tt.args.debug, tt.args.pluginName, tt.args.entry, tt.args.parentPath)) {
+			got, err := devicePath(tt.args.entry, tt.args.forParent)
+			if !tt.wantErr(t, err, fmt.Sprintf("devicePath(%v)", tt.args.entry)) {
 				return
 			}
-			assert.Equal(t, len(tt.want.LeavesEndpoints), len(got.LeavesEndpoints), "wrong-number-of-leaves-endpoints-generated")
-			assert.Equal(t, len(tt.want.ContainerEndpoints), len(got.ContainerEndpoints), "wrong-number-of-leaves-endpoints-generated")
-			assert.Equal(t, len(tt.want.ListEndpoints), len(got.ListEndpoints), "wrong-number-of-leaves-endpoints-generated")
-
-			for i, leafEp := range tt.want.LeavesEndpoints {
-				assert.Equalf(t, leafEp, got.LeavesEndpoints[i], "leaf-enpoint-for-%s-was-incorrectly generated", leafEp.ModelName)
-			}
-
-			for i, containerEp := range tt.want.ContainerEndpoints {
-				assert.Equalf(t, containerEp, got.ContainerEndpoints[i], "container-enpoint-for-%s-was-incorrectly generated", containerEp.ModelName)
-			}
-
-			for i, listEp := range tt.want.ListEndpoints {
-				assert.Equalf(t, listEp, got.ListEndpoints[i], "list-enpoint-for-%s-was-incorrectly generated", listEp.ModelName)
-			}
-
+			assert.Equalf(t, tt.want, got, "devicePath(%v)", tt.args.entry)
 		})
 	}
 }

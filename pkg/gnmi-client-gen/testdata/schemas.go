@@ -151,6 +151,9 @@ func GetSchema(testname string) (*yang.Entry, error) {
 		"empty-entry": nil,
 		"simple-leaves": {
 			Name: "Device",
+			Annotation: map[string]interface{}{
+				"isFakeRoot": true,
+			},
 			Dir: map[string]*yang.Entry{
 				"leaf1": leaf1,
 				"leaf2": leaf2,
@@ -158,12 +161,18 @@ func GetSchema(testname string) (*yang.Entry, error) {
 		},
 		"basic-container": {
 			Name: "Device",
+			Annotation: map[string]interface{}{
+				"isFakeRoot": true,
+			},
 			Dir: map[string]*yang.Entry{
 				"cont1": cont1,
 			},
 		},
 		"basic-list": {
 			Name: "Device",
+			Annotation: map[string]interface{}{
+				"isFakeRoot": true,
+			},
 			Dir: map[string]*yang.Entry{
 				"list1": list1,
 			},

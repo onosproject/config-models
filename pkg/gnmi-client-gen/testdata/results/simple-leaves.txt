@@ -29,7 +29,7 @@ func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) Get_Leaf1(ctx context.Context, target string) (string, error) {
+func (c *GnmiClient) Get_Leaf1(ctx context.Context, target string, ) (string, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -66,8 +66,7 @@ func (c *GnmiClient) Get_Leaf1(ctx context.Context, target string) (string, erro
 
     return val.GetStringVal(), nil
 }
-
-func (c *GnmiClient) Get_Leaf2(ctx context.Context, target string) (uint16, error) {
+func (c *GnmiClient) Get_Leaf2(ctx context.Context, target string, ) (uint16, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 

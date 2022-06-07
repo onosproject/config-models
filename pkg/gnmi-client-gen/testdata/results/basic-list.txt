@@ -29,7 +29,9 @@ func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) Get_Cont1(ctx context.Context, target string) (*Test_Cont1A, error) {
+func (c *GnmiClient) Get_List1(ctx context.Context, target string,
+list1_list1leaf2 uint16,
+) (*Test_List1, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -38,7 +40,10 @@ func (c *GnmiClient) Get_Cont1(ctx context.Context, target string) (*Test_Cont1A
         {
             Elem: []*gnmi.PathElem{
                 {
-                    Name: "cont1",
+                    Name: "list1",
+                    Key: map[string]string{
+                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
                 },
             },
             Target: target,
@@ -65,26 +70,79 @@ func (c *GnmiClient) Get_Cont1(ctx context.Context, target string) (*Test_Cont1A
     st := Device{}
     Unmarshal(json, &st)
 
-    if reflect.ValueOf(st.Cont1).Kind() == reflect.Ptr && reflect.ValueOf(st.Cont1).IsNil() {
-        return nil, status.Error(codes.NotFound, "Cont1-not-found")
+    if reflect.ValueOf(st.List1).Kind() == reflect.Ptr && reflect.ValueOf(st.List1).IsNil() {
+        return nil, status.Error(codes.NotFound, "List1-not-found")
+    }
+    if res, ok := st.List1[list1_list1leaf2]; ok {
+        return res, nil
     }
 
-    return st.Cont1, nil
-
+    return nil, status.Error(codes.NotFound, "List1-not-found")
 }
 
-func (c *GnmiClient) Get_Cont1_Cont1leaf1(ctx context.Context, target string) (string, error) {
+
+func (c *GnmiClient) Get_List1_List(ctx context.Context, target string,
+) (map[uint16]*Test_List1, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
+
 
     path := []*gnmi.Path{
         {
             Elem: []*gnmi.PathElem{
                 {
-                    Name: "cont1",
+                    Name: "list1",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.List1).Kind() == reflect.Ptr && reflect.ValueOf(st.List1).IsNil() {
+        return nil, status.Error(codes.NotFound, "List1-not-found")
+    }
+    return st.List1, nil
+}
+
+
+func (c *GnmiClient) Get_List1_List1leaf1(ctx context.Context, target string,
+list1_list1leaf2 uint16,
+) (string, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list1",
+                    Key: map[string]string{
+                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
                 },
                 {
-                    Name: "cont1leaf1",
+                    Name: "list1leaf1",
                 },
             },
             Target: target,
@@ -108,23 +166,29 @@ func (c *GnmiClient) Get_Cont1_Cont1leaf1(ctx context.Context, target string) (s
     }
 
     if val.GetStringVal() == "" {
-        return "", status.Error(codes.NotFound, "cont1leaf1-not-found")
+        return "", status.Error(codes.NotFound, "list1leaf1-not-found")
     }
 
     return val.GetStringVal(), nil
 }
-func (c *GnmiClient) Get_Cont1_Cont1leaf2(ctx context.Context, target string) (uint16, error) {
+func (c *GnmiClient) Get_List1_List1leaf2(ctx context.Context, target string,
+list1_list1leaf2 uint16,
+) (uint16, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
+
 
     path := []*gnmi.Path{
         {
             Elem: []*gnmi.PathElem{
                 {
-                    Name: "cont1",
+                    Name: "list1",
+                    Key: map[string]string{
+                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
                 },
                 {
-                    Name: "cont1leaf2",
+                    Name: "list1leaf2",
                 },
             },
             Target: target,
@@ -148,7 +212,7 @@ func (c *GnmiClient) Get_Cont1_Cont1leaf2(ctx context.Context, target string) (u
     }
 
     if uint16(val.GetUintVal()) == 0 {
-        return 0, status.Error(codes.NotFound, "cont1leaf2-not-found")
+        return 0, status.Error(codes.NotFound, "list1leaf2-not-found")
     }
 
     return uint16(val.GetUintVal()), nil

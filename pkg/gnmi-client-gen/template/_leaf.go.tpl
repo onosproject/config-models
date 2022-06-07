@@ -6,11 +6,11 @@
 {{/*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 
 {{ $entry := . -}}
-func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" $entry.Parent }}) ({{ goType $entry }}, error) {
+func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ if hasParent $entry }}{{ template "_list_keys.go.tpl" dict "entry" $entry.Parent "forList" false }}{{ end }}) ({{ goType $entry }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
-    {{ template "_path.go.tpl" $entry }}
+    {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_PROTO,

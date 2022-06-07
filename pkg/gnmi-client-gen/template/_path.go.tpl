@@ -3,35 +3,33 @@
 *
 * SPDX-License-Identifier: Apache-2.0
 */ -}}
-{{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 {{/*    The path_elem template recurse on the yang.Entry.Parent to create the correct path for nested models */}}
 {{ define "path_elem" -}}
-{{ $entry := . -}}
+{{- /*gotype: map[string]interface{} */ -}}
+{{ $entry := .entry -}}
 {{ $has_parent := hasParent $entry -}}
-{{ if and $has_parent -}}
-{{ if ne $entry.Parent.Name "device" -}}
-{{ template "path_elem" $entry.Parent }}
+{{ if $has_parent -}}
+{{ if not (isRoot $entry.Parent) -}}
+{{ template "path_elem" dict "entry" $entry.Parent "forList" false }}
 {{ end -}}
 {{ end -}}
             {
                 Name: "{{ $entry.Name }}",
-                {{ if isList $entry -}}
+                {{ if and (isList $entry) (not .forList) -}}
                 Key: map[string]string{
 
                     {{ range $i, $k := listKeys $entry -}}
-                    "{{ $k.Name }}": fmt.Sprint({{ sanitize $k.Name }}),
+                    "{{ $k.Key }}": fmt.Sprint({{ sanitize $k.Name }}),
                     {{ end -}}
                 },
                 {{ end -}}
             },
 {{ end -}}
 
-
-{{ $entry := . -}}
 path := []*gnmi.Path{
     {
         Elem: []*gnmi.PathElem{
-            {{ template "path_elem" $entry }}
+            {{ template "path_elem" . }}
         },
         Target: target,
     },
