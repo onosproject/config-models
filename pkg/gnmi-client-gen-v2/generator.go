@@ -71,7 +71,7 @@ func goReturnVal(val *yang.Entry) (string, error) {
 		return "uint64(val.GetUintVal())", nil
 	case yang.Ybool, yang.Yempty:
 		return "val.GetBoolVal()", nil
-	case yang.Ystring:
+	case yang.Ystring, yang.Yunion:
 		return "val.GetStringVal()", nil
 	case yang.Ydecimal64:
 		return "float64(val.GetFloatVal())", nil
@@ -134,6 +134,8 @@ func goEmptyReturnVal(val *yang.Entry) (string, error) {
 			return "", status.Errorf(codes.Internal, "type %s is not a valid yang kind", t)
 		}
 		return goEmptyReturnVal(&yang.Entry{Type: &yang.YangType{Kind: yt}})
+	case yang.Yunion:
+		return "\"\"", nil
 	}
 
 	return "", status.Errorf(codes.Unimplemented, "%T type is not supported yet", val.Type.Kind)
@@ -178,11 +180,11 @@ func goType(entry *yang.Entry) (string, error) {
 		v, err := findLeafRefType(entry.Type.Path, entry)
 		fmt.Println("TEO", entry.Name, entry.Type.Path, v)
 		return v, err
-		//case yang.Yunion:
-
+	case yang.Yunion:
+		return "string", nil
 	}
 	// not ideal, but for now we'll take it
-	return "", status.Error(codes.Unimplemented, fmt.Sprintf("%s type is not supported yet", entry.Type.Kind.String()))
+	return "", status.Error(codes.Unimplemented, fmt.Sprintf("%s type is not supported yet (entry: %s)", entry.Type.Kind.String(), entry.Name))
 }
 
 // extracts the structname from a yang entry
@@ -191,6 +193,16 @@ func structName(entry *yang.Entry) (string, error) {
 		return fmt.Sprintf("%s", name), nil
 	}
 	return "", status.Errorf(codes.NotFound, "structname not found in annotations")
+}
+
+// returns true if the entry is the root of the tree
+func isRoot(entry *yang.Entry) bool {
+	if entry.Annotation != nil {
+		if v, ok := entry.Annotation["isFakeRoot"]; ok {
+			return v == true
+		}
+	}
+	return false
 }
 
 // return the path to a model from the root
@@ -209,7 +221,7 @@ func devicePath(entry *yang.Entry, forParent bool) (string, error) {
 		}
 	}
 
-	if entry.Parent != nil && entry.Parent.Annotation["isFakeRoot"] != true {
+	if entry.Parent != nil && !isRoot(entry.Parent) {
 		// forParent applies only for the last level,
 		// in a structure like item1 -> item2 -> item3
 		// we return:
@@ -236,10 +248,11 @@ type YangKey struct {
 }
 
 func listKeys(entry *yang.Entry) ([]YangKey, error) {
-	if !entry.IsList() {
-		return nil, fmt.Errorf("Yang entry '%s' is not a list", entry.Name)
-	}
 	list := []YangKey{}
+	if !entry.IsList() {
+		// if this is not a list, return an empty list
+		return list, nil
+	}
 	for _, k := range strings.Split(entry.Key, " ") {
 		// find the child entry the key refers to get the type
 		if e, ok := entry.Dir[k]; ok {
@@ -274,6 +287,7 @@ func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
 		"structName":       structName,
 		"devicePath":       devicePath,
 		"listKeys":         listKeys,
+		"isRoot":           isRoot,
 	}
 
 	t, err := template.New(templateFile).

@@ -6,4 +6,4 @@
 {{/*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 {{ $entry := . -}}
 {{ $has_parent := hasParent $entry -}}
-{{ if $has_parent -}}{{ if ne $entry.Parent.Name "device" -}}{{ template "_entry_name.go.tpl" $entry.Parent -}}_{{ end -}}{{ end -}}{{ sanitize (capitalize $entry.Name) -}}
+{{ if $has_parent -}}{{ if not (isRoot $entry.Parent) -}}{{ template "_entry_name.go.tpl" $entry.Parent -}}_{{ end -}}{{ end -}}{{ sanitize (capitalize $entry.Name) -}}

@@ -77,7 +77,6 @@ func GetSchema(testname string) (*yang.Entry, error) {
 			Name: "string",
 		},
 	}
-
 	var list1leaf2 = &yang.Entry{
 		Name: "list1leaf2",
 		Kind: yang.LeafEntry,
@@ -102,6 +101,52 @@ func GetSchema(testname string) (*yang.Entry, error) {
 	list1leaf1.Parent = list1
 	list1leaf2.Parent = list1
 
+	// nested list
+	var list_leaf = &yang.Entry{
+		Name: "list_leaf",
+		Kind: yang.LeafEntry,
+		Type: &yang.YangType{
+			Kind: yang.Ystring,
+			Name: "string",
+		},
+	}
+	var nested_list_leaf = &yang.Entry{
+		Name: "nested_list_leaf",
+		Kind: yang.LeafEntry,
+		Type: &yang.YangType{
+			Kind: yang.Yuint16,
+			Name: "uint16",
+		},
+	}
+	var nestedList = &yang.Entry{
+		Name:     "nestedlist",
+		Kind:     yang.DirectoryEntry,
+		ListAttr: &yang.ListAttr{},
+		Annotation: map[string]interface{}{
+			"structname": "Test_Nestedlist",
+		},
+		Key: "nested_list_leaf",
+		Dir: map[string]*yang.Entry{
+			"nested_list_leaf": nested_list_leaf,
+		},
+	}
+	var list = &yang.Entry{
+		Name:     "list",
+		Kind:     yang.DirectoryEntry,
+		ListAttr: &yang.ListAttr{},
+		Annotation: map[string]interface{}{
+			"structname": "Test_List",
+		},
+		Key: "list_leaf",
+		Dir: map[string]*yang.Entry{
+			"list_leaf":  list_leaf,
+			"nestedList": nestedList,
+		},
+	}
+	nestedList.Parent = list
+	list_leaf.Parent = list
+	nested_list_leaf.Parent = nestedList
+
 	var TestYangSchemas = map[string]*yang.Entry{
 		"empty-entry": nil,
 		"simple-leaves": {
@@ -121,6 +166,15 @@ func GetSchema(testname string) (*yang.Entry, error) {
 			Name: "Device",
 			Dir: map[string]*yang.Entry{
 				"list1": list1,
+			},
+		},
+		"nested-list": {
+			Name: "Device",
+			Annotation: map[string]interface{}{
+				"isFakeRoot": true,
+			},
+			Dir: map[string]*yang.Entry{
+				"list": list,
 			},
 		},
 	}

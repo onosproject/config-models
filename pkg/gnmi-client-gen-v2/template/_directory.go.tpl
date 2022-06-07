@@ -6,7 +6,7 @@
 {{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 {{ $entry := . -}}
 
-func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string) (*{{ structName $entry }}, error) {
+func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" $entry }}) (*{{ structName $entry }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 

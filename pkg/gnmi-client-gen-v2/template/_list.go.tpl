@@ -3,18 +3,10 @@
 *
 * SPDX-License-Identifier: Apache-2.0
 */ -}}
-{{ define "keys_list" -}}
-{{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
-{{ $entry := . -}}
-{{ range $i, $k := listKeys $entry -}}
-{{ sanitize $k.Name }} {{ $k.Gotype }},
-{{ end -}}
-{{ end -}}
-
 
 {{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 {{ $entry := . -}}
-func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "keys_list" $entry }}) (*{{ structName $entry }}, error) {
+func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" $entry }}) (*{{ structName $entry }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -51,4 +43,4 @@ func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.
 }
 
 {{/*    Once the methods for the list have been generated, descend into it*/}}
-{{/*{{ template "_entry.go.tpl" $entry }}*/}}
+{{ template "_entry.go.tpl" $entry }}
