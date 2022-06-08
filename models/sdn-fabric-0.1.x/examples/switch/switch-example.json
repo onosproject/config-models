@@ -2,7 +2,7 @@
   "switch": [
     {
       "switch-id": "san-jose-edge-tor-1L",
-      "model": "super-switch-1610",
+      "model-id": "super-switch-1610",
       "role": "leaf",
       "attribute": [
         {

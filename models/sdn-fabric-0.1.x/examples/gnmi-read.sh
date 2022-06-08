@@ -17,6 +17,8 @@ switch-model/get-switch-model-ports-example.gnmi
 switch/get-switch-example.gnmi
 switch/get-switch-vlans-display-name-example.gnmi
 switch/get-switch-vlans-example.gnmi
+switch/get-switch-ports-example.gnmi
+dhcp-server/get-dhcp-example.gnmi
 )
 
 for gnmi_get in ${gnmi_get_files[@]}; do

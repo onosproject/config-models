@@ -17,6 +17,7 @@ onos topo create entity test-target \
     -a onos.topo.MastershipState='{}' \
     -k test-kind
 
+echo "test-target targets created - now"
 echo "use 'go install github.com/onosproject/onos-cli/cmd/gnmi_cli' to install gnmi_cli"
 
 echo "This expects onos-config to be port-forwared to localhost on port 5150"

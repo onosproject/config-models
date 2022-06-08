@@ -32,3 +32,33 @@ update: <
   >
   val: <string_val: 'speed-10g'>
 >
+update: <
+  path: <
+    elem: <name: 'dhcp-connect-point' >
+  >
+  val: <leaflist_val:
+    <
+      element: <string_val: 'dhcp-42'>
+      element: <string_val: 'dhcp-43'>
+    >
+  >
+>
+update: <
+  path: <
+    elem: <name: 'vlans' >
+    elem: <name: 'untagged' >
+  >
+  val: <uint_val: 100>
+>
+update: <
+  path: <
+    elem: <name: 'vlans' >
+    elem: <name: 'tagged' >
+  >
+  val: <leaflist_val:
+    <
+      element: <int_val: 101>
+      element: <int_val: 102>
+    >
+  >
+>
