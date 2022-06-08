@@ -1,24 +1,31 @@
 <!--
-SPDX-FileCopyrightText: 2022-present Intel Corporation
+SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
 
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# gNMI Client Gen
+# gNMI Client Generator
 
-`gnmi-client-gen` is a utility to generate a `gNMI` client starting from the `yang` models.
+This package is responsible of generating a `gNMI` client starting from a `YGOT` generated `Schema`.
 
-This simplifies the interactions between a client and `onos-config`, creating a tool that abstract the generation
-of `gNMI/yang` specific path providing a model-first library that you can import in your code.
+## Overview
 
-_NOTE that this is a preliminary implementation, so future bugfixes and new features are to be expected_
+The generation of the `gNMI` client for a given model takes place in two steps:
+- The `model-compiler` Docker image (see the main [README](../../README.md) for more information) generates the basic structure for
+an `onos-config` model plugin, which includes:
+  - the `YGOT Schema`, eg: [generated.go](../../models/testdevice-1.0.x/api/generated.go)
+  - the `gNMI generator`, eg: [gnmi-gen.go](../../models/testdevice-1.0.x/gnmi-gen/gnmi-gen.go)
+- The `gNMI generator` is invoked and simply passes the `YGOT Schema` to the main [generator](./generator.go)
+  - _NOTE that we need the intermediate step as the `YGOT schema` is generated in the model-plugin generation step and can't be dynamically imported into the main generator_
 
-## Roadmap
+### The generator
 
-- [X] Release the first version of the compiler
-- [X] Augment `pkg/compiler` to generate the required code
-- [X] Augment the `make models-images` target to generate the client for each model
-- [ ] Combine the `gnmi-client-gen` and `oapi-gen` target inside the model compiler so that a separate step is not required
+The `generator` relies on a set of [templates](template/) that are organized following this structure:
 
-### Missing features
-- [ ] Support for `Yidentityref` and `Yenum` types
+![gnmi-gen-template-nesting](./docs/gnmi-gen-templates.drawio.png)
+
+In addition to the above-mentioned templates the `generator` relies on a set of helper functions (defined as part of `template.FuncMap`)
+which are made available to the template to facilitate the parsing of a `yang.Entry`.
+
+The generated code relies on a few commodity methods defined in [`gnmi_utils`](./gnmi_utils/utils.go)
+which are used to encode and decode `gNMI` requests.

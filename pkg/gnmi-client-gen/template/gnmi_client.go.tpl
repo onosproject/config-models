@@ -29,18 +29,5 @@ func New{{ .PluginName }}GnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-{{ range $ep := .ListEndpoints -}}
-{{ template "_gnmi_list_item.go.tpl" $ep }}
-{{ end -}}
-
-{{ range $ep := .ListEndpoints -}}
-{{ template "_gnmi_list.go.tpl" $ep }}
-{{ end -}}
-
-{{ range $ep := .ContainerEndpoints }}
-{{ template "_gnmi_container.go.tpl" $ep }}
-{{ end }}
-
-{{ range $ep := .LeavesEndpoints }}
-{{ template "_gnmi_leaf.go.tpl" $ep }}
-{{ end }}
+{{/* NOTE we always assume that the models are container in a root (Device) entry */ -}}
+{{ template "_entry.go.tpl" .Entry }}

@@ -1,0 +1,4350 @@
+{
+  "Name": "device",
+  "Kind": 1,
+  "Config": 0,
+  "Dir": {
+    "application": {
+      "Name": "application",
+      "Description": "List of applications",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "app",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "app"
+        }
+      },
+      "Dir": {
+        "address": {
+          "Name": "address",
+          "Description": "Address of this application. An IP address with subnet (IPv4 or IPv6)",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "app",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "app"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "ip-prefix",
+            "Kind": 19,
+            "Type": [
+              {
+                "Name": "ipv4-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))"
+                ]
+              },
+              {
+                "Name": "ipv6-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))",
+                  "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)"
+                ]
+              }
+            ]
+          }
+        },
+        "application-id": {
+          "Name": "application-id",
+          "Description": "ID for this application.",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "app",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "app"
+            }
+          },
+          "Type": {
+            "Name": "application-id",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 63,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-z]([a-z0-9-]?[a-z0-9])*"
+            ]
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "description",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "endpoint": {
+          "Name": "endpoint",
+          "Description": "list for endpoint",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "app",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "app"
+            }
+          },
+          "Dir": {
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "endpoint-id": {
+              "Name": "endpoint-id",
+              "Description": "Id of this endpoint",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Type": {
+                "Name": "aether-identifier",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "mbr": {
+              "Name": "mbr",
+              "Description": "Maximum bitrate",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Dir": {
+                "downlink": {
+                  "Name": "downlink",
+                  "Description": "Per-Device per application MBR downlink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "app",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "app"
+                    }
+                  },
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "uplink": {
+                  "Name": "uplink",
+                  "Description": "Per-Device per-Application MBR uplink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "app",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "app"
+                    }
+                  },
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-application/application/endpoint/mbr",
+                "structname": "OnfApplication_Application_Endpoint_Mbr"
+              }
+            },
+            "port-end": {
+              "Name": "port-end",
+              "Description": "Last port in range",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Type": {
+                "Name": "port-number",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 65535,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "port-start": {
+              "Name": "port-start",
+              "Description": "First port in range",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "port-number",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 65535,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "protocol": {
+              "Name": "protocol",
+              "Description": "Protocol of this endpoint",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Type": {
+                "Name": "protocol",
+                "Kind": 18,
+                "Default": "TCP",
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 3,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 3,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "TCP|UDP"
+                ]
+              }
+            },
+            "traffic-class": {
+              "Name": "traffic-class",
+              "Description": "Link to traffic class",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "app",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "app"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/tc:traffic-class/tc:traffic-class-id"
+              }
+            }
+          },
+          "Key": "endpoint-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "extra-unstable": {
+            "must": [
+              {
+                "Description": {
+                  "Name": "prevent a port-start and -end having negative range",
+                  "Source": {
+                    "Argument": "prevent a port-start and -end having negative range",
+                    "HasArgument": true,
+                    "Keyword": "description"
+                  }
+                },
+                "ErrorMessage": {
+                  "Name": "port-start must be less than or equal to port-end",
+                  "Source": {
+                    "Argument": "port-start must be less than or equal to port-end",
+                    "HasArgument": true,
+                    "Keyword": "error-message"
+                  }
+                },
+                "Name": "number(./app:port-start) \u003c= number(./app:port-end)"
+              }
+            ]
+          },
+          "Annotation": {
+            "schemapath": "/onf-application/application/endpoint",
+            "structname": "OnfApplication_Application_Endpoint"
+          }
+        }
+      },
+      "Key": "application-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-application/application",
+        "structname": "OnfApplication_Application"
+      }
+    },
+    "site": {
+      "Name": "site",
+      "Description": "List of site",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "site",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "site"
+        }
+      },
+      "Dir": {
+        "connectivity-service": {
+          "Name": "connectivity-service",
+          "Description": "Connectivity to the mobile core",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "core-4g": {
+              "Name": "core-4g",
+              "Description": "The 4g core endpoint",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "acc-prometheus-url": {
+                  "Name": "acc-prometheus-url",
+                  "Description": "URL of ACC prometheus",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "uri",
+                    "Kind": 18
+                  }
+                },
+                "endpoint": {
+                  "Name": "endpoint",
+                  "Description": "Endpoint URL",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "uri",
+                    "Kind": 18
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/connectivity-service/core-4g",
+                "structname": "OnfSite_Site_ConnectivityService_Core_4G"
+              }
+            },
+            "core-5g": {
+              "Name": "core-5g",
+              "Description": "The 5g core endpoint",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "acc-prometheus-url": {
+                  "Name": "acc-prometheus-url",
+                  "Description": "URL of ACC prometheus",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "uri",
+                    "Kind": 18
+                  }
+                },
+                "endpoint": {
+                  "Name": "endpoint",
+                  "Description": "Endpoint URL",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "uri",
+                    "Kind": 18
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/connectivity-service/core-5g",
+                "structname": "OnfSite_Site_ConnectivityService_Core_5G"
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/connectivity-service",
+            "structname": "OnfSite_Site_ConnectivityService"
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "description",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "device": {
+          "Name": "device",
+          "Description": "List of devices",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "device-id": {
+              "Name": "device-id",
+              "Description": "ID for this device.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "device-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "imei": {
+              "Name": "imei",
+              "Description": "IMEI for this device",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "imei",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 14,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 16,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[0-9]{14,16}"
+                ]
+              }
+            },
+            "sim-card": {
+              "Name": "sim-card",
+              "Description": "Link to simcard",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "../../sim-card/sim-id"
+              }
+            },
+            "state": {
+              "Name": "state",
+              "Description": "read only attributes of device",
+              "Kind": 1,
+              "Config": 2,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "connected": {
+                  "Name": "connected",
+                  "Description": "the connected status (Yes|No|Idle)",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18,
+                    "Pattern": [
+                      "Yes|No|Idle"
+                    ]
+                  }
+                },
+                "ip-address": {
+                  "Name": "ip-address",
+                  "Description": "the ip address assigned to the device",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18
+                  }
+                },
+                "last-connected": {
+                  "Name": "last-connected",
+                  "Description": "The time in UTC that the device was last connected",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "date-and-time",
+                    "Kind": 18,
+                    "Pattern": [
+                      "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(Z|[\\+\\-]\\d{2}:\\d{2})"
+                    ]
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/device/state",
+                "structname": "OnfSite_Site_Device_State"
+              }
+            }
+          },
+          "Key": "device-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "extra-unstable": {
+            "unique": [
+              {
+                "Name": "imei",
+                "Source": {
+                  "Argument": "imei",
+                  "HasArgument": true,
+                  "Keyword": "unique"
+                }
+              }
+            ]
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/device",
+            "structname": "OnfSite_Site_Device"
+          }
+        },
+        "device-group": {
+          "Name": "device-group",
+          "Description": "List of device groups",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "device": {
+              "Name": "device",
+              "Description": "list of devices in this device-group",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "device-id": {
+                  "Name": "device-id",
+                  "Description": "Link to device",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../device/device-id"
+                  }
+                },
+                "enable": {
+                  "Name": "enable",
+                  "Description": "Enable this device",
+                  "Default": "true",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "boolean",
+                    "Kind": 11
+                  }
+                }
+              },
+              "Key": "device-id",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/device-group/device",
+                "structname": "OnfSite_Site_DeviceGroup_Device"
+              }
+            },
+            "device-group-id": {
+              "Name": "device-group-id",
+              "Description": "ID for this device group.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "device-group-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "ip-domain": {
+              "Name": "ip-domain",
+              "Description": "Link to ip-domain settings that determine the pool of IP addresses,\nas well as the domain resolver settings to use",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "../../ip-domain/ip-domain-id"
+              }
+            },
+            "mbr": {
+              "Name": "mbr",
+              "Description": "Maximum bitrate",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "downlink": {
+                  "Name": "downlink",
+                  "Description": "Per-device MBR downlink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "uplink": {
+                  "Name": "uplink",
+                  "Description": "Per-device MBR uplink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/device-group/mbr",
+                "structname": "OnfSite_Site_DeviceGroup_Mbr"
+              }
+            },
+            "traffic-class": {
+              "Name": "traffic-class",
+              "Description": "Link to traffic class",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/tc:traffic-class/tc:traffic-class-id"
+              }
+            }
+          },
+          "Key": "device-group-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/device-group",
+            "structname": "OnfSite_Site_DeviceGroup"
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "imsi-definition": {
+          "Name": "imsi-definition",
+          "Description": "container for imsi-defination",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "enterprise": {
+              "Name": "enterprise",
+              "Description": "enterprise-specific identifier",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "ent",
+                "Kind": 7,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 999,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "format": {
+              "Name": "format",
+              "Description": "IMSI format specifier, describes how fields are packed into an IMSI. Must be exactly 15 characters long. For example, CCCNNNEEESSSSSS.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 15,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 15,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "mcc": {
+              "Name": "mcc",
+              "Description": "mobile country code",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "mcc",
+                "Kind": 18,
+                "Pattern": [
+                  "[0-9]{3}"
+                ]
+              }
+            },
+            "mnc": {
+              "Name": "mnc",
+              "Description": "mobile network code",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "mnc",
+                "Kind": 18,
+                "Pattern": [
+                  "[0-9]{2,3}"
+                ]
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/imsi-definition",
+            "structname": "OnfSite_Site_ImsiDefinition"
+          }
+        },
+        "ip-domain": {
+          "Name": "ip-domain",
+          "Description": "List of ip domains",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "admin-status": {
+              "Name": "admin-status",
+              "Description": "administrative status",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "admin-status",
+                "Kind": 18,
+                "Default": "ENABLE",
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 16,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "ENABLE|MAINTENANCE|DISABLE"
+                ]
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "dnn": {
+              "Name": "dnn",
+              "Description": "DNN/APN",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "dnn",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 32,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "dns-primary": {
+              "Name": "dns-primary",
+              "Description": "primary dns server name",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "ip-address",
+                "Kind": 19,
+                "Type": [
+                  {
+                    "Name": "ipv4-address",
+                    "Kind": 18,
+                    "Pattern": [
+                      "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
+                    ]
+                  },
+                  {
+                    "Name": "ipv6-address",
+                    "Kind": 18,
+                    "Pattern": [
+                      "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\\p{N}\\p{L}]+)?",
+                      "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?"
+                    ]
+                  }
+                ]
+              }
+            },
+            "dns-secondary": {
+              "Name": "dns-secondary",
+              "Description": "secondary dns server name",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "ip-address",
+                "Kind": 19,
+                "Type": [
+                  {
+                    "Name": "ipv4-address",
+                    "Kind": 18,
+                    "Pattern": [
+                      "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
+                    ]
+                  },
+                  {
+                    "Name": "ipv6-address",
+                    "Kind": 18,
+                    "Pattern": [
+                      "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\\p{N}\\p{L}]+)?",
+                      "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?"
+                    ]
+                  }
+                ]
+              }
+            },
+            "ip-domain-id": {
+              "Name": "ip-domain-id",
+              "Description": "ID for this ip domain.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "ip-domain-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "mtu": {
+              "Name": "mtu",
+              "Description": "maximum transmission unit",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "mtu",
+                "Kind": 6,
+                "Default": "1492",
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 65535,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "subnet": {
+              "Name": "subnet",
+              "Description": "subnet to allocate ip addresses from",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "ipv4-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))"
+                ]
+              }
+            }
+          },
+          "Key": "ip-domain-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/ip-domain",
+            "structname": "OnfSite_Site_IpDomain"
+          }
+        },
+        "monitoring": {
+          "Name": "monitoring",
+          "Description": "container for monitoring",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "edge-cluster-prometheus-url": {
+              "Name": "edge-cluster-prometheus-url",
+              "Description": "URL of edge cluster prometheus",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "uri",
+                "Kind": 18
+              }
+            },
+            "edge-device": {
+              "Name": "edge-device",
+              "Description": "List of edge monitoring devices",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "description": {
+                  "Name": "description",
+                  "Description": "long description field",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "at",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "at"
+                    }
+                  },
+                  "Type": {
+                    "Name": "description",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 1024,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "display-name": {
+                  "Name": "display-name",
+                  "Description": "display name to use in GUI or CLI",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "at",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "at"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 80,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "edge-device-id": {
+                  "Name": "edge-device-id",
+                  "Description": "Id of edge monitoring device",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "aether-identifier",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 63,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ],
+                    "Pattern": [
+                      "[a-z]([a-z0-9-]?[a-z0-9])*"
+                    ]
+                  }
+                }
+              },
+              "Key": "edge-device-id",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/monitoring/edge-device",
+                "structname": "OnfSite_Site_Monitoring_EdgeDevice"
+              }
+            },
+            "edge-monitoring-prometheus-url": {
+              "Name": "edge-monitoring-prometheus-url",
+              "Description": "URL of monitoring prometheus",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "uri",
+                "Kind": 18
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/monitoring",
+            "structname": "OnfSite_Site_Monitoring"
+          }
+        },
+        "sim-card": {
+          "Name": "sim-card",
+          "Description": "List of sim cards",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "iccid": {
+              "Name": "iccid",
+              "Description": "ICCID for this sim card",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "iccid",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 19,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 22,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[0-9]{18,21}[0-9A-F]"
+                ]
+              }
+            },
+            "imsi": {
+              "Name": "imsi",
+              "Description": "IMSI for this sim card",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "imsi",
+                "Kind": 8,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 18446744073709551615,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "sim-id": {
+              "Name": "sim-id",
+              "Description": "ID for this sim card.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "sim-card-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            }
+          },
+          "Key": "sim-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "extra-unstable": {
+            "unique": [
+              {
+                "Name": "iccid",
+                "Source": {
+                  "Argument": "iccid",
+                  "HasArgument": true,
+                  "Keyword": "unique"
+                }
+              }
+            ]
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/sim-card",
+            "structname": "OnfSite_Site_SimCard"
+          }
+        },
+        "site-id": {
+          "Name": "site-id",
+          "Description": "ID for this site.",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Type": {
+            "Name": "site-id",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 63,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-z]([a-z0-9-]?[a-z0-9])*"
+            ]
+          }
+        },
+        "slice": {
+          "Name": "slice",
+          "Description": "List of Slices",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "connectivity-service": {
+              "Name": "connectivity-service",
+              "Description": "The type of connectivity service 4g/5g to use with the slice",
+              "Default": "5g",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "enumeration",
+                "Kind": 14,
+                "Enum": {}
+              }
+            },
+            "default-behavior": {
+              "Name": "default-behavior",
+              "Description": "Default behavior if no filter rules match",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "behavior",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 20,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "DENY-ALL|ALLOW-ALL|ALLOW-PUBLIC"
+                ]
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "device-group": {
+              "Name": "device-group",
+              "Description": "A list of device groups. Groups will only participate in\nthe Slice if the enable field is set to True",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "device-group": {
+                  "Name": "device-group",
+                  "Description": "Link to device group",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../device-group/device-group-id"
+                  }
+                },
+                "enable": {
+                  "Name": "enable",
+                  "Description": "Enable this device group",
+                  "Default": "true",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "boolean",
+                    "Kind": 11
+                  }
+                }
+              },
+              "Key": "device-group",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/slice/device-group",
+                "structname": "OnfSite_Site_Slice_DeviceGroup"
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "filter": {
+              "Name": "filter",
+              "Description": "A list of applications to allow and/or deny. Rules are executed in\npriority order. The first rule to match will determine the fate\nof the packet.",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "allow": {
+                  "Name": "allow",
+                  "Description": "Allow or deny this application",
+                  "Default": "true",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "boolean",
+                    "Kind": 11
+                  }
+                },
+                "application": {
+                  "Name": "application",
+                  "Description": "Link to application",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/app:application/app:application-id"
+                  }
+                },
+                "priority": {
+                  "Name": "priority",
+                  "Description": "Priority of this application",
+                  "Default": "0",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "priority",
+                    "Kind": 5,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 200,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "Key": "application",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/slice/filter",
+                "structname": "OnfSite_Site_Slice_Filter"
+              }
+            },
+            "mbr": {
+              "Name": "mbr",
+              "Description": "Per slice Maximum Bit Rate",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "downlink": {
+                  "Name": "downlink",
+                  "Description": "Per-Slice MBR downlink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "downlink-burst-size": {
+                  "Name": "downlink-burst-size",
+                  "Description": "Per-Slice Downlink burst size",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "burst",
+                    "Kind": 7,
+                    "Default": "625000",
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 4294967295,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "uplink": {
+                  "Name": "uplink",
+                  "Description": "Per-Slice MBR uplink data rate in bps",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "bitrate",
+                    "Kind": 8,
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 18446744073709551615,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "uplink-burst-size": {
+                  "Name": "uplink-burst-size",
+                  "Description": "Per-Slice Uplink burst size",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "burst",
+                    "Kind": 7,
+                    "Default": "625000",
+                    "Range": [
+                      {
+                        "Min": {
+                          "Value": 0,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 4294967295,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/slice/mbr",
+                "structname": "OnfSite_Site_Slice_Mbr"
+              }
+            },
+            "priority-traffic-rule": {
+              "Name": "priority-traffic-rule",
+              "Description": "List of priority traffic rules",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Dir": {
+                "application": {
+                  "Name": "application",
+                  "Description": "Link to application",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/app:application/app:application-id"
+                  }
+                },
+                "bitrate": {
+                  "Name": "bitrate",
+                  "Description": "Either an GBR or an MBR can be specified, but not both",
+                  "Kind": 5,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Dir": {
+                    "gbr-case": {
+                      "Name": "gbr-case",
+                      "Kind": 4,
+                      "Config": 0,
+                      "Prefix": {
+                        "Name": "site",
+                        "Source": {
+                          "Keyword": "prefix",
+                          "HasArgument": true,
+                          "Argument": "site"
+                        }
+                      },
+                      "Dir": {
+                        "gbr": {
+                          "Name": "gbr",
+                          "Description": "Per-Device per-Application GBR (Guaranteed BitRate) in bps",
+                          "Kind": 1,
+                          "Config": 0,
+                          "Prefix": {
+                            "Name": "site",
+                            "Source": {
+                              "Keyword": "prefix",
+                              "HasArgument": true,
+                              "Argument": "site"
+                            }
+                          },
+                          "Dir": {
+                            "downlink": {
+                              "Name": "downlink",
+                              "Description": "Per-Device per application downlink data rate in bps",
+                              "Kind": 0,
+                              "Config": 0,
+                              "Prefix": {
+                                "Name": "site",
+                                "Source": {
+                                  "Keyword": "prefix",
+                                  "HasArgument": true,
+                                  "Argument": "site"
+                                }
+                              },
+                              "Type": {
+                                "Name": "bitrate",
+                                "Kind": 8,
+                                "Range": [
+                                  {
+                                    "Min": {
+                                      "Value": 0,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    },
+                                    "Max": {
+                                      "Value": 18446744073709551615,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "uplink": {
+                              "Name": "uplink",
+                              "Description": "Per-Device per-Application uplink data rate in bps",
+                              "Kind": 0,
+                              "Config": 0,
+                              "Prefix": {
+                                "Name": "site",
+                                "Source": {
+                                  "Keyword": "prefix",
+                                  "HasArgument": true,
+                                  "Argument": "site"
+                                }
+                              },
+                              "Type": {
+                                "Name": "bitrate",
+                                "Kind": 8,
+                                "Range": [
+                                  {
+                                    "Min": {
+                                      "Value": 0,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    },
+                                    "Max": {
+                                      "Value": 18446744073709551615,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "Annotation": {
+                            "schemapath": "/onf-site/site/slice/priority-traffic-rule/bitrate/gbr-case/gbr",
+                            "structname": "OnfSite_Site_Slice_PriorityTrafficRule_Gbr"
+                          }
+                        }
+                      },
+                      "Annotation": {
+                        "schemapath": "/onf-site/site/slice/priority-traffic-rule/bitrate/gbr-case"
+                      }
+                    },
+                    "mbr-case": {
+                      "Name": "mbr-case",
+                      "Kind": 4,
+                      "Config": 0,
+                      "Prefix": {
+                        "Name": "site",
+                        "Source": {
+                          "Keyword": "prefix",
+                          "HasArgument": true,
+                          "Argument": "site"
+                        }
+                      },
+                      "Dir": {
+                        "mbr": {
+                          "Name": "mbr",
+                          "Description": "Per-Device per-Application MBR (Maximum BitRate) in bps",
+                          "Kind": 1,
+                          "Config": 0,
+                          "Prefix": {
+                            "Name": "site",
+                            "Source": {
+                              "Keyword": "prefix",
+                              "HasArgument": true,
+                              "Argument": "site"
+                            }
+                          },
+                          "Dir": {
+                            "downlink": {
+                              "Name": "downlink",
+                              "Description": "Per-Device per application downlink data rate in bps",
+                              "Kind": 0,
+                              "Config": 0,
+                              "Prefix": {
+                                "Name": "site",
+                                "Source": {
+                                  "Keyword": "prefix",
+                                  "HasArgument": true,
+                                  "Argument": "site"
+                                }
+                              },
+                              "Type": {
+                                "Name": "bitrate",
+                                "Kind": 8,
+                                "Range": [
+                                  {
+                                    "Min": {
+                                      "Value": 0,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    },
+                                    "Max": {
+                                      "Value": 18446744073709551615,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "uplink": {
+                              "Name": "uplink",
+                              "Description": "Per-Device per-Application uplink data rate in bps",
+                              "Kind": 0,
+                              "Config": 0,
+                              "Prefix": {
+                                "Name": "site",
+                                "Source": {
+                                  "Keyword": "prefix",
+                                  "HasArgument": true,
+                                  "Argument": "site"
+                                }
+                              },
+                              "Type": {
+                                "Name": "bitrate",
+                                "Kind": 8,
+                                "Range": [
+                                  {
+                                    "Min": {
+                                      "Value": 0,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    },
+                                    "Max": {
+                                      "Value": 18446744073709551615,
+                                      "FractionDigits": 0,
+                                      "Negative": false
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "Annotation": {
+                            "schemapath": "/onf-site/site/slice/priority-traffic-rule/bitrate/mbr-case/mbr",
+                            "structname": "OnfSite_Site_Slice_PriorityTrafficRule_Mbr"
+                          }
+                        }
+                      },
+                      "Annotation": {
+                        "schemapath": "/onf-site/site/slice/priority-traffic-rule/bitrate/mbr-case"
+                      }
+                    }
+                  },
+                  "Annotation": {
+                    "schemapath": "/onf-site/site/slice/priority-traffic-rule/bitrate"
+                  }
+                },
+                "description": {
+                  "Name": "description",
+                  "Description": "long description field",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "at",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "at"
+                    }
+                  },
+                  "Type": {
+                    "Name": "description",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 1024,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "device": {
+                  "Name": "device",
+                  "Description": "Link to device",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../device/device-id"
+                  }
+                },
+                "display-name": {
+                  "Name": "display-name",
+                  "Description": "display name to use in GUI or CLI",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "at",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "at"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 80,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                "endpoint": {
+                  "Name": "endpoint",
+                  "Description": "Link to endpoint in application",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Mandatory": 1,
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/app:application/app:endpoint/app:endpoint-id"
+                  }
+                },
+                "priority-traffic-rule-id": {
+                  "Name": "priority-traffic-rule-id",
+                  "Description": "ID for this priority traffic class.",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "priority-traffic-rule-id",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 63,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ],
+                    "Pattern": [
+                      "[a-z]([a-z0-9-]?[a-z0-9])*"
+                    ]
+                  }
+                },
+                "traffic-class": {
+                  "Name": "traffic-class",
+                  "Description": "Link to traffic class",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "site",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "site"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "/tc:traffic-class/tc:traffic-class-id"
+                  }
+                }
+              },
+              "Key": "priority-traffic-rule-id",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              },
+              "extra-unstable": {
+                "unique": [
+                  {
+                    "Name": "device endpoint",
+                    "Source": {
+                      "Argument": "device endpoint",
+                      "HasArgument": true,
+                      "Keyword": "unique"
+                    }
+                  }
+                ]
+              },
+              "Annotation": {
+                "schemapath": "/onf-site/site/slice/priority-traffic-rule",
+                "structname": "OnfSite_Site_Slice_PriorityTrafficRule"
+              }
+            },
+            "sd": {
+              "Name": "sd",
+              "Description": "Slice differentiator. Immutable.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "sd",
+                "Kind": 7,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 16777215,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "slice-id": {
+              "Name": "slice-id",
+              "Description": "ID for this slice.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "slice-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "sst": {
+              "Name": "sst",
+              "Description": "Slice/Service type. Immutable.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "sst",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "upf": {
+              "Name": "upf",
+              "Description": "Link to user plane that implements this vcf",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "../../upf/upf-id"
+              }
+            }
+          },
+          "Key": "slice-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/slice",
+            "structname": "OnfSite_Site_Slice"
+          }
+        },
+        "small-cell": {
+          "Name": "small-cell",
+          "Description": "List of small cell addresses",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "address": {
+              "Name": "address",
+              "Description": "Address of small cell",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "host",
+                "Kind": 19,
+                "Type": [
+                  {
+                    "Name": "ip-address",
+                    "Kind": 19,
+                    "Type": [
+                      {
+                        "Name": "ipv4-address",
+                        "Kind": 18,
+                        "Pattern": [
+                          "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
+                        ]
+                      },
+                      {
+                        "Name": "ipv6-address",
+                        "Kind": 18,
+                        "Pattern": [
+                          "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\\p{N}\\p{L}]+)?",
+                          "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Name": "domain-name",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 253,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ],
+                    "Pattern": [
+                      "((([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.)*([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.?)|\\."
+                    ]
+                  }
+                ]
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "enable": {
+              "Name": "enable",
+              "Description": "Enable this small cell",
+              "Default": "true",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "boolean",
+                "Kind": 11
+              }
+            },
+            "small-cell-id": {
+              "Name": "small-cell-id",
+              "Description": "Id of small cell",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "aether-identifier",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            },
+            "tac": {
+              "Name": "tac",
+              "Description": "Type Allocation Code",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "tac",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 4,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 8,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[0-9A-F\\.]*"
+                ]
+              }
+            }
+          },
+          "Key": "small-cell-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/small-cell",
+            "structname": "OnfSite_Site_SmallCell"
+          }
+        },
+        "upf": {
+          "Name": "upf",
+          "Description": "A list of named upfs.",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "site",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "site"
+            }
+          },
+          "Dir": {
+            "address": {
+              "Name": "address",
+              "Description": "Address of UPF",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "host",
+                "Kind": 19,
+                "Type": [
+                  {
+                    "Name": "ip-address",
+                    "Kind": 19,
+                    "Type": [
+                      {
+                        "Name": "ipv4-address",
+                        "Kind": 18,
+                        "Pattern": [
+                          "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?"
+                        ]
+                      },
+                      {
+                        "Name": "ipv6-address",
+                        "Kind": 18,
+                        "Pattern": [
+                          "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\\p{N}\\p{L}]+)?",
+                          "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Name": "domain-name",
+                    "Kind": 18,
+                    "Length": [
+                      {
+                        "Min": {
+                          "Value": 1,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        },
+                        "Max": {
+                          "Value": 253,
+                          "FractionDigits": 0,
+                          "Negative": false
+                        }
+                      }
+                    ],
+                    "Pattern": [
+                      "((([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.)*([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.?)|\\."
+                    ]
+                  }
+                ]
+              }
+            },
+            "config-endpoint": {
+              "Name": "config-endpoint",
+              "Description": "url for configuring the UPF",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "uri",
+                "Kind": 18
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "description",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "at",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "at"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "port": {
+              "Name": "port",
+              "Description": "Port for UPF",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "port-number",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 65535,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "upf-id": {
+              "Name": "upf-id",
+              "Description": "ID for this upf.",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "site",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "site"
+                }
+              },
+              "Type": {
+                "Name": "upf-id",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 63,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-z]([a-z0-9-]?[a-z0-9])*"
+                ]
+              }
+            }
+          },
+          "Key": "upf-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-site/site/upf",
+            "structname": "OnfSite_Site_Upf"
+          }
+        }
+      },
+      "Key": "site-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "extra-unstable": {
+        "must": [
+          {
+            "Description": {
+              "Name": "device-group refers to ip-domain. the DNN in ip-domain cannot\nbe used by more than 1 slice",
+              "Source": {
+                "Argument": "device-group refers to ip-domain. the DNN in ip-domain cannot\nbe used by more than 1 slice",
+                "HasArgument": true,
+                "Keyword": "description"
+              }
+            },
+            "ErrorMessage": {
+              "Name": "a device group cannot be used in more than one slice in a site",
+              "Source": {
+                "Argument": "a device group cannot be used in more than one slice in a site",
+                "HasArgument": true,
+                "Keyword": "error-message"
+              }
+            },
+            "Name": "count(site:slice[set-contains(following-sibling::site:slice/site:device-group/@site:device-group, site:device-group/@site:device-group)]/@site:slice-id) = 0"
+          }
+        ]
+      },
+      "Annotation": {
+        "schemapath": "/onf-site/site",
+        "structname": "OnfSite_Site"
+      }
+    },
+    "template": {
+      "Name": "template",
+      "Description": "List of slice templates",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "tpl",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "tpl"
+        }
+      },
+      "Dir": {
+        "default-behavior": {
+          "Name": "default-behavior",
+          "Description": "Default behavior if no filter rules match",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tpl",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tpl"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "behavior",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 0,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 20,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "DENY-ALL|ALLOW-ALL|ALLOW-PUBLIC"
+            ]
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "description",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "mbr": {
+          "Name": "mbr",
+          "Description": "Per-Slice QOS Settings Maximum Bit Rate",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tpl",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tpl"
+            }
+          },
+          "Dir": {
+            "downlink": {
+              "Name": "downlink",
+              "Description": "Per-Slice MBR downlink data rate in bps",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "tpl",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "tpl"
+                }
+              },
+              "Type": {
+                "Name": "bitrate",
+                "Kind": 8,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 18446744073709551615,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "downlink-burst-size": {
+              "Name": "downlink-burst-size",
+              "Description": "Per-Slice Downlink burst size",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "tpl",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "tpl"
+                }
+              },
+              "Type": {
+                "Name": "burst",
+                "Kind": 7,
+                "Default": "625000",
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 4294967295,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "uplink": {
+              "Name": "uplink",
+              "Description": "Per-Slice MBR uplink data rate in bps",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "tpl",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "tpl"
+                }
+              },
+              "Type": {
+                "Name": "bitrate",
+                "Kind": 8,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 18446744073709551615,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "uplink-burst-size": {
+              "Name": "uplink-burst-size",
+              "Description": "Per-Slice Uplink burst size",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "tpl",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "tpl"
+                }
+              },
+              "Type": {
+                "Name": "burst",
+                "Kind": 7,
+                "Default": "625000",
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 4294967295,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-template/template/mbr",
+            "structname": "OnfTemplate_Template_Mbr"
+          }
+        },
+        "sd": {
+          "Name": "sd",
+          "Description": "Slice differentiator",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tpl",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tpl"
+            }
+          },
+          "Type": {
+            "Name": "sd",
+            "Kind": 7,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 0,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 16777215,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "sst": {
+          "Name": "sst",
+          "Description": "Slice/Service type",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tpl",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tpl"
+            }
+          },
+          "Type": {
+            "Name": "sst",
+            "Kind": 5,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 255,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "template-id": {
+          "Name": "template-id",
+          "Description": "ID for this slice template.",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tpl",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tpl"
+            }
+          },
+          "Type": {
+            "Name": "template-id",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 63,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-z]([a-z0-9-]?[a-z0-9])*"
+            ]
+          }
+        }
+      },
+      "Key": "template-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-template/template",
+        "structname": "OnfTemplate_Template"
+      }
+    },
+    "traffic-class": {
+      "Name": "traffic-class",
+      "Description": "List of traffic class",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "tc",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "tc"
+        }
+      },
+      "Dir": {
+        "arp": {
+          "Name": "arp",
+          "Description": "Allocation and Retention Priority. 1 is the highest. 15 is the lowest.",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tc",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tc"
+            }
+          },
+          "Type": {
+            "Name": "arp",
+            "Kind": 5,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 15,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "description",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "at",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "at"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "pdb": {
+          "Name": "pdb",
+          "Description": "PDB",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tc",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tc"
+            }
+          },
+          "Type": {
+            "Name": "pdb",
+            "Kind": 6,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 0,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1000,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "pelr": {
+          "Name": "pelr",
+          "Description": "PELR exponent",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tc",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tc"
+            }
+          },
+          "Type": {
+            "Name": "pelr",
+            "Kind": 1,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 0,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 10,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "qci": {
+          "Name": "qci",
+          "Description": "QOS Class Identifier",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tc",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tc"
+            }
+          },
+          "Type": {
+            "Name": "qci",
+            "Kind": 5,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 32,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "traffic-class-id": {
+          "Name": "traffic-class-id",
+          "Description": "ID for this traffic class.",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "tc",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "tc"
+            }
+          },
+          "Type": {
+            "Name": "traffic-class-id",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 63,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-z]([a-z0-9-]?[a-z0-9])*"
+            ]
+          }
+        }
+      },
+      "Key": "traffic-class-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-traffic-class/traffic-class",
+        "structname": "OnfTrafficClass_TrafficClass"
+      }
+    }
+  },
+  "Annotation": {
+    "isFakeRoot": true,
+    "schemapath": "/",
+    "structname": "Device"
+  }
+}

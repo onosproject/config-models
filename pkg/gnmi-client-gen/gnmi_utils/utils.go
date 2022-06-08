@@ -120,20 +120,6 @@ func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *
 	return req, nil
 }
 
-//func CreateGnmiSetForList(ctx context.Context, data interface{}, t reflect.Type, TbasePathElements []*gnmi.PathElem, target string) (*gnmi.SetRequest, error) {
-//	req := &gnmi.SetRequest{
-//		Update: []*gnmi.Update{},
-//	}
-//
-//	list := data.(t)
-//
-//	for _, item := range list {
-//
-//	}
-//
-//	return req, nil
-//}
-
 // ExtractResponseID - the name of the change will be returned as extension 100
 func ExtractResponseID(gnmiResponse *gnmi.SetResponse) (*string, error) {
 	for _, ext := range gnmiResponse.Extension {

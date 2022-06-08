@@ -1,0 +1,338 @@
+/*
+* SPDX-FileCopyrightText: 2022-present Intel Corporation
+*
+* SPDX-License-Identifier: Apache-2.0
+*/
+
+// Generated via gnmi-gen.go, do NOT edit
+
+package api
+
+import (
+    "context"
+    "fmt"
+    "github.com/onosproject/config-models/pkg/gnmi-client-gen/gnmi_utils"
+    "github.com/openconfig/gnmi/proto/gnmi"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/codes"
+    "google.golang.org/grpc/status"
+    "reflect"
+    "time"
+)
+
+type GnmiClient struct {
+    client gnmi.GNMIClient
+}
+
+func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
+    gnmi_client := gnmi.NewGNMIClient(conn)
+    return &GnmiClient{client: gnmi_client}
+}
+
+func (c *GnmiClient) Get_List(ctx context.Context, target string,
+list_list_leaf string,
+) (*Test_List, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                    Key: map[string]string{
+                        "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.List).Kind() == reflect.Ptr && reflect.ValueOf(st.List).IsNil() {
+        return nil, status.Error(codes.NotFound, "List-not-found")
+    }
+    if res, ok := st.List[list_list_leaf]; ok {
+        return res, nil
+    }
+
+    return nil, status.Error(codes.NotFound, "List-not-found")
+}
+
+
+func (c *GnmiClient) Get_List_List(ctx context.Context, target string,
+) (map[string]*Test_List, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.List).Kind() == reflect.Ptr && reflect.ValueOf(st.List).IsNil() {
+        return nil, status.Error(codes.NotFound, "List-not-found")
+    }
+    return st.List, nil
+}
+
+
+func (c *GnmiClient) Get_List_List_leaf(ctx context.Context, target string,
+list_list_leaf string,
+) (string, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                    Key: map[string]string{
+                        "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+                {
+                    Name: "list_leaf",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_PROTO,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return "", err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return "", err
+    }
+
+    if val.GetStringVal() == "" {
+        return "", status.Error(codes.NotFound, "list_leaf-not-found")
+    }
+
+    return val.GetStringVal(), nil
+}
+func (c *GnmiClient) Get_List_Nestedlist(ctx context.Context, target string,
+list_list_leaf string,
+
+nestedlist_nested_list_leaf uint16,
+) (*Test_Nestedlist, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                    Key: map[string]string{
+                        "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+                {
+                    Name: "nestedlist",
+                    Key: map[string]string{
+                        "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.List[list_list_leaf].Nestedlist).Kind() == reflect.Ptr && reflect.ValueOf(st.List[list_list_leaf].Nestedlist).IsNil() {
+        return nil, status.Error(codes.NotFound, "List_Nestedlist-not-found")
+    }
+    if res, ok := st.List[list_list_leaf].Nestedlist[nestedlist_nested_list_leaf]; ok {
+        return res, nil
+    }
+
+    return nil, status.Error(codes.NotFound, "List_Nestedlist-not-found")
+}
+
+
+func (c *GnmiClient) Get_List_Nestedlist_List(ctx context.Context, target string,
+list_list_leaf string,
+
+) (map[uint16]*Test_Nestedlist, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                    Key: map[string]string{
+                        "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+                {
+                    Name: "nestedlist",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_JSON,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return nil, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return nil, err
+    }
+
+    json := val.GetJsonVal()
+    st := Device{}
+    Unmarshal(json, &st)
+
+    if reflect.ValueOf(st.List[list_list_leaf].Nestedlist).Kind() == reflect.Ptr && reflect.ValueOf(st.List[list_list_leaf].Nestedlist).IsNil() {
+        return nil, status.Error(codes.NotFound, "List_Nestedlist-not-found")
+    }
+    return st.List[list_list_leaf].Nestedlist, nil
+}
+
+
+func (c *GnmiClient) Get_List_Nestedlist_Nested_list_leaf(ctx context.Context, target string,
+list_list_leaf string,
+nestedlist_nested_list_leaf uint16,
+) (uint16, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+    path := []*gnmi.Path{
+        {
+            Elem: []*gnmi.PathElem{
+                {
+                    Name: "list",
+                    Key: map[string]string{
+                        "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+                {
+                    Name: "nestedlist",
+                    Key: map[string]string{
+                        "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+                {
+                    Name: "nested_list_leaf",
+                },
+            },
+            Target: target,
+        },
+    }
+
+    req := &gnmi.GetRequest{
+        Encoding: gnmi.Encoding_PROTO,
+        Path:     path,
+    }
+    res, err := c.client.Get(gnmiCtx, req)
+
+    if err != nil {
+        return 0, err
+    }
+
+    val, err := gnmi_utils.GetResponseUpdate(res)
+
+    if err != nil {
+        return 0, err
+    }
+
+    if uint16(val.GetUintVal()) == 0 {
+        return 0, status.Error(codes.NotFound, "nested_list_leaf-not-found")
+    }
+
+    return uint16(val.GetUintVal()), nil
+}

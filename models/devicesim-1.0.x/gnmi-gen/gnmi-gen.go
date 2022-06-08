@@ -2,7 +2,7 @@
 * SPDX-FileCopyrightText: 2022-present Intel Corporation
 *
 * SPDX-License-Identifier: Apache-2.0
-*/
+ */
 
 package main
 
@@ -17,6 +17,7 @@ import (
 )
 
 const outputFolder = "api"
+
 var outputFile string
 var log = logging.GetLogger("devicesim-gnmi-gen")
 
@@ -32,7 +33,7 @@ func main() {
 
 	schemaMap, err := api.Schema()
 	if err != nil {
-	fmt.Println(err)
+		fmt.Println(err)
 		os.Exit(-1)
 	}
 

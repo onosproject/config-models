@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/SeanCondon/xpath v0.0.0-20220225125014-419de017925c
+	github.com/atomix/atomix-go-framework v0.10.1 // indirect
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.3.0 // indirect
@@ -18,5 +19,6 @@ require (
 	golang.org/x/text v0.3.7
 	google.golang.org/grpc v1.41.0
 	google.golang.org/protobuf v1.27.1
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gotest.tools v2.2.0+incompatible
 )
