@@ -8,44 +8,13 @@ package gnmi_client_gen
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	testdevice "github.com/onosproject/config-models/models/testdevice-1.0.x/api"
 	"github.com/onosproject/config-models/pkg/gnmi-client-gen/testdata"
 	"github.com/openconfig/goyang/pkg/yang"
-	"github.com/openconfig/ygot/ytypes"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
-
-func TestExtractSchema(t *testing.T) {
-	// uncomment this to manually run the test to regenerate the sample schema
-	// not needed otherwise
-	t.Skip()
-	folder := "sampleSchemas"
-
-	testdevice, err := testdevice.Schema()
-	assert.NoError(t, err)
-
-	schemas := map[string]*ytypes.Schema{
-		"testdevice-1": testdevice,
-	}
-
-	for name, schema := range schemas {
-		empJSON, err := json.MarshalIndent(schema.SchemaTree["Device"], "", "  ")
-		assert.NoError(t, err)
-
-		file, err := os.Create(fmt.Sprintf("%s/%s.json", folder, name))
-		if err != nil {
-			t.Fail()
-		}
-		_, err = file.WriteString(string(empJSON))
-		assert.NoError(t, err)
-		defer file.Close()
-	}
-
-}
 
 func TestGenerate(t *testing.T) {
 	type arguments struct {
