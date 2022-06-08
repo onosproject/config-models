@@ -29,26 +29,25 @@ func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) Get_List1(ctx context.Context, target string,
-list1_list1leaf2 uint16,
+func (c *GnmiClient) Get_List1(ctx context.Context, target string, list1_list1leaf2 uint16,
 ) (*Test_List1, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list1",
-                    Key: map[string]string{
-                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
                     },
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -81,22 +80,21 @@ list1_list1leaf2 uint16,
 }
 
 
-func (c *GnmiClient) Get_List1_List(ctx context.Context, target string,
-) (map[uint16]*Test_List1, error) {
+func (c *GnmiClient) Get_List1_List(ctx context.Context, target string, ) (map[uint16]*Test_List1, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list1",
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -125,29 +123,89 @@ func (c *GnmiClient) Get_List1_List(ctx context.Context, target string,
 }
 
 
-func (c *GnmiClient) Get_List1_List1leaf1(ctx context.Context, target string,
-list1_list1leaf2 uint16,
+func (c *GnmiClient) Update_List1(ctx context.Context, target string, list1_list1leaf2 uint16,
+data *Test_List1,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List1(ctx context.Context, target string, list1_list1leaf2 uint16,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+
+func (c *GnmiClient) Get_List1_List1leaf1(ctx context.Context, target string, list1_list1leaf2 uint16,
 ) (string, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list1",
-                    Key: map[string]string{
-                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
                     },
                 },
-                {
-                    Name: "list1leaf1",
+{
+                Name: "list1leaf1",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_PROTO,
@@ -171,29 +229,96 @@ list1_list1leaf2 uint16,
 
     return val.GetStringVal(), nil
 }
-func (c *GnmiClient) Get_List1_List1leaf2(ctx context.Context, target string,
-list1_list1leaf2 uint16,
+
+func (c *GnmiClient) Update_List1_List1leaf1(ctx context.Context, target string, list1_list1leaf2 uint16,
+val *gnmi.TypedValue) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+{
+                Name: "list1leaf1",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List1_List1leaf1(ctx context.Context, target string, list1_list1leaf2 uint16,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+{
+                Name: "list1leaf1",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+func (c *GnmiClient) Get_List1_List1leaf2(ctx context.Context, target string, list1_list1leaf2 uint16,
 ) (uint16, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list1",
-                    Key: map[string]string{
-                        "list1leaf2": fmt.Sprint(list1_list1leaf2),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
                     },
                 },
-                {
-                    Name: "list1leaf2",
+{
+                Name: "list1leaf2",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_PROTO,
@@ -216,4 +341,72 @@ list1_list1leaf2 uint16,
     }
 
     return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Update_List1_List1leaf2(ctx context.Context, target string, list1_list1leaf2 uint16,
+val *gnmi.TypedValue) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+{
+                Name: "list1leaf2",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List1_List1leaf2(ctx context.Context, target string, list1_list1leaf2 uint16,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list1",
+                Key: map[string]string{
+                    "list1leaf2": fmt.Sprint(list1_list1leaf2),
+                    },
+                },
+{
+                Name: "list1leaf2",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
 }

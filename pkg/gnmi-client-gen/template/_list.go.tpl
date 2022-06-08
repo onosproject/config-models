@@ -75,5 +75,38 @@ func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}_List(ctx con
     return st.{{ devicePath $entry true }}, nil
 }
 
+{{/*    NOTE: At the moment we are supporting Update and Delete only for single items in the list. */}}
+func (c *GnmiClient) Update_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false -}} data {{ structName $entry false }},
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false -}}) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
 {{/*    Once the methods for the list have been generated, descend into it*/}}
 {{ template "_entry.go.tpl" $entry }}

@@ -70,6 +70,7 @@ func TestGenerate(t *testing.T) {
 			}
 
 			debug := os.Getenv("DEBUG")
+
 			if debug == "true" {
 				// when debugging keep whitespaces, they might fail the test
 				// but it's more readable

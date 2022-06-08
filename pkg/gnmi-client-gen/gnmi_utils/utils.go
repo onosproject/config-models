@@ -11,10 +11,13 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/proto"
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
+	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/gnmi/proto/gnmi"
 	"github.com/openconfig/gnmi/proto/gnmi_ext"
 	"reflect"
 )
+
+var log = logging.GetLogger("gnmi-utils")
 
 // GetResponseUpdate -- extract the single Update from the GetResponse
 func GetResponseUpdate(gr *gnmi.GetResponse) (*gnmi.TypedValue, error) {
@@ -112,6 +115,10 @@ func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *
 					return nil, err
 				}
 				req.Update = append(req.Update, r.Update...)
+			case reflect.Map:
+				// TODO support is required to support updates for nested lists
+			default:
+				log.Warnw("type-not-supported", "type", val.Kind())
 			}
 
 		}

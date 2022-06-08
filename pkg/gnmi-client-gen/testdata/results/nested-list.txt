@@ -29,26 +29,25 @@ func NewTestGnmiClient(conn *grpc.ClientConn) *GnmiClient {
     return &GnmiClient{client: gnmi_client}
 }
 
-func (c *GnmiClient) Get_List(ctx context.Context, target string,
-list_list_leaf string,
+func (c *GnmiClient) Get_List(ctx context.Context, target string, list_list_leaf string,
 ) (*Test_List, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
-                    Key: map[string]string{
-                        "list_leaf": fmt.Sprint(list_list_leaf),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
                     },
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -81,22 +80,21 @@ list_list_leaf string,
 }
 
 
-func (c *GnmiClient) Get_List_List(ctx context.Context, target string,
-) (map[string]*Test_List, error) {
+func (c *GnmiClient) Get_List_List(ctx context.Context, target string, ) (map[string]*Test_List, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -125,29 +123,89 @@ func (c *GnmiClient) Get_List_List(ctx context.Context, target string,
 }
 
 
-func (c *GnmiClient) Get_List_List_leaf(ctx context.Context, target string,
-list_list_leaf string,
+func (c *GnmiClient) Update_List(ctx context.Context, target string, list_list_leaf string,
+data *Test_List,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List(ctx context.Context, target string, list_list_leaf string,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+
+func (c *GnmiClient) Get_List_List_leaf(ctx context.Context, target string, list_list_leaf string,
 ) (string, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
-                    Key: map[string]string{
-                        "list_leaf": fmt.Sprint(list_list_leaf),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
                     },
                 },
-                {
-                    Name: "list_leaf",
+{
+                Name: "list_leaf",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_PROTO,
@@ -171,34 +229,100 @@ list_list_leaf string,
 
     return val.GetStringVal(), nil
 }
-func (c *GnmiClient) Get_List_Nestedlist(ctx context.Context, target string,
-list_list_leaf string,
 
+func (c *GnmiClient) Update_List_List_leaf(ctx context.Context, target string, list_list_leaf string,
+val *gnmi.TypedValue) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "list_leaf",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List_List_leaf(ctx context.Context, target string, list_list_leaf string,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "list_leaf",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+func (c *GnmiClient) Get_List_Nestedlist(ctx context.Context, target string, list_list_leaf string,
 nestedlist_nested_list_leaf uint16,
 ) (*Test_Nestedlist, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
-                    Key: map[string]string{
-                        "list_leaf": fmt.Sprint(list_list_leaf),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
                     },
                 },
-                {
-                    Name: "nestedlist",
-                    Key: map[string]string{
-                        "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
                     },
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -231,30 +355,28 @@ nestedlist_nested_list_leaf uint16,
 }
 
 
-func (c *GnmiClient) Get_List_Nestedlist_List(ctx context.Context, target string,
-list_list_leaf string,
-
+func (c *GnmiClient) Get_List_Nestedlist_List(ctx context.Context, target string, list_list_leaf string,
 ) (map[uint16]*Test_Nestedlist, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
-                    Key: map[string]string{
-                        "list_leaf": fmt.Sprint(list_list_leaf),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
                     },
                 },
-                {
-                    Name: "nestedlist",
+{
+                Name: "nestedlist",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_JSON,
@@ -283,36 +405,110 @@ list_list_leaf string,
 }
 
 
-func (c *GnmiClient) Get_List_Nestedlist_Nested_list_leaf(ctx context.Context, target string,
-list_list_leaf string,
+func (c *GnmiClient) Update_List_Nestedlist(ctx context.Context, target string, list_list_leaf string,
+nestedlist_nested_list_leaf uint16,
+data *Test_Nestedlist,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List_Nestedlist(ctx context.Context, target string, list_list_leaf string,
+nestedlist_nested_list_leaf uint16,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+
+func (c *GnmiClient) Get_List_Nestedlist_Nested_list_leaf(ctx context.Context, target string, list_list_leaf string,
 nestedlist_nested_list_leaf uint16,
 ) (uint16, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
 
-    path := []*gnmi.Path{
-        {
-            Elem: []*gnmi.PathElem{
-                {
-                    Name: "list",
-                    Key: map[string]string{
-                        "list_leaf": fmt.Sprint(list_list_leaf),
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
                     },
                 },
-                {
-                    Name: "nestedlist",
-                    Key: map[string]string{
-                        "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
                     },
                 },
-                {
-                    Name: "nested_list_leaf",
+{
+                Name: "nested_list_leaf",
                 },
-            },
-            Target: target,
-        },
-    }
+},
+        Target: target,
+    },
+}
 
     req := &gnmi.GetRequest{
         Encoding: gnmi.Encoding_PROTO,
@@ -335,4 +531,86 @@ nestedlist_nested_list_leaf uint16,
     }
 
     return uint16(val.GetUintVal()), nil
+}
+
+func (c *GnmiClient) Update_List_Nestedlist_Nested_list_leaf(ctx context.Context, target string, list_list_leaf string,
+nestedlist_nested_list_leaf uint16,
+val *gnmi.TypedValue) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+{
+                Name: "nested_list_leaf",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Update: []*gnmi.Update{
+            {
+                Path: path[0],
+                Val:  val,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_List_Nestedlist_Nested_list_leaf(ctx context.Context, target string, list_list_leaf string,
+nestedlist_nested_list_leaf uint16,
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+
+path := []*gnmi.Path{
+    {
+        Elem: []*gnmi.PathElem{
+            {
+                Name: "list",
+                Key: map[string]string{
+                    "list_leaf": fmt.Sprint(list_list_leaf),
+                    },
+                },
+{
+                Name: "nestedlist",
+                Key: map[string]string{
+                    "nested_list_leaf": fmt.Sprint(nestedlist_nested_list_leaf),
+                    },
+                },
+{
+                Name: "nested_list_leaf",
+                },
+},
+        Target: target,
+    },
+}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
 }
