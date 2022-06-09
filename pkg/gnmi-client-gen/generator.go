@@ -6,7 +6,6 @@
 
 package gnmi_client_gen
 
-//{{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry -}}
 import (
 	"fmt"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen/template"

@@ -6,7 +6,7 @@
 {{- /*gotype: github.com/openconfig/goyang/pkg/yang.Entry */ -}}
 {{ $entry := . -}}
 
-func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false }}) ({{ structName $entry false }}, error) {
+func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false -}}) ({{ structName $entry false }}, error) {
     gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
     defer cancel()
 
@@ -32,12 +32,44 @@ func (c *GnmiClient) Get_{{ template "_entry_name.go.tpl" $entry }}(ctx context.
     st := Device{}
     Unmarshal(json, &st)
 
-    if reflect.ValueOf(st.{{ devicePath $entry false }}).Kind() == reflect.Ptr && reflect.ValueOf(st.{{ devicePath $entry false }}).IsNil() {
-        return nil, status.Error(codes.NotFound, "{{ template "_entry_name.go.tpl" $entry }}-not-found")
-    }
+    {{/*   Recursively check that the value is set, if not it's a Not Found */}}
+    {{ template "_check_for_value.go.tpl" $entry }}
 
     return st.{{ devicePath $entry false }}, nil
 
+}
+
+func (c *GnmiClient) Update_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false -}} data {{ structName $entry false }},
+) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
+
+    {{ template "_path_keys.go.tpl" $entry }}
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target, pathKeys)
+    if err != nil {
+        return nil, err
+    }
+
+    return c.client.Set(gnmiCtx, req)
+}
+
+func (c *GnmiClient) Delete_{{ template "_entry_name.go.tpl" $entry }}(ctx context.Context, target string, {{ template "_list_keys.go.tpl" dict "entry" $entry "forList" false -}}) (*gnmi.SetResponse, error) {
+    gnmiCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+    defer cancel()
+
+    {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
+
+    req := &gnmi.SetRequest{
+        Delete: []*gnmi.Path{
+            {
+                Elem:   path[0].Elem,
+                Target: target,
+            },
+        },
+    }
+    return c.client.Set(gnmiCtx, req)
 }
 
 {{/*    Once the methods for the container have been generated, descend into it*/}}

@@ -10,14 +10,13 @@
 {{ $has_parent := hasParent $entry -}}
 {{ if $has_parent -}}
 {{ if not (isRoot $entry.Parent) -}}
-{{ template "path_elem" dict "entry" $entry.Parent "forList" false }}
+{{ template "path_elem" dict "entry" $entry.Parent "forList" false -}}
 {{ end -}}
 {{ end -}}
             {
                 Name: "{{ $entry.Name }}",
                 {{ if and (isList $entry) (not .forList) -}}
                 Key: map[string]string{
-
                     {{ range $i, $k := listKeys $entry -}}
                     "{{ $k.Key }}": fmt.Sprint({{ sanitize $k.Name }}),
                     {{ end -}}
@@ -29,7 +28,7 @@
 path := []*gnmi.Path{
     {
         Elem: []*gnmi.PathElem{
-            {{ template "path_elem" . }}
+            {{ template "path_elem" . -}}
         },
         Target: target,
     },
