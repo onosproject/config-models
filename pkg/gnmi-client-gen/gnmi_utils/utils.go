@@ -57,9 +57,17 @@ func hasNonZeroField(sf reflect.StructField, fv reflect.Value) bool {
 	return false
 }
 
+// PathToKey is a mapping to relate a particular path to it's key
+// this is needed to generate the appropriate gnmi.SetRequest for lists
+// as that information is not carried in the model
+// NOTE we might consider to add in the Field Tags via YGOT (making a PR in the future)
+type Path string
+type Key interface{}
+type PathToKey map[Path]Key
+
 // NOTE in order to create the updates we need to iterate over the incoming
 // data structure and create all the updates, unluckily we have to use reflection for that
-func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *gnmi.Path, target string) (*gnmi.SetRequest, error) {
+func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *gnmi.Path, target string, pathKeys PathToKey) (*gnmi.SetRequest, error) {
 	req := &gnmi.SetRequest{
 		Update: []*gnmi.Update{},
 	}
@@ -110,13 +118,41 @@ func CreateGnmiSetForContainer(ctx context.Context, data interface{}, basePath *
 				}
 				req.Update = append(req.Update, up)
 			case reflect.Struct:
-				r, err := CreateGnmiSetForContainer(ctx, val.Interface(), &gnmi.Path{Elem: rpe, Target: target}, target)
+				r, err := CreateGnmiSetForContainer(ctx, val.Interface(), &gnmi.Path{Elem: rpe, Target: target}, target, pathKeys)
 				if err != nil {
 					return nil, err
 				}
 				req.Update = append(req.Update, r.Update...)
 			case reflect.Map:
-				// TODO support is required to support updates for nested lists
+				// if it is a Map (a.k.a YANG list) find the key name
+				key, ok := pathKeys[Path(f_path)]
+				if !ok {
+					return nil, fmt.Errorf("cannot-find-key-name-for-element: %s", f_path)
+				}
+
+				// and then iterate over the elements in the list to create all the necessary updates
+				for _, kv := range val.MapKeys() {
+
+					newParentPath := &gnmi.Path{
+						Elem: append(basePath.Elem, &gnmi.PathElem{
+							Name: f_path,
+							Key: map[string]string{
+								fmt.Sprintf("%s", key): kv.String(),
+							},
+						}),
+						Target: target,
+					}
+					itemInList := val.MapIndex(kv)
+					item := reflect.Indirect(itemInList)
+
+					r, err := CreateGnmiSetForContainer(ctx, item.Interface(), newParentPath, target, pathKeys)
+
+					if err != nil {
+						return nil, err
+					}
+					req.Update = append(req.Update, r.Update...)
+				}
+
 			default:
 				log.Warnw("type-not-supported", "type", val.Kind())
 			}

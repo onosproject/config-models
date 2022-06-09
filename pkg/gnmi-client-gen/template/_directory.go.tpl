@@ -46,7 +46,8 @@ func (c *GnmiClient) Update_{{ template "_entry_name.go.tpl" $entry }}(ctx conte
 
     {{ template "_path.go.tpl" dict "entry" $entry "forList" false }}
 
-    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+    {{ template "_path_keys.go.tpl" $entry }}
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target, pathKeys)
     if err != nil {
         return nil, err
     }

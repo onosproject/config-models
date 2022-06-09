@@ -144,7 +144,14 @@ path := []*gnmi.Path{
     },
 }
 
-    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+
+
+pathKeys := gnmi_utils.PathToKey{
+"nestedlist": "nested_list_leaf",
+
+}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target, pathKeys)
     if err != nil {
         return nil, err
     }
@@ -433,7 +440,12 @@ path := []*gnmi.Path{
     },
 }
 
-    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target)
+
+
+pathKeys := gnmi_utils.PathToKey{
+}
+
+    req, err := gnmi_utils.CreateGnmiSetForContainer(ctx, *data, path[0], target, pathKeys)
     if err != nil {
         return nil, err
     }
