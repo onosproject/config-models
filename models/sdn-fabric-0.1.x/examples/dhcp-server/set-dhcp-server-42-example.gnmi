@@ -1,0 +1,36 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+prefix: <
+    target: 'mars',
+    elem: <name: 'dhcp-server' key:<key:'dhcp-id' value:'dhcp-42' >>
+>
+update: <
+  path: <
+    elem: <name: 'dhcp-id' >
+  >
+  val: <string_val: 'dhcp-42'>
+>
+update: <
+  path: <
+    elem: <name: 'description' >
+  >
+  val: <string_val: 'DHCP server 10.200.0.42'>
+>
+update: <
+  path: <
+    elem: <name: 'display-name' >
+  >
+  val: <string_val: 'DHCP 42'>
+>
+update: <
+  path: <
+    elem: <name: 'address' >
+  >
+  val: <string_val: '10.200.0.42'>
+>
+
+
+

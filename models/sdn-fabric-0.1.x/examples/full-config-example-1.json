@@ -30,6 +30,16 @@
           "vlans": {
             "untagged": 1
           }
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 0,
+          "display-name": "Port 2/0"
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 1,
+          "display-name": "Port 2/1"
         }
       ],
       "role": "leaf",
@@ -94,6 +104,24 @@
           "speeds": [
             "speed-1g",
             "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 0,
+          "display-name": "Port 2/0",
+          "speeds": [
+            "speed-1g",
+            "speed-25g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 1,
+          "display-name": "Port 2/1",
+          "speeds": [
+            "speed-1g",
+            "speed-25g"
           ]
         },
         {

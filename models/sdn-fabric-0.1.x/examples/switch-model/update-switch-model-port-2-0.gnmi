@@ -1,0 +1,35 @@
+prefix:<
+  elem:<name:"switch-model"  key:<key:"switch-model-id"  value:"super-switch-1610">>
+  elem:<name:"port"  key:<key:"cage-number"  value:"2">  key:<key:"channel-number"  value:"0">>
+  target:"mars"
+>
+update:<
+  path:<
+    elem:<name:"cage-number">
+    target:"mars"
+  >
+  val:<uint_val:0>
+>
+update:<
+  path:<
+    elem:<name:"channel-number">
+    target:"mars"
+  >
+  val:<uint_val:0>
+>
+update:<
+  path:<
+    elem:<name:"description">
+    target:"mars"
+  >
+  val:<string_val:"0">
+>
+extension:<
+  registered_ext:<id:111  msg:"\x08\x01">
+>
+extension:<
+  registered_ext:<id:101  msg:"0.1.x">
+>
+extension:<
+  registered_ext:<id:102  msg:"Sdn-Fabric">
+>

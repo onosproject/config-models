@@ -9,7 +9,7 @@ prefix: <
 >
 update: <
   path: <
-    elem: <name: 'model' >
+    elem: <name: 'model-id' >
   >
   val: <string_val: 'super-switch-1610'>
 >

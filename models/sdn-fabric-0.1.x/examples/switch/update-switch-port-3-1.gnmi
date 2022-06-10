@@ -1,0 +1,43 @@
+prefix:<
+  elem:<name:"switch" key:<key:"switch-id" value:"san-jose-edge-tor-1L">>
+  elem:<name:"port" key:<key:"cage-number" value:"3"> key:<key:"channel-number" value:"1">>
+  target:"mars"
+>
+update:<
+  path:<
+    elem:<name:"cage-number">
+    target:"mars"
+  >
+  val:<uint_val:3>
+>
+update:<
+  path:<
+    elem:<name:"channel-number">
+    target:"mars"
+  >
+  val:<uint_val:1>
+>
+update:<
+  path:<
+    elem:<name:"description">
+    target:"mars"
+  >
+  val:<string_val:"1">
+>
+update:<
+  path:<
+    elem:<name:"display-name">
+    target:"mars"
+  >
+  val:<string_val:"1">
+>
+update:<
+  path:<
+    elem:<name:"speed">
+    target:"mars"
+  >
+  val:<string_val:"speed-100g">
+>
+extension:<registered_ext:<id:111 msg:"\x08\x01">>
+extension:<registered_ext:<id:101 msg:"0.1.x">>
+extension:<registered_ext:<id:102 msg:"Sdn-Fabric">>
