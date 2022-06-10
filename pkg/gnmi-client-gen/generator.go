@@ -9,6 +9,7 @@ package gnmi_client_gen
 import (
 	"fmt"
 	t "github.com/onosproject/config-models/pkg/gnmi-client-gen/template"
+	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/genutil"
 	"golang.org/x/text/cases"
@@ -19,6 +20,8 @@ import (
 	"strings"
 	"text/template"
 )
+
+var log = logging.GetLogger("gnmi-client-gen")
 
 const templateFile = "gnmi_client.go.tpl"
 
@@ -191,7 +194,9 @@ func goType(entry *yang.Entry) (string, error) {
 		// SYSLOG_FACILITY is generated via YGOT as `type E_OpenconfigSystemLogging_SYSLOG_FACILITY int64`
 		// NOTE that PrefixedName returns :SYSLOG_FACILITY
 		//return entry.Type.IdentityBase.PrefixedName()
-		return "", status.Error(codes.Unimplemented, "yang.Yidentityref type is not supported yet")
+		// not ideal, but for now we'll take it
+		log.Warnw("type is not supported yet", "kind", entry.Type.Kind.String(), "entry-name", entry.Name)
+		return "int64", nil
 	case yang.Yleafref:
 		v, err := findLeafRefType(entry.Type.Path, entry)
 		return v, err
@@ -199,7 +204,8 @@ func goType(entry *yang.Entry) (string, error) {
 		return "string", nil
 	}
 	// not ideal, but for now we'll take it
-	return "", status.Error(codes.Unimplemented, fmt.Sprintf("%s type is not supported yet (entry: %s)", entry.Type.Kind.String(), entry.Name))
+	log.Warnw("type is not supported yet", "kind", entry.Type.Kind.String(), "entry-name", entry.Name)
+	return "interface{}", nil
 }
 
 // extracts the structname from a yang entry
