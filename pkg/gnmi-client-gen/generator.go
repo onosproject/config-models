@@ -345,27 +345,17 @@ func Generate(pluginName string, entry *yang.Entry, output io.Writer) error {
 
 func findLeafRefType(path string, entry *yang.Entry) (string, error) {
 
-	var downwardPath = []string{}
-	var cur_entry = entry
+	var dp []string
+	var curEntry = entry
 
 	// if the path is absolute (eg: /t1:cont1a/t1:list2a/t1:name) go back to the root and then descend
 	if path[0:1] == "/" {
-		dp := strings.Split(path[1:], "/")
+		dp = strings.Split(path[1:], "/")
 
-		// remove the prefix from the pieces
-		for _, p := range dp {
-			// a piece of the path can be ta:cont1a or cont1a
-			k := strings.Split(p, ":")
-			if len(k) > 1 {
-				downwardPath = append(downwardPath, k[1])
-			} else {
-				downwardPath = append(downwardPath, p)
-			}
-		}
 		// go back till the root
 		for {
-			if cur_entry.Parent != nil {
-				cur_entry = cur_entry.Parent
+			if curEntry.Parent != nil {
+				curEntry = curEntry.Parent
 			} else {
 				break
 			}
@@ -376,22 +366,35 @@ func findLeafRefType(path string, entry *yang.Entry) (string, error) {
 		lb := strings.Count(path, "../")
 
 		// identify the path to take once we have gone up the tree
-		downwardPath = strings.Split(strings.ReplaceAll(path, "../", ""), "/")
+		dp = strings.Split(strings.ReplaceAll(path, "../", ""), "/")
 
 		// this is the entry we are moving to
 
 		for i := 0; i < lb; i++ {
 			// we're going up the tree till it's needed
-			cur_entry = cur_entry.Parent
+			curEntry = curEntry.Parent
 		}
 
 	}
+
+	var downwardPath = []string{}
+	// remove the prefix from the pieces
+	for _, p := range dp {
+		// a piece of the path can be ta:cont1a or cont1a
+		k := strings.Split(p, ":")
+		if len(k) > 1 {
+			downwardPath = append(downwardPath, k[1])
+		} else {
+			downwardPath = append(downwardPath, p)
+		}
+	}
+
 	for _, k := range downwardPath {
 		// and then descending to the leafref path
-		cur_entry = cur_entry.Dir[k]
+		curEntry = curEntry.Dir[k]
 	}
 
 	// not simply convert the type
-	return goType(cur_entry)
+	return goType(curEntry)
 
 }
