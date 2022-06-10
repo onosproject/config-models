@@ -6,11 +6,12 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+ENCODING=${ENCODING:=PROTO}
 CERTS=../../../../onos-cli/pkg/certs
-GNMI_ARGS="--address localhost:5150 -timeout 5s -en PROTO -alsologtostderr -insecure -client_crt ${CERTS}/client1.crt -client_key ${CERTS}/client1.key -ca_crt ${CERTS}/onfca.crt"
+GNMI_ARGS="--address localhost:5150 -timeout 5s -en ${ENCODING} -alsologtostderr -insecure -client_crt ${CERTS}/client1.crt -client_key ${CERTS}/client1.key -ca_crt ${CERTS}/onfca.crt"
 
 gnmi_get_files=(
-#switch-model/get-switch-model-example.gnmi // Crashes onos-config
+switch-model/get-switch-model-example.gnmi
 switch-model/get-switch-model-port-1-0-example.gnmi
 switch-model/get-switch-model-port-star-example.gnmi
 switch-model/get-switch-model-ports-example.gnmi

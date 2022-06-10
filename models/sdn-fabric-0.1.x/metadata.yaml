@@ -10,17 +10,17 @@ openAPITargetAlias: fabric-id
 modules:
   - name: onf-switch
     organization: Open Networking Foundation
-    revision: 2022-05-10
+    revision: 2022-05-25
     file: onf-switch@2022-05-25.yang
   - name: onf-switch-model
     organization: Open Networking Foundation
-    revision: 2022-05-10
+    revision: 2022-05-25
     file: onf-switch-model@2022-05-25.yang
   - name: onf-route
     organization: Open Networking Foundation
-    revision: 2022-05-10
+    revision: 2022-05-25
     file: onf-route@2022-05-25.yang
   - name: onf-dhcp-server
     organization: Open Networking Foundation
-    revision: 2022-05-10
+    revision: 2022-05-25
     file: onf-dhcp-server@2022-05-25.yang
