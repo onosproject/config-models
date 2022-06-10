@@ -235,3 +235,128 @@ func Test_devicePath(t *testing.T) {
 		})
 	}
 }
+
+func Test_findLeafRefType(t *testing.T) {
+	type args struct {
+		entry *yang.Entry
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			"leafref-one-level-above",
+			args{
+				entry: &yang.Entry{
+					Parent: &yang.Entry{
+						Name: "parent",
+						Dir: map[string]*yang.Entry{
+							"config": {
+								Name: "config",
+								Dir: map[string]*yang.Entry{
+									"key-leafref": {
+										Name: "key-leafref",
+										Type: &yang.YangType{
+											Kind: yang.Yuint16,
+										},
+									},
+								},
+							},
+						},
+					},
+					Name: "key-leafref",
+					Type: &yang.YangType{
+						Kind: yang.Yleafref,
+						Path: "../config/key-leafref",
+					},
+				},
+			},
+			"uint16",
+			assert.NoError,
+		},
+		{
+			"leafref-absolute-path",
+			args{
+				entry: &yang.Entry{
+					Name:        "id",
+					Description: "Link to list2a names",
+					Type: &yang.YangType{
+						Kind: yang.Yleafref,
+						Path: "/t1:cont1a/t1:list2a/t1:name",
+					},
+					Parent: &yang.Entry{
+						Name: "list4",
+						Parent: &yang.Entry{
+							Name: "cont1a",
+							Parent: &yang.Entry{
+								Name:   "device",
+								Parent: nil,
+								Dir: map[string]*yang.Entry{
+									"cont1a": {
+										Name: "cont1a",
+										Dir: map[string]*yang.Entry{
+											"list2a": {
+												Name: "list2a",
+												Dir: map[string]*yang.Entry{
+													"name": {
+														Name: "name",
+														Type: &yang.YangType{
+															Kind: yang.Ystring,
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"string",
+			assert.NoError,
+		},
+		{
+			"leafref-relative-with-prefix",
+			args{
+				entry: &yang.Entry{
+					Name: "leaf",
+					Type: &yang.YangType{
+						Kind: yang.Yleafref,
+						Path: "../sw:vlan/sw:vlan-id",
+					},
+					Parent: &yang.Entry{
+						Name: "parent",
+						Dir: map[string]*yang.Entry{
+							"vlan": {
+								Name: "vlan",
+								Dir: map[string]*yang.Entry{
+									"vlan-id": {
+										Name: "vlan-id",
+										Type: &yang.YangType{
+											Kind: yang.Yuint16,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"uint16",
+			assert.NoError,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := findLeafRefType(tt.args.entry.Type.Path, tt.args.entry)
+			if !tt.wantErr(t, err, fmt.Sprintf("findLeafRefType(%v, %v)", tt.args.entry.Type.Path, tt.args.entry)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "findLeafRefType(%v, %v)", tt.args.entry.Type.Path, tt.args.entry)
+		})
+	}
+}

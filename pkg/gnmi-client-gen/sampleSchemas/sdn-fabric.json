@@ -1,0 +1,1811 @@
+{
+  "Name": "device",
+  "Kind": 1,
+  "Config": 0,
+  "Dir": {
+    "dhcp-server": {
+      "Name": "dhcp-server",
+      "Description": "A list of DHCP Servers",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "dhcp",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "dhcp"
+        }
+      },
+      "Dir": {
+        "address": {
+          "Name": "address",
+          "Description": "a list of ip addresses",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "dhcp",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "dhcp"
+            }
+          },
+          "Type": {
+            "Name": "ipv4-address-no-zone",
+            "Kind": 18,
+            "Pattern": [
+              "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?",
+              "[0-9\\.]*"
+            ]
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "dhcp-id": {
+          "Name": "dhcp-id",
+          "Description": "The ID of the DHCP Server",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "dhcp",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "dhcp"
+            }
+          },
+          "Type": {
+            "Name": "yang-identifier",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 18446744073709551615,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-zA-Z_][a-zA-Z0-9\\-_.]*",
+              ".|..|[^xX].*|.[^mM].*|..[^lL].*"
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Key": "dhcp-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-dhcp-server/dhcp-server",
+        "structname": "OnfDhcpServer_DhcpServer"
+      }
+    },
+    "route": {
+      "Name": "route",
+      "Description": "A list of routes",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "rt",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "rt"
+        }
+      },
+      "Dir": {
+        "address": {
+          "Name": "address",
+          "Description": "IP address of hop",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "rt",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "rt"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "ip-address-no-zone",
+            "Kind": 19,
+            "Type": [
+              {
+                "Name": "ipv4-address-no-zone",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?",
+                  "[0-9\\.]*"
+                ]
+              },
+              {
+                "Name": "ipv6-address-no-zone",
+                "Kind": 18,
+                "Pattern": [
+                  "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\\p{N}\\p{L}]+)?",
+                  "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?",
+                  "[0-9a-fA-F:\\.]*"
+                ]
+              }
+            ]
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "metric": {
+          "Name": "metric",
+          "Description": "Metric specifies the priority",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "rt",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "rt"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "uint8",
+            "Kind": 5,
+            "Range": [
+              {
+                "Min": {
+                  "Value": 0,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 255,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "prefix": {
+          "Name": "prefix",
+          "Description": "subnet to match packet",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "rt",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "rt"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "ip-prefix",
+            "Kind": 19,
+            "Type": [
+              {
+                "Name": "ipv4-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))"
+                ]
+              },
+              {
+                "Name": "ipv6-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))",
+                  "(([^:]+:){6}(([^:]+:[^:]+)|(.*\\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)"
+                ]
+              }
+            ]
+          }
+        },
+        "route-id": {
+          "Name": "route-id",
+          "Description": "The ID of the route",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "rt",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "rt"
+            }
+          },
+          "Type": {
+            "Name": "yang-identifier",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 18446744073709551615,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-zA-Z_][a-zA-Z0-9\\-_.]*",
+              ".|..|[^xX].*|.[^mM].*|..[^lL].*"
+            ]
+          }
+        }
+      },
+      "Key": "route-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-route/route",
+        "structname": "OnfRoute_Route"
+      }
+    },
+    "switch": {
+      "Name": "switch",
+      "Description": "A managed device in the fabric",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "sw",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "sw"
+        }
+      },
+      "Dir": {
+        "attribute": {
+          "Name": "attribute",
+          "Description": "a map of extra attributes: string-string",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Dir": {
+            "attribute-key": {
+              "Name": "attribute-key",
+              "Description": "the key in a map of attributes",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "yang-identifier",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 40,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-zA-Z_][a-zA-Z0-9\\-_.]*",
+                  ".|..|[^xX].*|.[^mM].*|..[^lL].*"
+                ]
+              }
+            },
+            "value": {
+              "Name": "value",
+              "Description": "the value of attribute-key",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 200,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "attribute-key",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/attribute",
+            "structname": "OnfSwitch_Switch_Attribute"
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "management": {
+          "Name": "management",
+          "Description": "configuration of the management port",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Dir": {
+            "address": {
+              "Name": "address",
+              "Description": "The management IPv4 address",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "ipv4-address-no-zone",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\\p{N}\\p{L}]+)?",
+                  "[0-9\\.]*"
+                ]
+              }
+            },
+            "port-number": {
+              "Name": "port-number",
+              "Description": "The mangement port number",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "port-number",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 65535,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/management",
+            "structname": "OnfSwitch_Switch_Management"
+          }
+        },
+        "model-id": {
+          "Name": "model-id",
+          "Description": "link to switch model",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "leafref",
+            "Kind": 17,
+            "Path": "/sm:switch-model/sm:switch-model-id"
+          }
+        },
+        "port": {
+          "Name": "port",
+          "Description": "A port in a switch",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Dir": {
+            "cage-number": {
+              "Name": "cage-number",
+              "Description": "reference to the cage-number of the port in the switch model",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/sm:switch-model/sm:port/sm:cage-number"
+              }
+            },
+            "channel-number": {
+              "Name": "channel-number",
+              "Description": "reference to the channel-number of the port in the switch model",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/sm:switch-model/sm:port/sm:channel-number"
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "dhcp-connect-point": {
+              "Name": "dhcp-connect-point",
+              "Description": "Reference to DHCP connect point",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/dhcp:dhcp-server/dhcp:dhcp-id"
+              },
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "speed": {
+              "Name": "speed",
+              "Description": "configured port speed",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "identityref",
+                "Kind": 15,
+                "IdentityBase": {
+                  "Name": "speed",
+                  "Values": [
+                    {
+                      "Name": "speed-40g"
+                    },
+                    {
+                      "Name": "speed-100g"
+                    },
+                    {
+                      "Name": "speed-400g"
+                    },
+                    {
+                      "Name": "speed-25g"
+                    },
+                    {
+                      "Name": "speed-autoneg"
+                    },
+                    {
+                      "Name": "speed-1g"
+                    },
+                    {
+                      "Name": "speed-2-5g"
+                    },
+                    {
+                      "Name": "speed-5g"
+                    },
+                    {
+                      "Name": "speed-10g"
+                    }
+                  ]
+                }
+              }
+            },
+            "state": {
+              "Name": "state",
+              "Description": "Op state attributes",
+              "Kind": 1,
+              "Config": 2,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Dir": {
+                "connected": {
+                  "Name": "connected",
+                  "Description": "status of the port: up|down",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18
+                  }
+                },
+                "observed-speed": {
+                  "Name": "observed-speed",
+                  "Description": "the speed reported by the port",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "string",
+                    "Kind": 18
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-switch/switch/port/state",
+                "structname": "OnfSwitch_Switch_Port_State"
+              }
+            },
+            "vlans": {
+              "Name": "vlans",
+              "Description": "untagged and tagged vlans per port",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Dir": {
+                "tagged": {
+                  "Name": "tagged",
+                  "Description": "multiple tagged vlans",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../sw:vlan/sw:vlan-id"
+                  },
+                  "ListAttr": {
+                    "MinElements": 0,
+                    "MaxElements": 18446744073709551615,
+                    "OrderedBy": null
+                  }
+                },
+                "untagged": {
+                  "Name": "untagged",
+                  "Description": "vlan for untagged packets",
+                  "Default": [
+                    "1"
+                  ],
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../sw:vlan/sw:vlan-id"
+                  }
+                }
+              },
+              "Annotation": {
+                "schemapath": "/onf-switch/switch/port/vlans",
+                "structname": "OnfSwitch_Switch_Port_Vlans"
+              }
+            }
+          },
+          "Key": "cage-number channel-number",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/port",
+            "structname": "OnfSwitch_Switch_Port"
+          }
+        },
+        "role": {
+          "Name": "role",
+          "Description": "The role of the switch in the fabric",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Mandatory": 1,
+          "Type": {
+            "Name": "enumeration",
+            "Kind": 14,
+            "Enum": {}
+          }
+        },
+        "state": {
+          "Name": "state",
+          "Description": "Op state attributes",
+          "Kind": 1,
+          "Config": 2,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Dir": {
+            "connected": {
+              "Name": "connected",
+              "Description": "status of the port: up|down",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18
+              }
+            },
+            "last-connected": {
+              "Name": "last-connected",
+              "Description": "Last known time the switch was connected",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "date-and-time",
+                "Kind": 18,
+                "Pattern": [
+                  "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(Z|[\\+\\-]\\d{2}:\\d{2})"
+                ]
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/state",
+            "structname": "OnfSwitch_Switch_State"
+          }
+        },
+        "switch-id": {
+          "Name": "switch-id",
+          "Description": "unique identifier for the switch",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Type": {
+            "Name": "domain-name",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 253,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "((([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.)*([a-zA-Z0-9_]([a-zA-Z0-9\\-_]){0,61})?[a-zA-Z0-9]\\.?)|\\."
+            ]
+          }
+        },
+        "switch-pair": {
+          "Name": "switch-pair",
+          "Description": "A Switch pairing. A switch can participate on 0-1 pairings",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Dir": {
+            "paired-switch": {
+              "Name": "paired-switch",
+              "Description": "Paired switch identifier. A guard rail will require that\nthis field is present when the pairing-port list has at least 1 elements",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "leafref",
+                "Kind": 17,
+                "Path": "/sw:switch/sw:switch-id"
+              }
+            },
+            "pairing-port": {
+              "Name": "pairing-port",
+              "Description": "The port on the local switch to establish the paired link\nIn future there may be more than 1 port to provide redundancy.\nFor the initial version this is limited to 1",
+              "Kind": 1,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Dir": {
+                "cage-number": {
+                  "Name": "cage-number",
+                  "Description": "Port cage number used for connecting to ",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../sw:port/sw:cage-number"
+                  }
+                },
+                "channel-number": {
+                  "Name": "channel-number",
+                  "Description": "Port channel number used for Switch A",
+                  "Kind": 0,
+                  "Config": 0,
+                  "Prefix": {
+                    "Name": "sw",
+                    "Source": {
+                      "Keyword": "prefix",
+                      "HasArgument": true,
+                      "Argument": "sw"
+                    }
+                  },
+                  "Type": {
+                    "Name": "leafref",
+                    "Kind": 17,
+                    "Path": "../../../sw:port/sw:channel-number"
+                  }
+                }
+              },
+              "Key": "cage-number channel-number",
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 1,
+                "OrderedBy": null
+              },
+              "Annotation": {
+                "schemapath": "/onf-switch/switch/switch-pair/pairing-port",
+                "structname": "OnfSwitch_Switch_SwitchPair_PairingPort"
+              }
+            }
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/switch-pair",
+            "structname": "OnfSwitch_Switch_SwitchPair"
+          }
+        },
+        "vlan": {
+          "Name": "vlan",
+          "Description": "a list of VLANs",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sw",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sw"
+            }
+          },
+          "Dir": {
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "subnet": {
+              "Name": "subnet",
+              "Description": "Network subnets for VLAN",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "ipv4-prefix",
+                "Kind": 18,
+                "Pattern": [
+                  "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))"
+                ]
+              },
+              "ListAttr": {
+                "MinElements": 1,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              }
+            },
+            "vlan-id": {
+              "Name": "vlan-id",
+              "Description": "the VLAN ID",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sw",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sw"
+                }
+              },
+              "Type": {
+                "Name": "vlan",
+                "Kind": 6,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 4096,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "vlan-id",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch/switch/vlan",
+            "structname": "OnfSwitch_Switch_Vlan"
+          }
+        }
+      },
+      "Key": "switch-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-switch/switch",
+        "structname": "OnfSwitch_Switch"
+      }
+    },
+    "switch-model": {
+      "Name": "switch-model",
+      "Description": "A model of switch",
+      "Kind": 1,
+      "Config": 0,
+      "Prefix": {
+        "Name": "sm",
+        "Source": {
+          "Keyword": "prefix",
+          "HasArgument": true,
+          "Argument": "sm"
+        }
+      },
+      "Dir": {
+        "attribute": {
+          "Name": "attribute",
+          "Description": "a map of extra attributes: string-string",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Dir": {
+            "attribute-key": {
+              "Name": "attribute-key",
+              "Description": "the key in a map of attributes",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "yang-identifier",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 40,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ],
+                "Pattern": [
+                  "[a-zA-Z_][a-zA-Z0-9\\-_.]*",
+                  ".|..|[^xX].*|.[^mM].*|..[^lL].*"
+                ]
+              }
+            },
+            "value": {
+              "Name": "value",
+              "Description": "the value of attribute-key",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Mandatory": 1,
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 200,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Key": "attribute-key",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch-model/switch-model/attribute",
+            "structname": "OnfSwitchModel_SwitchModel_Attribute"
+          }
+        },
+        "description": {
+          "Name": "description",
+          "Description": "long description field",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 1024,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "display-name": {
+          "Name": "display-name",
+          "Description": "display name to use in GUI or CLI",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "ft",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "ft"
+            }
+          },
+          "Type": {
+            "Name": "string",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 80,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ]
+          }
+        },
+        "pipeline": {
+          "Name": "pipeline",
+          "Description": "Pipeline configuration - dual or quad",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sm",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sm"
+            }
+          },
+          "Type": {
+            "Name": "enumeration",
+            "Kind": 14,
+            "Enum": {}
+          }
+        },
+        "port": {
+          "Name": "port",
+          "Description": "A port in a switch",
+          "Kind": 1,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sm",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sm"
+            }
+          },
+          "Dir": {
+            "cage-number": {
+              "Name": "cage-number",
+              "Description": "identifier of the cage - physical port on switch",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sm",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sm"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "channel-number": {
+              "Name": "channel-number",
+              "Description": "channel in the port. 0 by default. A splitter can divide the port in to channels",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sm",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sm"
+                }
+              },
+              "Type": {
+                "Name": "uint8",
+                "Kind": 5,
+                "Range": [
+                  {
+                    "Min": {
+                      "Value": 0,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 255,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "description": {
+              "Name": "description",
+              "Description": "long description field",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 1024,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "display-name": {
+              "Name": "display-name",
+              "Description": "display name to use in GUI or CLI",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "ft",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "ft"
+                }
+              },
+              "Type": {
+                "Name": "string",
+                "Kind": 18,
+                "Length": [
+                  {
+                    "Min": {
+                      "Value": 1,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    },
+                    "Max": {
+                      "Value": 80,
+                      "FractionDigits": 0,
+                      "Negative": false
+                    }
+                  }
+                ]
+              }
+            },
+            "speeds": {
+              "Name": "speeds",
+              "Description": "port speed",
+              "Kind": 0,
+              "Config": 0,
+              "Prefix": {
+                "Name": "sm",
+                "Source": {
+                  "Keyword": "prefix",
+                  "HasArgument": true,
+                  "Argument": "sm"
+                }
+              },
+              "Type": {
+                "Name": "identityref",
+                "Kind": 15,
+                "IdentityBase": {
+                  "Name": "speed",
+                  "Values": [
+                    {
+                      "Name": "speed-40g"
+                    },
+                    {
+                      "Name": "speed-100g"
+                    },
+                    {
+                      "Name": "speed-400g"
+                    },
+                    {
+                      "Name": "speed-25g"
+                    },
+                    {
+                      "Name": "speed-autoneg"
+                    },
+                    {
+                      "Name": "speed-1g"
+                    },
+                    {
+                      "Name": "speed-2-5g"
+                    },
+                    {
+                      "Name": "speed-5g"
+                    },
+                    {
+                      "Name": "speed-10g"
+                    }
+                  ]
+                }
+              },
+              "ListAttr": {
+                "MinElements": 0,
+                "MaxElements": 18446744073709551615,
+                "OrderedBy": null
+              }
+            }
+          },
+          "Key": "cage-number channel-number",
+          "ListAttr": {
+            "MinElements": 0,
+            "MaxElements": 18446744073709551615,
+            "OrderedBy": null
+          },
+          "Annotation": {
+            "schemapath": "/onf-switch-model/switch-model/port",
+            "structname": "OnfSwitchModel_SwitchModel_Port"
+          }
+        },
+        "switch-model-id": {
+          "Name": "switch-model-id",
+          "Description": "unique identifier for the switch",
+          "Kind": 0,
+          "Config": 0,
+          "Prefix": {
+            "Name": "sm",
+            "Source": {
+              "Keyword": "prefix",
+              "HasArgument": true,
+              "Argument": "sm"
+            }
+          },
+          "Type": {
+            "Name": "yang-identifier",
+            "Kind": 18,
+            "Length": [
+              {
+                "Min": {
+                  "Value": 1,
+                  "FractionDigits": 0,
+                  "Negative": false
+                },
+                "Max": {
+                  "Value": 100,
+                  "FractionDigits": 0,
+                  "Negative": false
+                }
+              }
+            ],
+            "Pattern": [
+              "[a-zA-Z_][a-zA-Z0-9\\-_.]*",
+              ".|..|[^xX].*|.[^mM].*|..[^lL].*"
+            ]
+          }
+        }
+      },
+      "Key": "switch-model-id",
+      "ListAttr": {
+        "MinElements": 0,
+        "MaxElements": 18446744073709551615,
+        "OrderedBy": null
+      },
+      "Annotation": {
+        "schemapath": "/onf-switch-model/switch-model",
+        "structname": "OnfSwitchModel_SwitchModel"
+      }
+    }
+  },
+  "Annotation": {
+    "isFakeRoot": true,
+    "schemapath": "/",
+    "structname": "Device"
+  }
+}
