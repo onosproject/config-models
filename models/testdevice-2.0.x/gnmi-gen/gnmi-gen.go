@@ -32,7 +32,7 @@ func main() {
 
 	schemaMap, err := api.Schema()
 	if err != nil {
-	fmt.Println(err)
+		fmt.Println(err)
 		os.Exit(-1)
 	}
 

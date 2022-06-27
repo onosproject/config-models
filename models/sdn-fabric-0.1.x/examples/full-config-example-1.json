@@ -1,6 +1,108 @@
 {
+  "switch-model": [
+    {
+      "switch-model-id": "super-switch-1610",
+      "attribute": [
+        {
+          "attribute-key": "form-factor",
+          "value": "pizza-box"
+        },
+        {
+          "attribute-key": "vendor",
+          "value": "Super Switch"
+        },
+        {
+          "attribute-key": "year",
+          "value": "2020"
+        }
+      ],
+      "description": "Super Switch Model 1610 16-port 10Gb on mars fabric",
+      "display-name": "Super Switch 1610",
+      "pipeline": "dual",
+      "port": [
+        {
+          "cage-number": 1,
+          "max-channel": 0,
+          "display-name": "Port 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "description": "This is port 2",
+          "display-name": "Port 2 of switch-model 1",
+          "max-channel": 2,
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 3,
+          "display-name": "Port 3 of switch-model 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 4,
+          "max-channel": 2,
+          "display-name": "Port 4 of switch-model 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        }
+      ]
+    },
+    {
+      "switch-model-id": "super-switch-2100",
+      "attribute": [
+        {
+          "attribute-key": "form-factor",
+          "value": "nic"
+        },
+        {
+          "attribute-key": "vendor",
+          "value": "Super Switch"
+        },
+        {
+          "attribute-key": "year",
+          "value": "2022"
+        }
+      ],
+      "description": "Super Switch Model NIC 100 2-port 100Gb",
+      "display-name": "Super NIC 100",
+      "pipeline": "dual",
+      "port": [
+        {
+          "cage-number": 1,
+          "display-name": "Port 1 of switch-model 2",
+          "speeds": [
+            "speed-1g",
+            "speed-10g",
+            "speed-100g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "max-channel": 0,
+          "display-name": "Port 2 of switch-model 2",
+          "speeds": [
+            "speed-1g",
+            "speed-10g",
+            "speed-100g"
+          ]
+        }
+      ]
+    }
+  ],
   "switch": [
     {
+      "switch-id": "san-jose-edge-tor-1S",
       "attribute": [
         {
           "attribute-key": "latitude",
@@ -11,140 +113,198 @@
           "value": "-121.935509"
         }
       ],
-      "description": "San Jose Edge Top of Rack Leaf 1",
-      "display-name": "SJ TOR L1",
+      "description": "San Jose Edge Top of Rack Spine 1",
+      "display-name": "SJ TOR S1",
       "management": {
-        "address": "117.182.160.150",
+        "address": "117.182.160.11",
         "port-number": 8080
       },
       "model-id": "super-switch-1610",
+      "role": "spine",
       "port": [
         {
           "cage-number": 1,
           "channel-number": 0,
           "display-name": "Port 1/0",
-          "dhcp-connect-point": [
-            "dhcp-1",
-            "dhcp-2"
+          "speed": "speed-1g"
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 2,
+          "display-name": "Port 2/0 on switch 1",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 3,
+          "channel-number": 0,
+          "display-name": "Port 3/0",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 4,
+          "channel-number": 1,
+          "display-name": "Port 4/1",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 4,
+          "channel-number": 0,
+          "display-name": "Port 4/2",
+          "speed": "speed-10g"
+        }
+      ],
+      "vlan": [
+        {
+          "display-name": "VLAN 100",
+          "subnet": [
+            "10.100.20.240/28",
+            "10.100.21.240/28"
           ],
-          "vlans": {
-            "untagged": 1
-          }
+          "vlan-id": 100
+        },
+        {
+          "display-name": "VLAN 101",
+          "subnet": [
+            "10.101.20.240/28",
+            "10.101.21.240/28"
+          ],
+          "vlan-id": 101
+        },
+        {
+          "display-name": "VLAN 102",
+          "subnet": [
+            "10.102.20.240/28",
+            "10.102.21.240/28"
+          ],
+          "vlan-id": 102
+        }
+      ]
+    },
+    {
+      "switch-id": "san-jose-edge-tor-2S",
+      "attribute": [
+        {
+          "attribute-key": "latitude",
+          "value": "37.401083"
+        },
+        {
+          "attribute-key": "longitude",
+          "value": "-121.935509"
+        }
+      ],
+      "description": "San Jose Edge Top of Rack Spine 2",
+      "display-name": "SJ TOR S2",
+      "management": {
+        "address": "117.182.160.12",
+        "port-number": 8080
+      },
+      "model-id": "super-switch-1610",
+      "role": "spine",
+      "port": [
+        {
+          "cage-number": 1,
+          "channel-number": 0,
+          "display-name": "Port 1/0",
+          "speed": "speed-1g"
         },
         {
           "cage-number": 2,
           "channel-number": 0,
-          "display-name": "Port 2/0"
+          "display-name": "Port 2/0 on switch 2",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 3,
+          "channel-number": 1,
+          "display-name": "Port 3/0",
+          "speed": "speed-10g"
+        }
+      ],
+      "vlan": [
+        {
+          "display-name": "VLAN 100",
+          "subnet": [
+            "10.100.20.240/28",
+            "10.100.21.240/28"
+          ],
+          "vlan-id": 100
+        },
+        {
+          "display-name": "VLAN 101",
+          "subnet": [
+            "10.101.20.240/28",
+            "10.101.21.240/28"
+          ],
+          "vlan-id": 101
+        },
+        {
+          "display-name": "VLAN 102",
+          "subnet": [
+            "10.102.20.240/28",
+            "10.102.21.240/28"
+          ],
+          "vlan-id": 102
+        }
+      ]
+    },
+    {
+      "switch-id": "san-jose-edge-nic",
+      "attribute": [
+        {
+          "attribute-key": "latitude",
+          "value": "37.401083"
+        },
+        {
+          "attribute-key": "longitude",
+          "value": "-121.935509"
+        }
+      ],
+      "description": "San Jose Edge NIC 1",
+      "display-name": "SJ NIC 1",
+      "management": {
+        "address": "117.183.160.12",
+        "port-number": 8080
+      },
+      "model-id": "super-switch-2100",
+      "role": "leaf",
+      "port": [
+        {
+          "cage-number": 1,
+          "channel-number": 0,
+          "display-name": "Port 1/0",
+          "speed": "speed-1g"
         },
         {
           "cage-number": 2,
+          "channel-number": 0,
+          "display-name": "Port 2/0 on switch 2",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 3,
           "channel-number": 1,
-          "display-name": "Port 2/1"
-        }
-      ],
-      "role": "leaf",
-      "switch-id": "san-jose-edge-tor-1L",
-      "vlan": [
-        {
-          "description": "the default vlan for untagged packets for some ports",
-          "display-name": "VLAN 1",
-          "subnet": [
-            "10.20.1.0/24"
-          ],
-          "vlan-id": 1
-        },
-        {
-          "display-name": "VLAN 30",
-          "subnet": [
-            "10.20.30.0/24"
-          ],
-          "vlan-id": 30
-        },
-        {
-          "display-name": "VLAN 31",
-          "subnet": [
-            "10.20.31.0/24"
-          ],
-          "vlan-id": 31
-        },
-        {
-          "display-name": "VLAN 32",
-          "subnet": [
-            "10.20.32.0/24"
-          ],
-          "vlan-id": 32
+          "display-name": "Port 3/0",
+          "speed": "speed-10g"
         }
       ]
     }
   ],
-  "switch-model": [
+  "route": [
     {
-      "attribute": [
-        {
-          "attribute-key": "vendor",
-          "value": "Super Switch"
-        },
-        {
-          "attribute-key": "year",
-          "value": "2022"
-        },
-        {
-          "attribute-key": "form-factor",
-          "value": "pizza-box"
-        }
-      ],
-      "description": "Super Switch Model 1610 16-port 10Gb",
-      "display-name": "Super Switch 1610",
-      "pipeline": "dual",
-      "port": [
-        {
-          "cage-number": 1,
-          "channel-number": 0,
-          "display-name": "Port 1/0",
-          "speeds": [
-            "speed-1g",
-            "speed-10g"
-          ]
-        },
-        {
-          "cage-number": 2,
-          "channel-number": 0,
-          "display-name": "Port 2/0",
-          "speeds": [
-            "speed-1g",
-            "speed-25g"
-          ]
-        },
-        {
-          "cage-number": 2,
-          "channel-number": 1,
-          "display-name": "Port 2/1",
-          "speeds": [
-            "speed-1g",
-            "speed-25g"
-          ]
-        },
-        {
-          "cage-number": 5,
-          "channel-number": 0,
-          "display-name": "Port 5/0",
-          "speeds": [
-            "speed-1g",
-            "speed-25g"
-          ]
-        }
-      ],
-      "switch-model-id": "super-switch-1610"
-    }
-  ],
-  "dhcp-server": [
-    {
-      "address": "10.20.30.1",
-      "dhcp-id": "dhcp-1"
+      "address": "192.168.9.200",
+      "description": "Route to 10.200",
+      "display-name": "Route 200",
+      "metric": 20,
+      "prefix": "10.200.0.0/16",
+      "route-id": "route-200"
     },
     {
-      "address": "10.20.40.1",
-      "dhcp-id": "dhcp-2"
+      "address": "192.168.9.201",
+      "description": "Route to 10.201",
+      "display-name": "Route 201",
+      "metric": 20,
+      "prefix": "10.201.0.0/16",
+      "route-id": "route-201"
     }
   ]
 }

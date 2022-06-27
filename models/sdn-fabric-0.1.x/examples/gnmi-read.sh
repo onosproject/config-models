@@ -19,6 +19,7 @@ switch/get-switch-example.gnmi
 switch/get-switch-vlans-display-name-example.gnmi
 switch/get-switch-vlans-example.gnmi
 switch/get-switch-ports-example.gnmi
+switch/get-switch-port-2-0-example.gnmi
 dhcp-server/get-dhcp-example.gnmi
 )
 
