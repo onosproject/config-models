@@ -339,11 +339,6 @@ func Test_XPathEvaluateRelativePath(t *testing.T) {
 			Expected: float64(2),
 		},
 		{
-			Name:     "switch port speed",
-			Path:     "string(sw:speed)",
-			Expected: "speed-40g",
-		},
-		{
 			Name:     "switch port display-name",
 			Path:     "string(ft:display-name)",
 			Expected: "Port 2/0 on switch 1",

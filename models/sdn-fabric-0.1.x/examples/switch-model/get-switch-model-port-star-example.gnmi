@@ -6,7 +6,7 @@
 prefix: <
     target: 'mars',
     elem: <name: 'switch-model' key:<key:'switch-model-id' value:'super-switch-1610' >>
-    elem: <name: 'port' key:<key:'cage-number' value:'*'> key:<key:'channel-number' value:'*'>>
+    elem: <name: 'port' key:<key:'cage-number' value:'*'>>
 >
 path: <
     elem: <name: 'display-name' >

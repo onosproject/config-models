@@ -12,6 +12,7 @@ VERSION           ?= ${BASE_VERSION}-{{ .Name }}-{{ .Version }}
 LATEST_VERSION           ?= ${BASE_VERSION}-{{ .Name }}-latest
 GO_TAG ?= models/{{ .Name }}-{{ .Version }}/v${BASE_VERSION}
 KIND_CLUSTER_NAME ?= kind
+PLATFORM ?= --platform linux/x86_64
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
 
 ## Docker labels. Only set ref and commit date if committed
@@ -48,7 +49,7 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod vendor
 
 image: mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION} .
+	docker build ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION} ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${LATEST_VERSION}
 
 .PHONY: openapi

@@ -5,7 +5,7 @@
 #
 prefix: <
     target: 'mars',
-    elem: <name: 'dhcp-server' key:<key:'dhcp-id' value:'*' >>
+    elem: <name: 'dhcp-server' key:<key:'dhcp-server-id' value:'*' >>
 >
 path: <
     elem: <name: 'display-name'>
