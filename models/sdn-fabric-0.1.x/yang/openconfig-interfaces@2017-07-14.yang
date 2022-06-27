@@ -1,0 +1,187 @@
+module openconfig-interfaces {
+
+  yang-version "1";
+
+  // namespace
+  namespace "http://openconfig.net/yang/interfaces";
+
+  prefix "oc-if";
+
+  // import some basic types
+  import openconfig-types { prefix oc-types; }
+
+  // meta
+  organization "OpenConfig working group";
+
+  contact
+    "OpenConfig working group
+    netopenconfig@googlegroups.com";
+
+  description
+    "Model for managing network interfaces and subinterfaces.  This
+    module also defines convenience types / groupings for other
+    models to create references to interfaces:
+
+      base-interface-ref (type) -  reference to a base interface
+      interface-ref (grouping) -  container for reference to a
+        interface + subinterface
+      interface-ref-state (grouping) - container for read-only
+        (opstate) reference to interface + subinterface
+
+    This model reuses data items defined in the IETF YANG model for
+    interfaces described by RFC 7223 with an alternate structure
+    (particularly for operational state data) and with
+    additional configuration items.
+
+    Portions of this code were derived from IETF RFC 7223.
+    Please reproduce this note if possible.
+
+    IETF code is subject to the following copyright and license:
+    Copyright (c) IETF Trust and the persons identified as authors of
+    the code.
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, is permitted pursuant to, and subject to the license
+    terms contained in, the Simplified BSD License set forth in
+    Section 4.c of the IETF Trust's Legal Provisions Relating
+    to IETF Documents (http://trustee.ietf.org/license-info).";
+
+  oc-ext:openconfig-version "2.0.0";
+
+  revision "2017-07-14" {
+    description
+      "Added Ethernet/IP state data; Add dhcp-client;
+      migrate to OpenConfig types modules; Removed or
+      renamed opstate values";
+    reference "2.0.0";
+  }
+
+  revision "2017-04-03" {
+    description
+      "Update copyright notice.";
+    reference "1.1.1";
+  }
+
+  revision "2016-12-22" {
+    description
+      "Fixes to Ethernet interfaces model";
+    reference "1.1.0";
+  }
+
+
+  // typedef statements
+
+  grouping interface-common-state {
+    description
+      "Operational state data (in addition to intended configuration)
+      at the global level for this interface";
+
+    leaf ifindex {
+      type uint32;
+      description
+        "System assigned number for each interface.  Corresponds to
+        ifIndex object in SNMP Interface MIB";
+      reference
+        "RFC 2863 - The Interfaces Group MIB";
+    }
+
+    leaf admin-status {
+      type enumeration {
+        enum UP {
+          description
+            "Ready to pass packets.";
+        }
+        enum DOWN {
+          description
+            "Not ready to pass packets and not in some test mode.";
+        }
+        enum TESTING {
+          //TODO: This is generally not supported as a configured
+          //admin state, though it's in the standard interfaces MIB.
+          //Consider removing it.
+          description
+            "In some test mode.";
+        }
+      }
+      //TODO:consider converting to an identity to have the
+      //flexibility to remove some values defined by RFC 7223 that
+      //are not used or not implemented consistently.
+      mandatory true;
+      description
+        "The desired state of the interface.  In RFC 7223 this leaf
+        has the same read semantics as ifAdminStatus.  Here, it
+        reflects the administrative state as set by enabling or
+        disabling the interface.";
+      reference
+        "RFC 2863: The Interfaces Group MIB - ifAdminStatus";
+    }
+
+    leaf oper-status {
+      type enumeration {
+        enum UP {
+          value 1;
+          description
+            "Ready to pass packets.";
+        }
+        enum DOWN {
+          value 2;
+          description
+            "The interface does not pass any packets.";
+        }
+        enum TESTING {
+          value 3;
+          description
+            "In some test mode.  No operational packets can
+             be passed.";
+        }
+        enum UNKNOWN {
+          value 4;
+          description
+            "Status cannot be determined for some reason.";
+        }
+        enum DORMANT {
+          value 5;
+          description
+            "Waiting for some external event.";
+        }
+        enum NOT_PRESENT {
+          value 6;
+          description
+            "Some component (typically hardware) is missing.";
+        }
+        enum LOWER_LAYER_DOWN {
+          value 7;
+          description
+            "Down due to state of lower-layer interface(s).";
+        }
+      }
+      //TODO:consider converting to an identity to have the
+      //flexibility to remove some values defined by RFC 7223 that
+      //are not used or not implemented consistently.
+      mandatory true;
+      description
+        "The current operational state of the interface.
+
+         This leaf has the same semantics as ifOperStatus.";
+      reference
+        "RFC 2863: The Interfaces Group MIB - ifOperStatus";
+    }
+
+    leaf last-change {
+      type oc-types:timeticks64;
+      units nanoseconds;
+      description
+        "This timestamp indicates the time of the last state change
+        of the interface (e.g., up-to-down transition). This
+        corresponds to the ifLastChange object in the standard
+        interface MIB.
+
+        The value is the timestamp in nanoseconds relative to
+        the Unix Epoch (Jan 1, 1970 00:00:00 UTC).";
+      reference
+        "RFC 2863: The Interfaces Group MIB - ifLastChange";
+    }
+
+  }
+}

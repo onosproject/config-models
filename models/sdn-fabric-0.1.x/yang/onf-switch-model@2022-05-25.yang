@@ -50,11 +50,12 @@ module onf-switch-model {
           description "Quad pipe";
         }
       }
+      mandatory true;
       description "Pipeline configuration - dual or quad";
     }
 
     list port {
-      key "cage-number channel-number";
+      key "cage-number";
       description "A port in a switch";
 
       leaf cage-number {
@@ -62,9 +63,13 @@ module onf-switch-model {
         description "identifier of the cage - physical port on switch";
       }
 
-      leaf "channel-number" {
-        type uint8;
-        description "channel in the port. 0 by default. A splitter can divide the port in to channels";
+      leaf "max-channel" {
+        type uint8 {
+            range 0..16;
+        }
+        default 0;
+        description "A splitter can divide the port in to channels.
+        The default value 0 indicates the port is not channelizable";
       }
 
       uses st:desc-display-name;
@@ -73,6 +78,7 @@ module onf-switch-model {
         type identityref {
           base st:speed;
         }
+        min-elements 1;
         description "port speed";
       }
     }

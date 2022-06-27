@@ -20,9 +20,9 @@ module onf-dhcp-server {
     }
 
     list dhcp-server {
-      key dhcp-id;
+      key dhcp-server-id;
 
-      leaf dhcp-id {
+      leaf dhcp-server-id {
         type yt:yang-identifier;
         description "The ID of the DHCP Server";
       }
@@ -31,7 +31,8 @@ module onf-dhcp-server {
 
       leaf address {
         type inet:ipv4-address-no-zone;
-        description "a list of ip addresses";
+        mandatory true;
+        description "an ip address";
       }
 
       description "A list of DHCP Servers";

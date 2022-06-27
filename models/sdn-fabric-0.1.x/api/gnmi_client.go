@@ -42,7 +42,7 @@ func (c *GnmiClient) Delete_DhcpServer(ctx context.Context, target string,
 					Name: "dhcp-server",
 					Key: map[string]string{
 
-						"dhcp-id": fmt.Sprint(key),
+						"dhcp-server-id": fmt.Sprint(key),
 					},
 				},
 			},
@@ -170,7 +170,7 @@ func (c *GnmiClient) Get_DhcpServer(ctx context.Context, target string,
 					Name: "dhcp-server",
 					Key: map[string]string{
 
-						"dhcp-id": fmt.Sprint(key),
+						"dhcp-server-id": fmt.Sprint(key),
 					},
 				},
 			},
@@ -360,7 +360,7 @@ func (c *GnmiClient) Update_DhcpServer(ctx context.Context, target string, data 
 				{
 					Name: "dhcp-server",
 					Key: map[string]string{
-						"dhcp-id": fmt.Sprint(*data.DhcpId),
+						"dhcp-server-id": fmt.Sprint(*data.DhcpServerId),
 					},
 				},
 			},
@@ -744,7 +744,7 @@ func (c *GnmiClient) Update_DhcpServer_List(ctx context.Context, target string, 
 			Elem: append(basePathElems, &gnmi.PathElem{
 				Name: "list2a",
 				Key: map[string]string{
-					"dhcp-id": fmt.Sprint(*item.DhcpId),
+					"dhcp-server-id": fmt.Sprint(*item.DhcpServerId),
 				},
 			}),
 			Target: target,

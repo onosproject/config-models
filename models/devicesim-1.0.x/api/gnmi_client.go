@@ -2412,7 +2412,7 @@ func (c *GnmiClient) Delete_System_Aaa_Authentication_AdminUser(ctx context.Cont
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -2526,7 +2526,7 @@ func (c *GnmiClient) Delete_System_Aaa_Authentication_Config(ctx context.Context
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -2562,7 +2562,7 @@ func (c *GnmiClient) Delete_System_Aaa_Authentication_State(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -2598,7 +2598,7 @@ func (c *GnmiClient) Delete_System_Aaa_Authentication_Users(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -4500,7 +4500,7 @@ func (c *GnmiClient) Get_System_Aaa_Authentication_AdminUser(ctx context.Context
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -4674,7 +4674,7 @@ func (c *GnmiClient) Get_System_Aaa_Authentication_Config(ctx context.Context, t
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -4730,7 +4730,7 @@ func (c *GnmiClient) Get_System_Aaa_Authentication_State(ctx context.Context, ta
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -4786,7 +4786,7 @@ func (c *GnmiClient) Get_System_Aaa_Authentication_Users(ctx context.Context, ta
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -7370,7 +7370,7 @@ func (c *GnmiClient) Update_System_Aaa_Authentication_AdminUser(ctx context.Cont
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -7475,7 +7475,7 @@ func (c *GnmiClient) Update_System_Aaa_Authentication_Config(ctx context.Context
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -7508,7 +7508,7 @@ func (c *GnmiClient) Update_System_Aaa_Authentication_State(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -7541,7 +7541,7 @@ func (c *GnmiClient) Update_System_Aaa_Authentication_Users(ctx context.Context,
 					Name: "authentication",
 				},
 				{
-					Name: "users",
+					Name: "config",
 				},
 			},
 			Target: target,
@@ -8945,7 +8945,7 @@ func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminPassword(c
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -8987,7 +8987,7 @@ func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminPasswordHa
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -9029,7 +9029,7 @@ func (c *GnmiClient) Delete_SystemAaaAuthenticationAdminUserStateAdminUsername(c
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -9413,7 +9413,7 @@ func (c *GnmiClient) Delete_SystemNtpConfigEnableNtpAuth(ctx context.Context, ta
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -9449,7 +9449,7 @@ func (c *GnmiClient) Delete_SystemNtpConfigEnabled(ctx context.Context, target s
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -10163,7 +10163,7 @@ func (c *GnmiClient) Delete_SystemSshServerStateEnable(ctx context.Context, targ
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -10199,7 +10199,7 @@ func (c *GnmiClient) Delete_SystemSshServerStateProtocolVersion(ctx context.Cont
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -10235,7 +10235,7 @@ func (c *GnmiClient) Delete_SystemSshServerStateRateLimit(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -10271,7 +10271,7 @@ func (c *GnmiClient) Delete_SystemSshServerStateSessionLimit(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -10307,7 +10307,7 @@ func (c *GnmiClient) Delete_SystemSshServerStateTimeout(ctx context.Context, tar
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -10541,7 +10541,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerConfigEnable(ctx context.Context, 
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10577,7 +10577,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerConfigRateLimit(ctx context.Contex
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10613,7 +10613,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerConfigSessionLimit(ctx context.Con
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10649,7 +10649,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerConfigTimeout(ctx context.Context,
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -10685,7 +10685,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerStateEnable(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -10721,7 +10721,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerStateRateLimit(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -10757,7 +10757,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerStateSessionLimit(ctx context.Cont
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -10793,7 +10793,7 @@ func (c *GnmiClient) Delete_SystemTelnetServerStateTimeout(ctx context.Context, 
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -10943,7 +10943,7 @@ func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminPassword(ctx 
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -10997,7 +10997,7 @@ func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminPasswordHashe
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -11051,7 +11051,7 @@ func (c *GnmiClient) Get_SystemAaaAuthenticationAdminUserStateAdminUsername(ctx 
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -11567,7 +11567,7 @@ func (c *GnmiClient) Get_SystemNtpConfigEnableNtpAuth(ctx context.Context, targe
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -11615,7 +11615,7 @@ func (c *GnmiClient) Get_SystemNtpConfigEnabled(ctx context.Context, target stri
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -12557,7 +12557,7 @@ func (c *GnmiClient) Get_SystemSshServerStateEnable(ctx context.Context, target 
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -12605,7 +12605,7 @@ func (c *GnmiClient) Get_SystemSshServerStateProtocolVersion(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -12653,7 +12653,7 @@ func (c *GnmiClient) Get_SystemSshServerStateRateLimit(ctx context.Context, targ
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -12701,7 +12701,7 @@ func (c *GnmiClient) Get_SystemSshServerStateSessionLimit(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -12749,7 +12749,7 @@ func (c *GnmiClient) Get_SystemSshServerStateTimeout(ctx context.Context, target
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -13067,7 +13067,7 @@ func (c *GnmiClient) Get_SystemTelnetServerConfigEnable(ctx context.Context, tar
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -13115,7 +13115,7 @@ func (c *GnmiClient) Get_SystemTelnetServerConfigRateLimit(ctx context.Context, 
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -13163,7 +13163,7 @@ func (c *GnmiClient) Get_SystemTelnetServerConfigSessionLimit(ctx context.Contex
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -13211,7 +13211,7 @@ func (c *GnmiClient) Get_SystemTelnetServerConfigTimeout(ctx context.Context, ta
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -13259,7 +13259,7 @@ func (c *GnmiClient) Get_SystemTelnetServerStateEnable(ctx context.Context, targ
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -13307,7 +13307,7 @@ func (c *GnmiClient) Get_SystemTelnetServerStateRateLimit(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -13355,7 +13355,7 @@ func (c *GnmiClient) Get_SystemTelnetServerStateSessionLimit(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -13403,7 +13403,7 @@ func (c *GnmiClient) Get_SystemTelnetServerStateTimeout(ctx context.Context, tar
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -13541,7 +13541,7 @@ func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminPassword(c
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -13583,7 +13583,7 @@ func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminPasswordHa
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -13625,7 +13625,7 @@ func (c *GnmiClient) Update_SystemAaaAuthenticationAdminUserStateAdminUsername(c
 					Name: "state",
 				},
 				{
-					Name: "admin-password",
+					Name: "admin-username",
 				},
 			},
 			Target: target,
@@ -14009,7 +14009,7 @@ func (c *GnmiClient) Update_SystemNtpConfigEnableNtpAuth(ctx context.Context, ta
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -14045,7 +14045,7 @@ func (c *GnmiClient) Update_SystemNtpConfigEnabled(ctx context.Context, target s
 					Name: "config",
 				},
 				{
-					Name: "enable-ntp-auth",
+					Name: "ntp-source-address",
 				},
 			},
 			Target: target,
@@ -14759,7 +14759,7 @@ func (c *GnmiClient) Update_SystemSshServerStateEnable(ctx context.Context, targ
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -14795,7 +14795,7 @@ func (c *GnmiClient) Update_SystemSshServerStateProtocolVersion(ctx context.Cont
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -14831,7 +14831,7 @@ func (c *GnmiClient) Update_SystemSshServerStateRateLimit(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -14867,7 +14867,7 @@ func (c *GnmiClient) Update_SystemSshServerStateSessionLimit(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -14903,7 +14903,7 @@ func (c *GnmiClient) Update_SystemSshServerStateTimeout(ctx context.Context, tar
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "rate-limit",
 				},
 			},
 			Target: target,
@@ -15137,7 +15137,7 @@ func (c *GnmiClient) Update_SystemTelnetServerConfigEnable(ctx context.Context, 
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -15173,7 +15173,7 @@ func (c *GnmiClient) Update_SystemTelnetServerConfigRateLimit(ctx context.Contex
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -15209,7 +15209,7 @@ func (c *GnmiClient) Update_SystemTelnetServerConfigSessionLimit(ctx context.Con
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -15245,7 +15245,7 @@ func (c *GnmiClient) Update_SystemTelnetServerConfigTimeout(ctx context.Context,
 					Name: "config",
 				},
 				{
-					Name: "timeout",
+					Name: "enable",
 				},
 			},
 			Target: target,
@@ -15281,7 +15281,7 @@ func (c *GnmiClient) Update_SystemTelnetServerStateEnable(ctx context.Context, t
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -15317,7 +15317,7 @@ func (c *GnmiClient) Update_SystemTelnetServerStateRateLimit(ctx context.Context
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -15353,7 +15353,7 @@ func (c *GnmiClient) Update_SystemTelnetServerStateSessionLimit(ctx context.Cont
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,
@@ -15389,7 +15389,7 @@ func (c *GnmiClient) Update_SystemTelnetServerStateTimeout(ctx context.Context, 
 					Name: "state",
 				},
 				{
-					Name: "timeout",
+					Name: "session-limit",
 				},
 			},
 			Target: target,

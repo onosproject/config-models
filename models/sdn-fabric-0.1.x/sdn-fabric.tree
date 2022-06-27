@@ -13,17 +13,19 @@ module: onf-switch
      |  +--rw port-number?   inet:port-number
      +--rw port* [cage-number channel-number]
      |  +--rw cage-number           -> /sm:switch-model/port/cage-number
-     |  +--rw channel-number        -> /sm:switch-model/port/channel-number
+     |  +--rw channel-number        uint8
      |  +--rw display-name?         string
      |  +--rw description?          string
      |  +--rw speed                 identityref
-     |  +--rw dhcp-connect-point*   -> /dhcp:dhcp-server/dhcp-id
+     |  +--rw dhcp-connect-point*   -> /dhcp:dhcp-server/dhcp-server-id
      |  +--rw vlans
      |  |  +--rw untagged?   -> ../../../vlan/vlan-id
      |  |  +--rw tagged*     -> ../../../vlan/vlan-id
      |  +--ro state
-     |     +--ro observed-speed?   string
-     |     +--ro connected?        string
+     |     +--ro ifindex?        uint32
+     |     +--ro admin-status    enumeration
+     |     +--ro oper-status     enumeration
+     |     +--ro last-change?    oc-types:timeticks64
      +--rw switch-pair
      |  +--rw paired-switch?   -> /switch/switch-id
      |  +--rw pairing-port* [cage-number channel-number]
@@ -46,13 +48,13 @@ module: onf-switch-model
      +--rw attribute* [attribute-key]
      |  +--rw attribute-key    yt:yang-identifier
      |  +--rw value            string
-     +--rw pipeline?          enumeration
-     +--rw port* [cage-number channel-number]
-        +--rw cage-number       uint8
-        +--rw channel-number    uint8
-        +--rw display-name?     string
-        +--rw description?      string
-        +--rw speeds*           identityref
+     +--rw pipeline           enumeration
+     +--rw port* [cage-number]
+        +--rw cage-number     uint8
+        +--rw max-channel?    uint8
+        +--rw display-name?   string
+        +--rw description?    string
+        +--rw speeds*         identityref
 
 module: onf-route
   +--rw route* [route-id]
@@ -64,8 +66,8 @@ module: onf-route
      +--rw metric          uint8
 
 module: onf-dhcp-server
-  +--rw dhcp-server* [dhcp-id]
-     +--rw dhcp-id         yt:yang-identifier
-     +--rw display-name?   string
-     +--rw description?    string
-     +--rw address?        inet:ipv4-address-no-zone
+  +--rw dhcp-server* [dhcp-server-id]
+     +--rw dhcp-server-id    yt:yang-identifier
+     +--rw display-name?     string
+     +--rw description?      string
+     +--rw address           inet:ipv4-address-no-zone

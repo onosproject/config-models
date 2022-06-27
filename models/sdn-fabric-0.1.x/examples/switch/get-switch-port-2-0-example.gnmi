@@ -1,0 +1,13 @@
+#
+# SPDX-FileCopyrightText: 2022-present Intel Corporation
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+prefix: <
+    target: 'mars',
+    elem: <name: 'switch' key:<key:'switch-id' value:'san-jose-edge-tor-1L' >>
+    elem: <name: 'port' key:<key:'cage-number' value:'2'> key:<key:'channel-number' value:'0'>>
+>
+path: <
+    elem: <name: 'vlans'>
+>
