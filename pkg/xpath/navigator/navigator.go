@@ -35,15 +35,18 @@ type XpathEvaluate struct {
 
 // YangNodeNavigator - implements xpath.NodeNavigator
 type YangNodeNavigator struct {
-	root, curr *yang.Entry
+	root, curr, this *yang.Entry
+	ignoreNamespace  bool
 }
 
 var log = logging.GetLogger("config-model", "navigator")
 
-func NewYangNodeNavigator(root *yang.Entry, device ygot.ValidatedGoStruct) xpath.NodeNavigator {
+func NewYangNodeNavigator(root *yang.Entry, device ygot.ValidatedGoStruct, ignoreNamespace bool) xpath.NodeNavigator {
 	nav := &YangNodeNavigator{
-		root: root,
-		curr: root,
+		root:            root,
+		curr:            root,
+		this:            root,
+		ignoreNamespace: ignoreNamespace,
 	}
 
 	addGoStructToYangEntry(root, device)
@@ -324,7 +327,7 @@ func (x *YangNodeNavigator) LocalName() string {
 
 // Prefix returns namespace prefix associated with the current node.
 func (x *YangNodeNavigator) Prefix() string {
-	if x.curr.Prefix != nil {
+	if x.curr.Prefix != nil && !x.ignoreNamespace {
 		return x.curr.Prefix.Name
 	}
 	return ""
@@ -402,6 +405,7 @@ func (x *YangNodeNavigator) Copy() xpath.NodeNavigator {
 	ynnCopy := YangNodeNavigator{
 		root: x.root,
 		curr: x.curr,
+		this: x.this,
 	}
 
 	return &ynnCopy
@@ -515,6 +519,16 @@ func (x *YangNodeNavigator) MoveToPrevious() bool {
 		}
 	}
 	return false
+}
+
+// MarkThis marks the origin of the Select query, so it can be accessed later with $this
+func (x *YangNodeNavigator) MarkThis() {
+	x.this = x.curr
+}
+
+// MoveToThis sets the curr node to what was stored in this
+func (x *YangNodeNavigator) MoveToThis() {
+	x.curr = x.this
 }
 
 // MoveTo moves the YangNodeNavigator to the same position as the specified YangNodeNavigator.
