@@ -17,18 +17,18 @@ type testDevice struct {
 	TestStruct *testDevice_testStruct `path:"testStruct"`
 }
 
-func (td testDevice) IsYANGGoStruct() {
+func (td *testDevice) IsYANGGoStruct() {
 }
 
-func (td testDevice) Validate(...ygot.ValidationOption) error {
+func (td *testDevice) Validate(...ygot.ValidationOption) error {
 	return nil
 }
 
-func (td testDevice) ΛEnumTypeMap() map[string][]reflect.Type {
+func (td *testDevice) ΛEnumTypeMap() map[string][]reflect.Type {
 	return nil
 }
 
-func (td testDevice) ΛBelongingModule() string {
+func (td *testDevice) ΛBelongingModule() string {
 	return ""
 }
 
@@ -82,7 +82,7 @@ func Test_Value(t *testing.T) {
 		},
 	}
 
-	nn := NewYangNodeNavigator(entry, &td)
+	nn := NewYangNodeNavigator(entry, &td, false)
 	assert.NotNil(t, nn)
 	assert.Equal(t, "testDevice", nn.LocalName())
 	assert.Equal(t, "value of testDevice", nn.Value())
@@ -334,7 +334,7 @@ func Test_generateMustError(t *testing.T) {
 		},
 	}
 
-	nn := NewYangNodeNavigator(entry, &td)
+	nn := NewYangNodeNavigator(entry, &td, false)
 	assert.NotNil(t, nn)
 
 	ynn, ok := nn.(*YangNodeNavigator)
