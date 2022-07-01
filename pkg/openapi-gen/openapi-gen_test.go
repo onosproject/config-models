@@ -231,7 +231,6 @@ func Test_newPathItem(t *testing.T) {
 		assert.Assert(t, g != nil)
 		if g != nil {
 			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4 Container", g.Summary)
-			assert.DeepEqual(t, []string{"Parent-1_Parent-2", "Container"}, g.Tags)
 		}
 		assert.Assert(t, pathItem.Post != nil)
 		assert.Equal(t, "POST /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Post.Summary)
