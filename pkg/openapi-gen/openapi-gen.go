@@ -240,7 +240,18 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Default = dirEntry.Type.Default
 				}
 			case yang.Yleafref:
-				schemaVal = openapi3.NewStringSchema()
+				// Lookup type of leafref
+				leafRefType := resolveLeafRefType(dirEntry, dirEntry.Type.Path)
+				switch leafRefType {
+				case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16:
+					schemaVal = openapi3.NewIntegerSchema()
+				case yang.Yuint32, yang.Yint32:
+					schemaVal = openapi3.NewInt32Schema()
+				case yang.Yuint64, yang.Yint64:
+					schemaVal = openapi3.NewInt64Schema()
+				default:
+					schemaVal = openapi3.NewStringSchema()
+				}
 				if dirEntry.Type.Default != "" {
 					schemaVal.Default = dirEntry.Type.Default
 				}
@@ -344,7 +355,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				arr.Items = &openapi3.SchemaRef{
 					Value: schemaVal,
 				}
-				arr.Title = fmt.Sprintf("leaf-list-%s", dirEntry.Name)
+				arr.Title = dirEntry.Name
 				openapiComponents.Schemas[toUnderScore(itemPath)] = &openapi3.SchemaRef{
 					Value: arr,
 				}
@@ -612,7 +623,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						if v.Value.Extensions == nil {
 							v.Value.Extensions = make(map[string]interface{})
 						}
-						v.Value.Extensions["x-go-type"] = "ListKey"
+						if v.Value.Type == "string" {
+							v.Value.Extensions["x-go-type"] = "ListKey"
+						}
 					}
 				}
 			}
@@ -636,8 +649,6 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	if pathType == pathTypeContainer {
 		getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
 	}
-	getOp.Tags = []string{toUnderScore(parentPath)}
-	getOp.Tags = append(getOp.Tags, pathType.string())
 	getOp.Responses = make(openapi3.Responses)
 
 	parameters := make(openapi3.Parameters, 0)
@@ -811,6 +822,10 @@ func yangRange(yangRange yang.YangRange, parentType yang.TypeKind) (*float64, *f
 			if floatFromYnumber(yangRange[i].Max) == math.MaxUint64 {
 				hasMaxMax = true
 			}
+		case yang.Ystring:
+			if floatFromYnumber(yangRange[i].Max) == 18446744073709551615 {
+				hasMaxMax = true
+			}
 		}
 	}
 	if hasMinMin && hasMaxMax {
@@ -869,4 +884,44 @@ func floatFromYnumber(ynumber yang.Number) float64 {
 func additionalPropertyTarget(targetAlias string) string {
 	caser := cases.Title(language.English)
 	return fmt.Sprintf("AdditionalProperty%s", caser.String(targetAlias))
+}
+
+func resolveLeafRefType(leaf *yang.Entry, path string) yang.TypeKind {
+	if strings.HasPrefix(path, "..") {
+		return walkPath(leaf.Parent, path[3:])
+	} else if strings.HasPrefix(path, "//") {
+		fmt.Println("unhandled relative path")
+	} else if strings.HasPrefix(path, "/") {
+		root := resolveLeafRefRoot(leaf)
+		return walkPath(root, path[1:])
+	}
+	return yang.Ystring
+}
+
+func resolveLeafRefRoot(entry *yang.Entry) *yang.Entry {
+	if entry.Parent != nil {
+		return resolveLeafRefRoot(entry.Parent)
+	}
+	return entry
+}
+
+func walkPath(entry *yang.Entry, path string) yang.TypeKind {
+	if path == "" {
+		return entry.Type.Kind
+	} else if strings.HasPrefix(path, "../") {
+		return walkPath(entry.Parent, path[3:])
+	}
+
+	pathParts := strings.Split(path, "/")
+	colonIdx := strings.Index(pathParts[0], ":")
+	prefix := pathParts[0][:colonIdx]
+	name := pathParts[0][colonIdx+1:]
+	childEntry, ok := entry.Dir[name]
+	if !ok {
+		return yang.Ystring
+	}
+	if childEntry.Prefix.Name != prefix {
+		return yang.Ystring
+	}
+	return walkPath(childEntry, strings.Join(pathParts[1:], "/"))
 }

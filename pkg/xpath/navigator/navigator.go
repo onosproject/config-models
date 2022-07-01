@@ -403,9 +403,10 @@ func (x *YangNodeNavigator) Value() string {
 // Copy does a deep copy of the YangNodeNavigator and all its components.
 func (x *YangNodeNavigator) Copy() xpath.NodeNavigator {
 	ynnCopy := YangNodeNavigator{
-		root: x.root,
-		curr: x.curr,
-		this: x.this,
+		root:            x.root,
+		curr:            x.curr,
+		this:            x.this,
+		ignoreNamespace: x.ignoreNamespace,
 	}
 
 	return &ynnCopy
