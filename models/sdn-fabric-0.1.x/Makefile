@@ -11,8 +11,8 @@ BASE_VERSION ?= $(shell cat ./VERSION)
 VERSION           ?= ${BASE_VERSION}-sdn-fabric-0.1.x
 LATEST_VERSION           ?= ${BASE_VERSION}-sdn-fabric-latest
 GO_TAG ?= models/sdn-fabric-0.1.x/v${BASE_VERSION}
-PLATFORM ?= --platform linux/x86_64
 KIND_CLUSTER_NAME ?= kind
+PLATFORM ?= --platform linux/x86_64
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
 
 ## Docker labels. Only set ref and commit date if committed
@@ -56,10 +56,11 @@ image: mod-update # @HELP Build the docker image (available parameters: DOCKER_R
 openapi: mod-update # @HELP Generate OpenApi specs
 	go run openapi/openapi-gen.go -o openapi.yaml
 
-.PHONY: gnmi-gen
-gnmi-gen: mod-update # @HELP Generate gNMI Client
-	go run gnmi-gen/gnmi-gen.go
-	go fmt api/gnmi_client.go
+
+
+
+
+
 
 test: mod-update # @HELP Run the unit tests
 	go test ./...

@@ -56,10 +56,11 @@ image: mod-update # @HELP Build the docker image (available parameters: DOCKER_R
 openapi: mod-update # @HELP Generate OpenApi specs
 	go run openapi/openapi-gen.go -o openapi.yaml
 
-.PHONY: gnmi-gen
-gnmi-gen: mod-update # @HELP Generate gNMI Client
-	go run gnmi-gen/gnmi-gen.go
-	go fmt api/gnmi_client.go
+{{/* the gNMI client generator is on hold at the moment, disabling it for now */}}
+{{/*.PHONY: gnmi-gen*/}}
+{{/*gnmi-gen: mod-update # @HELP Generate gNMI Client*/}}
+{{/*	go run gnmi-gen/gnmi-gen.go*/}}
+{{/*	go fmt api/gnmi_client.go*/}}
 
 test: mod-update # @HELP Run the unit tests
 	go test ./...
