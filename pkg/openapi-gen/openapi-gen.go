@@ -241,7 +241,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			case yang.Yleafref:
 				// Lookup type of leafref
-				leafRefType := resolveLeafRefType(dirEntry, dirEntry.Type.Path)
+				leafRefType := resolveLeafRefType(dirEntry)
 				switch leafRefType {
 				case yang.Yuint8, yang.Yuint16, yang.Yint8, yang.Yint16:
 					schemaVal = openapi3.NewIntegerSchema()
@@ -886,7 +886,8 @@ func additionalPropertyTarget(targetAlias string) string {
 	return fmt.Sprintf("AdditionalProperty%s", caser.String(targetAlias))
 }
 
-func resolveLeafRefType(leaf *yang.Entry, path string) yang.TypeKind {
+func resolveLeafRefType(leaf *yang.Entry) yang.TypeKind {
+	path := leaf.Type.Path
 	if strings.HasPrefix(path, "..") {
 		return walkPath(leaf.Parent, path[3:])
 	} else if strings.HasPrefix(path, "//") {
@@ -914,13 +915,18 @@ func walkPath(entry *yang.Entry, path string) yang.TypeKind {
 
 	pathParts := strings.Split(path, "/")
 	colonIdx := strings.Index(pathParts[0], ":")
-	prefix := pathParts[0][:colonIdx]
-	name := pathParts[0][colonIdx+1:]
+	var prefix, name string
+	if colonIdx == -1 {
+		name = pathParts[0]
+	} else {
+		prefix = pathParts[0][:colonIdx]
+		name = pathParts[0][colonIdx+1:]
+	}
 	childEntry, ok := entry.Dir[name]
 	if !ok {
 		return yang.Ystring
 	}
-	if childEntry.Prefix.Name != prefix {
+	if childEntry.Prefix.Name != prefix && colonIdx > -1 {
 		return yang.Ystring
 	}
 	return walkPath(childEntry, strings.Join(pathParts[1:], "/"))

@@ -342,3 +342,99 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	assert.Equal(t, uint64(20), s.Value.MinLength)
 	assert.Equal(t, uint64(30), *s.Value.MaxLength)
 }
+
+func Test_walkPath(t *testing.T) {
+
+	testDevice := yang.Entry{
+		Name:   "Device",
+		Config: yang.TSTrue,
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testGrandParent := yang.Entry{
+		Name:   "test-grand-parent",
+		Config: yang.TSTrue,
+		Parent: &testDevice,
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testParent := yang.Entry{
+		Name:   "test-parent",
+		Config: yang.TSTrue,
+		Parent: &testGrandParent,
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testUncle := yang.Entry{
+		Name:   "test-uncle",
+		Config: yang.TSTrue,
+		Parent: &testGrandParent,
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testLeaf1 := yang.Entry{
+		Name:        "Leaf1",
+		Description: "Leaf1 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testParent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yint16,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testLeaf2 := yang.Entry{
+		Name:        "Leaf2",
+		Description: "Leaf2 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testParent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../Leaf1",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testCousin := yang.Entry{
+		Name:        "cousin",
+		Description: "Cousin Description",
+		Config:      yang.TSTrue,
+		Parent:      &testUncle,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "/Test:test-grand-parent/Test:test-parent/Test:Leaf1",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	testDevice.Dir["test-grand-parent"] = &testGrandParent
+
+	testGrandParent.Dir["test-parent"] = &testParent
+	testGrandParent.Dir["test-uncle"] = &testUncle
+
+	testParent.Dir["Leaf1"] = &testLeaf1
+	testParent.Dir["Leaf2"] = &testLeaf2
+
+	testUncle.Dir["cousin"] = &testCousin
+
+	kindLeaf2 := resolveLeafRefType(&testLeaf2)
+	assert.Equal(t, "int16", kindLeaf2.String())
+
+	kindLeaf1 := resolveLeafRefType(&testCousin)
+	assert.Equal(t, "int16", kindLeaf1.String())
+}
