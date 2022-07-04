@@ -14,7 +14,7 @@ module onf-test1 {
   }
 
   container cont1a {
-    must "not(t1:list2a[set-contains(following-sibling::t1:list2a/t1:tx-power, t1:tx-power)])" {
+    must "not(list2a[set-contains(following-sibling::list2a/tx-power, tx-power)])" {
         error-message "tx-power must not be repeated in list2a";
         error-app-tag "list2a must";
         description "validation fails if tx-power is not unique within list2a";
@@ -81,7 +81,7 @@ module onf-test1 {
     }
 
     list list2a {
-      must "number(./t1:range-min) <= number(./t1:range-max)" {
+      must "number(./range-min) <= number(./range-max)" {
         error-message "range-min must be less than or equal to range-max";
         error-app-tag "range must";
         description "this is a must statement";

@@ -23,21 +23,14 @@ submodule onf-switch-port {
 
   grouping ports-grouping {
     list port {
-/**     TODO: goyang can only handle one must per yang.Entry
- *            Also the $this variable support is yet to be added to xpath
- *      must "set-contains(/sm:switch-model[@sm:switch-model-id=$this/../sw:model-id]/sm:port/@sm:cage-number, ./@sw:cage-number)" {
- *        error-message "port cage-number must be present in corresponding switch-model/port";
- *        description "port cage-number must be from the corresponding switch-model";
- *      }
- *      must "./@sw:channel-number <= /sm:switch-model[@sm:switch-model-id=$this/../sw:model-id]/sm:port[@sm:cage-number=$this/@sw:cage-number]/sm:max-channel" {
- *        error-message "port channel-number exceeds max-channel of corresponding switch-model/port";
- *        description "port channel-number must be equal or less than max-channel in corresponding switch-model/port";
- *      }
- */
       key "cage-number channel-number";
       description "A port in a switch";
 
       leaf cage-number {
+        must "set-contains(/switch-model[@switch-model-id=$this/../../model-id]/port/@cage-number, .)" {
+          error-message "port cage-number must be present in corresponding switch-model/port";
+          description "port cage-number must be from the corresponding switch-model";
+        }
         type leafref {
           path "/sm:switch-model/sm:port/sm:cage-number";
         }
@@ -45,6 +38,10 @@ submodule onf-switch-port {
       }
 
       leaf channel-number {
+        must "number(.) <= number(/switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/max-channel)" {
+          error-message "port channel-number exceeds max-channel of corresponding switch-model/port";
+          description "port channel-number must be equal or less than max-channel in corresponding switch-model/port";
+        }
         type uint8 {
           range 0..16;
         }
@@ -55,6 +52,12 @@ submodule onf-switch-port {
       uses st:desc-display-name;
 
       leaf speed {
+      /** TODO fix when handling of leaf-list of enum is fixed in YangNodeNavigator
+       * must "set-contains(/switch-model[@switch-model-id=$this/../../model-id]/port/speeds, .)" {
+       *   error-message "port speed must be present in corresponding switch-model/port";
+       *   description "port speed must be from the corresponding switch-model";
+       * }
+       */
         type identityref {
           base st:speed;
         }

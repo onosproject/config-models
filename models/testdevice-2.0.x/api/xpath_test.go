@@ -27,46 +27,46 @@ func Test_XPathSelect(t *testing.T) {
 	}
 	schema.Root = device
 	assert.NotNil(t, device)
-	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, true)
 	assert.NotNil(t, ynn)
 
 	tests := []navigator.XpathSelect{
 		{
 			Name: "test leaf2a",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2a",
+			Path: "/cont1a/cont2a/leaf2a",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 			},
 		},
 		{
 			Name: "test leaf2b",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2b",
+			Path: "/cont1a/cont2a/leaf2b",
 			Expected: []string{
 				"Iter Value: leaf2b: 0.4321",
 			},
 		},
 		{
 			Name:     "test leaf2c",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2c",
+			Path:     "/cont1a/cont2a/leaf2c",
 			Expected: []string{}, // No value, so no response
 		},
 		{
 			Name: "test leaf2g",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2g",
+			Path: "/cont1a/cont2a/leaf2g",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
 			Name: "test descendant-or-self", // `//` is short for `descendant-or-self::` axis
-			Path: "/t1:cont1a/descendant-or-self::t1:leaf2g",
+			Path: "/cont1a/descendant-or-self::leaf2g",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
 			Name: "test leaf2g ancestor(s)",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2g/ancestor::node()",
+			Path: "/cont1a/cont2a/leaf2g/ancestor::node()",
 			Expected: []string{
 				"Iter Value: cont2a: value of cont2a",
 				"Iter Value: cont1a: value of cont1a",
@@ -75,21 +75,21 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf2g parent",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2g/parent::node()",
+			Path: "/cont1a/cont2a/leaf2g/parent::node()",
 			Expected: []string{
 				"Iter Value: cont2a: value of cont2a",
 			},
 		},
 		{
 			Name: "test leaf2g self",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2g/self::node()",
+			Path: "/cont1a/cont2a/leaf2g/self::node()",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
 			Name: "test leaf2g child",
-			Path: "/t1:cont1a/t1:cont2a/child::node()",
+			Path: "/cont1a/cont2a/child::node()",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 				"Iter Value: leaf2b: 0.4321",
@@ -100,7 +100,7 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf2g preceding",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2g/preceding::node()",
+			Path: "/cont1a/cont2a/leaf2g/preceding::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2e: [5 4 3 2 1]",
@@ -110,7 +110,7 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf2g following-sibling",
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2e/following-sibling::node()",
+			Path: "/cont1a/cont2a/leaf2e/following-sibling::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2g: true",
@@ -118,7 +118,7 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf2g following", // Everything follow - all levels
-			Path: "/t1:cont1a/t1:cont2a/t1:leaf2e/following::node()",
+			Path: "/cont1a/cont2a/leaf2e/following::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2g: true",
@@ -159,7 +159,7 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf2g descendant",
-			Path: "/t1:cont1a/t1:cont2a/descendant::node()",
+			Path: "/cont1a/cont2a/descendant::node()",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 				"Iter Value: leaf2b: 0.4321",
@@ -170,14 +170,14 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test leaf1a",
-			Path: "/t1:cont1a/t1:leaf1a",
+			Path: "/cont1a/leaf1a",
 			Expected: []string{
 				"Iter Value: leaf1a: leaf1aval",
 			},
 		},
 		{
 			Name: "test list2a all instances names",
-			Path: "/t1:cont1a/t1:list2a/@t1:name", // List indices are always attributes - referred to with @
+			Path: "/cont1a/list2a/@name", // List indices are always attributes - referred to with @
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
@@ -186,21 +186,21 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test list2a select 2nd instance rx-power",
-			Path: "/t1:cont1a/t1:list2a[@t1:name='l2a2']/t1:rx-power", // select with []
+			Path: "/cont1a/list2a[@name='l2a2']/rx-power", // select with []
 			Expected: []string{
 				"Iter Value: rx-power: 26",
 			},
 		},
 		{
 			Name: "test list2a select 1st instance tx-power",
-			Path: "/t1:cont1a/t1:list2a[@t1:name='l2a1']/t1:tx-power", // select with []
+			Path: "/cont1a/list2a[@name='l2a1']/tx-power", // select with []
 			Expected: []string{
 				"Iter Value: tx-power: 5",
 			},
 		},
 		{
 			Name: "test list2a select instance where tx-power < 10",
-			Path: "/t1:cont1a/t1:list2a[t1:tx-power < 8]/@t1:name", // select with []
+			Path: "/cont1a/list2a[tx-power < 8]/@name", // select with []
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
@@ -208,7 +208,7 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test list2a select instance where tx-power < rx-power",
-			Path: "/t1:cont1a/t1:list2a[number(t1:tx-power) < number(t1:rx-power) -19]/@t1:name", // select with []
+			Path: "/cont1a/list2a[number(tx-power) < number(rx-power) -19]/@name", // select with []
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
@@ -216,14 +216,14 @@ func Test_XPathSelect(t *testing.T) {
 		},
 		{
 			Name: "test index 1 filter",
-			Path: "/t1:cont1b-state/t1:list2b[@t1:index1=11 and @t1:index2=20]/t1:leaf3c",
+			Path: "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c",
 			Expected: []string{
 				"Iter Value: leaf3c: 3c 11-20 test",
 			},
 		},
 		{
 			Name: "test index 2 filter",
-			Path: "/t1:cont1b-state/t1:list2b[@t1:index2=20]/@t1:index1",
+			Path: "/cont1b-state/list2b[@index2=20]/@index1",
 			Expected: []string{
 				"Iter Value: index1: 10",
 				"Iter Value: index1: 11",
@@ -261,80 +261,75 @@ func Test_XPathEvaluate(t *testing.T) {
 	}
 	schema.Root = device
 	assert.NotNil(t, device)
-	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, true)
 	assert.NotNil(t, ynn)
 
 	tests := []navigator.XpathEvaluate{
 		//For leaf2a
 		{
 			Name:     "test check present",
-			Path:     "count(/t1:cont1a/t1:cont2a[t1:leaf2a])",
+			Path:     "count(/cont1a/cont2a[leaf2a])",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test equals leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a = 1",
+			Path:     "/cont1a/cont2a/leaf2a = 1",
 			Expected: true,
 		},
 		{
 			Name:     "test not equals leaf2a",
-			Path:     "not(/t1:cont1a/t1:cont2a/t1:leaf2a = 1)",
+			Path:     "not(/cont1a/cont2a/leaf2a = 1)",
 			Expected: false,
 		},
 		{
 			Name:     "test number value",
-			Path:     "number(/t1:cont1a/t1:cont2a/t1:leaf2a)",
+			Path:     "number(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test string value",
-			Path:     "string(/t1:cont1a/t1:cont2a/t1:leaf2a)",
+			Path:     "string(/cont1a/cont2a/leaf2a)",
 			Expected: "1",
 		},
 		{
 			Name:     "test boolean value",
-			Path:     "boolean(/t1:cont1a/t1:cont2a/t1:leaf2a)",
+			Path:     "boolean(/cont1a/cont2a/leaf2a)",
 			Expected: true,
 		},
 		{
 			Name:     "test name()",
-			Path:     "name(/t1:cont1a/t1:cont2a/t1:leaf2a)",
-			Expected: "t1:leaf2a",
-		},
-		{
-			Name:     "test concat value with name",
-			Path:     "concat(/t1:cont1a/t1:cont2a/t1:leaf2a, name(/t1:cont1a/t1:cont2a/t1:leaf2a))",
-			Expected: "1t1:leaf2a",
-		},
-		{
-			Name:     "test substring of name",
-			Path:     "substring(name(/t1:cont1a/t1:cont2a/t1:leaf2a), 4, 5)",
-			Expected: "leaf2",
-		},
-		{
-			Name:     "test substring-before :",
-			Path:     "substring-before(name(/t1:cont1a/t1:cont2a/t1:leaf2a), ':')",
-			Expected: "t1",
-		},
-		{
-			Name:     "test substring after :",
-			Path:     "substring-after(name(/t1:cont1a/t1:cont2a/t1:leaf2a), ':')",
+			Path:     "name(/cont1a/cont2a/leaf2a)",
 			Expected: "leaf2a",
 		},
 		{
+			Name:     "test concat value with name",
+			Path:     "concat(/cont1a/cont2a/leaf2a, name(/cont1a/cont2a/leaf2a))",
+			Expected: "1leaf2a",
+		},
+		{
+			Name:     "test substring of name",
+			Path:     "substring(name(/cont1a/cont2a/leaf2a), 1, 5)",
+			Expected: "leaf2",
+		},
+		{
+			Name:     "test substring after :",
+			Path:     "substring-after(name(/cont1a/cont2a/leaf2a), 'e')",
+			Expected: "af2a",
+		},
+		{
 			Name:     "test string length",
-			Path:     "string-length(name(/t1:cont1a/t1:cont2a/t1:leaf2a))",
-			Expected: float64(9),
+			Path:     "string-length(name(/cont1a/cont2a/leaf2a))",
+			Expected: float64(6),
 		},
 		{
 			Name:     "test translate",
-			Path:     "translate(name(/t1:cont1a/t1:cont2a/t1:leaf2a), 't1','x1')",
-			Expected: "x1:leaf2a",
+			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'af','fa')",
+			Expected: "lefa2f",
 		},
 		{
 			Name:     "test translate",
-			Path:     "translate(name(/t1:cont1a/t1:cont2a/t1:leaf2a), 'tleaf','TLEAF')",
-			Expected: "T1:LEAF2A",
+			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'tleaf','TLEAF')",
+			Expected: "LEAF2A",
 		},
 		{
 			Name:     "test translate",
@@ -343,257 +338,257 @@ func Test_XPathEvaluate(t *testing.T) {
 		},
 		{
 			Name:     "test lt leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a < 2",
+			Path:     "/cont1a/cont2a/leaf2a < 2",
 			Expected: true,
 		},
 		{
 			Name:     "test lte leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a <= 1",
+			Path:     "/cont1a/cont2a/leaf2a <= 1",
 			Expected: true,
 		},
 		{
 			Name:     "test gte leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a >= 1",
+			Path:     "/cont1a/cont2a/leaf2a >= 1",
 			Expected: true,
 		},
 		{
 			Name:     "test gt leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a > 0",
+			Path:     "/cont1a/cont2a/leaf2a > 0",
 			Expected: true,
 		},
 		{
 			Name:     "test gt 1 false leaf2a",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2a > 1",
+			Path:     "/cont1a/cont2a/leaf2a > 1",
 			Expected: false,
 		},
 		{
 			Name:     "test count leaf2a",
-			Path:     "count(/t1:cont1a/t1:cont2a/t1:leaf2a)",
+			Path:     "count(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test count leaf2a alternate syntax",
-			Path:     "count(/t1:cont1a/t1:cont2a[t1:leaf2a])",
+			Path:     "count(/cont1a/cont2a[leaf2a])",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test leaf2b",
-			Path:     "number(/t1:cont1a/t1:cont2a/t1:leaf2b)",
+			Path:     "number(/cont1a/cont2a/leaf2b)",
 			Expected: 0.4321,
 		},
 		//{ // product() not yet supported
 		//	Name:     "test leaf2b product 10",
-		//	Path:     "product(/t1:cont1a/t1:cont2a/t1:leaf2b, 10)",
+		//	Path:     "product(/cont1a/cont2a/leaf2b, 10)",
 		//	Expected: 4.321,
 		//},
 		{
 			Name:     "test last leaf2g",
-			Path:     "boolean(/t1:cont1a/t1:cont2a[last()])",
+			Path:     "boolean(/cont1a/cont2a[last()])",
 			Expected: true,
 		},
 		{
 			Name:     "test leaf2g or leaf2a",
-			Path:     "string(/t1:cont1a/t1:cont2a/t1:leaf2g) = 'true' or number(/t1:cont1a/t1:cont2a/t1:leaf2a) < 4",
+			Path:     "string(/cont1a/cont2a/leaf2g) = 'true' or number(/cont1a/cont2a/leaf2a) < 4",
 			Expected: true,
 		},
 		{
 			Name:     "test sum leaf2a",
-			Path:     "sum(/t1:cont1a/t1:cont2a/t1:leaf2a)",
+			Path:     "sum(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		// For leaf2b
 		{
 			Name:     "test lt leaf2b",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2b < 0.5",
+			Path:     "/cont1a/cont2a/leaf2b < 0.5",
 			Expected: true,
 		},
 		{
 			Name:     "test eq leaf2b",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2b = 0.4321",
+			Path:     "/cont1a/cont2a/leaf2b = 0.4321",
 			Expected: true,
 		},
 		{
 			Name:     "test eq false leaf2b",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2b = 0.432",
+			Path:     "/cont1a/cont2a/leaf2b = 0.432",
 			Expected: false,
 		},
 		{
 			Name:     "test gt leaf2b",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2b > 0.4",
+			Path:     "/cont1a/cont2a/leaf2b > 0.4",
 			Expected: true,
 		},
 		// For leaf2c - not present
 		{
 			Name:     "test eq leaf2c",
-			Path:     "/t1:cont1a/t1:cont2a/t1:leaf2c = 1",
+			Path:     "/cont1a/cont2a/leaf2c = 1",
 			Expected: false,
 		},
 		{
 			Name:     "test count leaf2c", // Checking that node is not present
-			Path:     "count(/t1:cont1a/t1:cont2a/t1:leaf2c)",
+			Path:     "count(/cont1a/cont2a/leaf2c)",
 			Expected: float64(0),
 		},
 		{
 			Name:     "test count leaf2c alt syntax", // Checking that node is not present
-			Path:     "count(/t1:cont1a/t1:cont2a[t1:leaf2c])",
+			Path:     "count(/cont1a/cont2a[leaf2c])",
 			Expected: float64(0),
 		},
 		// For Leaf1a
 		{
 			Name:     "test eq leaf1a",
-			Path:     "/t1:cont1a/t1:leaf1a = 'leaf1aval'",
+			Path:     "/cont1a/leaf1a = 'leaf1aval'",
 			Expected: true,
 		},
 		{
 			Name:     "test neq leaf1a",
-			Path:     "/t1:cont1a/t1:leaf1a != 'leaf1aval'",
+			Path:     "/cont1a/leaf1a != 'leaf1aval'",
 			Expected: false,
 		},
 		{
 			Name:     "test eq leaf1a",
-			Path:     "/t1:cont1a/t1:leaf1a != 'leaf1avalWrong'",
+			Path:     "/cont1a/leaf1a != 'leaf1avalWrong'",
 			Expected: true,
 		},
 		{
 			Name:     "test count children of cont2a star",
-			Path:     "count(/t1:cont1a/*)",
+			Path:     "count(/cont1a/*)",
 			Expected: float64(5),
 		},
 		{
 			Name:     "test count children of cont2a child",
-			Path:     "count(/t1:cont1a/t1:cont2a/child::node())",
+			Path:     "count(/cont1a/cont2a/child::node())",
 			Expected: float64(5),
 		},
 		// For List2a
 		{
 			Name:     "test count list2a",
-			Path:     "count(/t1:cont1a/t1:list2a)",
+			Path:     "count(/cont1a/list2a)",
 			Expected: float64(3),
 		},
 		{
 			Name:     "test first item list2a",
-			Path:     "string(/t1:cont1a/t1:list2a[1]/@t1:name)",
+			Path:     "string(/cont1a/list2a[1]/@name)",
 			Expected: "l2a1",
 		},
 		{
 			Name:     "test second item list2a",
-			Path:     "string(/t1:cont1a/t1:list2a[2]/@t1:name)",
+			Path:     "string(/cont1a/list2a[2]/@name)",
 			Expected: "l2a2",
 		},
 		{
 			Name:     "test last item list2a",
-			Path:     "string(/t1:cont1a/t1:list2a[last()]/@t1:name)",
+			Path:     "string(/cont1a/list2a[last()]/@name)",
 			Expected: "l2a3",
 		},
 		{
 			Name:     "test sum list2a tx-power",
-			Path:     "sum(/t1:cont1a/t1:list2a/t1:tx-power)",
+			Path:     "sum(/cont1a/list2a/tx-power)",
 			Expected: float64(19),
 		},
 		{
 			Name:     "test sum list2a rx-power",
-			Path:     "sum(/t1:cont1a/t1:list2a/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power part a", // Selecting only 1
-			Path:     "sum(/t1:cont1a/t1:list2a[@t1:name='l2a1']/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a[@name='l2a1']/rx-power)",
 			Expected: float64(25),
 		},
 		{
 			Name:     "test sum list2a rx-power part a or b", // Selecting only 2
-			Path:     "sum(/t1:cont1a/t1:list2a[@t1:name='l2a1' or @t1:name='l2a3']/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a[@name='l2a1' or @name='l2a3']/rx-power)",
 			Expected: float64(52),
 		},
 		{
 			Name:     "test sum list2a rx-power starts-with", // Selects all 3
-			Path:     "sum(/t1:cont1a/t1:list2a[starts-with(@t1:name,'l2a')]/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a[starts-with(@name,'l2a')]/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power contains", // Selects all 3
-			Path:     "sum(/t1:cont1a/t1:list2a[contains(@t1:name,'l2')]/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a[contains(@name,'l2')]/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power ends-with", // Selects all 3
-			Path:     "sum(/t1:cont1a/t1:list2a[ends-with(@t1:name,'a2')]/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a[ends-with(@name,'a2')]/rx-power)",
 			Expected: float64(26),
 		},
 		{
 			Name:     "test position list2a part b only", // Selecting only 1
-			Path:     "position(/t1:cont1a/t1:list2a[@t1:name='l2a2'])",
+			Path:     "position(/cont1a/list2a[@name='l2a2'])",
 			Expected: float64(1),
 		},
 		//{ // max not supported
 		//	Name:     "test max list2a rx-power",
-		//	Path:     "max(/t1:cont1a/t1:list2a/t1:tx-power)",
+		//	Path:     "max(/cont1a/list2a/tx-power)",
 		//	Expected: float64(28),
 		//},
 		{
 			Name:     "test sum list2a tx-power < rx-power",
-			Path:     "sum(/t1:cont1a/t1:list2a/t1:tx-power) < sum(/t1:cont1a/t1:list2a/t1:rx-power)",
+			Path:     "sum(/cont1a/list2a/tx-power) < sum(/cont1a/list2a/rx-power)",
 			Expected: true,
 		},
 		{ // It will do a string comparison by default - at least 1 side has to be converted to number
 			Name:     "test individual list2a tx-power < rx-power",
-			Path:     "count(/t1:cont1a/t1:list2a[number(t1:tx-power) < number(t1:rx-power)])",
+			Path:     "count(/cont1a/list2a[number(tx-power) < number(rx-power)])",
 			Expected: float64(3),
 		},
 		// cont1b-state List 2b
 		{
 			Name:     "test count list2b",
-			Path:     "count(/t1:cont1b-state/t1:list2b)",
+			Path:     "count(/cont1b-state/list2b)",
 			Expected: float64(4),
 		},
 		{
 			Name:     "test count list2b list3c",
-			Path:     "count(/t1:cont1b-state/t1:list2b/t1:leaf3c)",
+			Path:     "count(/cont1b-state/list2b/leaf3c)",
 			Expected: float64(4),
 		},
 		{
 			Name:     "test count list2b filtered",
-			Path:     "count(/t1:cont1b-state/t1:list2b[@t1:index2=20]/t1:leaf3c)",
+			Path:     "count(/cont1b-state/list2b[@index2=20]/leaf3c)",
 			Expected: float64(2),
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "count(/t1:cont1b-state/t1:list2b[@t1:index1=10]/t1:leaf3c)",
+			Path:     "count(/cont1b-state/list2b[@index1=10]/leaf3c)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test count list2b part2 only", // Selecting 11 AND 20
-			Path:     "string(/t1:cont1b-state/t1:list2b[@t1:index1=11 and @t1:index2=20]/t1:leaf3c)",
+			Path:     "string(/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c)",
 			Expected: "3c 11-20 test",
 		},
 		{
 			Name:     "test count list2b part 2 different syntax", // Selecting 11 AND 20
-			Path:     "count(/t1:cont1b-state/t1:list2b[@t1:index1=11][@t1:index2=20]/t1:leaf3c)",
+			Path:     "count(/cont1b-state/list2b[@index1=11][@index2=20]/leaf3c)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test value list2b part2 only", // Selecting 11 AND 20
-			Path:     "/t1:cont1b-state/t1:list2b[@t1:index1=11 and @t1:index2=20]/t1:leaf3c = '3c 11-20 test'",
+			Path:     "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c = '3c 11-20 test'",
 			Expected: true,
 		},
 		//{ // TODO figure out why this gives invalid token
 		//	Name:     "test text list2b part2 only", // Selecting 11 AND 20
-		//	Path:     "text(/t1:cont1b-state/t1:list2b/t1:leaf3c)",
+		//	Path:     "text(/cont1b-state/list2b/leaf3c)",
 		//	Expected: true,
 		//},
 		{
 			Name:     "test count list2b part1",
-			Path:     "/t1:cont1b-state/t1:list2b[@t1:index1=10]/t1:leaf3c = '3c 10-20 test'",
+			Path:     "/cont1b-state/list2b[@index1=10]/leaf3c = '3c 10-20 test'",
 			Expected: true,
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "string(/t1:cont1a/t1:list2a/t1:tx-power)",
+			Path:     "string(/cont1a/list2a/tx-power)",
 			Expected: "5",
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "set-contains(/t1:cont1a/t1:list2a/t1:tx-power, '5')",
+			Path:     "set-contains(/cont1a/list2a/tx-power, '5')",
 			Expected: true,
 		},
 	}
@@ -622,7 +617,7 @@ func Test_XPathNodeNavigation(t *testing.T) {
 	}
 	schema.Root = device
 	assert.NotNil(t, device)
-	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	ynn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, false)
 	assert.NotNil(t, ynn)
 	assert.Equal(t, xpath.ElementNode, ynn.NodeType())
 	assert.Equal(t, "device", ynn.LocalName())

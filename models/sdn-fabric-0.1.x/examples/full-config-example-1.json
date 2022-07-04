@@ -89,7 +89,7 @@
         },
         {
           "cage-number": 2,
-          "max-channel": 0,
+          "max-channel": 2,
           "display-name": "Port 2 of switch-model 2",
           "speeds": [
             "speed-1g",
@@ -215,7 +215,7 @@
         },
         {
           "cage-number": 3,
-          "channel-number": 1,
+          "channel-number": 0,
           "display-name": "Port 3/0",
           "speed": "speed-10g"
         }
@@ -281,9 +281,9 @@
           "speed": "speed-10g"
         },
         {
-          "cage-number": 3,
+          "cage-number": 2,
           "channel-number": 1,
-          "display-name": "Port 3/0",
+          "display-name": "Port 2/1",
           "speed": "speed-10g"
         }
       ]

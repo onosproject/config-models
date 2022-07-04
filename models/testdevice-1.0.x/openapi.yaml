@@ -113,15 +113,6 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: The 2nd level container
       properties:
-        leaf-list-leaf2e:
-          items:
-            description: leaf list inside Container 2a
-            maximum: 200
-            minimum: -100
-            title: leaf2e
-            type: integer
-          title: leaf-list-leaf2e
-          type: array
         leaf2a:
           description: Numeric leaf inside Container 2a
           maximum: 13
@@ -144,6 +135,15 @@ components:
           minimum: 0.001
           title: leaf2d
           type: number
+        leaf2e:
+          items:
+            description: leaf list inside Container 2a
+            maximum: 200
+            minimum: -100
+            title: leaf2e
+            type: integer
+          title: leaf2e
+          type: array
         leaf2f:
           description: binary leaf inside container 2a
           format: byte
@@ -203,7 +203,7 @@ components:
       x-must:
       - ErrorMessage:
           Name: range-min must be less than or equal to range-max
-        Name: number(./t1:range-min) <= number(./t1:range-max)
+        Name: number(./range-min) <= number(./range-max)
     Cont1a_List2a_List:
       description: A simple list of configuration items (list)
       items:
@@ -266,8 +266,7 @@ components:
         fkey2:
           description: foreign key 2 - ref to list5a/key2
           title: fkey2
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: /t1:cont1a/t1e:list5/t1e:key2
       required:
       - fkey1
@@ -278,8 +277,8 @@ components:
       x-must:
       - ErrorMessage:
           Name: displayname must be formatted string like 'Value <../id>-<fkey1>-<fkey2>'
-        Name: concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1), '-',
-          string(./@t1e:fkey2)) = string(./t1e:displayname)
+        Name: concat('Value ', string(../@id), '-', string(./@fkey1), '-', string(./@fkey2))
+          = string(./displayname)
     Cont1a_List4_List4a_List:
       description: A list within a list with 2 keys as leaf refs (list)
       items:
@@ -308,7 +307,6 @@ components:
           minimum: 2
           title: key2
           type: integer
-          x-go-type: ListKey
         leaf5a:
           description: non key attribute of list 5 - string
           maxLength: 20
@@ -324,7 +322,7 @@ components:
       x-must:
       - ErrorMessage:
           Name: leaf5a must be formatted string like '5a <key1>-<key2>'
-        Name: concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)
+        Name: concat('5a ', string(./@key1), '-', string(./@key2)) = string(./leaf5a)
     Cont1a_List5_List:
       description: A list with 2 keys (list)
       items:
@@ -360,7 +358,6 @@ components:
           minimum: 0
           title: index
           type: integer
-          x-go-type: ListKey
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
@@ -418,9 +415,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a'
           description: GET OK 200
       summary: GET /cont1a Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -449,9 +443,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_Cont2a'
           description: GET OK 200
       summary: GET /cont1a/cont2a Container
-      tags:
-      - Cont1a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -474,9 +465,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a_List'
           description: GET OK 200
       summary: GET /cont1a/list2a List
-      tags:
-      - Cont1a_List2a
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list2a/{name}:
@@ -497,9 +485,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a'
           description: GET OK 200
       summary: GET /cont1a/list2a Container
-      tags:
-      - Cont1a_List2a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -530,9 +515,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List'
           description: GET OK 200
       summary: GET /cont1a/list4 List
-      tags:
-      - Cont1a_List4
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}:
@@ -553,9 +535,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4'
           description: GET OK 200
       summary: GET /cont1a/list4 Container
-      tags:
-      - Cont1a_List4
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -586,9 +565,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List4a_List'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a List
-      tags:
-      - Cont1a_List4_List4a
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -617,9 +593,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List4a'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a Container
-      tags:
-      - Cont1a_List4_List4a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -666,9 +639,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List5_List'
           description: GET OK 200
       summary: GET /cont1a/list5 List
-      tags:
-      - Cont1a_List5
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list5/{key1}/{key2}:
@@ -689,9 +659,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List5'
           description: GET OK 200
       summary: GET /cont1a/list5 Container
-      tags:
-      - Cont1a_List5
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -731,9 +698,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state'
           description: GET OK 200
       summary: GET /cont1b-state Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1b-state/list2b:
@@ -748,9 +712,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b_List'
           description: GET OK 200
       summary: GET /cont1b-state/list2b List
-      tags:
-      - Cont1b-state_List2b
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1b-state/list2b/{index}:
@@ -765,9 +726,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b'
           description: GET OK 200
       summary: GET /cont1b-state/list2b Container
-      tags:
-      - Cont1b-state_List2b
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:

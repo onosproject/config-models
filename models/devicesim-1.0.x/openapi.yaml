@@ -1638,9 +1638,9 @@ components:
           description: |-
             The index number of the subinterface -- used to address
             the logical interface
+          format: int32
           title: index
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../config/index
         state:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State'
@@ -2136,7 +2136,7 @@ components:
     System_Aaa_Accounting_Config:
       description: Configuration data for user activity accounting.
       properties:
-        leaf-list-accounting-method:
+        accounting-method:
           items:
             description: |-
               The method used for AAA accounting for this event
@@ -2146,7 +2146,7 @@ components:
               the local system.
             title: accounting-method
             type: string
-          title: leaf-list-accounting-method
+          title: accounting-method
           type: array
       title: System_Aaa_Accounting_Config
       type: object
@@ -2235,7 +2235,7 @@ components:
     System_Aaa_Accounting_State:
       description: Operational state data for user accounting.
       properties:
-        leaf-list-accounting-method:
+        accounting-method:
           items:
             description: |-
               The method used for AAA accounting for this event
@@ -2245,7 +2245,7 @@ components:
               the local system.
             title: accounting-method
             type: string
-          title: leaf-list-accounting-method
+          title: accounting-method
           type: array
       title: System_Aaa_Accounting_State
       type: object
@@ -2320,7 +2320,7 @@ components:
     System_Aaa_Authentication_Config:
       description: Configuration data for global authentication services
       properties:
-        leaf-list-authentication-method:
+        authentication-method:
           items:
             description: |-
               Ordered list of authentication methods for users.  This
@@ -2331,7 +2331,7 @@ components:
               user being denied access.
             title: authentication-method
             type: string
-          title: leaf-list-authentication-method
+          title: authentication-method
           type: array
       title: System_Aaa_Authentication_Config
       type: object
@@ -2340,7 +2340,7 @@ components:
         Operational state data for global authentication
         services
       properties:
-        leaf-list-authentication-method:
+        authentication-method:
           items:
             description: |-
               Ordered list of authentication methods for users.  This
@@ -2351,7 +2351,7 @@ components:
               user being denied access.
             title: authentication-method
             type: string
-          title: leaf-list-authentication-method
+          title: authentication-method
           type: array
       title: System_Aaa_Authentication_State
       type: object
@@ -2473,7 +2473,7 @@ components:
         Configuration data for authorization based on AAA
         methods
       properties:
-        leaf-list-authorization-method:
+        authorization-method:
           items:
             description: |-
               Ordered list of methods for authorizing commands.  The first
@@ -2484,7 +2484,7 @@ components:
               that the named server group exists.
             title: authorization-method
             type: string
-          title: leaf-list-authorization-method
+          title: authorization-method
           type: array
       title: System_Aaa_Authorization_Config
       type: object
@@ -2549,7 +2549,7 @@ components:
     System_Aaa_Authorization_State:
       description: Operational state data for authorization based on AAA
       properties:
-        leaf-list-authorization-method:
+        authorization-method:
           items:
             description: |-
               Ordered list of methods for authorizing commands.  The first
@@ -2560,7 +2560,7 @@ components:
               that the named server group exists.
             title: authorization-method
             type: string
-          title: leaf-list-authorization-method
+          title: authorization-method
           type: array
       title: System_Aaa_Authorization_State
       type: object
@@ -3031,7 +3031,7 @@ components:
     System_Dns_Config:
       description: Configuration data for the DNS resolver
       properties:
-        leaf-list-search:
+        search:
           items:
             description: |-
               An ordered list of domains to search when resolving
@@ -3041,7 +3041,7 @@ components:
             pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
             title: search
             type: string
-          title: leaf-list-search
+          title: search
           type: array
       title: System_Dns_Config
       type: object
@@ -3073,32 +3073,32 @@ components:
     System_Dns_Host-entries_Host-entry_Config:
       description: Configuration data for static host entries
       properties:
-        hostname:
-          description: Hostname for the static DNS entry
-          title: hostname
-          type: string
-        leaf-list-alias:
+        alias:
           items:
             description: Additional aliases for the hostname
             title: alias
             type: string
-          title: leaf-list-alias
+          title: alias
           type: array
-        leaf-list-ipv4-address:
+        hostname:
+          description: Hostname for the static DNS entry
+          title: hostname
+          type: string
+        ipv4-address:
           items:
             description: List of IPv4 addressses for the host entry
             pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
             title: ipv4-address
             type: string
-          title: leaf-list-ipv4-address
+          title: ipv4-address
           type: array
-        leaf-list-ipv6-address:
+        ipv6-address:
           items:
             description: List of IPv6 addresses for the host entry
             pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
             title: ipv6-address
             type: string
-          title: leaf-list-ipv6-address
+          title: ipv6-address
           type: array
       title: System_Dns_Host-entries_Host-entry_Config
       type: object
@@ -3114,32 +3114,32 @@ components:
     System_Dns_Host-entries_Host-entry_State:
       description: Operational state data for static host entries
       properties:
-        hostname:
-          description: Hostname for the static DNS entry
-          title: hostname
-          type: string
-        leaf-list-alias:
+        alias:
           items:
             description: Additional aliases for the hostname
             title: alias
             type: string
-          title: leaf-list-alias
+          title: alias
           type: array
-        leaf-list-ipv4-address:
+        hostname:
+          description: Hostname for the static DNS entry
+          title: hostname
+          type: string
+        ipv4-address:
           items:
             description: List of IPv4 addressses for the host entry
             pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
             title: ipv4-address
             type: string
-          title: leaf-list-ipv4-address
+          title: ipv4-address
           type: array
-        leaf-list-ipv6-address:
+        ipv6-address:
           items:
             description: List of IPv6 addresses for the host entry
             pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
             title: ipv6-address
             type: string
-          title: leaf-list-ipv6-address
+          title: ipv6-address
           type: array
       title: System_Dns_Host-entries_Host-entry_State
       type: object
@@ -3243,7 +3243,7 @@ components:
     System_Dns_State:
       description: Operational state data for the DNS resolver
       properties:
-        leaf-list-search:
+        search:
           items:
             description: |-
               An ordered list of domains to search when resolving
@@ -3253,7 +3253,7 @@ components:
             pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
             title: search
             type: string
-          title: leaf-list-search
+          title: search
           type: array
       title: System_Dns_State
       type: object
@@ -3678,8 +3678,7 @@ components:
         key-id:
           description: Reference to auth key-id list key
           title: key-id
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../config/key-id
         state:
           $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
@@ -4090,8 +4089,7 @@ components:
         aux-id:
           description: Reference to auxiliary id list key
           title: aux-id
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../config/aux-id
         config:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_Config'
@@ -4251,9 +4249,9 @@ components:
       properties:
         pid:
           description: Reference to the process pid key
+          format: int64
           title: pid
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../state/pid
         state:
           $ref: '#/components/schemas/System_Processes_Process_State'
@@ -4274,6 +4272,19 @@ components:
     System_Processes_Process_State:
       description: State parameters related to monitored processes
       properties:
+        args:
+          items:
+            description: |-
+              Current process command line arguments.  Arguments with
+              a parameter (e.g., --option 10  or -option=10) should be
+              represented as a single element of the list with the
+              argument name and parameter together.  Flag arguments, i.e.,
+              those without a parameter should also be in their own list
+              element.
+            title: args
+            type: string
+          title: args
+          type: array
         cpu-usage-system:
           description: CPU time consumed by this process in kernel mode.
           format: int64
@@ -4292,19 +4303,6 @@ components:
           minimum: 0
           title: cpu-utilization
           type: integer
-        leaf-list-args:
-          items:
-            description: |-
-              Current process command line arguments.  Arguments with
-              a parameter (e.g., --option 10  or -option=10) should be
-              represented as a single element of the list with the
-              argument name and parameter together.  Flag arguments, i.e.,
-              those without a parameter should also be in their own list
-              element.
-            title: args
-            type: string
-          title: leaf-list-args
-          type: array
         memory-usage:
           description: Bytes allocated and still in use by the process
           format: int64
@@ -4595,9 +4593,6 @@ paths:
                 $ref: '#/components/schemas/Components'
           description: GET OK 200
       summary: GET /components Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -4620,9 +4615,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_List'
           description: GET OK 200
       summary: GET /components/component List
-      tags:
-      - Components_Component
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/components/component/{name}:
@@ -4643,9 +4635,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component'
           description: GET OK 200
       summary: GET /components/component Container
-      tags:
-      - Components_Component
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4682,9 +4671,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Config'
           description: GET OK 200
       summary: GET /components/component/{name}/config Container
-      tags:
-      - Components_Component
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4721,9 +4707,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties'
           description: GET OK 200
       summary: GET /components/component/{name}/properties Container
-      tags:
-      - Components_Component
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4754,9 +4737,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_List'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property List
-      tags:
-      - Components_Component_Properties_Property
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4785,9 +4765,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property Container
-      tags:
-      - Components_Component_Properties_Property
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4833,9 +4810,6 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/config
         Container
-      tags:
-      - Components_Component_Properties_Property
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4874,9 +4848,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_State'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/state Container
-      tags:
-      - Components_Component_Properties_Property
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4907,9 +4878,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_State'
           description: GET OK 200
       summary: GET /components/component/{name}/state Container
-      tags:
-      - Components_Component
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4936,9 +4904,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_State_Temperature'
           description: GET OK 200
       summary: GET /components/component/{name}/state/temperature Container
-      tags:
-      - Components_Component_State
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -4967,9 +4932,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents Container
-      tags:
-      - Components_Component
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5000,9 +4962,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent List
-      tags:
-      - Components_Component_Subcomponents_Subcomponent
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5031,9 +4990,6 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent Container
-      tags:
-      - Components_Component_Subcomponents_Subcomponent
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5079,9 +5035,6 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config
         Container
-      tags:
-      - Components_Component_Subcomponents_Subcomponent
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5121,9 +5074,6 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
         Container
-      tags:
-      - Components_Component_Subcomponents_Subcomponent
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5162,9 +5112,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces'
           description: GET OK 200
       summary: GET /interfaces Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5187,9 +5134,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_List'
           description: GET OK 200
       summary: GET /interfaces/interface List
-      tags:
-      - Interfaces_Interface
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/interfaces/interface/{name}:
@@ -5210,9 +5154,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface'
           description: GET OK 200
       summary: GET /interfaces/interface Container
-      tags:
-      - Interfaces_Interface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5251,9 +5192,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Config'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/config Container
-      tags:
-      - Interfaces_Interface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5292,9 +5230,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time Container
-      tags:
-      - Interfaces_Interface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5331,9 +5266,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_Config'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/config Container
-      tags:
-      - Interfaces_Interface_Hold-time
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5364,9 +5296,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_State'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/state Container
-      tags:
-      - Interfaces_Interface_Hold-time
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5389,9 +5318,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_State'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state Container
-      tags:
-      - Interfaces_Interface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5414,9 +5340,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_State_Counters'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state/counters Container
-      tags:
-      - Interfaces_Interface_State
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5447,9 +5370,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces Container
-      tags:
-      - Interfaces_Interface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5482,9 +5402,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface List
-      tags:
-      - Interfaces_Interface_Subinterfaces_Subinterface
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5515,9 +5432,6 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface Container
-      tags:
-      - Interfaces_Interface_Subinterfaces_Subinterface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5563,9 +5477,6 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
         Container
-      tags:
-      - Interfaces_Interface_Subinterfaces_Subinterface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5605,9 +5516,6 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state
         Container
-      tags:
-      - Interfaces_Interface_Subinterfaces_Subinterface
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5639,9 +5547,6 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters
         Container
-      tags:
-      - Interfaces_Interface_Subinterfaces_Subinterface_State
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5680,9 +5585,6 @@ paths:
                 $ref: '#/components/schemas/System'
           description: GET OK 200
       summary: GET /system Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5711,9 +5613,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa'
           description: GET OK 200
       summary: GET /system/aaa Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5742,9 +5641,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting'
           description: GET OK 200
       summary: GET /system/aaa/accounting Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5773,9 +5669,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Config'
           description: GET OK 200
       summary: GET /system/aaa/accounting/config Container
-      tags:
-      - System_Aaa_Accounting
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5806,9 +5699,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events Container
-      tags:
-      - System_Aaa_Accounting
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -5831,9 +5721,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event List
-      tags:
-      - System_Aaa_Accounting_Events_Event
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
@@ -5854,9 +5741,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event Container
-      tags:
-      - System_Aaa_Accounting_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5893,9 +5777,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_Config'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/config Container
-      tags:
-      - System_Aaa_Accounting_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5926,9 +5807,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/state Container
-      tags:
-      - System_Aaa_Accounting_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -5951,9 +5829,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_State'
           description: GET OK 200
       summary: GET /system/aaa/accounting/state Container
-      tags:
-      - System_Aaa_Accounting
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication:
@@ -5974,9 +5849,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication'
           description: GET OK 200
       summary: GET /system/aaa/authentication Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6007,9 +5879,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user Container
-      tags:
-      - System_Aaa_Authentication
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6038,9 +5907,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/config Container
-      tags:
-      - System_Aaa_Authentication_Admin-user
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6063,9 +5929,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/state Container
-      tags:
-      - System_Aaa_Authentication_Admin-user
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/config:
@@ -6086,9 +5949,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/config Container
-      tags:
-      - System_Aaa_Authentication
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6113,9 +5973,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/state Container
-      tags:
-      - System_Aaa_Authentication
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users:
@@ -6136,9 +5993,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users Container
-      tags:
-      - System_Aaa_Authentication
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6161,9 +6015,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user List
-      tags:
-      - System_Aaa_Authentication_Users_User
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
@@ -6184,9 +6035,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user Container
-      tags:
-      - System_Aaa_Authentication_Users_User
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6223,9 +6071,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/config Container
-      tags:
-      - System_Aaa_Authentication_Users_User
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6256,9 +6101,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/state Container
-      tags:
-      - System_Aaa_Authentication_Users_User
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6289,9 +6131,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization'
           description: GET OK 200
       summary: GET /system/aaa/authorization Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6322,9 +6161,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Config'
           description: GET OK 200
       summary: GET /system/aaa/authorization/config Container
-      tags:
-      - System_Aaa_Authorization
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6355,9 +6191,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events Container
-      tags:
-      - System_Aaa_Authorization
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6380,9 +6213,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event List
-      tags:
-      - System_Aaa_Authorization_Events_Event
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
@@ -6403,9 +6233,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event Container
-      tags:
-      - System_Aaa_Authorization_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6442,9 +6269,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_Config'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/config Container
-      tags:
-      - System_Aaa_Authorization_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6475,9 +6299,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/state Container
-      tags:
-      - System_Aaa_Authorization_Events_Event
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6500,9 +6321,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_State'
           description: GET OK 200
       summary: GET /system/aaa/authorization/state Container
-      tags:
-      - System_Aaa_Authorization
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/config:
@@ -6523,9 +6341,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Config'
           description: GET OK 200
       summary: GET /system/aaa/config Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6554,9 +6369,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups'
           description: GET OK 200
       summary: GET /system/aaa/server-groups Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -6582,9 +6394,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group List
-      tags:
-      - System_Aaa_Server-groups_Server-group
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
@@ -6608,9 +6417,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group Container
-      tags:
-      - System_Aaa_Server-groups_Server-group
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6647,9 +6453,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Config'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/config Container
-      tags:
-      - System_Aaa_Server-groups_Server-group
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6686,9 +6489,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers Container
-      tags:
-      - System_Aaa_Server-groups_Server-group
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6719,9 +6519,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server List
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6750,9 +6547,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6798,9 +6592,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6846,9 +6637,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6894,9 +6682,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6936,9 +6721,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -6970,9 +6752,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7004,9 +6783,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/state
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7044,9 +6820,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7092,9 +6865,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7134,9 +6904,6 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state
         Container
-      tags:
-      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7167,9 +6934,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_State'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/state Container
-      tags:
-      - System_Aaa_Server-groups_Server-group
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7192,9 +6956,6 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_State'
           description: GET OK 200
       summary: GET /system/aaa/state Container
-      tags:
-      - System_Aaa
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/clock:
@@ -7215,9 +6976,6 @@ paths:
                 $ref: '#/components/schemas/System_Clock'
           description: GET OK 200
       summary: GET /system/clock Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7246,9 +7004,6 @@ paths:
                 $ref: '#/components/schemas/System_Clock_Config'
           description: GET OK 200
       summary: GET /system/clock/config Container
-      tags:
-      - System_Clock
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7271,9 +7026,6 @@ paths:
                 $ref: '#/components/schemas/System_Clock_State'
           description: GET OK 200
       summary: GET /system/clock/state Container
-      tags:
-      - System_Clock
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/config:
@@ -7294,9 +7046,6 @@ paths:
                 $ref: '#/components/schemas/System_Config'
           description: GET OK 200
       summary: GET /system/config Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7325,9 +7074,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns'
           description: GET OK 200
       summary: GET /system/dns Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7356,9 +7102,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Config'
           description: GET OK 200
       summary: GET /system/dns/config Container
-      tags:
-      - System_Dns
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7387,9 +7130,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries'
           description: GET OK 200
       summary: GET /system/dns/host-entries Container
-      tags:
-      - System_Dns
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7412,9 +7152,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry List
-      tags:
-      - System_Dns_Host-entries_Host-entry
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
@@ -7435,9 +7172,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry Container
-      tags:
-      - System_Dns_Host-entries_Host-entry
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7474,9 +7208,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/config Container
-      tags:
-      - System_Dns_Host-entries_Host-entry
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7507,9 +7238,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/state Container
-      tags:
-      - System_Dns_Host-entries_Host-entry
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7538,9 +7266,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers'
           description: GET OK 200
       summary: GET /system/dns/servers Container
-      tags:
-      - System_Dns
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7577,9 +7302,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/dns/servers/server List
-      tags:
-      - System_Dns_Servers_Server
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}:
@@ -7614,9 +7336,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server'
           description: GET OK 200
       summary: GET /system/dns/servers/server Container
-      tags:
-      - System_Dns_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7653,9 +7372,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_Config'
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/config Container
-      tags:
-      - System_Dns_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7686,9 +7402,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_State'
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/state Container
-      tags:
-      - System_Dns_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7711,9 +7424,6 @@ paths:
                 $ref: '#/components/schemas/System_Dns_State'
           description: GET OK 200
       summary: GET /system/dns/state Container
-      tags:
-      - System_Dns
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging:
@@ -7734,9 +7444,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging'
           description: GET OK 200
       summary: GET /system/logging Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7767,9 +7474,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console'
           description: GET OK 200
       summary: GET /system/logging/console Container
-      tags:
-      - System_Logging
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7798,9 +7502,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Config'
           description: GET OK 200
       summary: GET /system/logging/console/config Container
-      tags:
-      - System_Logging_Console
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7829,9 +7530,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors'
           description: GET OK 200
       summary: GET /system/logging/console/selectors Container
-      tags:
-      - System_Logging_Console
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -7854,9 +7552,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector List
-      tags:
-      - System_Logging_Console_Selectors_Selector
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
@@ -7877,9 +7572,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector Container
-      tags:
-      - System_Logging_Console_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7925,9 +7617,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/config
         Container
-      tags:
-      - System_Logging_Console_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -7967,9 +7656,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/state
         Container
-      tags:
-      - System_Logging_Console_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8000,9 +7686,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_State'
           description: GET OK 200
       summary: GET /system/logging/console/state Container
-      tags:
-      - System_Logging_Console
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers:
@@ -8023,9 +7706,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers'
           description: GET OK 200
       summary: GET /system/logging/remote-servers Container
-      tags:
-      - System_Logging
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8048,9 +7728,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server List
-      tags:
-      - System_Logging_Remote-servers_Remote-server
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
@@ -8071,9 +7748,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8110,9 +7784,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Config'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/config Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8149,9 +7820,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8183,9 +7851,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         List
-      tags:
-      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8215,9 +7880,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8271,9 +7933,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
         Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8321,9 +7980,6 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state
         Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8362,9 +8018,6 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_State'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/state Container
-      tags:
-      - System_Logging_Remote-servers_Remote-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8393,9 +8046,6 @@ paths:
                 $ref: '#/components/schemas/System_Memory'
           description: GET OK 200
       summary: GET /system/memory Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8424,9 +8074,6 @@ paths:
                 $ref: '#/components/schemas/System_Memory_Config'
           description: GET OK 200
       summary: GET /system/memory/config Container
-      tags:
-      - System_Memory
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8449,9 +8096,6 @@ paths:
                 $ref: '#/components/schemas/System_Memory_State'
           description: GET OK 200
       summary: GET /system/memory/state Container
-      tags:
-      - System_Memory
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp:
@@ -8472,9 +8116,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp'
           description: GET OK 200
       summary: GET /system/ntp Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8503,9 +8144,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Config'
           description: GET OK 200
       summary: GET /system/ntp/config Container
-      tags:
-      - System_Ntp
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8534,9 +8172,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys Container
-      tags:
-      - System_Ntp
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8559,9 +8194,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key List
-      tags:
-      - System_Ntp_Ntp-keys_Ntp-key
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
@@ -8582,9 +8214,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key Container
-      tags:
-      - System_Ntp_Ntp-keys_Ntp-key
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8621,9 +8250,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_Config'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/config Container
-      tags:
-      - System_Ntp_Ntp-keys_Ntp-key
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8654,9 +8280,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/state Container
-      tags:
-      - System_Ntp_Ntp-keys_Ntp-key
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8685,9 +8308,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers'
           description: GET OK 200
       summary: GET /system/ntp/servers Container
-      tags:
-      - System_Ntp
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8714,9 +8334,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/ntp/servers/server List
-      tags:
-      - System_Ntp_Servers_Server
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}:
@@ -8741,9 +8358,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server'
           description: GET OK 200
       summary: GET /system/ntp/servers/server Container
-      tags:
-      - System_Ntp_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8780,9 +8394,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_Config'
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/config Container
-      tags:
-      - System_Ntp_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8813,9 +8424,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_State'
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/state Container
-      tags:
-      - System_Ntp_Servers_Server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -8838,9 +8446,6 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_State'
           description: GET OK 200
       summary: GET /system/ntp/state Container
-      tags:
-      - System_Ntp
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow:
@@ -8861,9 +8466,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow'
           description: GET OK 200
       summary: GET /system/openflow Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8892,9 +8494,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent'
           description: GET OK 200
       summary: GET /system/openflow/agent Container
-      tags:
-      - System_Openflow
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8923,9 +8522,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent_Config'
           description: GET OK 200
       summary: GET /system/openflow/agent/config Container
-      tags:
-      - System_Openflow_Agent
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8948,9 +8544,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent_State'
           description: GET OK 200
       summary: GET /system/openflow/agent/state Container
-      tags:
-      - System_Openflow_Agent
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers:
@@ -8971,9 +8564,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers'
           description: GET OK 200
       summary: GET /system/openflow/controllers Container
-      tags:
-      - System_Openflow
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -8998,9 +8588,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller List
-      tags:
-      - System_Openflow_Controllers_Controller
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
@@ -9023,9 +8610,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller Container
-      tags:
-      - System_Openflow_Controllers_Controller
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9062,9 +8646,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Config'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/config Container
-      tags:
-      - System_Openflow_Controllers_Controller
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9101,9 +8682,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections Container
-      tags:
-      - System_Openflow_Controllers_Controller
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9139,9 +8717,6 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         List
-      tags:
-      - System_Openflow_Controllers_Controller_Connections_Connection
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9175,9 +8750,6 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         Container
-      tags:
-      - System_Openflow_Controllers_Controller_Connections_Connection
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9223,9 +8795,6 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
         Container
-      tags:
-      - System_Openflow_Controllers_Controller_Connections_Connection
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9267,9 +8836,6 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state
         Container
-      tags:
-      - System_Openflow_Controllers_Controller_Connections_Connection
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9300,9 +8866,6 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/state Container
-      tags:
-      - System_Openflow_Controllers_Controller
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9331,9 +8894,6 @@ paths:
                 $ref: '#/components/schemas/System_Processes'
           description: GET OK 200
       summary: GET /system/processes Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -9356,9 +8916,6 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process_List'
           description: GET OK 200
       summary: GET /system/processes/process List
-      tags:
-      - System_Processes_Process
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/processes/process/{pid}:
@@ -9373,9 +8930,6 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process'
           description: GET OK 200
       summary: GET /system/processes/process Container
-      tags:
-      - System_Processes_Process
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9398,9 +8952,6 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process_State'
           description: GET OK 200
       summary: GET /system/processes/process/{pid}/state Container
-      tags:
-      - System_Processes_Process
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -9429,9 +8980,6 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server'
           description: GET OK 200
       summary: GET /system/ssh-server Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -9460,9 +9008,6 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server_Config'
           description: GET OK 200
       summary: GET /system/ssh-server/config Container
-      tags:
-      - System_Ssh-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -9485,9 +9030,6 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server_State'
           description: GET OK 200
       summary: GET /system/ssh-server/state Container
-      tags:
-      - System_Ssh-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/state:
@@ -9502,9 +9044,6 @@ paths:
                 $ref: '#/components/schemas/System_State'
           description: GET OK 200
       summary: GET /system/state Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /devicesim/v1.0.0/{target}/system/telnet-server:
@@ -9525,9 +9064,6 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server'
           description: GET OK 200
       summary: GET /system/telnet-server Container
-      tags:
-      - System
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -9556,9 +9092,6 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server_Config'
           description: GET OK 200
       summary: GET /system/telnet-server/config Container
-      tags:
-      - System_Telnet-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -9581,8 +9114,5 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server_State'
           description: GET OK 200
       summary: GET /system/telnet-server/state Container
-      tags:
-      - System_Telnet-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'

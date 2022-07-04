@@ -145,9 +145,6 @@ paths:
                 $ref: '#/components/schemas/Nodes'
           description: GET OK 200
       summary: GET /nodes Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /ric/v1.0.0/{target}/nodes/node:
@@ -162,9 +159,6 @@ paths:
                 $ref: '#/components/schemas/Nodes_Node_List'
           description: GET OK 200
       summary: GET /nodes/node List
-      tags:
-      - Nodes_Node
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /ric/v1.0.0/{target}/nodes/node/{id}:
@@ -179,9 +173,6 @@ paths:
                 $ref: '#/components/schemas/Nodes_Node'
           description: GET OK 200
       summary: GET /nodes/node Container
-      tags:
-      - Nodes_Node
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -210,9 +201,6 @@ paths:
                 $ref: '#/components/schemas/Report_period'
           description: GET OK 200
       summary: GET /report_period Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
