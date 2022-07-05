@@ -157,7 +157,7 @@ func (s server) validateMust(device ygot.ValidatedGoStruct) error {
 		return errors.NewInvalid("Unable to get schema: %+v", err)
 	}
 
-	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, true)
 	ynn, ok := nn.(*navigator.YangNodeNavigator)
 	if !ok {
 		return errors.NewInvalid("Cannot cast NodeNavigator to YangNodeNavigator")

@@ -106,15 +106,6 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
       description: The 2nd level container
       properties:
-        leaf-list-leaf2e:
-          items:
-            description: leaf list inside Container 2a
-            maximum: 200
-            minimum: -100
-            title: leaf2e
-            type: integer
-          title: leaf-list-leaf2e
-          type: array
         leaf2a:
           description: Numeric leaf inside Container 2a
           maximum: 13
@@ -137,6 +128,15 @@ components:
           minimum: 0.001
           title: leaf2d
           type: number
+        leaf2e:
+          items:
+            description: leaf list inside Container 2a
+            maximum: 200
+            minimum: -100
+            title: leaf2e
+            type: integer
+          title: leaf2e
+          type: array
         leaf2f:
           description: binary leaf inside Container 2a
           format: byte
@@ -205,7 +205,7 @@ components:
       x-must:
       - ErrorMessage:
           Name: tx-power is greater than or equal to rx-power
-        Name: number(./t1:tx-power) < number(./t1:rx-power)
+        Name: number(./tx-power) < number(./rx-power)
     Cont1a_List2a_List:
       description: A simple list of configuration items (list)
       items:
@@ -261,14 +261,12 @@ components:
           minimum: 0
           title: index1
           type: integer
-          x-go-type: ListKey
         index2:
           description: The list index
           maximum: 255
           minimum: 0
           title: index2
           type: integer
-          x-go-type: ListKey
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
@@ -336,9 +334,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a'
           description: GET OK 200
       summary: GET /cont1a Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -367,9 +362,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_Cont2a'
           description: GET OK 200
       summary: GET /cont1a/cont2a Container
-      tags:
-      - Cont1a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -398,9 +390,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_Cont2d'
           description: GET OK 200
       summary: GET /cont1a/cont2d Container
-      tags:
-      - Cont1a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -423,9 +412,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a_List'
           description: GET OK 200
       summary: GET /cont1a/list2a List
-      tags:
-      - Cont1a_List2a
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.x/{target}/cont1a/list2a/{name}:
@@ -446,9 +432,6 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a'
           description: GET OK 200
       summary: GET /cont1a/list2a Container
-      tags:
-      - Cont1a_List2a
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -480,9 +463,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state'
           description: GET OK 200
       summary: GET /cont1b-state Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.x/{target}/cont1b-state/cont2c:
@@ -498,9 +478,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_Cont2c'
           description: GET OK 200
       summary: GET /cont1b-state/cont2c Container
-      tags:
-      - Cont1b-state
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.x/{target}/cont1b-state/list2b:
@@ -515,9 +492,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b_List'
           description: GET OK 200
       summary: GET /cont1b-state/list2b List
-      tags:
-      - Cont1b-state_List2b
-      - List
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v2.0.x/{target}/cont1b-state/list2b/{index1}/{index2}:
@@ -532,9 +506,6 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b'
           description: GET OK 200
       summary: GET /cont1b-state/list2b Container
-      tags:
-      - Cont1b-state_List2b
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     - content:

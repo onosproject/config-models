@@ -34,7 +34,7 @@ module onf-test1-extra {
             }
 
             list list4a {
-                must "concat('Value ', string(../@t1e:id), '-', string(./@t1e:fkey1), '-', string(./@t1e:fkey2)) = string(./t1e:displayname)" {
+                must "concat('Value ', string(../@id), '-', string(./@fkey1), '-', string(./@fkey2)) = string(./displayname)" {
                   error-message "displayname must be formatted string like 'Value <../id>-<fkey1>-<fkey2>'";
                   error-app-tag "displayname format";
                   description "this is a sample must statement";
@@ -64,7 +64,7 @@ module onf-test1-extra {
         }
 
         list list5 {
-            must "concat('5a ', string(./@t1e:key1), '-', string(./@t1e:key2)) = string(./t1e:leaf5a)" {
+            must "concat('5a ', string(./@key1), '-', string(./@key2)) = string(./leaf5a)" {
               error-message "leaf5a must be formatted string like '5a <key1>-<key2>'";
               error-app-tag "leaf5a format";
               description "this is a sample must statement";

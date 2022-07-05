@@ -140,7 +140,6 @@ components:
           type: string
         dhcp-server-id:
           description: The ID of the DHCP Server
-          maxLength: 18446744073709551615
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: dhcp-server-id
@@ -200,7 +199,6 @@ components:
           type: string
         route-id:
           description: The ID of the route
-          maxLength: 18446744073709551615
           minLength: 1
           pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
           title: route-id
@@ -367,7 +365,6 @@ components:
           minimum: 0
           title: cage-number
           type: integer
-          x-go-type: ListKey
         description:
           description: long description field
           maxLength: 1024
@@ -419,7 +416,7 @@ components:
         - speed-autoneg
         title: speeds
         type: string
-      title: leaf-list-speeds
+      title: speeds
       type: array
     Switch_Attribute:
       additionalProperties:
@@ -488,8 +485,7 @@ components:
         cage-number:
           description: reference to the cage-number of the port in the switch model
           title: cage-number
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: /sm:switch-model/sm:port/sm:cage-number
         channel-number:
           description: |-
@@ -499,7 +495,6 @@ components:
           minimum: 0
           title: channel-number
           type: integer
-          x-go-type: ListKey
         description:
           description: long description field
           maxLength: 1024
@@ -545,7 +540,7 @@ components:
         title: dhcp-connect-point
         type: string
         x-leafref: /dhcp:dhcp-server/dhcp:dhcp-server-id
-      title: leaf-list-dhcp-connect-point
+      title: dhcp-connect-point
       type: array
     Switch_Port_List:
       description: A port in a switch (list)
@@ -606,18 +601,18 @@ components:
     Switch_Port_Vlans:
       description: untagged and tagged vlans per port
       properties:
-        leaf-list-tagged:
+        tagged:
           items:
             description: multiple tagged vlans
             title: tagged
-            type: string
+            type: integer
             x-leafref: ../../../sw:vlan/sw:vlan-id
-          title: leaf-list-tagged
+          title: tagged
           type: array
         untagged:
           description: vlan for untagged packets
           title: untagged
-          type: string
+          type: integer
           x-leafref: ../../../sw:vlan/sw:vlan-id
       title: Switch_Port_Vlans
       type: object
@@ -666,8 +661,7 @@ components:
         channel-number:
           description: Port channel number used for Switch A
           title: channel-number
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../../../sw:port/sw:channel-number
       required:
       - cage-number
@@ -712,7 +706,6 @@ components:
           minimum: 0
           title: vlan-id
           type: integer
-          x-go-type: ListKey
       required:
       - vlan-id
       title: Switch_Vlan
@@ -733,7 +726,7 @@ components:
         pattern: (([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/(([0-9])|([1-2][0-9])|(3[0-2]))
         title: subnet
         type: string
-      title: leaf-list-subnet
+      title: subnet
       type: array
 info:
   contact:
@@ -761,9 +754,6 @@ paths:
                 $ref: '#/components/schemas/Dhcp-server_List'
           description: GET OK 200
       summary: GET /dhcp-server List
-      tags:
-      - Dhcp-server
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/dhcp-server/{dhcp-server-id}:
@@ -784,9 +774,6 @@ paths:
                 $ref: '#/components/schemas/Dhcp-server'
           description: GET OK 200
       summary: GET /dhcp-server Container
-      tags:
-      - Dhcp-server
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -817,9 +804,6 @@ paths:
                 $ref: '#/components/schemas/Route_List'
           description: GET OK 200
       summary: GET /route List
-      tags:
-      - Route
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/route/{route-id}:
@@ -840,9 +824,6 @@ paths:
                 $ref: '#/components/schemas/Route'
           description: GET OK 200
       summary: GET /route Container
-      tags:
-      - Route
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -873,9 +854,6 @@ paths:
                 $ref: '#/components/schemas/Switch_List'
           description: GET OK 200
       summary: GET /switch List
-      tags:
-      - Switch
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model:
@@ -890,9 +868,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model_List'
           description: GET OK 200
       summary: GET /switch-model List
-      tags:
-      - Switch-model
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model/{switch-model-id}:
@@ -913,9 +888,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model'
           description: GET OK 200
       summary: GET /switch-model Container
-      tags:
-      - Switch-model
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -946,9 +918,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Attribute_List'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/attribute List
-      tags:
-      - Switch-model_Attribute
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -977,9 +946,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Attribute'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/attribute Container
-      tags:
-      - Switch-model_Attribute
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1018,9 +984,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Port_List'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/port List
-      tags:
-      - Switch-model_Port
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1049,9 +1012,6 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Port'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/port Container
-      tags:
-      - Switch-model_Port
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1096,9 +1056,6 @@ paths:
                 $ref: '#/components/schemas/Switch'
           description: GET OK 200
       summary: GET /switch Container
-      tags:
-      - Switch
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1129,9 +1086,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Attribute_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/attribute List
-      tags:
-      - Switch_Attribute
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1160,9 +1114,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Attribute'
           description: GET OK 200
       summary: GET /switch/{switch-id}/attribute Container
-      tags:
-      - Switch_Attribute
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1207,9 +1158,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Management'
           description: GET OK 200
       summary: GET /switch/{switch-id}/management Container
-      tags:
-      - Switch
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1240,9 +1188,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port List
-      tags:
-      - Switch_Port
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1271,9 +1216,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Port'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port Container
-      tags:
-      - Switch_Port
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1320,9 +1262,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_State'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/state Container
-      tags:
-      - Switch_Port
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1367,9 +1306,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_Vlans'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans Container
-      tags:
-      - Switch_Port
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1416,9 +1352,6 @@ paths:
                 $ref: '#/components/schemas/Switch_State'
           description: GET OK 200
       summary: GET /switch/{switch-id}/state Container
-      tags:
-      - Switch
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1447,9 +1380,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair Container
-      tags:
-      - Switch
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1483,9 +1413,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port List
-      tags:
-      - Switch_Switch-pair_Pairing-port
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1517,9 +1444,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port Container
-      tags:
-      - Switch_Switch-pair_Pairing-port
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1566,9 +1490,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Vlan_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/vlan List
-      tags:
-      - Switch_Vlan
-      - List
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1597,9 +1518,6 @@ paths:
                 $ref: '#/components/schemas/Switch_Vlan'
           description: GET OK 200
       summary: GET /switch/{switch-id}/vlan Container
-      tags:
-      - Switch_Vlan
-      - Container
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:

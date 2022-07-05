@@ -24,7 +24,7 @@ func Test_WalkAndValidateMust(t *testing.T) {
 	}
 	schema.Root = device
 	assert.NotNil(t, device)
-	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device)
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, true)
 	assert.NotNil(t, nn)
 
 	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)

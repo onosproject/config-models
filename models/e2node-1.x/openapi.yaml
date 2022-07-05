@@ -133,9 +133,6 @@ paths:
                 $ref: '#/components/schemas/E2node'
           description: GET OK 200
       summary: GET /e2node Container
-      tags:
-      - ""
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -164,9 +161,6 @@ paths:
                 $ref: '#/components/schemas/E2node_Intervals'
           description: GET OK 200
       summary: GET /e2node/intervals Container
-      tags:
-      - E2node
-      - Container
     parameters:
     - $ref: '#/components/parameters/target'
     post:
