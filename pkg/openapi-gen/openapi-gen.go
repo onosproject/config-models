@@ -449,7 +449,6 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Properties[v.Value.Title] = v
 				case "leaf-list":
 					v.Value.Type = "array"
-					// schemaVal.Properties[v.Value.Title] = v
 					title := v.Value.Title
 					if strings.HasPrefix(title, "leaf-list") {
 						title = v.Value.Title[10:]

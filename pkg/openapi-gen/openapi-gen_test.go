@@ -343,6 +343,164 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	assert.Equal(t, uint64(30), *s.Value.MaxLength)
 }
 
+func Test_buildSchemaLeafList(t *testing.T) {
+
+	targetParameter = targetParam("targettest")
+
+	testDirEntry := yang.Entry{
+		Name:     "parent-list",
+		Kind:     yang.DirectoryEntry,
+		Parent:   &yang.Entry{},
+		ListAttr: yang.NewDefaultListAttr(),
+		Dir:      make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	testList1 := yang.Entry{
+		Name:     "list1",
+		Kind:     yang.DirectoryEntry,
+		Parent:   &testDirEntry,
+		ListAttr: yang.NewDefaultListAttr(),
+		Dir:      make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	testContainer1 := yang.Entry{
+		Name:   "container1",
+		Kind:   yang.DirectoryEntry,
+		Parent: &testList1,
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	containerIntRefLeafList := yang.Entry{
+		Name:   "cont-int-ref-leaf-list",
+		Kind:   yang.LeafEntry,
+		Parent: &testContainer1,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../../../leaf-uint16",
+		},
+		ListAttr: yang.NewDefaultListAttr(),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	containerStrRefLeafList := yang.Entry{
+		Name:   "cont-str-ref-leaf-list",
+		Kind:   yang.LeafEntry,
+		Parent: &testContainer1,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../../../leaf-string",
+		},
+		ListAttr: yang.NewDefaultListAttr(),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	listIntRefLeadList := yang.Entry{
+		Name:   "list-int-ref-leaf-list",
+		Kind:   yang.LeafEntry,
+		Parent: &testList1,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../../leaf-uint16",
+		},
+		ListAttr: yang.NewDefaultListAttr(),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	listStrRefLeafList := yang.Entry{
+		Name:   "list-str-ref-leaf-list",
+		Kind:   yang.LeafEntry,
+		Parent: &testList1,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../../leaf-string",
+		},
+		ListAttr: yang.NewDefaultListAttr(),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	leafUint16 := yang.Entry{
+		Name:   "leaf-uint16",
+		Kind:   yang.LeafEntry,
+		Parent: &testDirEntry,
+		Type:   &yang.YangType{Kind: yang.Yuint16},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	leafString := yang.Entry{
+		Name:   "leaf-string",
+		Kind:   yang.LeafEntry,
+		Parent: &testDirEntry,
+		Type:   &yang.YangType{Kind: yang.Ystring},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	testContainer1.Dir["cont-int-ref-leaf-list"] = &containerIntRefLeafList
+	testContainer1.Dir["cont-str-ref-leaf-list"] = &containerStrRefLeafList
+
+	testList1.Dir["list-int-ref-leaf-list"] = &listIntRefLeadList
+	testList1.Dir["list-str-ref-leaf-list"] = &listStrRefLeafList
+	testList1.Dir["container1"] = &testContainer1
+
+	testDirEntry.Dir["leaf-uint16"] = &leafUint16
+	testDirEntry.Dir["leaf-string"] = &leafString
+	testDirEntry.Dir["list1"] = &testList1
+
+	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest")
+	assert.NilError(t, err)
+	assert.Equal(t, len(paths), 3)
+	assert.Equal(t, len(components.Schemas), 9)
+
+	// Assert the leaf list with leaf ref to integer inside a Container
+	s, ok := components.Schemas["Test_List1_Container1_Cont-int-ref-leaf-list"]
+	assert.Assert(t, ok, "expecting Test_List1_Container1_Cont-int-ref-leaf-list")
+	assert.Equal(t, "cont-int-ref-leaf-list", s.Value.Title)
+	assert.Equal(t, "array", s.Value.Type)
+	assert.Equal(t, "integer", s.Value.Items.Value.Type)
+
+	// Assert the leaf list with leaf ref to string inside a Container
+	s, ok = components.Schemas["Test_List1_Container1_Cont-str-ref-leaf-list"]
+	assert.Assert(t, ok, "expecting Test_List1_Container1_Cont-str-ref-leaf-list")
+	assert.Equal(t, "cont-str-ref-leaf-list", s.Value.Title)
+	assert.Equal(t, "array", s.Value.Type)
+	assert.Equal(t, "string", s.Value.Items.Value.Type)
+
+	// Assert the leaf list with leaf ref to integer inside a List
+	s, ok = components.Schemas["Test_List1_List-int-ref-leaf-list"]
+	assert.Assert(t, ok, "expecting Test_List1_List-int-ref-leaf-list")
+	assert.Equal(t, "list-int-ref-leaf-list", s.Value.Title)
+	assert.Equal(t, "array", s.Value.Type)
+	assert.Equal(t, "integer", s.Value.Items.Value.Type)
+
+	// Assert the leaf list with leaf ref to string inside a List
+	s, ok = components.Schemas["Test_List1_List-str-ref-leaf-list"]
+	assert.Assert(t, ok, "expecting Test_List1_List-str-ref-leaf-list")
+	assert.Equal(t, "list-str-ref-leaf-list", s.Value.Title)
+	assert.Equal(t, "array", s.Value.Type)
+	assert.Equal(t, "string", s.Value.Items.Value.Type)
+
+}
+
 func Test_walkPath(t *testing.T) {
 
 	testDevice := yang.Entry{
