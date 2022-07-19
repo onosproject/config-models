@@ -449,7 +449,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Properties[v.Value.Title] = v
 				case "leaf-list":
 					v.Value.Type = "array"
-					schemaVal.Properties[v.Value.Title] = v
+					title := v.Value.Title
+					if strings.HasPrefix(title, "leaf-list") {
+						title = v.Value.Title[10:]
+					}
+					schemaVal.Properties[title] = openapi3.NewSchemaRef(
+						fmt.Sprintf("#/components/schemas/%s", k), v.Value)
+					openapiComponents.Schemas[k] = v
 				default:
 					return nil, nil, fmt.Errorf("unhandled in container %s: %s", k, v.Value.Type)
 				}
