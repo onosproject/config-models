@@ -37,8 +37,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
+	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
 )
 
@@ -62,7 +62,7 @@ func init() {
 	var err error
 	initΛEnumTypes()
 	if SchemaTree, err = UnzipSchema(); err != nil {
-		panic("schema error: " + err.Error())
+		panic("schema error: " +  err.Error())
 	}
 }
 
@@ -74,9 +74,9 @@ func Schema() (*ytypes.Schema, error) {
 	}
 
 	return &ytypes.Schema{
-		Root:       &Device{},
+		Root: &Device{},
 		SchemaTree: uzp,
-		Unmarshal:  Unmarshal,
+		Unmarshal: Unmarshal,
 	}, nil
 }
 
@@ -101,7 +101,7 @@ func Unmarshal(data []byte, destStruct ygot.GoStruct, opts ...ytypes.UnmarshalOp
 	tn := reflect.TypeOf(destStruct).Elem().Name()
 	schema, ok := SchemaTree[tn]
 	if !ok {
-		return fmt.Errorf("could not find schema for type %s", tn)
+		return fmt.Errorf("could not find schema for type %s", tn )
 	}
 	var jsonTree interface{}
 	if err := json.Unmarshal([]byte(data), &jsonTree); err != nil {
@@ -112,9 +112,9 @@ func Unmarshal(data []byte, destStruct ygot.GoStruct, opts ...ytypes.UnmarshalOp
 
 // Device represents the /device YANG schema element.
 type Device struct {
-	Components *OpenconfigPlatform_Components   `path:"components" module:"openconfig-platform"`
-	Interfaces *OpenconfigInterfaces_Interfaces `path:"interfaces" module:"openconfig-interfaces"`
-	System     *OpenconfigSystem_System         `path:"system" module:"openconfig-system"`
+	Components	*OpenconfigPlatform_Components	`path:"components" module:"openconfig-platform"`
+	Interfaces	*OpenconfigInterfaces_Interfaces	`path:"interfaces" module:"openconfig-interfaces"`
+	System	*OpenconfigSystem_System	`path:"system" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that Device implements the yang.GoStruct
@@ -145,9 +145,10 @@ func (*Device) ΛBelongingModule() string {
 	return ""
 }
 
+
 // OpenconfigInterfaces_Interfaces represents the /openconfig-interfaces/interfaces YANG schema element.
 type OpenconfigInterfaces_Interfaces struct {
-	Interface map[string]*OpenconfigInterfaces_Interfaces_Interface `path:"interface" module:"openconfig-interfaces"`
+	Interface	map[string]*OpenconfigInterfaces_Interfaces_Interface	`path:"interface" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces implements the yang.GoStruct
@@ -158,7 +159,7 @@ func (*OpenconfigInterfaces_Interfaces) IsYANGGoStruct() {}
 // NewInterface creates a new entry in the Interface list of the
 // OpenconfigInterfaces_Interfaces struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigInterfaces_Interfaces) NewInterface(Name string) (*OpenconfigInterfaces_Interfaces_Interface, error) {
+func (t *OpenconfigInterfaces_Interfaces) NewInterface(Name string) (*OpenconfigInterfaces_Interfaces_Interface, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -197,9 +198,7 @@ func (t *OpenconfigInterfaces_Interfaces) Validate(opts ...ygot.ValidationOption
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces.
@@ -207,13 +206,14 @@ func (*OpenconfigInterfaces_Interfaces) ΛBelongingModule() string {
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface represents the /openconfig-interfaces/interfaces/interface YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface struct {
-	Config        *OpenconfigInterfaces_Interfaces_Interface_Config        `path:"config" module:"openconfig-interfaces"`
-	HoldTime      *OpenconfigInterfaces_Interfaces_Interface_HoldTime      `path:"hold-time" module:"openconfig-interfaces"`
-	Name          *string                                                  `path:"name" module:"openconfig-interfaces"`
-	State         *OpenconfigInterfaces_Interfaces_Interface_State         `path:"state" module:"openconfig-interfaces"`
-	Subinterfaces *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces `path:"subinterfaces" module:"openconfig-interfaces"`
+	Config	*OpenconfigInterfaces_Interfaces_Interface_Config	`path:"config" module:"openconfig-interfaces"`
+	HoldTime	*OpenconfigInterfaces_Interfaces_Interface_HoldTime	`path:"hold-time" module:"openconfig-interfaces"`
+	Name	*string	`path:"name" module:"openconfig-interfaces"`
+	State	*OpenconfigInterfaces_Interfaces_Interface_State	`path:"state" module:"openconfig-interfaces"`
+	Subinterfaces	*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces	`path:"subinterfaces" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface implements the yang.GoStruct
@@ -247,9 +247,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface) Validate(opts ...ygot.Valida
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface.
@@ -257,13 +255,14 @@ func (*OpenconfigInterfaces_Interfaces_Interface) ΛBelongingModule() string {
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Config represents the /openconfig-interfaces/interfaces/interface/config YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Config struct {
-	Description *string                        `path:"description" module:"openconfig-interfaces"`
-	Enabled     *bool                          `path:"enabled" module:"openconfig-interfaces"`
-	Mtu         *uint16                        `path:"mtu" module:"openconfig-interfaces"`
-	Name        *string                        `path:"name" module:"openconfig-interfaces"`
-	Type        E_IETFInterfaces_InterfaceType `path:"type" module:"openconfig-interfaces"`
+	Description	*string	`path:"description" module:"openconfig-interfaces"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-interfaces"`
+	Mtu	*uint16	`path:"mtu" module:"openconfig-interfaces"`
+	Name	*string	`path:"name" module:"openconfig-interfaces"`
+	Type	E_IETFInterfaces_InterfaceType	`path:"type" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Config implements the yang.GoStruct
@@ -286,9 +285,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Config) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Config.
@@ -296,10 +293,11 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Config) ΛBelongingModule() str
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_HoldTime represents the /openconfig-interfaces/interfaces/interface/hold-time YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_HoldTime struct {
-	Config *OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config `path:"config" module:"openconfig-interfaces"`
-	State  *OpenconfigInterfaces_Interfaces_Interface_HoldTime_State  `path:"state" module:"openconfig-interfaces"`
+	Config	*OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config	`path:"config" module:"openconfig-interfaces"`
+	State	*OpenconfigInterfaces_Interfaces_Interface_HoldTime_State	`path:"state" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_HoldTime implements the yang.GoStruct
@@ -322,9 +320,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime) Validate(opts ...yg
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_HoldTime.
@@ -332,10 +328,11 @@ func (*OpenconfigInterfaces_Interfaces_Interface_HoldTime) ΛBelongingModule() s
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config represents the /openconfig-interfaces/interfaces/interface/hold-time/config YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config struct {
-	Down *uint32 `path:"down" module:"openconfig-interfaces"`
-	Up   *uint32 `path:"up" module:"openconfig-interfaces"`
+	Down	*uint32	`path:"down" module:"openconfig-interfaces"`
+	Up	*uint32	`path:"up" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config implements the yang.GoStruct
@@ -358,9 +355,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config) Validate(opt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config.
@@ -368,10 +363,11 @@ func (*OpenconfigInterfaces_Interfaces_Interface_HoldTime_Config) ΛBelongingMod
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_HoldTime_State represents the /openconfig-interfaces/interfaces/interface/hold-time/state YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_HoldTime_State struct {
-	Down *uint32 `path:"down" module:"openconfig-interfaces"`
-	Up   *uint32 `path:"up" module:"openconfig-interfaces"`
+	Down	*uint32	`path:"down" module:"openconfig-interfaces"`
+	Up	*uint32	`path:"up" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_HoldTime_State implements the yang.GoStruct
@@ -394,9 +390,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_State) Validate(opts
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_HoldTime_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_HoldTime_State.
@@ -404,19 +398,20 @@ func (*OpenconfigInterfaces_Interfaces_Interface_HoldTime_State) ΛBelongingModu
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_State represents the /openconfig-interfaces/interfaces/interface/state YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_State struct {
-	AdminStatus  E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus `path:"admin-status" module:"openconfig-interfaces"`
-	Counters     *OpenconfigInterfaces_Interfaces_Interface_State_Counters     `path:"counters" module:"openconfig-interfaces"`
-	Description  *string                                                       `path:"description" module:"openconfig-interfaces"`
-	Enabled      *bool                                                         `path:"enabled" module:"openconfig-interfaces"`
-	HardwarePort *string                                                       `path:"hardware-port" module:"openconfig-platform"`
-	Ifindex      *uint32                                                       `path:"ifindex" module:"openconfig-interfaces"`
-	LastChange   *uint64                                                       `path:"last-change" module:"openconfig-interfaces"`
-	Mtu          *uint16                                                       `path:"mtu" module:"openconfig-interfaces"`
-	Name         *string                                                       `path:"name" module:"openconfig-interfaces"`
-	OperStatus   E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus  `path:"oper-status" module:"openconfig-interfaces"`
-	Type         E_IETFInterfaces_InterfaceType                                `path:"type" module:"openconfig-interfaces"`
+	AdminStatus	E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus	`path:"admin-status" module:"openconfig-interfaces"`
+	Counters	*OpenconfigInterfaces_Interfaces_Interface_State_Counters	`path:"counters" module:"openconfig-interfaces"`
+	Description	*string	`path:"description" module:"openconfig-interfaces"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-interfaces"`
+	HardwarePort	*string	`path:"hardware-port" module:"openconfig-platform"`
+	Ifindex	*uint32	`path:"ifindex" module:"openconfig-interfaces"`
+	LastChange	*uint64	`path:"last-change" module:"openconfig-interfaces"`
+	Mtu	*uint16	`path:"mtu" module:"openconfig-interfaces"`
+	Name	*string	`path:"name" module:"openconfig-interfaces"`
+	OperStatus	E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus	`path:"oper-status" module:"openconfig-interfaces"`
+	Type	E_IETFInterfaces_InterfaceType	`path:"type" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_State implements the yang.GoStruct
@@ -439,9 +434,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_State) Validate(opts ...ygot.
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_State.
@@ -449,24 +442,25 @@ func (*OpenconfigInterfaces_Interfaces_Interface_State) ΛBelongingModule() stri
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_State_Counters represents the /openconfig-interfaces/interfaces/interface/state/counters YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_State_Counters struct {
-	CarrierTransitions *uint64 `path:"carrier-transitions" module:"openconfig-interfaces"`
-	InBroadcastPkts    *uint64 `path:"in-broadcast-pkts" module:"openconfig-interfaces"`
-	InDiscards         *uint64 `path:"in-discards" module:"openconfig-interfaces"`
-	InErrors           *uint64 `path:"in-errors" module:"openconfig-interfaces"`
-	InFcsErrors        *uint64 `path:"in-fcs-errors" module:"openconfig-interfaces"`
-	InMulticastPkts    *uint64 `path:"in-multicast-pkts" module:"openconfig-interfaces"`
-	InOctets           *uint64 `path:"in-octets" module:"openconfig-interfaces"`
-	InUnicastPkts      *uint64 `path:"in-unicast-pkts" module:"openconfig-interfaces"`
-	InUnknownProtos    *uint64 `path:"in-unknown-protos" module:"openconfig-interfaces"`
-	LastClear          *uint64 `path:"last-clear" module:"openconfig-interfaces"`
-	OutBroadcastPkts   *uint64 `path:"out-broadcast-pkts" module:"openconfig-interfaces"`
-	OutDiscards        *uint64 `path:"out-discards" module:"openconfig-interfaces"`
-	OutErrors          *uint64 `path:"out-errors" module:"openconfig-interfaces"`
-	OutMulticastPkts   *uint64 `path:"out-multicast-pkts" module:"openconfig-interfaces"`
-	OutOctets          *uint64 `path:"out-octets" module:"openconfig-interfaces"`
-	OutUnicastPkts     *uint64 `path:"out-unicast-pkts" module:"openconfig-interfaces"`
+	CarrierTransitions	*uint64	`path:"carrier-transitions" module:"openconfig-interfaces"`
+	InBroadcastPkts	*uint64	`path:"in-broadcast-pkts" module:"openconfig-interfaces"`
+	InDiscards	*uint64	`path:"in-discards" module:"openconfig-interfaces"`
+	InErrors	*uint64	`path:"in-errors" module:"openconfig-interfaces"`
+	InFcsErrors	*uint64	`path:"in-fcs-errors" module:"openconfig-interfaces"`
+	InMulticastPkts	*uint64	`path:"in-multicast-pkts" module:"openconfig-interfaces"`
+	InOctets	*uint64	`path:"in-octets" module:"openconfig-interfaces"`
+	InUnicastPkts	*uint64	`path:"in-unicast-pkts" module:"openconfig-interfaces"`
+	InUnknownProtos	*uint64	`path:"in-unknown-protos" module:"openconfig-interfaces"`
+	LastClear	*uint64	`path:"last-clear" module:"openconfig-interfaces"`
+	OutBroadcastPkts	*uint64	`path:"out-broadcast-pkts" module:"openconfig-interfaces"`
+	OutDiscards	*uint64	`path:"out-discards" module:"openconfig-interfaces"`
+	OutErrors	*uint64	`path:"out-errors" module:"openconfig-interfaces"`
+	OutMulticastPkts	*uint64	`path:"out-multicast-pkts" module:"openconfig-interfaces"`
+	OutOctets	*uint64	`path:"out-octets" module:"openconfig-interfaces"`
+	OutUnicastPkts	*uint64	`path:"out-unicast-pkts" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_State_Counters implements the yang.GoStruct
@@ -489,9 +483,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_State_Counters) Validate(opts
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_State_Counters.
@@ -499,9 +491,10 @@ func (*OpenconfigInterfaces_Interfaces_Interface_State_Counters) ΛBelongingModu
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces represents the /openconfig-interfaces/interfaces/interface/subinterfaces YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Subinterfaces struct {
-	Subinterface map[uint32]*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface `path:"subinterface" module:"openconfig-interfaces"`
+	Subinterface	map[uint32]*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface	`path:"subinterface" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Subinterfaces implements the yang.GoStruct
@@ -512,7 +505,7 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) IsYANGGoStruct()
 // NewSubinterface creates a new entry in the Subinterface list of the
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) NewSubinterface(Index uint32) (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface, error) {
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) NewSubinterface(Index uint32) (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -551,9 +544,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) Validate(opts 
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Subinterfaces.
@@ -561,11 +552,12 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces) ΛBelongingModul
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface represents the /openconfig-interfaces/interfaces/interface/subinterfaces/subinterface YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface struct {
-	Config *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config `path:"config" module:"openconfig-interfaces"`
-	Index  *uint32                                                                      `path:"index" module:"openconfig-interfaces"`
-	State  *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State  `path:"state" module:"openconfig-interfaces"`
+	Config	*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config	`path:"config" module:"openconfig-interfaces"`
+	Index	*uint32	`path:"index" module:"openconfig-interfaces"`
+	State	*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State	`path:"state" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface implements the yang.GoStruct
@@ -599,9 +591,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface) V
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface.
@@ -609,18 +599,18 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface) ΛB
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config represents the /openconfig-interfaces/interfaces/interface/subinterfaces/subinterface/config YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config struct {
-	Description *string `path:"description" module:"openconfig-interfaces"`
-	Enabled     *bool   `path:"enabled" module:"openconfig-interfaces"`
-	Index       *uint32 `path:"index" module:"openconfig-interfaces"`
+	Description	*string	`path:"description" module:"openconfig-interfaces"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-interfaces"`
+	Index	*uint32	`path:"index" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config) IsYANGGoStruct() {
-}
+func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -637,9 +627,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Co
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Config.
@@ -647,17 +635,18 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Conf
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State represents the /openconfig-interfaces/interfaces/interface/subinterfaces/subinterface/state YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State struct {
-	AdminStatus E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus                        `path:"admin-status" module:"openconfig-interfaces"`
-	Counters    *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters `path:"counters" module:"openconfig-interfaces"`
-	Description *string                                                                              `path:"description" module:"openconfig-interfaces"`
-	Enabled     *bool                                                                                `path:"enabled" module:"openconfig-interfaces"`
-	Ifindex     *uint32                                                                              `path:"ifindex" module:"openconfig-interfaces"`
-	Index       *uint32                                                                              `path:"index" module:"openconfig-interfaces"`
-	LastChange  *uint64                                                                              `path:"last-change" module:"openconfig-interfaces"`
-	Name        *string                                                                              `path:"name" module:"openconfig-interfaces"`
-	OperStatus  E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus                         `path:"oper-status" module:"openconfig-interfaces"`
+	AdminStatus	E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus	`path:"admin-status" module:"openconfig-interfaces"`
+	Counters	*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters	`path:"counters" module:"openconfig-interfaces"`
+	Description	*string	`path:"description" module:"openconfig-interfaces"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-interfaces"`
+	Ifindex	*uint32	`path:"ifindex" module:"openconfig-interfaces"`
+	Index	*uint32	`path:"index" module:"openconfig-interfaces"`
+	LastChange	*uint64	`path:"last-change" module:"openconfig-interfaces"`
+	Name	*string	`path:"name" module:"openconfig-interfaces"`
+	OperStatus	E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus	`path:"oper-status" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State implements the yang.GoStruct
@@ -680,9 +669,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_St
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State.
@@ -690,31 +677,31 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Stat
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters represents the /openconfig-interfaces/interfaces/interface/subinterfaces/subinterface/state/counters YANG schema element.
 type OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters struct {
-	CarrierTransitions *uint64 `path:"carrier-transitions" module:"openconfig-interfaces"`
-	InBroadcastPkts    *uint64 `path:"in-broadcast-pkts" module:"openconfig-interfaces"`
-	InDiscards         *uint64 `path:"in-discards" module:"openconfig-interfaces"`
-	InErrors           *uint64 `path:"in-errors" module:"openconfig-interfaces"`
-	InFcsErrors        *uint64 `path:"in-fcs-errors" module:"openconfig-interfaces"`
-	InMulticastPkts    *uint64 `path:"in-multicast-pkts" module:"openconfig-interfaces"`
-	InOctets           *uint64 `path:"in-octets" module:"openconfig-interfaces"`
-	InUnicastPkts      *uint64 `path:"in-unicast-pkts" module:"openconfig-interfaces"`
-	InUnknownProtos    *uint64 `path:"in-unknown-protos" module:"openconfig-interfaces"`
-	LastClear          *uint64 `path:"last-clear" module:"openconfig-interfaces"`
-	OutBroadcastPkts   *uint64 `path:"out-broadcast-pkts" module:"openconfig-interfaces"`
-	OutDiscards        *uint64 `path:"out-discards" module:"openconfig-interfaces"`
-	OutErrors          *uint64 `path:"out-errors" module:"openconfig-interfaces"`
-	OutMulticastPkts   *uint64 `path:"out-multicast-pkts" module:"openconfig-interfaces"`
-	OutOctets          *uint64 `path:"out-octets" module:"openconfig-interfaces"`
-	OutUnicastPkts     *uint64 `path:"out-unicast-pkts" module:"openconfig-interfaces"`
+	CarrierTransitions	*uint64	`path:"carrier-transitions" module:"openconfig-interfaces"`
+	InBroadcastPkts	*uint64	`path:"in-broadcast-pkts" module:"openconfig-interfaces"`
+	InDiscards	*uint64	`path:"in-discards" module:"openconfig-interfaces"`
+	InErrors	*uint64	`path:"in-errors" module:"openconfig-interfaces"`
+	InFcsErrors	*uint64	`path:"in-fcs-errors" module:"openconfig-interfaces"`
+	InMulticastPkts	*uint64	`path:"in-multicast-pkts" module:"openconfig-interfaces"`
+	InOctets	*uint64	`path:"in-octets" module:"openconfig-interfaces"`
+	InUnicastPkts	*uint64	`path:"in-unicast-pkts" module:"openconfig-interfaces"`
+	InUnknownProtos	*uint64	`path:"in-unknown-protos" module:"openconfig-interfaces"`
+	LastClear	*uint64	`path:"last-clear" module:"openconfig-interfaces"`
+	OutBroadcastPkts	*uint64	`path:"out-broadcast-pkts" module:"openconfig-interfaces"`
+	OutDiscards	*uint64	`path:"out-discards" module:"openconfig-interfaces"`
+	OutErrors	*uint64	`path:"out-errors" module:"openconfig-interfaces"`
+	OutMulticastPkts	*uint64	`path:"out-multicast-pkts" module:"openconfig-interfaces"`
+	OutOctets	*uint64	`path:"out-octets" module:"openconfig-interfaces"`
+	OutUnicastPkts	*uint64	`path:"out-unicast-pkts" module:"openconfig-interfaces"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters) IsYANGGoStruct() {
-}
+func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -731,9 +718,7 @@ func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_St
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_State_Counters.
@@ -741,9 +726,10 @@ func (*OpenconfigInterfaces_Interfaces_Interface_Subinterfaces_Subinterface_Stat
 	return "openconfig-interfaces"
 }
 
+
 // OpenconfigPlatform_Components represents the /openconfig-platform/components YANG schema element.
 type OpenconfigPlatform_Components struct {
-	Component map[string]*OpenconfigPlatform_Components_Component `path:"component" module:"openconfig-platform"`
+	Component	map[string]*OpenconfigPlatform_Components_Component	`path:"component" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components implements the yang.GoStruct
@@ -754,7 +740,7 @@ func (*OpenconfigPlatform_Components) IsYANGGoStruct() {}
 // NewComponent creates a new entry in the Component list of the
 // OpenconfigPlatform_Components struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigPlatform_Components) NewComponent(Name string) (*OpenconfigPlatform_Components_Component, error) {
+func (t *OpenconfigPlatform_Components) NewComponent(Name string) (*OpenconfigPlatform_Components_Component, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -801,13 +787,14 @@ func (*OpenconfigPlatform_Components) ΛBelongingModule() string {
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component represents the /openconfig-platform/components/component YANG schema element.
 type OpenconfigPlatform_Components_Component struct {
-	Config        *OpenconfigPlatform_Components_Component_Config        `path:"config" module:"openconfig-platform"`
-	Name          *string                                                `path:"name" module:"openconfig-platform"`
-	Properties    *OpenconfigPlatform_Components_Component_Properties    `path:"properties" module:"openconfig-platform"`
-	State         *OpenconfigPlatform_Components_Component_State         `path:"state" module:"openconfig-platform"`
-	Subcomponents *OpenconfigPlatform_Components_Component_Subcomponents `path:"subcomponents" module:"openconfig-platform"`
+	Config	*OpenconfigPlatform_Components_Component_Config	`path:"config" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	Properties	*OpenconfigPlatform_Components_Component_Properties	`path:"properties" module:"openconfig-platform"`
+	State	*OpenconfigPlatform_Components_Component_State	`path:"state" module:"openconfig-platform"`
+	Subcomponents	*OpenconfigPlatform_Components_Component_Subcomponents	`path:"subcomponents" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component implements the yang.GoStruct
@@ -841,9 +828,7 @@ func (t *OpenconfigPlatform_Components_Component) Validate(opts ...ygot.Validati
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component.
@@ -851,9 +836,10 @@ func (*OpenconfigPlatform_Components_Component) ΛBelongingModule() string {
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Config represents the /openconfig-platform/components/component/config YANG schema element.
 type OpenconfigPlatform_Components_Component_Config struct {
-	Name *string `path:"name" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Config implements the yang.GoStruct
@@ -876,9 +862,7 @@ func (t *OpenconfigPlatform_Components_Component_Config) Validate(opts ...ygot.V
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Config.
@@ -886,9 +870,10 @@ func (*OpenconfigPlatform_Components_Component_Config) ΛBelongingModule() strin
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Properties represents the /openconfig-platform/components/component/properties YANG schema element.
 type OpenconfigPlatform_Components_Component_Properties struct {
-	Property map[string]*OpenconfigPlatform_Components_Component_Properties_Property `path:"property" module:"openconfig-platform"`
+	Property	map[string]*OpenconfigPlatform_Components_Component_Properties_Property	`path:"property" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Properties implements the yang.GoStruct
@@ -899,7 +884,7 @@ func (*OpenconfigPlatform_Components_Component_Properties) IsYANGGoStruct() {}
 // NewProperty creates a new entry in the Property list of the
 // OpenconfigPlatform_Components_Component_Properties struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigPlatform_Components_Component_Properties) NewProperty(Name string) (*OpenconfigPlatform_Components_Component_Properties_Property, error) {
+func (t *OpenconfigPlatform_Components_Component_Properties) NewProperty(Name string) (*OpenconfigPlatform_Components_Component_Properties_Property, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -938,9 +923,7 @@ func (t *OpenconfigPlatform_Components_Component_Properties) Validate(opts ...yg
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Properties) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Properties) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Properties.
@@ -948,11 +931,12 @@ func (*OpenconfigPlatform_Components_Component_Properties) ΛBelongingModule() s
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Properties_Property represents the /openconfig-platform/components/component/properties/property YANG schema element.
 type OpenconfigPlatform_Components_Component_Properties_Property struct {
-	Config *OpenconfigPlatform_Components_Component_Properties_Property_Config `path:"config" module:"openconfig-platform"`
-	Name   *string                                                             `path:"name" module:"openconfig-platform"`
-	State  *OpenconfigPlatform_Components_Component_Properties_Property_State  `path:"state" module:"openconfig-platform"`
+	Config	*OpenconfigPlatform_Components_Component_Properties_Property_Config	`path:"config" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	State	*OpenconfigPlatform_Components_Component_Properties_Property_State	`path:"state" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Properties_Property implements the yang.GoStruct
@@ -986,9 +970,7 @@ func (t *OpenconfigPlatform_Components_Component_Properties_Property) Validate(o
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Properties_Property) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Properties_Property) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Properties_Property.
@@ -996,10 +978,11 @@ func (*OpenconfigPlatform_Components_Component_Properties_Property) ΛBelongingM
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Properties_Property_Config represents the /openconfig-platform/components/component/properties/property/config YANG schema element.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config struct {
-	Name  *string                                                                        `path:"name" module:"openconfig-platform"`
-	Value OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union `path:"value" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	Value	OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union	`path:"value" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config implements the yang.GoStruct
@@ -1022,9 +1005,7 @@ func (t *OpenconfigPlatform_Components_Component_Properties_Property_Config) Val
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Properties_Property_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Properties_Property_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Properties_Property_Config.
@@ -1041,57 +1022,52 @@ type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Un
 // OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Bool is used when /openconfig-platform/components/component/properties/property/config/value
 // is to be set to a bool value.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Bool struct {
-	Bool bool
+	Bool	bool
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Bool
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Bool) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Bool) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Float64 is used when /openconfig-platform/components/component/properties/property/config/value
 // is to be set to a float64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Float64 struct {
-	Float64 float64
+	Float64	float64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Float64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Float64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Float64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Int64 is used when /openconfig-platform/components/component/properties/property/config/value
 // is to be set to a int64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Int64 struct {
-	Int64 int64
+	Int64	int64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Int64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Int64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Int64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_String is used when /openconfig-platform/components/component/properties/property/config/value
 // is to be set to a string value.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_String
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_String) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_String) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Uint64 is used when /openconfig-platform/components/component/properties/property/config/value
 // is to be set to a uint64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Uint64 struct {
-	Uint64 uint64
+	Uint64	uint64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Uint64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Uint64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union_Uint64) Is_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union() {}
 
 // To_OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigPlatform_Components_Component_Properties_Property_Config_Value_Union union. It returns an error if the interface{} supplied
@@ -1113,11 +1089,12 @@ func (t *OpenconfigPlatform_Components_Component_Properties_Property_Config) To_
 	}
 }
 
+
 // OpenconfigPlatform_Components_Component_Properties_Property_State represents the /openconfig-platform/components/component/properties/property/state YANG schema element.
 type OpenconfigPlatform_Components_Component_Properties_Property_State struct {
-	Configurable *bool                                                                         `path:"configurable" module:"openconfig-platform"`
-	Name         *string                                                                       `path:"name" module:"openconfig-platform"`
-	Value        OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union `path:"value" module:"openconfig-platform"`
+	Configurable	*bool	`path:"configurable" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	Value	OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union	`path:"value" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Properties_Property_State implements the yang.GoStruct
@@ -1140,9 +1117,7 @@ func (t *OpenconfigPlatform_Components_Component_Properties_Property_State) Vali
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Properties_Property_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Properties_Property_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Properties_Property_State.
@@ -1159,57 +1134,52 @@ type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Uni
 // OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Bool is used when /openconfig-platform/components/component/properties/property/state/value
 // is to be set to a bool value.
 type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Bool struct {
-	Bool bool
+	Bool	bool
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Bool
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Bool) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Bool) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Float64 is used when /openconfig-platform/components/component/properties/property/state/value
 // is to be set to a float64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Float64 struct {
-	Float64 float64
+	Float64	float64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Float64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Float64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Float64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Int64 is used when /openconfig-platform/components/component/properties/property/state/value
 // is to be set to a int64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Int64 struct {
-	Int64 int64
+	Int64	int64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Int64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Int64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Int64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_String is used when /openconfig-platform/components/component/properties/property/state/value
 // is to be set to a string value.
 type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_String
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_String) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_String) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {}
 
 // OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Uint64 is used when /openconfig-platform/components/component/properties/property/state/value
 // is to be set to a uint64 value.
 type OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Uint64 struct {
-	Uint64 uint64
+	Uint64	uint64
 }
 
 // Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union ensures that OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Uint64
 // implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union interface.
-func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Uint64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union_Uint64) Is_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union() {}
 
 // To_OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigPlatform_Components_Component_Properties_Property_State_Value_Union union. It returns an error if the interface{} supplied
@@ -1231,17 +1201,18 @@ func (t *OpenconfigPlatform_Components_Component_Properties_Property_State) To_O
 	}
 }
 
+
 // OpenconfigPlatform_Components_Component_State represents the /openconfig-platform/components/component/state YANG schema element.
 type OpenconfigPlatform_Components_Component_State struct {
-	Description *string                                                    `path:"description" module:"openconfig-platform"`
-	Id          *string                                                    `path:"id" module:"openconfig-platform"`
-	MfgName     *string                                                    `path:"mfg-name" module:"openconfig-platform"`
-	Name        *string                                                    `path:"name" module:"openconfig-platform"`
-	PartNo      *string                                                    `path:"part-no" module:"openconfig-platform"`
-	SerialNo    *string                                                    `path:"serial-no" module:"openconfig-platform"`
-	Temperature *OpenconfigPlatform_Components_Component_State_Temperature `path:"temperature" module:"openconfig-platform"`
-	Type        OpenconfigPlatform_Components_Component_State_Type_Union   `path:"type" module:"openconfig-platform"`
-	Version     *string                                                    `path:"version" module:"openconfig-platform"`
+	Description	*string	`path:"description" module:"openconfig-platform"`
+	Id	*string	`path:"id" module:"openconfig-platform"`
+	MfgName	*string	`path:"mfg-name" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	PartNo	*string	`path:"part-no" module:"openconfig-platform"`
+	SerialNo	*string	`path:"serial-no" module:"openconfig-platform"`
+	Temperature	*OpenconfigPlatform_Components_Component_State_Temperature	`path:"temperature" module:"openconfig-platform"`
+	Type	OpenconfigPlatform_Components_Component_State_Type_Union	`path:"type" module:"openconfig-platform"`
+	Version	*string	`path:"version" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_State implements the yang.GoStruct
@@ -1264,9 +1235,7 @@ func (t *OpenconfigPlatform_Components_Component_State) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_State.
@@ -1283,24 +1252,22 @@ type OpenconfigPlatform_Components_Component_State_Type_Union interface {
 // OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT is used when /openconfig-platform/components/component/state/type
 // is to be set to a E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT value.
 type OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT struct {
-	E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT
+	E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT	E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT
 }
 
 // Is_OpenconfigPlatform_Components_Component_State_Type_Union ensures that OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT
 // implements the OpenconfigPlatform_Components_Component_State_Type_Union interface.
-func (*OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) Is_OpenconfigPlatform_Components_Component_State_Type_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) Is_OpenconfigPlatform_Components_Component_State_Type_Union() {}
 
 // OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT is used when /openconfig-platform/components/component/state/type
 // is to be set to a E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT value.
 type OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT struct {
-	E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT
+	E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT	E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT
 }
 
 // Is_OpenconfigPlatform_Components_Component_State_Type_Union ensures that OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT
 // implements the OpenconfigPlatform_Components_Component_State_Type_Union interface.
-func (*OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) Is_OpenconfigPlatform_Components_Component_State_Type_Union() {
-}
+func (*OpenconfigPlatform_Components_Component_State_Type_Union_E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) Is_OpenconfigPlatform_Components_Component_State_Type_Union() {}
 
 // To_OpenconfigPlatform_Components_Component_State_Type_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigPlatform_Components_Component_State_Type_Union union. It returns an error if the interface{} supplied
@@ -1316,12 +1283,13 @@ func (t *OpenconfigPlatform_Components_Component_State) To_OpenconfigPlatform_Co
 	}
 }
 
+
 // OpenconfigPlatform_Components_Component_State_Temperature represents the /openconfig-platform/components/component/state/temperature YANG schema element.
 type OpenconfigPlatform_Components_Component_State_Temperature struct {
-	Avg     *float64 `path:"avg" module:"openconfig-platform"`
-	Instant *float64 `path:"instant" module:"openconfig-platform"`
-	Max     *float64 `path:"max" module:"openconfig-platform"`
-	Min     *float64 `path:"min" module:"openconfig-platform"`
+	Avg	*float64	`path:"avg" module:"openconfig-platform"`
+	Instant	*float64	`path:"instant" module:"openconfig-platform"`
+	Max	*float64	`path:"max" module:"openconfig-platform"`
+	Min	*float64	`path:"min" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_State_Temperature implements the yang.GoStruct
@@ -1344,9 +1312,7 @@ func (t *OpenconfigPlatform_Components_Component_State_Temperature) Validate(opt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_State_Temperature) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_State_Temperature) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_State_Temperature.
@@ -1354,9 +1320,10 @@ func (*OpenconfigPlatform_Components_Component_State_Temperature) ΛBelongingMod
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Subcomponents represents the /openconfig-platform/components/component/subcomponents YANG schema element.
 type OpenconfigPlatform_Components_Component_Subcomponents struct {
-	Subcomponent map[string]*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent `path:"subcomponent" module:"openconfig-platform"`
+	Subcomponent	map[string]*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent	`path:"subcomponent" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Subcomponents implements the yang.GoStruct
@@ -1367,7 +1334,7 @@ func (*OpenconfigPlatform_Components_Component_Subcomponents) IsYANGGoStruct() {
 // NewSubcomponent creates a new entry in the Subcomponent list of the
 // OpenconfigPlatform_Components_Component_Subcomponents struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigPlatform_Components_Component_Subcomponents) NewSubcomponent(Name string) (*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent, error) {
+func (t *OpenconfigPlatform_Components_Component_Subcomponents) NewSubcomponent(Name string) (*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -1406,9 +1373,7 @@ func (t *OpenconfigPlatform_Components_Component_Subcomponents) Validate(opts ..
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Subcomponents) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Subcomponents) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Subcomponents.
@@ -1416,11 +1381,12 @@ func (*OpenconfigPlatform_Components_Component_Subcomponents) ΛBelongingModule(
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent represents the /openconfig-platform/components/component/subcomponents/subcomponent YANG schema element.
 type OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent struct {
-	Config *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config `path:"config" module:"openconfig-platform"`
-	Name   *string                                                                    `path:"name" module:"openconfig-platform"`
-	State  *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State  `path:"state" module:"openconfig-platform"`
+	Config	*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config	`path:"config" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
+	State	*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State	`path:"state" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent implements the yang.GoStruct
@@ -1454,9 +1420,7 @@ func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent) Val
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent.
@@ -1464,9 +1428,10 @@ func (*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent) ΛBel
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config represents the /openconfig-platform/components/component/subcomponents/subcomponent/config YANG schema element.
 type OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config struct {
-	Name *string `path:"name" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config implements the yang.GoStruct
@@ -1489,9 +1454,7 @@ func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Conf
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config.
@@ -1499,9 +1462,10 @@ func (*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Config
 	return "openconfig-platform"
 }
 
+
 // OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State represents the /openconfig-platform/components/component/subcomponents/subcomponent/state YANG schema element.
 type OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State struct {
-	Name *string `path:"name" module:"openconfig-platform"`
+	Name	*string	`path:"name" module:"openconfig-platform"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State implements the yang.GoStruct
@@ -1524,9 +1488,7 @@ func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_Stat
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State.
@@ -1534,20 +1496,21 @@ func (*OpenconfigPlatform_Components_Component_Subcomponents_Subcomponent_State)
 	return "openconfig-platform"
 }
 
+
 // OpenconfigSystem_System represents the /openconfig-system/system YANG schema element.
 type OpenconfigSystem_System struct {
-	Aaa          *OpenconfigSystem_System_Aaa          `path:"aaa" module:"openconfig-system"`
-	Clock        *OpenconfigSystem_System_Clock        `path:"clock" module:"openconfig-system"`
-	Config       *OpenconfigSystem_System_Config       `path:"config" module:"openconfig-system"`
-	Dns          *OpenconfigSystem_System_Dns          `path:"dns" module:"openconfig-system"`
-	Logging      *OpenconfigSystem_System_Logging      `path:"logging" module:"openconfig-system"`
-	Memory       *OpenconfigSystem_System_Memory       `path:"memory" module:"openconfig-system"`
-	Ntp          *OpenconfigSystem_System_Ntp          `path:"ntp" module:"openconfig-system"`
-	Openflow     *OpenconfigSystem_System_Openflow     `path:"openflow" module:"openconfig-openflow"`
-	Processes    *OpenconfigSystem_System_Processes    `path:"processes" module:"openconfig-system"`
-	SshServer    *OpenconfigSystem_System_SshServer    `path:"ssh-server" module:"openconfig-system"`
-	State        *OpenconfigSystem_System_State        `path:"state" module:"openconfig-system"`
-	TelnetServer *OpenconfigSystem_System_TelnetServer `path:"telnet-server" module:"openconfig-system"`
+	Aaa	*OpenconfigSystem_System_Aaa	`path:"aaa" module:"openconfig-system"`
+	Clock	*OpenconfigSystem_System_Clock	`path:"clock" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Config	`path:"config" module:"openconfig-system"`
+	Dns	*OpenconfigSystem_System_Dns	`path:"dns" module:"openconfig-system"`
+	Logging	*OpenconfigSystem_System_Logging	`path:"logging" module:"openconfig-system"`
+	Memory	*OpenconfigSystem_System_Memory	`path:"memory" module:"openconfig-system"`
+	Ntp	*OpenconfigSystem_System_Ntp	`path:"ntp" module:"openconfig-system"`
+	Openflow	*OpenconfigSystem_System_Openflow	`path:"openflow" module:"openconfig-openflow"`
+	Processes	*OpenconfigSystem_System_Processes	`path:"processes" module:"openconfig-system"`
+	SshServer	*OpenconfigSystem_System_SshServer	`path:"ssh-server" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_State	`path:"state" module:"openconfig-system"`
+	TelnetServer	*OpenconfigSystem_System_TelnetServer	`path:"telnet-server" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System implements the yang.GoStruct
@@ -1578,14 +1541,15 @@ func (*OpenconfigSystem_System) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa represents the /openconfig-system/system/aaa YANG schema element.
 type OpenconfigSystem_System_Aaa struct {
-	Accounting     *OpenconfigSystem_System_Aaa_Accounting     `path:"accounting" module:"openconfig-system"`
-	Authentication *OpenconfigSystem_System_Aaa_Authentication `path:"authentication" module:"openconfig-system"`
-	Authorization  *OpenconfigSystem_System_Aaa_Authorization  `path:"authorization" module:"openconfig-system"`
-	Config         *OpenconfigSystem_System_Aaa_Config         `path:"config" module:"openconfig-system"`
-	ServerGroups   *OpenconfigSystem_System_Aaa_ServerGroups   `path:"server-groups" module:"openconfig-system"`
-	State          *OpenconfigSystem_System_Aaa_State          `path:"state" module:"openconfig-system"`
+	Accounting	*OpenconfigSystem_System_Aaa_Accounting	`path:"accounting" module:"openconfig-system"`
+	Authentication	*OpenconfigSystem_System_Aaa_Authentication	`path:"authentication" module:"openconfig-system"`
+	Authorization	*OpenconfigSystem_System_Aaa_Authorization	`path:"authorization" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Config	`path:"config" module:"openconfig-system"`
+	ServerGroups	*OpenconfigSystem_System_Aaa_ServerGroups	`path:"server-groups" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa implements the yang.GoStruct
@@ -1616,11 +1580,12 @@ func (*OpenconfigSystem_System_Aaa) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting represents the /openconfig-system/system/aaa/accounting YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting struct {
-	Config *OpenconfigSystem_System_Aaa_Accounting_Config `path:"config" module:"openconfig-system"`
-	Events *OpenconfigSystem_System_Aaa_Accounting_Events `path:"events" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Aaa_Accounting_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Accounting_Config	`path:"config" module:"openconfig-system"`
+	Events	*OpenconfigSystem_System_Aaa_Accounting_Events	`path:"events" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Accounting_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting implements the yang.GoStruct
@@ -1643,9 +1608,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting) Validate(opts ...ygot.Validatio
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting.
@@ -1653,9 +1616,10 @@ func (*OpenconfigSystem_System_Aaa_Accounting) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_Config represents the /openconfig-system/system/aaa/accounting/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_Config struct {
-	AccountingMethod []OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union `path:"accounting-method" module:"openconfig-system"`
+	AccountingMethod	[]OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union	`path:"accounting-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_Config implements the yang.GoStruct
@@ -1678,9 +1642,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Config) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_Config.
@@ -1697,24 +1659,22 @@ type OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union interf
 // OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/accounting/config/accounting-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union ensures that OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_String is used when /openconfig-system/system/aaa/accounting/config/accounting-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union ensures that OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Accounting_Config_AccountingMethod_Union union. It returns an error if the interface{} supplied
@@ -1730,9 +1690,10 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Config) To_OpenconfigSystem_Syst
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_Events represents the /openconfig-system/system/aaa/accounting/events YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_Events struct {
-	Event map[E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE]*OpenconfigSystem_System_Aaa_Accounting_Events_Event `path:"event" module:"openconfig-system"`
+	Event	map[E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE]*OpenconfigSystem_System_Aaa_Accounting_Events_Event	`path:"event" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_Events implements the yang.GoStruct
@@ -1743,7 +1704,7 @@ func (*OpenconfigSystem_System_Aaa_Accounting_Events) IsYANGGoStruct() {}
 // NewEvent creates a new entry in the Event list of the
 // OpenconfigSystem_System_Aaa_Accounting_Events struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Events) NewEvent(EventType E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) (*OpenconfigSystem_System_Aaa_Accounting_Events_Event, error) {
+func (t *OpenconfigSystem_System_Aaa_Accounting_Events) NewEvent(EventType E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) (*OpenconfigSystem_System_Aaa_Accounting_Events_Event, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -1782,9 +1743,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Events) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Events) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_Events) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_Events.
@@ -1792,11 +1751,12 @@ func (*OpenconfigSystem_System_Aaa_Accounting_Events) ΛBelongingModule() string
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_Events_Event represents the /openconfig-system/system/aaa/accounting/events/event YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_Events_Event struct {
-	Config    *OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config `path:"config" module:"openconfig-system"`
-	EventType E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE              `path:"event-type" module:"openconfig-system"`
-	State     *OpenconfigSystem_System_Aaa_Accounting_Events_Event_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config	`path:"config" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Accounting_Events_Event_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_Events_Event implements the yang.GoStruct
@@ -1827,9 +1787,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event) Validate(opts ...y
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_Events_Event.
@@ -1837,10 +1795,11 @@ func (*OpenconfigSystem_System_Aaa_Accounting_Events_Event) ΛBelongingModule() 
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config represents the /openconfig-system/system/aaa/accounting/events/event/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config struct {
-	EventType E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE                      `path:"event-type" module:"openconfig-system"`
-	Record    E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record `path:"record" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
+	Record	E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record	`path:"record" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config implements the yang.GoStruct
@@ -1863,9 +1822,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config) Validate(op
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config.
@@ -1873,10 +1830,11 @@ func (*OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config) ΛBelongingMo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_Events_Event_State represents the /openconfig-system/system/aaa/accounting/events/event/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_Events_Event_State struct {
-	EventType E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE                      `path:"event-type" module:"openconfig-system"`
-	Record    E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record `path:"record" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
+	Record	E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record	`path:"record" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_Events_Event_State implements the yang.GoStruct
@@ -1899,9 +1857,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_State) Validate(opt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_Events_Event_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_Events_Event_State.
@@ -1909,9 +1865,10 @@ func (*OpenconfigSystem_System_Aaa_Accounting_Events_Event_State) ΛBelongingMod
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Accounting_State represents the /openconfig-system/system/aaa/accounting/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Accounting_State struct {
-	AccountingMethod []OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union `path:"accounting-method" module:"openconfig-system"`
+	AccountingMethod	[]OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union	`path:"accounting-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Accounting_State implements the yang.GoStruct
@@ -1934,9 +1891,7 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_State) Validate(opts ...ygot.Val
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Accounting_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Accounting_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Accounting_State.
@@ -1953,24 +1908,22 @@ type OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union interfa
 // OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/accounting/state/accounting-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union ensures that OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_String is used when /openconfig-system/system/aaa/accounting/state/accounting-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union ensures that OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Accounting_State_AccountingMethod_Union union. It returns an error if the interface{} supplied
@@ -1986,12 +1939,13 @@ func (t *OpenconfigSystem_System_Aaa_Accounting_State) To_OpenconfigSystem_Syste
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication represents the /openconfig-system/system/aaa/authentication YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication struct {
-	AdminUser *OpenconfigSystem_System_Aaa_Authentication_AdminUser `path:"admin-user" module:"openconfig-system"`
-	Config    *OpenconfigSystem_System_Aaa_Authentication_Config    `path:"config" module:"openconfig-system"`
-	State     *OpenconfigSystem_System_Aaa_Authentication_State     `path:"state" module:"openconfig-system"`
-	Users     *OpenconfigSystem_System_Aaa_Authentication_Users     `path:"users" module:"openconfig-system"`
+	AdminUser	*OpenconfigSystem_System_Aaa_Authentication_AdminUser	`path:"admin-user" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Authentication_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Authentication_State	`path:"state" module:"openconfig-system"`
+	Users	*OpenconfigSystem_System_Aaa_Authentication_Users	`path:"users" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication implements the yang.GoStruct
@@ -2014,9 +1968,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication) Validate(opts ...ygot.Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication.
@@ -2024,10 +1976,11 @@ func (*OpenconfigSystem_System_Aaa_Authentication) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_AdminUser represents the /openconfig-system/system/aaa/authentication/admin-user YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_AdminUser struct {
-	Config *OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Aaa_Authentication_AdminUser_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Authentication_AdminUser_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_AdminUser implements the yang.GoStruct
@@ -2050,9 +2003,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser) Validate(opts ...
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_AdminUser.
@@ -2060,10 +2011,11 @@ func (*OpenconfigSystem_System_Aaa_Authentication_AdminUser) ΛBelongingModule()
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config represents the /openconfig-system/system/aaa/authentication/admin-user/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config struct {
-	AdminPassword       *string `path:"admin-password" module:"openconfig-system"`
-	AdminPasswordHashed *string `path:"admin-password-hashed" module:"openconfig-system"`
+	AdminPassword	*string	`path:"admin-password" module:"openconfig-system"`
+	AdminPasswordHashed	*string	`path:"admin-password-hashed" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config implements the yang.GoStruct
@@ -2086,9 +2038,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config) Validate(o
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config.
@@ -2096,11 +2046,12 @@ func (*OpenconfigSystem_System_Aaa_Authentication_AdminUser_Config) ΛBelongingM
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_AdminUser_State represents the /openconfig-system/system/aaa/authentication/admin-user/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_AdminUser_State struct {
-	AdminPassword       *string `path:"admin-password" module:"openconfig-system"`
-	AdminPasswordHashed *string `path:"admin-password-hashed" module:"openconfig-system"`
-	AdminUsername       *string `path:"admin-username" module:"openconfig-system"`
+	AdminPassword	*string	`path:"admin-password" module:"openconfig-system"`
+	AdminPasswordHashed	*string	`path:"admin-password-hashed" module:"openconfig-system"`
+	AdminUsername	*string	`path:"admin-username" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_AdminUser_State implements the yang.GoStruct
@@ -2123,9 +2074,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_State) Validate(op
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_AdminUser_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_AdminUser_State.
@@ -2133,9 +2082,10 @@ func (*OpenconfigSystem_System_Aaa_Authentication_AdminUser_State) ΛBelongingMo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_Config represents the /openconfig-system/system/aaa/authentication/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_Config struct {
-	AuthenticationMethod []OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union `path:"authentication-method" module:"openconfig-system"`
+	AuthenticationMethod	[]OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union	`path:"authentication-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_Config implements the yang.GoStruct
@@ -2158,9 +2108,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Config) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_Config.
@@ -2177,24 +2125,22 @@ type OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Unio
 // OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/authentication/config/authentication-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_String is used when /openconfig-system/system/aaa/authentication/config/authentication-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authentication_Config_AuthenticationMethod_Union union. It returns an error if the interface{} supplied
@@ -2210,9 +2156,10 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Config) To_OpenconfigSystem_
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_State represents the /openconfig-system/system/aaa/authentication/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_State struct {
-	AuthenticationMethod []OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union `path:"authentication-method" module:"openconfig-system"`
+	AuthenticationMethod	[]OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union	`path:"authentication-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_State implements the yang.GoStruct
@@ -2235,9 +2182,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_State) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_State.
@@ -2254,24 +2199,22 @@ type OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union
 // OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/authentication/state/authentication-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_String is used when /openconfig-system/system/aaa/authentication/state/authentication-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authentication_State_AuthenticationMethod_Union union. It returns an error if the interface{} supplied
@@ -2287,9 +2230,10 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_State) To_OpenconfigSystem_S
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_Users represents the /openconfig-system/system/aaa/authentication/users YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_Users struct {
-	User map[string]*OpenconfigSystem_System_Aaa_Authentication_Users_User `path:"user" module:"openconfig-system"`
+	User	map[string]*OpenconfigSystem_System_Aaa_Authentication_Users_User	`path:"user" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_Users implements the yang.GoStruct
@@ -2300,7 +2244,7 @@ func (*OpenconfigSystem_System_Aaa_Authentication_Users) IsYANGGoStruct() {}
 // NewUser creates a new entry in the User list of the
 // OpenconfigSystem_System_Aaa_Authentication_Users struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Users) NewUser(Username string) (*OpenconfigSystem_System_Aaa_Authentication_Users_User, error) {
+func (t *OpenconfigSystem_System_Aaa_Authentication_Users) NewUser(Username string) (*OpenconfigSystem_System_Aaa_Authentication_Users_User, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -2339,9 +2283,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Users) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_Users) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_Users.
@@ -2349,11 +2291,12 @@ func (*OpenconfigSystem_System_Aaa_Authentication_Users) ΛBelongingModule() str
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_Users_User represents the /openconfig-system/system/aaa/authentication/users/user YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User struct {
-	Config   *OpenconfigSystem_System_Aaa_Authentication_Users_User_Config `path:"config" module:"openconfig-system"`
-	State    *OpenconfigSystem_System_Aaa_Authentication_Users_User_State  `path:"state" module:"openconfig-system"`
-	Username *string                                                       `path:"username" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Authentication_Users_User_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Authentication_Users_User_State	`path:"state" module:"openconfig-system"`
+	Username	*string	`path:"username" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User implements the yang.GoStruct
@@ -2387,9 +2330,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User) Validate(opts ..
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_Users_User.
@@ -2397,13 +2338,14 @@ func (*OpenconfigSystem_System_Aaa_Authentication_Users_User) ΛBelongingModule(
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_Config represents the /openconfig-system/system/aaa/authentication/users/user/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_Config struct {
-	Password       *string                                                                 `path:"password" module:"openconfig-system"`
-	PasswordHashed *string                                                                 `path:"password-hashed" module:"openconfig-system"`
-	Role           OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union `path:"role" module:"openconfig-system"`
-	SshKey         *string                                                                 `path:"ssh-key" module:"openconfig-system"`
-	Username       *string                                                                 `path:"username" module:"openconfig-system"`
+	Password	*string	`path:"password" module:"openconfig-system"`
+	PasswordHashed	*string	`path:"password-hashed" module:"openconfig-system"`
+	Role	OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union	`path:"role" module:"openconfig-system"`
+	SshKey	*string	`path:"ssh-key" module:"openconfig-system"`
+	Username	*string	`path:"username" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_Config implements the yang.GoStruct
@@ -2426,9 +2368,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_Config) Validate(
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_Users_User_Config.
@@ -2445,24 +2385,22 @@ type OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union int
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES is used when /openconfig-system/system/aaa/authentication/users/user/config/role
 // is to be set to a E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES value.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES struct {
-	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
+	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
 // implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_String is used when /openconfig-system/system/aaa/authentication/users/user/config/role
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_Config_Role_Union union. It returns an error if the interface{} supplied
@@ -2478,13 +2416,14 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_Config) To_Openco
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_State represents the /openconfig-system/system/aaa/authentication/users/user/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_State struct {
-	Password       *string                                                                `path:"password" module:"openconfig-system"`
-	PasswordHashed *string                                                                `path:"password-hashed" module:"openconfig-system"`
-	Role           OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union `path:"role" module:"openconfig-system"`
-	SshKey         *string                                                                `path:"ssh-key" module:"openconfig-system"`
-	Username       *string                                                                `path:"username" module:"openconfig-system"`
+	Password	*string	`path:"password" module:"openconfig-system"`
+	PasswordHashed	*string	`path:"password-hashed" module:"openconfig-system"`
+	Role	OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union	`path:"role" module:"openconfig-system"`
+	SshKey	*string	`path:"ssh-key" module:"openconfig-system"`
+	Username	*string	`path:"username" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_State implements the yang.GoStruct
@@ -2507,9 +2446,7 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_State) Validate(o
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authentication_Users_User_State.
@@ -2526,24 +2463,22 @@ type OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union inte
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES is used when /openconfig-system/system/aaa/authentication/users/user/state/role
 // is to be set to a E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES value.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES struct {
-	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
+	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES	E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
 // implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_String is used when /openconfig-system/system/aaa/authentication/users/user/state/role
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union ensures that OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union_String) Is_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authentication_Users_User_State_Role_Union union. It returns an error if the interface{} supplied
@@ -2559,11 +2494,12 @@ func (t *OpenconfigSystem_System_Aaa_Authentication_Users_User_State) To_Opencon
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization represents the /openconfig-system/system/aaa/authorization YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization struct {
-	Config *OpenconfigSystem_System_Aaa_Authorization_Config `path:"config" module:"openconfig-system"`
-	Events *OpenconfigSystem_System_Aaa_Authorization_Events `path:"events" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Aaa_Authorization_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Authorization_Config	`path:"config" module:"openconfig-system"`
+	Events	*OpenconfigSystem_System_Aaa_Authorization_Events	`path:"events" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Authorization_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization implements the yang.GoStruct
@@ -2586,9 +2522,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization) Validate(opts ...ygot.Valida
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization.
@@ -2596,9 +2530,10 @@ func (*OpenconfigSystem_System_Aaa_Authorization) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_Config represents the /openconfig-system/system/aaa/authorization/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_Config struct {
-	AuthorizationMethod []OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union `path:"authorization-method" module:"openconfig-system"`
+	AuthorizationMethod	[]OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union	`path:"authorization-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_Config implements the yang.GoStruct
@@ -2621,9 +2556,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Config) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_Config.
@@ -2640,24 +2573,22 @@ type OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union 
 // OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/authorization/config/authorization-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_String is used when /openconfig-system/system/aaa/authorization/config/authorization-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authorization_Config_AuthorizationMethod_Union union. It returns an error if the interface{} supplied
@@ -2673,9 +2604,10 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Config) To_OpenconfigSystem_S
 	}
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_Events represents the /openconfig-system/system/aaa/authorization/events YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_Events struct {
-	Event map[E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE]*OpenconfigSystem_System_Aaa_Authorization_Events_Event `path:"event" module:"openconfig-system"`
+	Event	map[E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE]*OpenconfigSystem_System_Aaa_Authorization_Events_Event	`path:"event" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_Events implements the yang.GoStruct
@@ -2686,7 +2618,7 @@ func (*OpenconfigSystem_System_Aaa_Authorization_Events) IsYANGGoStruct() {}
 // NewEvent creates a new entry in the Event list of the
 // OpenconfigSystem_System_Aaa_Authorization_Events struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Events) NewEvent(EventType E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) (*OpenconfigSystem_System_Aaa_Authorization_Events_Event, error) {
+func (t *OpenconfigSystem_System_Aaa_Authorization_Events) NewEvent(EventType E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) (*OpenconfigSystem_System_Aaa_Authorization_Events_Event, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -2725,9 +2657,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Events) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Events) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_Events) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_Events.
@@ -2735,11 +2665,12 @@ func (*OpenconfigSystem_System_Aaa_Authorization_Events) ΛBelongingModule() str
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_Events_Event represents the /openconfig-system/system/aaa/authorization/events/event YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_Events_Event struct {
-	Config    *OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config `path:"config" module:"openconfig-system"`
-	EventType E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE              `path:"event-type" module:"openconfig-system"`
-	State     *OpenconfigSystem_System_Aaa_Authorization_Events_Event_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config	`path:"config" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_Authorization_Events_Event_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_Events_Event implements the yang.GoStruct
@@ -2770,9 +2701,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event) Validate(opts .
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_Events_Event.
@@ -2780,9 +2709,10 @@ func (*OpenconfigSystem_System_Aaa_Authorization_Events_Event) ΛBelongingModule
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config represents the /openconfig-system/system/aaa/authorization/events/event/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config struct {
-	EventType E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE `path:"event-type" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config implements the yang.GoStruct
@@ -2805,9 +2735,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config) Validate
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config.
@@ -2815,9 +2743,10 @@ func (*OpenconfigSystem_System_Aaa_Authorization_Events_Event_Config) ΛBelongin
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_Events_Event_State represents the /openconfig-system/system/aaa/authorization/events/event/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_Events_Event_State struct {
-	EventType E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE `path:"event-type" module:"openconfig-system"`
+	EventType	E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE	`path:"event-type" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_Events_Event_State implements the yang.GoStruct
@@ -2840,9 +2769,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_State) Validate(
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_Events_Event_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_Events_Event_State.
@@ -2850,9 +2777,10 @@ func (*OpenconfigSystem_System_Aaa_Authorization_Events_Event_State) ΛBelonging
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_Authorization_State represents the /openconfig-system/system/aaa/authorization/state YANG schema element.
 type OpenconfigSystem_System_Aaa_Authorization_State struct {
-	AuthorizationMethod []OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union `path:"authorization-method" module:"openconfig-system"`
+	AuthorizationMethod	[]OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union	`path:"authorization-method" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_Authorization_State implements the yang.GoStruct
@@ -2875,9 +2803,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_State) Validate(opts ...ygot.
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Authorization_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Authorization_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Authorization_State.
@@ -2894,24 +2820,22 @@ type OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union i
 // OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE is used when /openconfig-system/system/aaa/authorization/state/authorization-method
 // is to be set to a E_OpenconfigAaaTypes_AAA_METHOD_TYPE value.
 type OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE struct {
-	E_OpenconfigAaaTypes_AAA_METHOD_TYPE E_OpenconfigAaaTypes_AAA_METHOD_TYPE
+	E_OpenconfigAaaTypes_AAA_METHOD_TYPE	E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE
 // implements the OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_E_OpenconfigAaaTypes_AAA_METHOD_TYPE) Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union() {}
 
 // OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_String is used when /openconfig-system/system/aaa/authorization/state/authorization-method
 // is to be set to a string value.
 type OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_String struct {
-	String string
+	String	string
 }
 
 // Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union ensures that OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_String
 // implements the OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union interface.
-func (*OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union() {
-}
+func (*OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union_String) Is_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union() {}
 
 // To_OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union takes an input interface{} and attempts to convert it to a struct
 // which implements the OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union union. It returns an error if the interface{} supplied
@@ -2926,6 +2850,7 @@ func (t *OpenconfigSystem_System_Aaa_Authorization_State) To_OpenconfigSystem_Sy
 		return nil, fmt.Errorf("cannot convert %v to OpenconfigSystem_System_Aaa_Authorization_State_AuthorizationMethod_Union, unknown union type, got: %T, want any of [E_OpenconfigAaaTypes_AAA_METHOD_TYPE, string]", i, i)
 	}
 }
+
 
 // OpenconfigSystem_System_Aaa_Config represents the /openconfig-system/system/aaa/config YANG schema element.
 type OpenconfigSystem_System_Aaa_Config struct {
@@ -2951,9 +2876,7 @@ func (t *OpenconfigSystem_System_Aaa_Config) Validate(opts ...ygot.ValidationOpt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_Config.
@@ -2961,9 +2884,10 @@ func (*OpenconfigSystem_System_Aaa_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups represents the /openconfig-system/system/aaa/server-groups YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups struct {
-	ServerGroup map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup `path:"server-group" module:"openconfig-system"`
+	ServerGroup	map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup	`path:"server-group" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups implements the yang.GoStruct
@@ -2974,7 +2898,7 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups) IsYANGGoStruct() {}
 // NewServerGroup creates a new entry in the ServerGroup list of the
 // OpenconfigSystem_System_Aaa_ServerGroups struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups) NewServerGroup(Name string) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error) {
+func (t *OpenconfigSystem_System_Aaa_ServerGroups) NewServerGroup(Name string) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -3013,9 +2937,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups) Validate(opts ...ygot.Validat
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups.
@@ -3023,12 +2945,13 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup represents the /openconfig-system/system/aaa/server-groups/server-group YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup struct {
-	Config  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config  `path:"config" module:"openconfig-system"`
-	Name    *string                                                       `path:"name" module:"openconfig-system"`
-	Servers *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers `path:"servers" module:"openconfig-system"`
-	State   *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State   `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config	`path:"config" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Servers	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers	`path:"servers" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup implements the yang.GoStruct
@@ -3062,9 +2985,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup) Validate(opts ...
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup.
@@ -3072,10 +2993,11 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup) ΛBelongingModule()
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config represents the /openconfig-system/system/aaa/server-groups/server-group/config YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config struct {
-	Name *string                              `path:"name" module:"openconfig-system"`
-	Type E_OpenconfigAaaTypes_AAA_SERVER_TYPE `path:"type" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Type	E_OpenconfigAaaTypes_AAA_SERVER_TYPE	`path:"type" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config implements the yang.GoStruct
@@ -3098,9 +3020,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config) Validate(o
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config.
@@ -3108,9 +3028,10 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Config) ΛBelongingM
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers represents the /openconfig-system/system/aaa/server-groups/server-group/servers YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers struct {
-	Server map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server `path:"server" module:"openconfig-system"`
+	Server	map[string]*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server	`path:"server" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers implements the yang.GoStruct
@@ -3121,7 +3042,7 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) IsYANGGoStr
 // NewServer creates a new entry in the Server list of the
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) NewServer(Address string) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server, error) {
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) NewServer(Address string) (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -3160,9 +3081,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) Validate(
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers.
@@ -3170,13 +3089,14 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers) ΛBelonging
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server struct {
-	Address *string                                                                     `path:"address" module:"openconfig-system"`
-	Config  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config `path:"config" module:"openconfig-system"`
-	Radius  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius `path:"radius" module:"openconfig-system"`
-	State   *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State  `path:"state" module:"openconfig-system"`
-	Tacacs  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs `path:"tacacs" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config	`path:"config" module:"openconfig-system"`
+	Radius	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius	`path:"radius" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State	`path:"state" module:"openconfig-system"`
+	Tacacs	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs	`path:"tacacs" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server implements the yang.GoStruct
@@ -3210,9 +3130,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server) Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server.
@@ -3220,11 +3138,12 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server) ΛBe
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/config YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config struct {
-	Address *string `path:"address" module:"openconfig-system"`
-	Name    *string `path:"name" module:"openconfig-system"`
-	Timeout *uint16 `path:"timeout" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config implements the yang.GoStruct
@@ -3247,9 +3166,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Con
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Config.
@@ -3257,10 +3174,11 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Confi
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/radius YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius struct {
-	Config *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius implements the yang.GoStruct
@@ -3283,9 +3201,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Rad
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius.
@@ -3293,20 +3209,20 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radiu
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/radius/config YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config struct {
-	AcctPort           *uint16 `path:"acct-port" module:"openconfig-system"`
-	AuthPort           *uint16 `path:"auth-port" module:"openconfig-system"`
-	RetransmitAttempts *uint8  `path:"retransmit-attempts" module:"openconfig-system"`
-	SecretKey          *string `path:"secret-key" module:"openconfig-system"`
-	SourceAddress      *string `path:"source-address" module:"openconfig-system"`
+	AcctPort	*uint16	`path:"acct-port" module:"openconfig-system"`
+	AuthPort	*uint16	`path:"auth-port" module:"openconfig-system"`
+	RetransmitAttempts	*uint8	`path:"retransmit-attempts" module:"openconfig-system"`
+	SecretKey	*string	`path:"secret-key" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -3323,9 +3239,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Rad
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_Config.
@@ -3333,21 +3247,21 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radiu
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/radius/state YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State struct {
-	AcctPort           *uint16                                                                                    `path:"acct-port" module:"openconfig-system"`
-	AuthPort           *uint16                                                                                    `path:"auth-port" module:"openconfig-system"`
-	Counters           *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters `path:"counters" module:"openconfig-system"`
-	RetransmitAttempts *uint8                                                                                     `path:"retransmit-attempts" module:"openconfig-system"`
-	SecretKey          *string                                                                                    `path:"secret-key" module:"openconfig-system"`
-	SourceAddress      *string                                                                                    `path:"source-address" module:"openconfig-system"`
+	AcctPort	*uint16	`path:"acct-port" module:"openconfig-system"`
+	AuthPort	*uint16	`path:"auth-port" module:"openconfig-system"`
+	Counters	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters	`path:"counters" module:"openconfig-system"`
+	RetransmitAttempts	*uint8	`path:"retransmit-attempts" module:"openconfig-system"`
+	SecretKey	*string	`path:"secret-key" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -3364,9 +3278,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Rad
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State.
@@ -3374,19 +3286,19 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radiu
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/radius/state/counters YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters struct {
-	AccessAccepts         *uint64 `path:"access-accepts" module:"openconfig-system"`
-	AccessRejects         *uint64 `path:"access-rejects" module:"openconfig-system"`
-	RetriedAccessRequests *uint64 `path:"retried-access-requests" module:"openconfig-system"`
-	TimeoutAccessRequests *uint64 `path:"timeout-access-requests" module:"openconfig-system"`
+	AccessAccepts	*uint64	`path:"access-accepts" module:"openconfig-system"`
+	AccessRejects	*uint64	`path:"access-rejects" module:"openconfig-system"`
+	RetriedAccessRequests	*uint64	`path:"retried-access-requests" module:"openconfig-system"`
+	TimeoutAccessRequests	*uint64	`path:"timeout-access-requests" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -3403,9 +3315,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Rad
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radius_State_Counters.
@@ -3413,19 +3323,20 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Radiu
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/state YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State struct {
-	Address            *string `path:"address" module:"openconfig-system"`
-	ConnectionAborts   *uint64 `path:"connection-aborts" module:"openconfig-system"`
-	ConnectionCloses   *uint64 `path:"connection-closes" module:"openconfig-system"`
-	ConnectionFailures *uint64 `path:"connection-failures" module:"openconfig-system"`
-	ConnectionOpens    *uint64 `path:"connection-opens" module:"openconfig-system"`
-	ConnectionTimeouts *uint64 `path:"connection-timeouts" module:"openconfig-system"`
-	ErrorsReceived     *uint64 `path:"errors-received" module:"openconfig-system"`
-	MessagesReceived   *uint64 `path:"messages-received" module:"openconfig-system"`
-	MessagesSent       *uint64 `path:"messages-sent" module:"openconfig-system"`
-	Name               *string `path:"name" module:"openconfig-system"`
-	Timeout            *uint16 `path:"timeout" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	ConnectionAborts	*uint64	`path:"connection-aborts" module:"openconfig-system"`
+	ConnectionCloses	*uint64	`path:"connection-closes" module:"openconfig-system"`
+	ConnectionFailures	*uint64	`path:"connection-failures" module:"openconfig-system"`
+	ConnectionOpens	*uint64	`path:"connection-opens" module:"openconfig-system"`
+	ConnectionTimeouts	*uint64	`path:"connection-timeouts" module:"openconfig-system"`
+	ErrorsReceived	*uint64	`path:"errors-received" module:"openconfig-system"`
+	MessagesReceived	*uint64	`path:"messages-received" module:"openconfig-system"`
+	MessagesSent	*uint64	`path:"messages-sent" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State implements the yang.GoStruct
@@ -3448,9 +3359,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Sta
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State.
@@ -3458,10 +3367,11 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_State
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/tacacs YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs struct {
-	Config *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs implements the yang.GoStruct
@@ -3484,9 +3394,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tac
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs.
@@ -3494,18 +3402,18 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacac
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/tacacs/config YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config struct {
-	Port          *uint16 `path:"port" module:"openconfig-system"`
-	SecretKey     *string `path:"secret-key" module:"openconfig-system"`
-	SourceAddress *string `path:"source-address" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
+	SecretKey	*string	`path:"secret-key" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -3522,9 +3430,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tac
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_Config.
@@ -3532,18 +3438,18 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacac
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State represents the /openconfig-system/system/aaa/server-groups/server-group/servers/server/tacacs/state YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State struct {
-	Port          *uint16 `path:"port" module:"openconfig-system"`
-	SecretKey     *string `path:"secret-key" module:"openconfig-system"`
-	SourceAddress *string `path:"source-address" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
+	SecretKey	*string	`path:"secret-key" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -3560,9 +3466,7 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tac
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacacs_State.
@@ -3570,10 +3474,11 @@ func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_Servers_Server_Tacac
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State represents the /openconfig-system/system/aaa/server-groups/server-group/state YANG schema element.
 type OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State struct {
-	Name *string                              `path:"name" module:"openconfig-system"`
-	Type E_OpenconfigAaaTypes_AAA_SERVER_TYPE `path:"type" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Type	E_OpenconfigAaaTypes_AAA_SERVER_TYPE	`path:"type" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State implements the yang.GoStruct
@@ -3596,15 +3501,14 @@ func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State) Validate(op
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State.
 func (*OpenconfigSystem_System_Aaa_ServerGroups_ServerGroup_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
+
 
 // OpenconfigSystem_System_Aaa_State represents the /openconfig-system/system/aaa/state YANG schema element.
 type OpenconfigSystem_System_Aaa_State struct {
@@ -3630,9 +3534,7 @@ func (t *OpenconfigSystem_System_Aaa_State) Validate(opts ...ygot.ValidationOpti
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Aaa_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Aaa_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Aaa_State.
@@ -3640,10 +3542,11 @@ func (*OpenconfigSystem_System_Aaa_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Clock represents the /openconfig-system/system/clock YANG schema element.
 type OpenconfigSystem_System_Clock struct {
-	Config *OpenconfigSystem_System_Clock_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Clock_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Clock_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Clock_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Clock implements the yang.GoStruct
@@ -3674,9 +3577,10 @@ func (*OpenconfigSystem_System_Clock) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Clock_Config represents the /openconfig-system/system/clock/config YANG schema element.
 type OpenconfigSystem_System_Clock_Config struct {
-	TimezoneName *string `path:"timezone-name" module:"openconfig-system"`
+	TimezoneName	*string	`path:"timezone-name" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Clock_Config implements the yang.GoStruct
@@ -3699,9 +3603,7 @@ func (t *OpenconfigSystem_System_Clock_Config) Validate(opts ...ygot.ValidationO
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Clock_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Clock_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Clock_Config.
@@ -3709,9 +3611,10 @@ func (*OpenconfigSystem_System_Clock_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Clock_State represents the /openconfig-system/system/clock/state YANG schema element.
 type OpenconfigSystem_System_Clock_State struct {
-	TimezoneName *string `path:"timezone-name" module:"openconfig-system"`
+	TimezoneName	*string	`path:"timezone-name" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Clock_State implements the yang.GoStruct
@@ -3734,9 +3637,7 @@ func (t *OpenconfigSystem_System_Clock_State) Validate(opts ...ygot.ValidationOp
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Clock_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Clock_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Clock_State.
@@ -3744,12 +3645,13 @@ func (*OpenconfigSystem_System_Clock_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Config represents the /openconfig-system/system/config YANG schema element.
 type OpenconfigSystem_System_Config struct {
-	DomainName  *string `path:"domain-name" module:"openconfig-system"`
-	Hostname    *string `path:"hostname" module:"openconfig-system"`
-	LoginBanner *string `path:"login-banner" module:"openconfig-system"`
-	MotdBanner  *string `path:"motd-banner" module:"openconfig-system"`
+	DomainName	*string	`path:"domain-name" module:"openconfig-system"`
+	Hostname	*string	`path:"hostname" module:"openconfig-system"`
+	LoginBanner	*string	`path:"login-banner" module:"openconfig-system"`
+	MotdBanner	*string	`path:"motd-banner" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Config implements the yang.GoStruct
@@ -3772,9 +3674,7 @@ func (t *OpenconfigSystem_System_Config) Validate(opts ...ygot.ValidationOption)
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Config.
@@ -3782,12 +3682,13 @@ func (*OpenconfigSystem_System_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns represents the /openconfig-system/system/dns YANG schema element.
 type OpenconfigSystem_System_Dns struct {
-	Config      *OpenconfigSystem_System_Dns_Config      `path:"config" module:"openconfig-system"`
-	HostEntries *OpenconfigSystem_System_Dns_HostEntries `path:"host-entries" module:"openconfig-system"`
-	Servers     *OpenconfigSystem_System_Dns_Servers     `path:"servers" module:"openconfig-system"`
-	State       *OpenconfigSystem_System_Dns_State       `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Dns_Config	`path:"config" module:"openconfig-system"`
+	HostEntries	*OpenconfigSystem_System_Dns_HostEntries	`path:"host-entries" module:"openconfig-system"`
+	Servers	*OpenconfigSystem_System_Dns_Servers	`path:"servers" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Dns_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns implements the yang.GoStruct
@@ -3818,9 +3719,10 @@ func (*OpenconfigSystem_System_Dns) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_Config represents the /openconfig-system/system/dns/config YANG schema element.
 type OpenconfigSystem_System_Dns_Config struct {
-	Search []string `path:"search" module:"openconfig-system"`
+	Search	[]string	`path:"search" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_Config implements the yang.GoStruct
@@ -3843,9 +3745,7 @@ func (t *OpenconfigSystem_System_Dns_Config) Validate(opts ...ygot.ValidationOpt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_Config.
@@ -3853,9 +3753,10 @@ func (*OpenconfigSystem_System_Dns_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_HostEntries represents the /openconfig-system/system/dns/host-entries YANG schema element.
 type OpenconfigSystem_System_Dns_HostEntries struct {
-	HostEntry map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry `path:"host-entry" module:"openconfig-system"`
+	HostEntry	map[string]*OpenconfigSystem_System_Dns_HostEntries_HostEntry	`path:"host-entry" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_HostEntries implements the yang.GoStruct
@@ -3866,7 +3767,7 @@ func (*OpenconfigSystem_System_Dns_HostEntries) IsYANGGoStruct() {}
 // NewHostEntry creates a new entry in the HostEntry list of the
 // OpenconfigSystem_System_Dns_HostEntries struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Dns_HostEntries) NewHostEntry(Hostname string) (*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error) {
+func (t *OpenconfigSystem_System_Dns_HostEntries) NewHostEntry(Hostname string) (*OpenconfigSystem_System_Dns_HostEntries_HostEntry, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -3905,9 +3806,7 @@ func (t *OpenconfigSystem_System_Dns_HostEntries) Validate(opts ...ygot.Validati
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_HostEntries) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_HostEntries) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_HostEntries.
@@ -3915,11 +3814,12 @@ func (*OpenconfigSystem_System_Dns_HostEntries) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_HostEntries_HostEntry represents the /openconfig-system/system/dns/host-entries/host-entry YANG schema element.
 type OpenconfigSystem_System_Dns_HostEntries_HostEntry struct {
-	Config   *OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config `path:"config" module:"openconfig-system"`
-	Hostname *string                                                   `path:"hostname" module:"openconfig-system"`
-	State    *OpenconfigSystem_System_Dns_HostEntries_HostEntry_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config	`path:"config" module:"openconfig-system"`
+	Hostname	*string	`path:"hostname" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Dns_HostEntries_HostEntry_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_HostEntries_HostEntry implements the yang.GoStruct
@@ -3953,9 +3853,7 @@ func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_HostEntries_HostEntry.
@@ -3963,12 +3861,13 @@ func (*OpenconfigSystem_System_Dns_HostEntries_HostEntry) ΛBelongingModule() st
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config represents the /openconfig-system/system/dns/host-entries/host-entry/config YANG schema element.
 type OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config struct {
-	Alias       []string `path:"alias" module:"openconfig-system"`
-	Hostname    *string  `path:"hostname" module:"openconfig-system"`
-	Ipv4Address []string `path:"ipv4-address" module:"openconfig-system"`
-	Ipv6Address []string `path:"ipv6-address" module:"openconfig-system"`
+	Alias	[]string	`path:"alias" module:"openconfig-system"`
+	Hostname	*string	`path:"hostname" module:"openconfig-system"`
+	Ipv4Address	[]string	`path:"ipv4-address" module:"openconfig-system"`
+	Ipv6Address	[]string	`path:"ipv6-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config implements the yang.GoStruct
@@ -3991,9 +3890,7 @@ func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config) Validate(opts
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config.
@@ -4001,12 +3898,13 @@ func (*OpenconfigSystem_System_Dns_HostEntries_HostEntry_Config) ΛBelongingModu
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_HostEntries_HostEntry_State represents the /openconfig-system/system/dns/host-entries/host-entry/state YANG schema element.
 type OpenconfigSystem_System_Dns_HostEntries_HostEntry_State struct {
-	Alias       []string `path:"alias" module:"openconfig-system"`
-	Hostname    *string  `path:"hostname" module:"openconfig-system"`
-	Ipv4Address []string `path:"ipv4-address" module:"openconfig-system"`
-	Ipv6Address []string `path:"ipv6-address" module:"openconfig-system"`
+	Alias	[]string	`path:"alias" module:"openconfig-system"`
+	Hostname	*string	`path:"hostname" module:"openconfig-system"`
+	Ipv4Address	[]string	`path:"ipv4-address" module:"openconfig-system"`
+	Ipv6Address	[]string	`path:"ipv6-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_HostEntries_HostEntry_State implements the yang.GoStruct
@@ -4029,9 +3927,7 @@ func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_State) Validate(opts 
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_HostEntries_HostEntry_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_HostEntries_HostEntry_State.
@@ -4039,9 +3935,10 @@ func (*OpenconfigSystem_System_Dns_HostEntries_HostEntry_State) ΛBelongingModul
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_Servers represents the /openconfig-system/system/dns/servers YANG schema element.
 type OpenconfigSystem_System_Dns_Servers struct {
-	Server map[string]*OpenconfigSystem_System_Dns_Servers_Server `path:"server" module:"openconfig-system"`
+	Server	map[string]*OpenconfigSystem_System_Dns_Servers_Server	`path:"server" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_Servers implements the yang.GoStruct
@@ -4052,7 +3949,7 @@ func (*OpenconfigSystem_System_Dns_Servers) IsYANGGoStruct() {}
 // NewServer creates a new entry in the Server list of the
 // OpenconfigSystem_System_Dns_Servers struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Dns_Servers) NewServer(Address string) (*OpenconfigSystem_System_Dns_Servers_Server, error) {
+func (t *OpenconfigSystem_System_Dns_Servers) NewServer(Address string) (*OpenconfigSystem_System_Dns_Servers_Server, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -4091,9 +3988,7 @@ func (t *OpenconfigSystem_System_Dns_Servers) Validate(opts ...ygot.ValidationOp
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_Servers) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_Servers) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_Servers.
@@ -4101,11 +3996,12 @@ func (*OpenconfigSystem_System_Dns_Servers) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_Servers_Server represents the /openconfig-system/system/dns/servers/server YANG schema element.
 type OpenconfigSystem_System_Dns_Servers_Server struct {
-	Address *string                                            `path:"address" module:"openconfig-system"`
-	Config  *OpenconfigSystem_System_Dns_Servers_Server_Config `path:"config" module:"openconfig-system"`
-	State   *OpenconfigSystem_System_Dns_Servers_Server_State  `path:"state" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Dns_Servers_Server_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Dns_Servers_Server_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_Servers_Server implements the yang.GoStruct
@@ -4139,9 +4035,7 @@ func (t *OpenconfigSystem_System_Dns_Servers_Server) Validate(opts ...ygot.Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_Servers_Server.
@@ -4149,10 +4043,11 @@ func (*OpenconfigSystem_System_Dns_Servers_Server) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_Servers_Server_Config represents the /openconfig-system/system/dns/servers/server/config YANG schema element.
 type OpenconfigSystem_System_Dns_Servers_Server_Config struct {
-	Address *string `path:"address" module:"openconfig-system"`
-	Port    *uint16 `path:"port" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_Servers_Server_Config implements the yang.GoStruct
@@ -4175,9 +4070,7 @@ func (t *OpenconfigSystem_System_Dns_Servers_Server_Config) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_Servers_Server_Config.
@@ -4185,10 +4078,11 @@ func (*OpenconfigSystem_System_Dns_Servers_Server_Config) ΛBelongingModule() st
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_Servers_Server_State represents the /openconfig-system/system/dns/servers/server/state YANG schema element.
 type OpenconfigSystem_System_Dns_Servers_Server_State struct {
-	Address *string `path:"address" module:"openconfig-system"`
-	Port    *uint16 `path:"port" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_Servers_Server_State implements the yang.GoStruct
@@ -4211,9 +4105,7 @@ func (t *OpenconfigSystem_System_Dns_Servers_Server_State) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_Servers_Server_State.
@@ -4221,9 +4113,10 @@ func (*OpenconfigSystem_System_Dns_Servers_Server_State) ΛBelongingModule() str
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Dns_State represents the /openconfig-system/system/dns/state YANG schema element.
 type OpenconfigSystem_System_Dns_State struct {
-	Search []string `path:"search" module:"openconfig-system"`
+	Search	[]string	`path:"search" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Dns_State implements the yang.GoStruct
@@ -4246,9 +4139,7 @@ func (t *OpenconfigSystem_System_Dns_State) Validate(opts ...ygot.ValidationOpti
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Dns_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Dns_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Dns_State.
@@ -4256,10 +4147,11 @@ func (*OpenconfigSystem_System_Dns_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging represents the /openconfig-system/system/logging YANG schema element.
 type OpenconfigSystem_System_Logging struct {
-	Console       *OpenconfigSystem_System_Logging_Console       `path:"console" module:"openconfig-system"`
-	RemoteServers *OpenconfigSystem_System_Logging_RemoteServers `path:"remote-servers" module:"openconfig-system"`
+	Console	*OpenconfigSystem_System_Logging_Console	`path:"console" module:"openconfig-system"`
+	RemoteServers	*OpenconfigSystem_System_Logging_RemoteServers	`path:"remote-servers" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging implements the yang.GoStruct
@@ -4282,9 +4174,7 @@ func (t *OpenconfigSystem_System_Logging) Validate(opts ...ygot.ValidationOption
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging.
@@ -4292,11 +4182,12 @@ func (*OpenconfigSystem_System_Logging) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_Console represents the /openconfig-system/system/logging/console YANG schema element.
 type OpenconfigSystem_System_Logging_Console struct {
-	Config    *OpenconfigSystem_System_Logging_Console_Config    `path:"config" module:"openconfig-system"`
-	Selectors *OpenconfigSystem_System_Logging_Console_Selectors `path:"selectors" module:"openconfig-system"`
-	State     *OpenconfigSystem_System_Logging_Console_State     `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Logging_Console_Config	`path:"config" module:"openconfig-system"`
+	Selectors	*OpenconfigSystem_System_Logging_Console_Selectors	`path:"selectors" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Logging_Console_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_Console implements the yang.GoStruct
@@ -4319,15 +4210,14 @@ func (t *OpenconfigSystem_System_Logging_Console) Validate(opts ...ygot.Validati
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console.
 func (*OpenconfigSystem_System_Logging_Console) ΛBelongingModule() string {
 	return "openconfig-system"
 }
+
 
 // OpenconfigSystem_System_Logging_Console_Config represents the /openconfig-system/system/logging/console/config YANG schema element.
 type OpenconfigSystem_System_Logging_Console_Config struct {
@@ -4353,9 +4243,7 @@ func (t *OpenconfigSystem_System_Logging_Console_Config) Validate(opts ...ygot.V
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_Config.
@@ -4363,9 +4251,10 @@ func (*OpenconfigSystem_System_Logging_Console_Config) ΛBelongingModule() strin
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_Console_Selectors represents the /openconfig-system/system/logging/console/selectors YANG schema element.
 type OpenconfigSystem_System_Logging_Console_Selectors struct {
-	Selector map[OpenconfigSystem_System_Logging_Console_Selectors_Selector_Key]*OpenconfigSystem_System_Logging_Console_Selectors_Selector `path:"selector" module:"openconfig-system"`
+	Selector	map[OpenconfigSystem_System_Logging_Console_Selectors_Selector_Key]*OpenconfigSystem_System_Logging_Console_Selectors_Selector	`path:"selector" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_Console_Selectors implements the yang.GoStruct
@@ -4375,14 +4264,14 @@ func (*OpenconfigSystem_System_Logging_Console_Selectors) IsYANGGoStruct() {}
 
 // OpenconfigSystem_System_Logging_Console_Selectors_Selector_Key represents the key for list Selector of element /openconfig-system/system/logging/console/selectors.
 type OpenconfigSystem_System_Logging_Console_Selectors_Selector_Key struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity"`
 }
 
 // NewSelector creates a new entry in the Selector list of the
 // OpenconfigSystem_System_Logging_Console_Selectors struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Logging_Console_Selectors) NewSelector(Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY, Severity E_OpenconfigSystemLogging_SyslogSeverity) (*OpenconfigSystem_System_Logging_Console_Selectors_Selector, error) {
+func (t *OpenconfigSystem_System_Logging_Console_Selectors) NewSelector(Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY, Severity E_OpenconfigSystemLogging_SyslogSeverity) (*OpenconfigSystem_System_Logging_Console_Selectors_Selector, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -4425,9 +4314,7 @@ func (t *OpenconfigSystem_System_Logging_Console_Selectors) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_Selectors) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_Selectors) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_Selectors.
@@ -4435,12 +4322,13 @@ func (*OpenconfigSystem_System_Logging_Console_Selectors) ΛBelongingModule() st
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_Console_Selectors_Selector represents the /openconfig-system/system/logging/console/selectors/selector YANG schema element.
 type OpenconfigSystem_System_Logging_Console_Selectors_Selector struct {
-	Config   *OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config `path:"config" module:"openconfig-system"`
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY                          `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity                           `path:"severity" module:"openconfig-system"`
-	State    *OpenconfigSystem_System_Logging_Console_Selectors_Selector_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config	`path:"config" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Logging_Console_Selectors_Selector_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_Console_Selectors_Selector implements the yang.GoStruct
@@ -4450,6 +4338,7 @@ func (*OpenconfigSystem_System_Logging_Console_Selectors_Selector) IsYANGGoStruc
 
 // ΛListKeyMap returns the keys of the OpenconfigSystem_System_Logging_Console_Selectors_Selector struct, which is a YANG list entry.
 func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector) ΛListKeyMap() (map[string]interface{}, error) {
+
 
 	return map[string]interface{}{
 		"facility": t.Facility,
@@ -4472,9 +4361,7 @@ func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector) Validate(op
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_Selectors_Selector.
@@ -4482,10 +4369,11 @@ func (*OpenconfigSystem_System_Logging_Console_Selectors_Selector) ΛBelongingMo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config represents the /openconfig-system/system/logging/console/selectors/selector/config YANG schema element.
 type OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config implements the yang.GoStruct
@@ -4508,9 +4396,7 @@ func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config) Vali
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config.
@@ -4518,10 +4404,11 @@ func (*OpenconfigSystem_System_Logging_Console_Selectors_Selector_Config) ΛBelo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_Console_Selectors_Selector_State represents the /openconfig-system/system/logging/console/selectors/selector/state YANG schema element.
 type OpenconfigSystem_System_Logging_Console_Selectors_Selector_State struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_Console_Selectors_Selector_State implements the yang.GoStruct
@@ -4544,15 +4431,14 @@ func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_State) Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_Selectors_Selector_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_Selectors_Selector_State.
 func (*OpenconfigSystem_System_Logging_Console_Selectors_Selector_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
+
 
 // OpenconfigSystem_System_Logging_Console_State represents the /openconfig-system/system/logging/console/state YANG schema element.
 type OpenconfigSystem_System_Logging_Console_State struct {
@@ -4578,9 +4464,7 @@ func (t *OpenconfigSystem_System_Logging_Console_State) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_Console_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_Console_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_Console_State.
@@ -4588,9 +4472,10 @@ func (*OpenconfigSystem_System_Logging_Console_State) ΛBelongingModule() string
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers represents the /openconfig-system/system/logging/remote-servers YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers struct {
-	RemoteServer map[string]*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer `path:"remote-server" module:"openconfig-system"`
+	RemoteServer	map[string]*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer	`path:"remote-server" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers implements the yang.GoStruct
@@ -4601,7 +4486,7 @@ func (*OpenconfigSystem_System_Logging_RemoteServers) IsYANGGoStruct() {}
 // NewRemoteServer creates a new entry in the RemoteServer list of the
 // OpenconfigSystem_System_Logging_RemoteServers struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Logging_RemoteServers) NewRemoteServer(Host string) (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer, error) {
+func (t *OpenconfigSystem_System_Logging_RemoteServers) NewRemoteServer(Host string) (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -4640,9 +4525,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers.
@@ -4650,12 +4533,13 @@ func (*OpenconfigSystem_System_Logging_RemoteServers) ΛBelongingModule() string
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer represents the /openconfig-system/system/logging/remote-servers/remote-server YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer struct {
-	Config    *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config    `path:"config" module:"openconfig-system"`
-	Host      *string                                                               `path:"host" module:"openconfig-system"`
-	Selectors *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors `path:"selectors" module:"openconfig-system"`
-	State     *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State     `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config	`path:"config" module:"openconfig-system"`
+	Host	*string	`path:"host" module:"openconfig-system"`
+	Selectors	*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors	`path:"selectors" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer implements the yang.GoStruct
@@ -4689,9 +4573,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer) Validate(op
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer.
@@ -4699,11 +4581,12 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer) ΛBelongingMo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config represents the /openconfig-system/system/logging/remote-servers/remote-server/config YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config struct {
-	Host          *string `path:"host" module:"openconfig-system"`
-	RemotePort    *uint16 `path:"remote-port" module:"openconfig-system"`
-	SourceAddress *string `path:"source-address" module:"openconfig-system"`
+	Host	*string	`path:"host" module:"openconfig-system"`
+	RemotePort	*uint16	`path:"remote-port" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config implements the yang.GoStruct
@@ -4726,9 +4609,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config) Vali
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config.
@@ -4736,9 +4617,10 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Config) ΛBelo
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors represents the /openconfig-system/system/logging/remote-servers/remote-server/selectors YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors struct {
-	Selector map[OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Key]*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector `path:"selector" module:"openconfig-system"`
+	Selector	map[OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Key]*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector	`path:"selector" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors implements the yang.GoStruct
@@ -4748,14 +4630,14 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) IsY
 
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Key represents the key for list Selector of element /openconfig-system/system/logging/remote-servers/remote-server/selectors.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Key struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity"`
 }
 
 // NewSelector creates a new entry in the Selector list of the
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) NewSelector(Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY, Severity E_OpenconfigSystemLogging_SyslogSeverity) (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector, error) {
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) NewSelector(Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY, Severity E_OpenconfigSystemLogging_SyslogSeverity) (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -4798,9 +4680,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) V
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors.
@@ -4808,22 +4688,23 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors) ΛB
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector represents the /openconfig-system/system/logging/remote-servers/remote-server/selectors/selector YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector struct {
-	Config   *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config `path:"config" module:"openconfig-system"`
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY                                             `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity                                              `path:"severity" module:"openconfig-system"`
-	State    *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config	`path:"config" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector) IsYANGGoStruct() {}
 
 // ΛListKeyMap returns the keys of the OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector struct, which is a YANG list entry.
 func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector) ΛListKeyMap() (map[string]interface{}, error) {
+
 
 	return map[string]interface{}{
 		"facility": t.Facility,
@@ -4846,9 +4727,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Se
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector.
@@ -4856,17 +4735,17 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Sele
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config represents the /openconfig-system/system/logging/remote-servers/remote-server/selectors/selector/config YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -4883,9 +4762,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Se
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_Config.
@@ -4893,17 +4770,17 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Sele
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State represents the /openconfig-system/system/logging/remote-servers/remote-server/selectors/selector/state YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State struct {
-	Facility E_OpenconfigSystemLogging_SYSLOG_FACILITY `path:"facility" module:"openconfig-system"`
-	Severity E_OpenconfigSystemLogging_SyslogSeverity  `path:"severity" module:"openconfig-system"`
+	Facility	E_OpenconfigSystemLogging_SYSLOG_FACILITY	`path:"facility" module:"openconfig-system"`
+	Severity	E_OpenconfigSystemLogging_SyslogSeverity	`path:"severity" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -4920,9 +4797,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Se
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Selector_State.
@@ -4930,11 +4805,12 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_Selectors_Sele
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State represents the /openconfig-system/system/logging/remote-servers/remote-server/state YANG schema element.
 type OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State struct {
-	Host          *string `path:"host" module:"openconfig-system"`
-	RemotePort    *uint16 `path:"remote-port" module:"openconfig-system"`
-	SourceAddress *string `path:"source-address" module:"openconfig-system"`
+	Host	*string	`path:"host" module:"openconfig-system"`
+	RemotePort	*uint16	`path:"remote-port" module:"openconfig-system"`
+	SourceAddress	*string	`path:"source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State implements the yang.GoStruct
@@ -4957,9 +4833,7 @@ func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State) Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State.
@@ -4967,10 +4841,11 @@ func (*OpenconfigSystem_System_Logging_RemoteServers_RemoteServer_State) ΛBelon
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Memory represents the /openconfig-system/system/memory YANG schema element.
 type OpenconfigSystem_System_Memory struct {
-	Config *OpenconfigSystem_System_Memory_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Memory_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Memory_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Memory_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Memory implements the yang.GoStruct
@@ -4993,15 +4868,14 @@ func (t *OpenconfigSystem_System_Memory) Validate(opts ...ygot.ValidationOption)
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Memory) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Memory) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Memory.
 func (*OpenconfigSystem_System_Memory) ΛBelongingModule() string {
 	return "openconfig-system"
 }
+
 
 // OpenconfigSystem_System_Memory_Config represents the /openconfig-system/system/memory/config YANG schema element.
 type OpenconfigSystem_System_Memory_Config struct {
@@ -5027,9 +4901,7 @@ func (t *OpenconfigSystem_System_Memory_Config) Validate(opts ...ygot.Validation
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Memory_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Memory_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Memory_Config.
@@ -5037,10 +4909,11 @@ func (*OpenconfigSystem_System_Memory_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Memory_State represents the /openconfig-system/system/memory/state YANG schema element.
 type OpenconfigSystem_System_Memory_State struct {
-	Physical *uint64 `path:"physical" module:"openconfig-system"`
-	Reserved *uint64 `path:"reserved" module:"openconfig-system"`
+	Physical	*uint64	`path:"physical" module:"openconfig-system"`
+	Reserved	*uint64	`path:"reserved" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Memory_State implements the yang.GoStruct
@@ -5063,9 +4936,7 @@ func (t *OpenconfigSystem_System_Memory_State) Validate(opts ...ygot.ValidationO
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Memory_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Memory_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Memory_State.
@@ -5073,12 +4944,13 @@ func (*OpenconfigSystem_System_Memory_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp represents the /openconfig-system/system/ntp YANG schema element.
 type OpenconfigSystem_System_Ntp struct {
-	Config  *OpenconfigSystem_System_Ntp_Config  `path:"config" module:"openconfig-system"`
-	NtpKeys *OpenconfigSystem_System_Ntp_NtpKeys `path:"ntp-keys" module:"openconfig-system"`
-	Servers *OpenconfigSystem_System_Ntp_Servers `path:"servers" module:"openconfig-system"`
-	State   *OpenconfigSystem_System_Ntp_State   `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Ntp_Config	`path:"config" module:"openconfig-system"`
+	NtpKeys	*OpenconfigSystem_System_Ntp_NtpKeys	`path:"ntp-keys" module:"openconfig-system"`
+	Servers	*OpenconfigSystem_System_Ntp_Servers	`path:"servers" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Ntp_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp implements the yang.GoStruct
@@ -5109,11 +4981,12 @@ func (*OpenconfigSystem_System_Ntp) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_Config represents the /openconfig-system/system/ntp/config YANG schema element.
 type OpenconfigSystem_System_Ntp_Config struct {
-	EnableNtpAuth    *bool   `path:"enable-ntp-auth" module:"openconfig-system"`
-	Enabled          *bool   `path:"enabled" module:"openconfig-system"`
-	NtpSourceAddress *string `path:"ntp-source-address" module:"openconfig-system"`
+	EnableNtpAuth	*bool	`path:"enable-ntp-auth" module:"openconfig-system"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-system"`
+	NtpSourceAddress	*string	`path:"ntp-source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_Config implements the yang.GoStruct
@@ -5136,9 +5009,7 @@ func (t *OpenconfigSystem_System_Ntp_Config) Validate(opts ...ygot.ValidationOpt
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_Config.
@@ -5146,9 +5017,10 @@ func (*OpenconfigSystem_System_Ntp_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_NtpKeys represents the /openconfig-system/system/ntp/ntp-keys YANG schema element.
 type OpenconfigSystem_System_Ntp_NtpKeys struct {
-	NtpKey map[uint16]*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey `path:"ntp-key" module:"openconfig-system"`
+	NtpKey	map[uint16]*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey	`path:"ntp-key" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_NtpKeys implements the yang.GoStruct
@@ -5159,7 +5031,7 @@ func (*OpenconfigSystem_System_Ntp_NtpKeys) IsYANGGoStruct() {}
 // NewNtpKey creates a new entry in the NtpKey list of the
 // OpenconfigSystem_System_Ntp_NtpKeys struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Ntp_NtpKeys) NewNtpKey(KeyId uint16) (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey, error) {
+func (t *OpenconfigSystem_System_Ntp_NtpKeys) NewNtpKey(KeyId uint16) (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -5198,9 +5070,7 @@ func (t *OpenconfigSystem_System_Ntp_NtpKeys) Validate(opts ...ygot.ValidationOp
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_NtpKeys) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_NtpKeys) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_NtpKeys.
@@ -5208,11 +5078,12 @@ func (*OpenconfigSystem_System_Ntp_NtpKeys) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_NtpKeys_NtpKey represents the /openconfig-system/system/ntp/ntp-keys/ntp-key YANG schema element.
 type OpenconfigSystem_System_Ntp_NtpKeys_NtpKey struct {
-	Config *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config `path:"config" module:"openconfig-system"`
-	KeyId  *uint16                                            `path:"key-id" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config	`path:"config" module:"openconfig-system"`
+	KeyId	*uint16	`path:"key-id" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_NtpKeys_NtpKey implements the yang.GoStruct
@@ -5246,9 +5117,7 @@ func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey) Validate(opts ...ygot.Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_NtpKeys_NtpKey.
@@ -5256,11 +5125,12 @@ func (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config represents the /openconfig-system/system/ntp/ntp-keys/ntp-key/config YANG schema element.
 type OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config struct {
-	KeyId    *uint16                          `path:"key-id" module:"openconfig-system"`
-	KeyType  E_OpenconfigSystem_NTP_AUTH_TYPE `path:"key-type" module:"openconfig-system"`
-	KeyValue *string                          `path:"key-value" module:"openconfig-system"`
+	KeyId	*uint16	`path:"key-id" module:"openconfig-system"`
+	KeyType	E_OpenconfigSystem_NTP_AUTH_TYPE	`path:"key-type" module:"openconfig-system"`
+	KeyValue	*string	`path:"key-value" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config implements the yang.GoStruct
@@ -5283,9 +5153,7 @@ func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config.
@@ -5293,11 +5161,12 @@ func (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_Config) ΛBelongingModule() st
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State represents the /openconfig-system/system/ntp/ntp-keys/ntp-key/state YANG schema element.
 type OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State struct {
-	KeyId    *uint16                          `path:"key-id" module:"openconfig-system"`
-	KeyType  E_OpenconfigSystem_NTP_AUTH_TYPE `path:"key-type" module:"openconfig-system"`
-	KeyValue *string                          `path:"key-value" module:"openconfig-system"`
+	KeyId	*uint16	`path:"key-id" module:"openconfig-system"`
+	KeyType	E_OpenconfigSystem_NTP_AUTH_TYPE	`path:"key-type" module:"openconfig-system"`
+	KeyValue	*string	`path:"key-value" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State implements the yang.GoStruct
@@ -5320,9 +5189,7 @@ func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State.
@@ -5330,9 +5197,10 @@ func (*OpenconfigSystem_System_Ntp_NtpKeys_NtpKey_State) ΛBelongingModule() str
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_Servers represents the /openconfig-system/system/ntp/servers YANG schema element.
 type OpenconfigSystem_System_Ntp_Servers struct {
-	Server map[string]*OpenconfigSystem_System_Ntp_Servers_Server `path:"server" module:"openconfig-system"`
+	Server	map[string]*OpenconfigSystem_System_Ntp_Servers_Server	`path:"server" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_Servers implements the yang.GoStruct
@@ -5343,7 +5211,7 @@ func (*OpenconfigSystem_System_Ntp_Servers) IsYANGGoStruct() {}
 // NewServer creates a new entry in the Server list of the
 // OpenconfigSystem_System_Ntp_Servers struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Ntp_Servers) NewServer(Address string) (*OpenconfigSystem_System_Ntp_Servers_Server, error) {
+func (t *OpenconfigSystem_System_Ntp_Servers) NewServer(Address string) (*OpenconfigSystem_System_Ntp_Servers_Server, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -5382,9 +5250,7 @@ func (t *OpenconfigSystem_System_Ntp_Servers) Validate(opts ...ygot.ValidationOp
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_Servers) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_Servers) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_Servers.
@@ -5392,11 +5258,12 @@ func (*OpenconfigSystem_System_Ntp_Servers) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_Servers_Server represents the /openconfig-system/system/ntp/servers/server YANG schema element.
 type OpenconfigSystem_System_Ntp_Servers_Server struct {
-	Address *string                                            `path:"address" module:"openconfig-system"`
-	Config  *OpenconfigSystem_System_Ntp_Servers_Server_Config `path:"config" module:"openconfig-system"`
-	State   *OpenconfigSystem_System_Ntp_Servers_Server_State  `path:"state" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_Ntp_Servers_Server_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Ntp_Servers_Server_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_Servers_Server implements the yang.GoStruct
@@ -5430,9 +5297,7 @@ func (t *OpenconfigSystem_System_Ntp_Servers_Server) Validate(opts ...ygot.Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_Servers_Server) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_Servers_Server.
@@ -5440,14 +5305,15 @@ func (*OpenconfigSystem_System_Ntp_Servers_Server) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_Servers_Server_Config represents the /openconfig-system/system/ntp/servers/server/config YANG schema element.
 type OpenconfigSystem_System_Ntp_Servers_Server_Config struct {
-	Address         *string                                                             `path:"address" module:"openconfig-system"`
-	AssociationType E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType `path:"association-type" module:"openconfig-system"`
-	Iburst          *bool                                                               `path:"iburst" module:"openconfig-system"`
-	Port            *uint16                                                             `path:"port" module:"openconfig-system"`
-	Prefer          *bool                                                               `path:"prefer" module:"openconfig-system"`
-	Version         *uint8                                                              `path:"version" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	AssociationType	E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType	`path:"association-type" module:"openconfig-system"`
+	Iburst	*bool	`path:"iburst" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
+	Prefer	*bool	`path:"prefer" module:"openconfig-system"`
+	Version	*uint8	`path:"version" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_Servers_Server_Config implements the yang.GoStruct
@@ -5470,9 +5336,7 @@ func (t *OpenconfigSystem_System_Ntp_Servers_Server_Config) Validate(opts ...ygo
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_Servers_Server_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_Servers_Server_Config.
@@ -5480,19 +5344,20 @@ func (*OpenconfigSystem_System_Ntp_Servers_Server_Config) ΛBelongingModule() st
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_Servers_Server_State represents the /openconfig-system/system/ntp/servers/server/state YANG schema element.
 type OpenconfigSystem_System_Ntp_Servers_Server_State struct {
-	Address         *string                                                             `path:"address" module:"openconfig-system"`
-	AssociationType E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType `path:"association-type" module:"openconfig-system"`
-	Iburst          *bool                                                               `path:"iburst" module:"openconfig-system"`
-	Offset          *uint64                                                             `path:"offset" module:"openconfig-system"`
-	PollInterval    *uint32                                                             `path:"poll-interval" module:"openconfig-system"`
-	Port            *uint16                                                             `path:"port" module:"openconfig-system"`
-	Prefer          *bool                                                               `path:"prefer" module:"openconfig-system"`
-	RootDelay       *uint32                                                             `path:"root-delay" module:"openconfig-system"`
-	RootDispersion  *uint64                                                             `path:"root-dispersion" module:"openconfig-system"`
-	Stratum         *uint8                                                              `path:"stratum" module:"openconfig-system"`
-	Version         *uint8                                                              `path:"version" module:"openconfig-system"`
+	Address	*string	`path:"address" module:"openconfig-system"`
+	AssociationType	E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType	`path:"association-type" module:"openconfig-system"`
+	Iburst	*bool	`path:"iburst" module:"openconfig-system"`
+	Offset	*uint64	`path:"offset" module:"openconfig-system"`
+	PollInterval	*uint32	`path:"poll-interval" module:"openconfig-system"`
+	Port	*uint16	`path:"port" module:"openconfig-system"`
+	Prefer	*bool	`path:"prefer" module:"openconfig-system"`
+	RootDelay	*uint32	`path:"root-delay" module:"openconfig-system"`
+	RootDispersion	*uint64	`path:"root-dispersion" module:"openconfig-system"`
+	Stratum	*uint8	`path:"stratum" module:"openconfig-system"`
+	Version	*uint8	`path:"version" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_Servers_Server_State implements the yang.GoStruct
@@ -5515,9 +5380,7 @@ func (t *OpenconfigSystem_System_Ntp_Servers_Server_State) Validate(opts ...ygot
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_Servers_Server_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_Servers_Server_State.
@@ -5525,12 +5388,13 @@ func (*OpenconfigSystem_System_Ntp_Servers_Server_State) ΛBelongingModule() str
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Ntp_State represents the /openconfig-system/system/ntp/state YANG schema element.
 type OpenconfigSystem_System_Ntp_State struct {
-	AuthMismatch     *uint64 `path:"auth-mismatch" module:"openconfig-system"`
-	EnableNtpAuth    *bool   `path:"enable-ntp-auth" module:"openconfig-system"`
-	Enabled          *bool   `path:"enabled" module:"openconfig-system"`
-	NtpSourceAddress *string `path:"ntp-source-address" module:"openconfig-system"`
+	AuthMismatch	*uint64	`path:"auth-mismatch" module:"openconfig-system"`
+	EnableNtpAuth	*bool	`path:"enable-ntp-auth" module:"openconfig-system"`
+	Enabled	*bool	`path:"enabled" module:"openconfig-system"`
+	NtpSourceAddress	*string	`path:"ntp-source-address" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Ntp_State implements the yang.GoStruct
@@ -5553,9 +5417,7 @@ func (t *OpenconfigSystem_System_Ntp_State) Validate(opts ...ygot.ValidationOpti
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Ntp_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Ntp_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Ntp_State.
@@ -5563,10 +5425,11 @@ func (*OpenconfigSystem_System_Ntp_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Openflow represents the /openconfig-system/system/openflow YANG schema element.
 type OpenconfigSystem_System_Openflow struct {
-	Agent       *OpenconfigSystem_System_Openflow_Agent       `path:"agent" module:"openconfig-openflow"`
-	Controllers *OpenconfigSystem_System_Openflow_Controllers `path:"controllers" module:"openconfig-openflow"`
+	Agent	*OpenconfigSystem_System_Openflow_Agent	`path:"agent" module:"openconfig-openflow"`
+	Controllers	*OpenconfigSystem_System_Openflow_Controllers	`path:"controllers" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow implements the yang.GoStruct
@@ -5589,9 +5452,7 @@ func (t *OpenconfigSystem_System_Openflow) Validate(opts ...ygot.ValidationOptio
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow.
@@ -5599,10 +5460,11 @@ func (*OpenconfigSystem_System_Openflow) ΛBelongingModule() string {
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Agent represents the /openconfig-system/system/openflow/agent YANG schema element.
 type OpenconfigSystem_System_Openflow_Agent struct {
-	Config *OpenconfigSystem_System_Openflow_Agent_Config `path:"config" module:"openconfig-openflow"`
-	State  *OpenconfigSystem_System_Openflow_Agent_State  `path:"state" module:"openconfig-openflow"`
+	Config	*OpenconfigSystem_System_Openflow_Agent_Config	`path:"config" module:"openconfig-openflow"`
+	State	*OpenconfigSystem_System_Openflow_Agent_State	`path:"state" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Agent implements the yang.GoStruct
@@ -5625,9 +5487,7 @@ func (t *OpenconfigSystem_System_Openflow_Agent) Validate(opts ...ygot.Validatio
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Agent) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Agent) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Agent.
@@ -5635,13 +5495,14 @@ func (*OpenconfigSystem_System_Openflow_Agent) ΛBelongingModule() string {
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Agent_Config represents the /openconfig-system/system/openflow/agent/config YANG schema element.
 type OpenconfigSystem_System_Openflow_Agent_Config struct {
-	BackoffInterval *uint32                          `path:"backoff-interval" module:"openconfig-openflow"`
-	DatapathId      *string                          `path:"datapath-id" module:"openconfig-openflow"`
-	FailureMode     E_OpenconfigOpenflow_FailureMode `path:"failure-mode" module:"openconfig-openflow"`
-	InactivityProbe *uint32                          `path:"inactivity-probe" module:"openconfig-openflow"`
-	MaxBackoff      *uint32                          `path:"max-backoff" module:"openconfig-openflow"`
+	BackoffInterval	*uint32	`path:"backoff-interval" module:"openconfig-openflow"`
+	DatapathId	*string	`path:"datapath-id" module:"openconfig-openflow"`
+	FailureMode	E_OpenconfigOpenflow_FailureMode	`path:"failure-mode" module:"openconfig-openflow"`
+	InactivityProbe	*uint32	`path:"inactivity-probe" module:"openconfig-openflow"`
+	MaxBackoff	*uint32	`path:"max-backoff" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Agent_Config implements the yang.GoStruct
@@ -5664,9 +5525,7 @@ func (t *OpenconfigSystem_System_Openflow_Agent_Config) Validate(opts ...ygot.Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Agent_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Agent_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Agent_Config.
@@ -5674,13 +5533,14 @@ func (*OpenconfigSystem_System_Openflow_Agent_Config) ΛBelongingModule() string
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Agent_State represents the /openconfig-system/system/openflow/agent/state YANG schema element.
 type OpenconfigSystem_System_Openflow_Agent_State struct {
-	BackoffInterval *uint32                          `path:"backoff-interval" module:"openconfig-openflow"`
-	DatapathId      *string                          `path:"datapath-id" module:"openconfig-openflow"`
-	FailureMode     E_OpenconfigOpenflow_FailureMode `path:"failure-mode" module:"openconfig-openflow"`
-	InactivityProbe *uint32                          `path:"inactivity-probe" module:"openconfig-openflow"`
-	MaxBackoff      *uint32                          `path:"max-backoff" module:"openconfig-openflow"`
+	BackoffInterval	*uint32	`path:"backoff-interval" module:"openconfig-openflow"`
+	DatapathId	*string	`path:"datapath-id" module:"openconfig-openflow"`
+	FailureMode	E_OpenconfigOpenflow_FailureMode	`path:"failure-mode" module:"openconfig-openflow"`
+	InactivityProbe	*uint32	`path:"inactivity-probe" module:"openconfig-openflow"`
+	MaxBackoff	*uint32	`path:"max-backoff" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Agent_State implements the yang.GoStruct
@@ -5703,9 +5563,7 @@ func (t *OpenconfigSystem_System_Openflow_Agent_State) Validate(opts ...ygot.Val
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Agent_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Agent_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Agent_State.
@@ -5713,9 +5571,10 @@ func (*OpenconfigSystem_System_Openflow_Agent_State) ΛBelongingModule() string 
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers represents the /openconfig-system/system/openflow/controllers YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers struct {
-	Controller map[string]*OpenconfigSystem_System_Openflow_Controllers_Controller `path:"controller" module:"openconfig-openflow"`
+	Controller	map[string]*OpenconfigSystem_System_Openflow_Controllers_Controller	`path:"controller" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers implements the yang.GoStruct
@@ -5726,7 +5585,7 @@ func (*OpenconfigSystem_System_Openflow_Controllers) IsYANGGoStruct() {}
 // NewController creates a new entry in the Controller list of the
 // OpenconfigSystem_System_Openflow_Controllers struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Openflow_Controllers) NewController(Name string) (*OpenconfigSystem_System_Openflow_Controllers_Controller, error) {
+func (t *OpenconfigSystem_System_Openflow_Controllers) NewController(Name string) (*OpenconfigSystem_System_Openflow_Controllers_Controller, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -5765,9 +5624,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers) Validate(opts ...ygot.Val
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers.
@@ -5775,12 +5632,13 @@ func (*OpenconfigSystem_System_Openflow_Controllers) ΛBelongingModule() string 
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller represents the /openconfig-system/system/openflow/controllers/controller YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller struct {
-	Config      *OpenconfigSystem_System_Openflow_Controllers_Controller_Config      `path:"config" module:"openconfig-openflow"`
-	Connections *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections `path:"connections" module:"openconfig-openflow"`
-	Name        *string                                                              `path:"name" module:"openconfig-openflow"`
-	State       *OpenconfigSystem_System_Openflow_Controllers_Controller_State       `path:"state" module:"openconfig-openflow"`
+	Config	*OpenconfigSystem_System_Openflow_Controllers_Controller_Config	`path:"config" module:"openconfig-openflow"`
+	Connections	*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections	`path:"connections" module:"openconfig-openflow"`
+	Name	*string	`path:"name" module:"openconfig-openflow"`
+	State	*OpenconfigSystem_System_Openflow_Controllers_Controller_State	`path:"state" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller implements the yang.GoStruct
@@ -5814,9 +5672,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller) Validate(opts 
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller.
@@ -5824,9 +5680,10 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller) ΛBelongingModul
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Config represents the /openconfig-system/system/openflow/controllers/controller/config YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_Config struct {
-	Name *string `path:"name" module:"openconfig-openflow"`
+	Name	*string	`path:"name" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_Config implements the yang.GoStruct
@@ -5849,9 +5706,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Config) Validat
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_Config.
@@ -5859,9 +5714,10 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Config) ΛBelongi
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Connections represents the /openconfig-system/system/openflow/controllers/controller/connections YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_Connections struct {
-	Connection map[uint8]*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection `path:"connection" module:"openconfig-openflow"`
+	Connection	map[uint8]*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection	`path:"connection" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_Connections implements the yang.GoStruct
@@ -5872,7 +5728,7 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) IsYA
 // NewConnection creates a new entry in the Connection list of the
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Connections struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) NewConnection(AuxId uint8) (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection, error) {
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) NewConnection(AuxId uint8) (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -5911,9 +5767,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) Va
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_Connections.
@@ -5921,18 +5775,18 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections) ΛBe
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection represents the /openconfig-system/system/openflow/controllers/controller/connections/connection YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection struct {
-	AuxId  *uint8                                                                                 `path:"aux-id" module:"openconfig-openflow"`
-	Config *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config `path:"config" module:"openconfig-openflow"`
-	State  *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State  `path:"state" module:"openconfig-openflow"`
+	AuxId	*uint8	`path:"aux-id" module:"openconfig-openflow"`
+	Config	*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config	`path:"config" module:"openconfig-openflow"`
+	State	*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State	`path:"state" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection) IsYANGGoStruct() {}
 
 // ΛListKeyMap returns the keys of the OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection struct, which is a YANG list entry.
 func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection) ΛListKeyMap() (map[string]interface{}, error) {
@@ -5960,9 +5814,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Con
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection.
@@ -5970,21 +5822,21 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Conne
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config represents the /openconfig-system/system/openflow/controllers/controller/connections/connection/config YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config struct {
-	Address         *string                        `path:"address" module:"openconfig-openflow"`
-	AuxId           *uint8                         `path:"aux-id" module:"openconfig-openflow"`
-	Port            *uint16                        `path:"port" module:"openconfig-openflow"`
-	Priority        *uint8                         `path:"priority" module:"openconfig-openflow"`
-	SourceInterface *string                        `path:"source-interface" module:"openconfig-openflow"`
-	Transport       E_OpenconfigOpenflow_Transport `path:"transport" module:"openconfig-openflow"`
+	Address	*string	`path:"address" module:"openconfig-openflow"`
+	AuxId	*uint8	`path:"aux-id" module:"openconfig-openflow"`
+	Port	*uint16	`path:"port" module:"openconfig-openflow"`
+	Priority	*uint8	`path:"priority" module:"openconfig-openflow"`
+	SourceInterface	*string	`path:"source-interface" module:"openconfig-openflow"`
+	Transport	E_OpenconfigOpenflow_Transport	`path:"transport" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -6001,9 +5853,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Con
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_Config.
@@ -6011,22 +5861,22 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Conne
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State represents the /openconfig-system/system/openflow/controllers/controller/connections/connection/state YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State struct {
-	Address         *string                        `path:"address" module:"openconfig-openflow"`
-	AuxId           *uint8                         `path:"aux-id" module:"openconfig-openflow"`
-	Connected       *bool                          `path:"connected" module:"openconfig-openflow"`
-	Port            *uint16                        `path:"port" module:"openconfig-openflow"`
-	Priority        *uint8                         `path:"priority" module:"openconfig-openflow"`
-	SourceInterface *string                        `path:"source-interface" module:"openconfig-openflow"`
-	Transport       E_OpenconfigOpenflow_Transport `path:"transport" module:"openconfig-openflow"`
+	Address	*string	`path:"address" module:"openconfig-openflow"`
+	AuxId	*uint8	`path:"aux-id" module:"openconfig-openflow"`
+	Connected	*bool	`path:"connected" module:"openconfig-openflow"`
+	Port	*uint16	`path:"port" module:"openconfig-openflow"`
+	Priority	*uint8	`path:"priority" module:"openconfig-openflow"`
+	SourceInterface	*string	`path:"source-interface" module:"openconfig-openflow"`
+	Transport	E_OpenconfigOpenflow_Transport	`path:"transport" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State implements the yang.GoStruct
 // interface. This allows functions that need to handle this struct to
 // identify it as being generated by ygen.
-func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State) IsYANGGoStruct() {
-}
+func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State) IsYANGGoStruct() {}
 
 // Validate validates s against the YANG schema corresponding to its type.
 func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State) ΛValidate(opts ...ygot.ValidationOption) error {
@@ -6043,9 +5893,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Con
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Connection_State.
@@ -6053,9 +5901,10 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_Connections_Conne
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Openflow_Controllers_Controller_State represents the /openconfig-system/system/openflow/controllers/controller/state YANG schema element.
 type OpenconfigSystem_System_Openflow_Controllers_Controller_State struct {
-	Name *string `path:"name" module:"openconfig-openflow"`
+	Name	*string	`path:"name" module:"openconfig-openflow"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Openflow_Controllers_Controller_State implements the yang.GoStruct
@@ -6078,9 +5927,7 @@ func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_State) Validate
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Openflow_Controllers_Controller_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Openflow_Controllers_Controller_State.
@@ -6088,9 +5935,10 @@ func (*OpenconfigSystem_System_Openflow_Controllers_Controller_State) ΛBelongin
 	return "openconfig-openflow"
 }
 
+
 // OpenconfigSystem_System_Processes represents the /openconfig-system/system/processes YANG schema element.
 type OpenconfigSystem_System_Processes struct {
-	Process map[uint64]*OpenconfigSystem_System_Processes_Process `path:"process" module:"openconfig-system"`
+	Process	map[uint64]*OpenconfigSystem_System_Processes_Process	`path:"process" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Processes implements the yang.GoStruct
@@ -6101,7 +5949,7 @@ func (*OpenconfigSystem_System_Processes) IsYANGGoStruct() {}
 // NewProcess creates a new entry in the Process list of the
 // OpenconfigSystem_System_Processes struct. The keys of the list are populated from the input
 // arguments.
-func (t *OpenconfigSystem_System_Processes) NewProcess(Pid uint64) (*OpenconfigSystem_System_Processes_Process, error) {
+func (t *OpenconfigSystem_System_Processes) NewProcess(Pid uint64) (*OpenconfigSystem_System_Processes_Process, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -6140,9 +5988,7 @@ func (t *OpenconfigSystem_System_Processes) Validate(opts ...ygot.ValidationOpti
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Processes) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Processes) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Processes.
@@ -6150,10 +5996,11 @@ func (*OpenconfigSystem_System_Processes) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Processes_Process represents the /openconfig-system/system/processes/process YANG schema element.
 type OpenconfigSystem_System_Processes_Process struct {
-	Pid   *uint64                                          `path:"pid" module:"openconfig-system"`
-	State *OpenconfigSystem_System_Processes_Process_State `path:"state" module:"openconfig-system"`
+	Pid	*uint64	`path:"pid" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_Processes_Process_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Processes_Process implements the yang.GoStruct
@@ -6187,9 +6034,7 @@ func (t *OpenconfigSystem_System_Processes_Process) Validate(opts ...ygot.Valida
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Processes_Process) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Processes_Process) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Processes_Process.
@@ -6197,18 +6042,19 @@ func (*OpenconfigSystem_System_Processes_Process) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_Processes_Process_State represents the /openconfig-system/system/processes/process/state YANG schema element.
 type OpenconfigSystem_System_Processes_Process_State struct {
-	Args              []string `path:"args" module:"openconfig-system"`
-	CpuUsageSystem    *uint64  `path:"cpu-usage-system" module:"openconfig-system"`
-	CpuUsageUser      *uint64  `path:"cpu-usage-user" module:"openconfig-system"`
-	CpuUtilization    *uint8   `path:"cpu-utilization" module:"openconfig-system"`
-	MemoryUsage       *uint64  `path:"memory-usage" module:"openconfig-system"`
-	MemoryUtilization *uint8   `path:"memory-utilization" module:"openconfig-system"`
-	Name              *string  `path:"name" module:"openconfig-system"`
-	Pid               *uint64  `path:"pid" module:"openconfig-system"`
-	StartTime         *uint64  `path:"start-time" module:"openconfig-system"`
-	Uptime            *uint64  `path:"uptime" module:"openconfig-system"`
+	Args	[]string	`path:"args" module:"openconfig-system"`
+	CpuUsageSystem	*uint64	`path:"cpu-usage-system" module:"openconfig-system"`
+	CpuUsageUser	*uint64	`path:"cpu-usage-user" module:"openconfig-system"`
+	CpuUtilization	*uint8	`path:"cpu-utilization" module:"openconfig-system"`
+	MemoryUsage	*uint64	`path:"memory-usage" module:"openconfig-system"`
+	MemoryUtilization	*uint8	`path:"memory-utilization" module:"openconfig-system"`
+	Name	*string	`path:"name" module:"openconfig-system"`
+	Pid	*uint64	`path:"pid" module:"openconfig-system"`
+	StartTime	*uint64	`path:"start-time" module:"openconfig-system"`
+	Uptime	*uint64	`path:"uptime" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_Processes_Process_State implements the yang.GoStruct
@@ -6231,9 +6077,7 @@ func (t *OpenconfigSystem_System_Processes_Process_State) Validate(opts ...ygot.
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_Processes_Process_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_Processes_Process_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_Processes_Process_State.
@@ -6241,10 +6085,11 @@ func (*OpenconfigSystem_System_Processes_Process_State) ΛBelongingModule() stri
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_SshServer represents the /openconfig-system/system/ssh-server YANG schema element.
 type OpenconfigSystem_System_SshServer struct {
-	Config *OpenconfigSystem_System_SshServer_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_SshServer_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_SshServer_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_SshServer_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_SshServer implements the yang.GoStruct
@@ -6267,9 +6112,7 @@ func (t *OpenconfigSystem_System_SshServer) Validate(opts ...ygot.ValidationOpti
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_SshServer) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_SshServer) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_SshServer.
@@ -6277,13 +6120,14 @@ func (*OpenconfigSystem_System_SshServer) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_SshServer_Config represents the /openconfig-system/system/ssh-server/config YANG schema element.
 type OpenconfigSystem_System_SshServer_Config struct {
-	Enable          *bool                                                      `path:"enable" module:"openconfig-system"`
-	ProtocolVersion E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion `path:"protocol-version" module:"openconfig-system"`
-	RateLimit       *uint16                                                    `path:"rate-limit" module:"openconfig-system"`
-	SessionLimit    *uint16                                                    `path:"session-limit" module:"openconfig-system"`
-	Timeout         *uint16                                                    `path:"timeout" module:"openconfig-system"`
+	Enable	*bool	`path:"enable" module:"openconfig-system"`
+	ProtocolVersion	E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion	`path:"protocol-version" module:"openconfig-system"`
+	RateLimit	*uint16	`path:"rate-limit" module:"openconfig-system"`
+	SessionLimit	*uint16	`path:"session-limit" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_SshServer_Config implements the yang.GoStruct
@@ -6306,9 +6150,7 @@ func (t *OpenconfigSystem_System_SshServer_Config) Validate(opts ...ygot.Validat
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_SshServer_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_SshServer_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_SshServer_Config.
@@ -6316,13 +6158,14 @@ func (*OpenconfigSystem_System_SshServer_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_SshServer_State represents the /openconfig-system/system/ssh-server/state YANG schema element.
 type OpenconfigSystem_System_SshServer_State struct {
-	Enable          *bool                                                      `path:"enable" module:"openconfig-system"`
-	ProtocolVersion E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion `path:"protocol-version" module:"openconfig-system"`
-	RateLimit       *uint16                                                    `path:"rate-limit" module:"openconfig-system"`
-	SessionLimit    *uint16                                                    `path:"session-limit" module:"openconfig-system"`
-	Timeout         *uint16                                                    `path:"timeout" module:"openconfig-system"`
+	Enable	*bool	`path:"enable" module:"openconfig-system"`
+	ProtocolVersion	E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion	`path:"protocol-version" module:"openconfig-system"`
+	RateLimit	*uint16	`path:"rate-limit" module:"openconfig-system"`
+	SessionLimit	*uint16	`path:"session-limit" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_SshServer_State implements the yang.GoStruct
@@ -6345,9 +6188,7 @@ func (t *OpenconfigSystem_System_SshServer_State) Validate(opts ...ygot.Validati
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_SshServer_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_SshServer_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_SshServer_State.
@@ -6355,14 +6196,15 @@ func (*OpenconfigSystem_System_SshServer_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_State represents the /openconfig-system/system/state YANG schema element.
 type OpenconfigSystem_System_State struct {
-	BootTime        *uint64 `path:"boot-time" module:"openconfig-system"`
-	CurrentDatetime *string `path:"current-datetime" module:"openconfig-system"`
-	DomainName      *string `path:"domain-name" module:"openconfig-system"`
-	Hostname        *string `path:"hostname" module:"openconfig-system"`
-	LoginBanner     *string `path:"login-banner" module:"openconfig-system"`
-	MotdBanner      *string `path:"motd-banner" module:"openconfig-system"`
+	BootTime	*uint64	`path:"boot-time" module:"openconfig-system"`
+	CurrentDatetime	*string	`path:"current-datetime" module:"openconfig-system"`
+	DomainName	*string	`path:"domain-name" module:"openconfig-system"`
+	Hostname	*string	`path:"hostname" module:"openconfig-system"`
+	LoginBanner	*string	`path:"login-banner" module:"openconfig-system"`
+	MotdBanner	*string	`path:"motd-banner" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_State implements the yang.GoStruct
@@ -6393,10 +6235,11 @@ func (*OpenconfigSystem_System_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_TelnetServer represents the /openconfig-system/system/telnet-server YANG schema element.
 type OpenconfigSystem_System_TelnetServer struct {
-	Config *OpenconfigSystem_System_TelnetServer_Config `path:"config" module:"openconfig-system"`
-	State  *OpenconfigSystem_System_TelnetServer_State  `path:"state" module:"openconfig-system"`
+	Config	*OpenconfigSystem_System_TelnetServer_Config	`path:"config" module:"openconfig-system"`
+	State	*OpenconfigSystem_System_TelnetServer_State	`path:"state" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_TelnetServer implements the yang.GoStruct
@@ -6419,9 +6262,7 @@ func (t *OpenconfigSystem_System_TelnetServer) Validate(opts ...ygot.ValidationO
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_TelnetServer) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_TelnetServer) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_TelnetServer.
@@ -6429,12 +6270,13 @@ func (*OpenconfigSystem_System_TelnetServer) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_TelnetServer_Config represents the /openconfig-system/system/telnet-server/config YANG schema element.
 type OpenconfigSystem_System_TelnetServer_Config struct {
-	Enable       *bool   `path:"enable" module:"openconfig-system"`
-	RateLimit    *uint16 `path:"rate-limit" module:"openconfig-system"`
-	SessionLimit *uint16 `path:"session-limit" module:"openconfig-system"`
-	Timeout      *uint16 `path:"timeout" module:"openconfig-system"`
+	Enable	*bool	`path:"enable" module:"openconfig-system"`
+	RateLimit	*uint16	`path:"rate-limit" module:"openconfig-system"`
+	SessionLimit	*uint16	`path:"session-limit" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_TelnetServer_Config implements the yang.GoStruct
@@ -6457,9 +6299,7 @@ func (t *OpenconfigSystem_System_TelnetServer_Config) Validate(opts ...ygot.Vali
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_TelnetServer_Config) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_TelnetServer_Config) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_TelnetServer_Config.
@@ -6467,12 +6307,13 @@ func (*OpenconfigSystem_System_TelnetServer_Config) ΛBelongingModule() string {
 	return "openconfig-system"
 }
 
+
 // OpenconfigSystem_System_TelnetServer_State represents the /openconfig-system/system/telnet-server/state YANG schema element.
 type OpenconfigSystem_System_TelnetServer_State struct {
-	Enable       *bool   `path:"enable" module:"openconfig-system"`
-	RateLimit    *uint16 `path:"rate-limit" module:"openconfig-system"`
-	SessionLimit *uint16 `path:"session-limit" module:"openconfig-system"`
-	Timeout      *uint16 `path:"timeout" module:"openconfig-system"`
+	Enable	*bool	`path:"enable" module:"openconfig-system"`
+	RateLimit	*uint16	`path:"rate-limit" module:"openconfig-system"`
+	SessionLimit	*uint16	`path:"session-limit" module:"openconfig-system"`
+	Timeout	*uint16	`path:"timeout" module:"openconfig-system"`
 }
 
 // IsYANGGoStruct ensures that OpenconfigSystem_System_TelnetServer_State implements the yang.GoStruct
@@ -6495,15 +6336,14 @@ func (t *OpenconfigSystem_System_TelnetServer_State) Validate(opts ...ygot.Valid
 
 // ΛEnumTypeMap returns a map, keyed by YANG schema path, of the enumerated types
 // that are included in the generated code.
-func (t *OpenconfigSystem_System_TelnetServer_State) ΛEnumTypeMap() map[string][]reflect.Type {
-	return ΛEnumTypes
-}
+func (t *OpenconfigSystem_System_TelnetServer_State) ΛEnumTypeMap() map[string][]reflect.Type { return ΛEnumTypes }
 
 // ΛBelongingModule returns the name of the module that defines the namespace
 // of OpenconfigSystem_System_TelnetServer_State.
 func (*OpenconfigSystem_System_TelnetServer_State) ΛBelongingModule() string {
 	return "openconfig-system"
 }
+
 
 // E_IETFInterfaces_InterfaceType is a derived int64 type which is used to represent
 // the enumerated node IETFInterfaces_InterfaceType. An additional value named
@@ -6518,7 +6358,7 @@ type E_IETFInterfaces_InterfaceType int64
 func (E_IETFInterfaces_InterfaceType) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  IETFInterfaces_InterfaceType.
-func (E_IETFInterfaces_InterfaceType) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum }
+func (E_IETFInterfaces_InterfaceType) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_IETFInterfaces_InterfaceType.
 func (e E_IETFInterfaces_InterfaceType) String() string {
@@ -6529,6 +6369,7 @@ const (
 	// IETFInterfaces_InterfaceType_UNSET corresponds to the value UNSET of IETFInterfaces_InterfaceType
 	IETFInterfaces_InterfaceType_UNSET E_IETFInterfaces_InterfaceType = 0
 )
+
 
 // E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE is a derived int64 type which is used to represent
 // the enumerated node OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE. An additional value named
@@ -6543,9 +6384,7 @@ type E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE int64
 func (E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE.
-func (E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE.
 func (e E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE) String() string {
@@ -6565,6 +6404,7 @@ const (
 	OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE_AAA_AUTHORIZATION_EVENT_CONFIG E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE = 4
 )
 
+
 // E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE is a derived int64 type which is used to represent
 // the enumerated node OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE. An additional value named
 // OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE_UNSET is added to the enumeration which is used as
@@ -6578,9 +6418,7 @@ type E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE int64
 func (E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE.
-func (E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE.
 func (e E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE) String() string {
@@ -6591,6 +6429,7 @@ const (
 	// OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE_UNSET corresponds to the value UNSET of OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE
 	OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE_UNSET E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE = 0
 )
+
 
 // E_OpenconfigAaaTypes_AAA_METHOD_TYPE is a derived int64 type which is used to represent
 // the enumerated node OpenconfigAaaTypes_AAA_METHOD_TYPE. An additional value named
@@ -6605,9 +6444,7 @@ type E_OpenconfigAaaTypes_AAA_METHOD_TYPE int64
 func (E_OpenconfigAaaTypes_AAA_METHOD_TYPE) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigAaaTypes_AAA_METHOD_TYPE.
-func (E_OpenconfigAaaTypes_AAA_METHOD_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigAaaTypes_AAA_METHOD_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigAaaTypes_AAA_METHOD_TYPE.
 func (e E_OpenconfigAaaTypes_AAA_METHOD_TYPE) String() string {
@@ -6625,6 +6462,7 @@ const (
 	OpenconfigAaaTypes_AAA_METHOD_TYPE_TACACS_ALL E_OpenconfigAaaTypes_AAA_METHOD_TYPE = 3
 )
 
+
 // E_OpenconfigAaaTypes_AAA_SERVER_TYPE is a derived int64 type which is used to represent
 // the enumerated node OpenconfigAaaTypes_AAA_SERVER_TYPE. An additional value named
 // OpenconfigAaaTypes_AAA_SERVER_TYPE_UNSET is added to the enumeration which is used as
@@ -6638,9 +6476,7 @@ type E_OpenconfigAaaTypes_AAA_SERVER_TYPE int64
 func (E_OpenconfigAaaTypes_AAA_SERVER_TYPE) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigAaaTypes_AAA_SERVER_TYPE.
-func (E_OpenconfigAaaTypes_AAA_SERVER_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigAaaTypes_AAA_SERVER_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigAaaTypes_AAA_SERVER_TYPE.
 func (e E_OpenconfigAaaTypes_AAA_SERVER_TYPE) String() string {
@@ -6656,6 +6492,7 @@ const (
 	OpenconfigAaaTypes_AAA_SERVER_TYPE_TACACS E_OpenconfigAaaTypes_AAA_SERVER_TYPE = 2
 )
 
+
 // E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES is a derived int64 type which is used to represent
 // the enumerated node OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES. An additional value named
 // OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES_UNSET is added to the enumeration which is used as
@@ -6669,9 +6506,7 @@ type E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES int64
 func (E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES.
-func (E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES.
 func (e E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES) String() string {
@@ -6684,6 +6519,7 @@ const (
 	// OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES_SYSTEM_ROLE_ADMIN corresponds to the value SYSTEM_ROLE_ADMIN of OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES
 	OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES_SYSTEM_ROLE_ADMIN E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES = 1
 )
+
 
 // E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus is a derived int64 type which is used to represent
 // the enumerated node OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus. An additional value named
@@ -6698,9 +6534,7 @@ type E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus int64
 func (E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus.
-func (E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus.
 func (e E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus) String() string {
@@ -6718,6 +6552,7 @@ const (
 	OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus_TESTING E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus = 3
 )
 
+
 // E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus is a derived int64 type which is used to represent
 // the enumerated node OpenconfigInterfaces_Interfaces_Interface_State_OperStatus. An additional value named
 // OpenconfigInterfaces_Interfaces_Interface_State_OperStatus_UNSET is added to the enumeration which is used as
@@ -6731,9 +6566,7 @@ type E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus int64
 func (E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigInterfaces_Interfaces_Interface_State_OperStatus.
-func (E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus.
 func (e E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus) String() string {
@@ -6759,6 +6592,7 @@ const (
 	OpenconfigInterfaces_Interfaces_Interface_State_OperStatus_LOWER_LAYER_DOWN E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus = 7
 )
 
+
 // E_OpenconfigOpenflow_FailureMode is a derived int64 type which is used to represent
 // the enumerated node OpenconfigOpenflow_FailureMode. An additional value named
 // OpenconfigOpenflow_FailureMode_UNSET is added to the enumeration which is used as
@@ -6772,9 +6606,7 @@ type E_OpenconfigOpenflow_FailureMode int64
 func (E_OpenconfigOpenflow_FailureMode) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigOpenflow_FailureMode.
-func (E_OpenconfigOpenflow_FailureMode) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigOpenflow_FailureMode) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigOpenflow_FailureMode.
 func (e E_OpenconfigOpenflow_FailureMode) String() string {
@@ -6790,6 +6622,7 @@ const (
 	OpenconfigOpenflow_FailureMode_STANDALONE E_OpenconfigOpenflow_FailureMode = 2
 )
 
+
 // E_OpenconfigOpenflow_Transport is a derived int64 type which is used to represent
 // the enumerated node OpenconfigOpenflow_Transport. An additional value named
 // OpenconfigOpenflow_Transport_UNSET is added to the enumeration which is used as
@@ -6803,7 +6636,7 @@ type E_OpenconfigOpenflow_Transport int64
 func (E_OpenconfigOpenflow_Transport) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigOpenflow_Transport.
-func (E_OpenconfigOpenflow_Transport) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum }
+func (E_OpenconfigOpenflow_Transport) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigOpenflow_Transport.
 func (e E_OpenconfigOpenflow_Transport) String() string {
@@ -6819,6 +6652,7 @@ const (
 	OpenconfigOpenflow_Transport_TLS E_OpenconfigOpenflow_Transport = 2
 )
 
+
 // E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT is a derived int64 type which is used to represent
 // the enumerated node OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT. An additional value named
 // OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT_UNSET is added to the enumeration which is used as
@@ -6832,9 +6666,7 @@ type E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT int64
 func (E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT.
-func (E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT.
 func (e E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT) String() string {
@@ -6866,6 +6698,7 @@ const (
 	OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT_TRANSCEIVER E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT = 10
 )
 
+
 // E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT is a derived int64 type which is used to represent
 // the enumerated node OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT. An additional value named
 // OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT_UNSET is added to the enumeration which is used as
@@ -6879,9 +6712,7 @@ type E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT int64
 func (E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT.
-func (E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT.
 func (e E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT) String() string {
@@ -6894,6 +6725,7 @@ const (
 	// OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT_OPERATING_SYSTEM corresponds to the value OPERATING_SYSTEM of OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT
 	OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT_OPERATING_SYSTEM E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT = 1
 )
+
 
 // E_OpenconfigSystemLogging_SYSLOG_FACILITY is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystemLogging_SYSLOG_FACILITY. An additional value named
@@ -6908,9 +6740,7 @@ type E_OpenconfigSystemLogging_SYSLOG_FACILITY int64
 func (E_OpenconfigSystemLogging_SYSLOG_FACILITY) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystemLogging_SYSLOG_FACILITY.
-func (E_OpenconfigSystemLogging_SYSLOG_FACILITY) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystemLogging_SYSLOG_FACILITY) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystemLogging_SYSLOG_FACILITY.
 func (e E_OpenconfigSystemLogging_SYSLOG_FACILITY) String() string {
@@ -6960,6 +6790,7 @@ const (
 	OpenconfigSystemLogging_SYSLOG_FACILITY_USER E_OpenconfigSystemLogging_SYSLOG_FACILITY = 19
 )
 
+
 // E_OpenconfigSystemLogging_SyslogSeverity is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystemLogging_SyslogSeverity. An additional value named
 // OpenconfigSystemLogging_SyslogSeverity_UNSET is added to the enumeration which is used as
@@ -6973,9 +6804,7 @@ type E_OpenconfigSystemLogging_SyslogSeverity int64
 func (E_OpenconfigSystemLogging_SyslogSeverity) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystemLogging_SyslogSeverity.
-func (E_OpenconfigSystemLogging_SyslogSeverity) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystemLogging_SyslogSeverity) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystemLogging_SyslogSeverity.
 func (e E_OpenconfigSystemLogging_SyslogSeverity) String() string {
@@ -7003,6 +6832,7 @@ const (
 	OpenconfigSystemLogging_SyslogSeverity_DEBUG E_OpenconfigSystemLogging_SyslogSeverity = 8
 )
 
+
 // E_OpenconfigSystem_NTP_AUTH_TYPE is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystem_NTP_AUTH_TYPE. An additional value named
 // OpenconfigSystem_NTP_AUTH_TYPE_UNSET is added to the enumeration which is used as
@@ -7016,9 +6846,7 @@ type E_OpenconfigSystem_NTP_AUTH_TYPE int64
 func (E_OpenconfigSystem_NTP_AUTH_TYPE) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystem_NTP_AUTH_TYPE.
-func (E_OpenconfigSystem_NTP_AUTH_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystem_NTP_AUTH_TYPE) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystem_NTP_AUTH_TYPE.
 func (e E_OpenconfigSystem_NTP_AUTH_TYPE) String() string {
@@ -7031,6 +6859,7 @@ const (
 	// OpenconfigSystem_NTP_AUTH_TYPE_NTP_AUTH_MD5 corresponds to the value NTP_AUTH_MD5 of OpenconfigSystem_NTP_AUTH_TYPE
 	OpenconfigSystem_NTP_AUTH_TYPE_NTP_AUTH_MD5 E_OpenconfigSystem_NTP_AUTH_TYPE = 1
 )
+
 
 // E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record. An additional value named
@@ -7045,9 +6874,7 @@ type E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record int64
 func (E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record.
-func (E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record.
 func (e E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record) String() string {
@@ -7063,6 +6890,7 @@ const (
 	OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record_STOP E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record = 2
 )
 
+
 // E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType. An additional value named
 // OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType_UNSET is added to the enumeration which is used as
@@ -7076,9 +6904,7 @@ type E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType int64
 func (E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType.
-func (E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType.
 func (e E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType) String() string {
@@ -7096,6 +6922,7 @@ const (
 	OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType_POOL E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType = 3
 )
 
+
 // E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion is a derived int64 type which is used to represent
 // the enumerated node OpenconfigSystem_System_SshServer_Config_ProtocolVersion. An additional value named
 // OpenconfigSystem_System_SshServer_Config_ProtocolVersion_UNSET is added to the enumeration which is used as
@@ -7109,9 +6936,7 @@ type E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion int64
 func (E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion) IsYANGGoEnum() {}
 
 // ΛMap returns the value lookup map associated with  OpenconfigSystem_System_SshServer_Config_ProtocolVersion.
-func (E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion) ΛMap() map[string]map[int64]ygot.EnumDefinition {
-	return ΛEnum
-}
+func (E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion) ΛMap() map[string]map[int64]ygot.EnumDefinition { return ΛEnum; }
 
 // String returns a logging-friendly string for E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion.
 func (e E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion) String() string {
@@ -7129,20 +6954,23 @@ const (
 	OpenconfigSystem_System_SshServer_Config_ProtocolVersion_V1_V2 E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion = 3
 )
 
+
 // ΛEnum is a map, keyed by the name of the type defined for each enum in the
 // generated Go code, which provides a mapping between the constant int64 value
 // of each value of the enumeration, and the string that is used to represent it
 // in the YANG schema. The map is named ΛEnum in order to avoid clash with any
 // valid YANG identifier.
 var ΛEnum = map[string]map[int64]ygot.EnumDefinition{
-	"E_IETFInterfaces_InterfaceType": {},
+	"E_IETFInterfaces_InterfaceType": {
+	},
 	"E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE": {
 		1: {Name: "AAA_ACCOUNTING_EVENT_COMMAND", DefiningModule: "openconfig-aaa-types"},
 		2: {Name: "AAA_ACCOUNTING_EVENT_LOGIN", DefiningModule: "openconfig-aaa-types"},
 		3: {Name: "AAA_AUTHORIZATION_EVENT_COMMAND", DefiningModule: "openconfig-aaa-types"},
 		4: {Name: "AAA_AUTHORIZATION_EVENT_CONFIG", DefiningModule: "openconfig-aaa-types"},
 	},
-	"E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE": {},
+	"E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE": {
+	},
 	"E_OpenconfigAaaTypes_AAA_METHOD_TYPE": {
 		1: {Name: "LOCAL", DefiningModule: "openconfig-aaa-types"},
 		2: {Name: "RADIUS_ALL", DefiningModule: "openconfig-aaa-types"},
@@ -7178,30 +7006,30 @@ var ΛEnum = map[string]map[int64]ygot.EnumDefinition{
 		2: {Name: "TLS"},
 	},
 	"E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT": {
-		1:  {Name: "BACKPLANE", DefiningModule: "openconfig-platform-types"},
-		2:  {Name: "CHASSIS", DefiningModule: "openconfig-platform-types"},
-		3:  {Name: "CPU", DefiningModule: "openconfig-platform-types"},
-		4:  {Name: "FAN", DefiningModule: "openconfig-platform-types"},
-		5:  {Name: "LINECARD", DefiningModule: "openconfig-platform-types"},
-		6:  {Name: "MODULE", DefiningModule: "openconfig-platform-types"},
-		7:  {Name: "PORT", DefiningModule: "openconfig-platform-types"},
-		8:  {Name: "POWER_SUPPLY", DefiningModule: "openconfig-platform-types"},
-		9:  {Name: "SENSOR", DefiningModule: "openconfig-platform-types"},
+		1: {Name: "BACKPLANE", DefiningModule: "openconfig-platform-types"},
+		2: {Name: "CHASSIS", DefiningModule: "openconfig-platform-types"},
+		3: {Name: "CPU", DefiningModule: "openconfig-platform-types"},
+		4: {Name: "FAN", DefiningModule: "openconfig-platform-types"},
+		5: {Name: "LINECARD", DefiningModule: "openconfig-platform-types"},
+		6: {Name: "MODULE", DefiningModule: "openconfig-platform-types"},
+		7: {Name: "PORT", DefiningModule: "openconfig-platform-types"},
+		8: {Name: "POWER_SUPPLY", DefiningModule: "openconfig-platform-types"},
+		9: {Name: "SENSOR", DefiningModule: "openconfig-platform-types"},
 		10: {Name: "TRANSCEIVER", DefiningModule: "openconfig-platform-types"},
 	},
 	"E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT": {
 		1: {Name: "OPERATING_SYSTEM", DefiningModule: "openconfig-platform-types"},
 	},
 	"E_OpenconfigSystemLogging_SYSLOG_FACILITY": {
-		1:  {Name: "ALL", DefiningModule: "openconfig-system-logging"},
-		2:  {Name: "AUDIT", DefiningModule: "openconfig-system-logging"},
-		3:  {Name: "AUTH", DefiningModule: "openconfig-system-logging"},
-		4:  {Name: "AUTHPRIV", DefiningModule: "openconfig-system-logging"},
-		5:  {Name: "CONSOLE", DefiningModule: "openconfig-system-logging"},
-		6:  {Name: "KERNEL", DefiningModule: "openconfig-system-logging"},
-		7:  {Name: "LOCAL0", DefiningModule: "openconfig-system-logging"},
-		8:  {Name: "LOCAL1", DefiningModule: "openconfig-system-logging"},
-		9:  {Name: "LOCAL2", DefiningModule: "openconfig-system-logging"},
+		1: {Name: "ALL", DefiningModule: "openconfig-system-logging"},
+		2: {Name: "AUDIT", DefiningModule: "openconfig-system-logging"},
+		3: {Name: "AUTH", DefiningModule: "openconfig-system-logging"},
+		4: {Name: "AUTHPRIV", DefiningModule: "openconfig-system-logging"},
+		5: {Name: "CONSOLE", DefiningModule: "openconfig-system-logging"},
+		6: {Name: "KERNEL", DefiningModule: "openconfig-system-logging"},
+		7: {Name: "LOCAL0", DefiningModule: "openconfig-system-logging"},
+		8: {Name: "LOCAL1", DefiningModule: "openconfig-system-logging"},
+		9: {Name: "LOCAL2", DefiningModule: "openconfig-system-logging"},
 		10: {Name: "LOCAL3", DefiningModule: "openconfig-system-logging"},
 		11: {Name: "LOCAL4", DefiningModule: "openconfig-system-logging"},
 		12: {Name: "LOCAL5", DefiningModule: "openconfig-system-logging"},
@@ -7241,6 +7069,7 @@ var ΛEnum = map[string]map[int64]ygot.EnumDefinition{
 		3: {Name: "V1_V2"},
 	},
 }
+
 
 var (
 	// ySchema is a byte slice contain a gzip compressed representation of the
@@ -9631,152 +9460,154 @@ var (
 	}
 )
 
+
 // ΛEnumTypes is a map, keyed by a YANG schema path, of the enumerated types that
 // correspond with the leaf. The type is represented as a reflect.Type. The naming
 // of the map ensures that there are no clashes with valid YANG identifiers.
-func initΛEnumTypes() {
-	ΛEnumTypes = map[string][]reflect.Type{
-		"/components/component/state/type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT)(0)),
-			reflect.TypeOf((E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT)(0)),
-		},
-		"/interfaces/interface/config/type": []reflect.Type{
-			reflect.TypeOf((E_IETFInterfaces_InterfaceType)(0)),
-		},
-		"/interfaces/interface/state/admin-status": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus)(0)),
-		},
-		"/interfaces/interface/state/oper-status": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus)(0)),
-		},
-		"/interfaces/interface/state/type": []reflect.Type{
-			reflect.TypeOf((E_IETFInterfaces_InterfaceType)(0)),
-		},
-		"/interfaces/interface/subinterfaces/subinterface/state/admin-status": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus)(0)),
-		},
-		"/interfaces/interface/subinterfaces/subinterface/state/oper-status": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus)(0)),
-		},
-		"/system/aaa/accounting/config/accounting-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/accounting/events/event/config/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/accounting/events/event/config/record": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record)(0)),
-		},
-		"/system/aaa/accounting/events/event/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/accounting/events/event/state/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/accounting/events/event/state/record": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record)(0)),
-		},
-		"/system/aaa/accounting/state/accounting-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/authentication/config/authentication-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/authentication/state/authentication-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/authentication/users/user/config/role": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES)(0)),
-		},
-		"/system/aaa/authentication/users/user/state/role": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES)(0)),
-		},
-		"/system/aaa/authorization/config/authorization-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/authorization/events/event/config/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/authorization/events/event/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/authorization/events/event/state/event-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
-		},
-		"/system/aaa/authorization/state/authorization-method": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
-		},
-		"/system/aaa/server-groups/server-group/config/type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_SERVER_TYPE)(0)),
-		},
-		"/system/aaa/server-groups/server-group/state/type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigAaaTypes_AAA_SERVER_TYPE)(0)),
-		},
-		"/system/logging/console/selectors/selector/config/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/console/selectors/selector/config/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/logging/console/selectors/selector/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/console/selectors/selector/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/logging/console/selectors/selector/state/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/console/selectors/selector/state/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/config/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/config/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/state/facility": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
-		},
-		"/system/logging/remote-servers/remote-server/selectors/selector/state/severity": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
-		},
-		"/system/ntp/ntp-keys/ntp-key/config/key-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_NTP_AUTH_TYPE)(0)),
-		},
-		"/system/ntp/ntp-keys/ntp-key/state/key-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_NTP_AUTH_TYPE)(0)),
-		},
-		"/system/ntp/servers/server/config/association-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType)(0)),
-		},
-		"/system/ntp/servers/server/state/association-type": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType)(0)),
-		},
-		"/system/openflow/agent/config/failure-mode": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigOpenflow_FailureMode)(0)),
-		},
-		"/system/openflow/agent/state/failure-mode": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigOpenflow_FailureMode)(0)),
-		},
-		"/system/openflow/controllers/controller/connections/connection/config/transport": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigOpenflow_Transport)(0)),
-		},
-		"/system/openflow/controllers/controller/connections/connection/state/transport": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigOpenflow_Transport)(0)),
-		},
-		"/system/ssh-server/config/protocol-version": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion)(0)),
-		},
-		"/system/ssh-server/state/protocol-version": []reflect.Type{
-			reflect.TypeOf((E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion)(0)),
-		},
-	}
+func initΛEnumTypes(){
+  ΛEnumTypes = map[string][]reflect.Type{
+	"/components/component/state/type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigPlatformTypes_OPENCONFIG_HARDWARE_COMPONENT)(0)),
+		reflect.TypeOf((E_OpenconfigPlatformTypes_OPENCONFIG_SOFTWARE_COMPONENT)(0)),
+	},
+	"/interfaces/interface/config/type": []reflect.Type{
+		reflect.TypeOf((E_IETFInterfaces_InterfaceType)(0)),
+	},
+	"/interfaces/interface/state/admin-status": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus)(0)),
+	},
+	"/interfaces/interface/state/oper-status": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus)(0)),
+	},
+	"/interfaces/interface/state/type": []reflect.Type{
+		reflect.TypeOf((E_IETFInterfaces_InterfaceType)(0)),
+	},
+	"/interfaces/interface/subinterfaces/subinterface/state/admin-status": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_AdminStatus)(0)),
+	},
+	"/interfaces/interface/subinterfaces/subinterface/state/oper-status": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigInterfaces_Interfaces_Interface_State_OperStatus)(0)),
+	},
+	"/system/aaa/accounting/config/accounting-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/accounting/events/event/config/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/accounting/events/event/config/record": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record)(0)),
+	},
+	"/system/aaa/accounting/events/event/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/accounting/events/event/state/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_ACCOUNTING_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/accounting/events/event/state/record": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_Aaa_Accounting_Events_Event_Config_Record)(0)),
+	},
+	"/system/aaa/accounting/state/accounting-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/authentication/config/authentication-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/authentication/state/authentication-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/authentication/users/user/config/role": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES)(0)),
+	},
+	"/system/aaa/authentication/users/user/state/role": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_SYSTEM_DEFINED_ROLES)(0)),
+	},
+	"/system/aaa/authorization/config/authorization-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/authorization/events/event/config/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/authorization/events/event/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/authorization/events/event/state/event-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_AUTHORIZATION_EVENT_TYPE)(0)),
+	},
+	"/system/aaa/authorization/state/authorization-method": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_METHOD_TYPE)(0)),
+	},
+	"/system/aaa/server-groups/server-group/config/type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_SERVER_TYPE)(0)),
+	},
+	"/system/aaa/server-groups/server-group/state/type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigAaaTypes_AAA_SERVER_TYPE)(0)),
+	},
+	"/system/logging/console/selectors/selector/config/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/console/selectors/selector/config/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/logging/console/selectors/selector/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/console/selectors/selector/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/logging/console/selectors/selector/state/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/console/selectors/selector/state/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/config/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/config/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/state/facility": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SYSLOG_FACILITY)(0)),
+	},
+	"/system/logging/remote-servers/remote-server/selectors/selector/state/severity": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystemLogging_SyslogSeverity)(0)),
+	},
+	"/system/ntp/ntp-keys/ntp-key/config/key-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_NTP_AUTH_TYPE)(0)),
+	},
+	"/system/ntp/ntp-keys/ntp-key/state/key-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_NTP_AUTH_TYPE)(0)),
+	},
+	"/system/ntp/servers/server/config/association-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType)(0)),
+	},
+	"/system/ntp/servers/server/state/association-type": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_Ntp_Servers_Server_Config_AssociationType)(0)),
+	},
+	"/system/openflow/agent/config/failure-mode": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigOpenflow_FailureMode)(0)),
+	},
+	"/system/openflow/agent/state/failure-mode": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigOpenflow_FailureMode)(0)),
+	},
+	"/system/openflow/controllers/controller/connections/connection/config/transport": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigOpenflow_Transport)(0)),
+	},
+	"/system/openflow/controllers/controller/connections/connection/state/transport": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigOpenflow_Transport)(0)),
+	},
+	"/system/ssh-server/config/protocol-version": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion)(0)),
+	},
+	"/system/ssh-server/state/protocol-version": []reflect.Type{
+		reflect.TypeOf((E_OpenconfigSystem_System_SshServer_Config_ProtocolVersion)(0)),
+	},
+  }
 }
+
