@@ -407,7 +407,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 		},
 	}
 
-	listIntRefLeadList := yang.Entry{
+	listIntRefLeafList := yang.Entry{
 		Name:   "list-int-ref-leaf-list",
 		Kind:   yang.LeafEntry,
 		Parent: &testList1,
@@ -458,7 +458,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	testContainer1.Dir["cont-int-ref-leaf-list"] = &containerIntRefLeafList
 	testContainer1.Dir["cont-str-ref-leaf-list"] = &containerStrRefLeafList
 
-	testList1.Dir["list-int-ref-leaf-list"] = &listIntRefLeadList
+	testList1.Dir["list-int-ref-leaf-list"] = &listIntRefLeafList
 	testList1.Dir["list-str-ref-leaf-list"] = &listStrRefLeafList
 	testList1.Dir["container1"] = &testContainer1
 
