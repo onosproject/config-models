@@ -129,14 +129,7 @@ components:
           title: leaf2d
           type: number
         leaf2e:
-          items:
-            description: leaf list inside Container 2a
-            maximum: 200
-            minimum: -100
-            title: leaf2e
-            type: integer
-          title: leaf2e
-          type: array
+          $ref: '#/components/schemas/Cont1a_Cont2a_Leaf2e'
         leaf2f:
           description: binary leaf inside Container 2a
           format: byte
@@ -152,6 +145,15 @@ components:
       - leaf2b
       title: Cont1a_Cont2a
       type: object
+    Cont1a_Cont2a_Leaf2e:
+      items:
+        description: leaf list inside Container 2a
+        maximum: 200
+        minimum: -100
+        title: leaf2e
+        type: integer
+      title: leaf2e
+      type: array
     Cont1a_Cont2d:
       description: Container 2d
       properties:

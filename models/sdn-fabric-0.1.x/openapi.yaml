@@ -602,13 +602,7 @@ components:
       description: untagged and tagged vlans per port
       properties:
         tagged:
-          items:
-            description: multiple tagged vlans
-            title: tagged
-            type: integer
-            x-leafref: ../../../sw:vlan/sw:vlan-id
-          title: tagged
-          type: array
+          $ref: '#/components/schemas/Switch_Port_Vlans_Tagged'
         untagged:
           description: vlan for untagged packets
           title: untagged
@@ -616,6 +610,14 @@ components:
           x-leafref: ../../../sw:vlan/sw:vlan-id
       title: Switch_Port_Vlans
       type: object
+    Switch_Port_Vlans_Tagged:
+      items:
+        description: multiple tagged vlans
+        title: tagged
+        type: integer
+        x-leafref: ../../../sw:vlan/sw:vlan-id
+      title: tagged
+      type: array
     Switch_State:
       description: Op state attributes
       properties:

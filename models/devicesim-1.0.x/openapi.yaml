@@ -2137,19 +2137,21 @@ components:
       description: Configuration data for user activity accounting.
       properties:
         accounting-method:
-          items:
-            description: |-
-              The method used for AAA accounting for this event
-              type.  The method is defined by the destination for
-              accounting data, which may be specified as the group of
-              all TACACS+/RADIUS servers, a defined server group, or
-              the local system.
-            title: accounting-method
-            type: string
-          title: accounting-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Accounting_Config_Accounting-method'
       title: System_Aaa_Accounting_Config
       type: object
+    System_Aaa_Accounting_Config_Accounting-method:
+      items:
+        description: |-
+          The method used for AAA accounting for this event
+          type.  The method is defined by the destination for
+          accounting data, which may be specified as the group of
+          all TACACS+/RADIUS servers, a defined server group, or
+          the local system.
+        title: accounting-method
+        type: string
+      title: accounting-method
+      type: array
     System_Aaa_Accounting_Events:
       description: |-
         Enclosing container for defining handling of events
@@ -2236,19 +2238,21 @@ components:
       description: Operational state data for user accounting.
       properties:
         accounting-method:
-          items:
-            description: |-
-              The method used for AAA accounting for this event
-              type.  The method is defined by the destination for
-              accounting data, which may be specified as the group of
-              all TACACS+/RADIUS servers, a defined server group, or
-              the local system.
-            title: accounting-method
-            type: string
-          title: accounting-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Accounting_State_Accounting-method'
       title: System_Aaa_Accounting_State
       type: object
+    System_Aaa_Accounting_State_Accounting-method:
+      items:
+        description: |-
+          The method used for AAA accounting for this event
+          type.  The method is defined by the destination for
+          accounting data, which may be specified as the group of
+          all TACACS+/RADIUS servers, a defined server group, or
+          the local system.
+        title: accounting-method
+        type: string
+      title: accounting-method
+      type: array
     System_Aaa_Authentication:
       description: Top-level container for global authentication data
       properties:
@@ -2321,40 +2325,44 @@ components:
       description: Configuration data for global authentication services
       properties:
         authentication-method:
-          items:
-            description: |-
-              Ordered list of authentication methods for users.  This
-              can be either a reference to a server group, or a well-
-              defined designation in the AAA_METHOD_TYPE identity.  If
-              authentication fails with one method, the next defined
-              method is tried -- failure of all methods results in the
-              user being denied access.
-            title: authentication-method
-            type: string
-          title: authentication-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Authentication_Config_Authentication-method'
       title: System_Aaa_Authentication_Config
       type: object
+    System_Aaa_Authentication_Config_Authentication-method:
+      items:
+        description: |-
+          Ordered list of authentication methods for users.  This
+          can be either a reference to a server group, or a well-
+          defined designation in the AAA_METHOD_TYPE identity.  If
+          authentication fails with one method, the next defined
+          method is tried -- failure of all methods results in the
+          user being denied access.
+        title: authentication-method
+        type: string
+      title: authentication-method
+      type: array
     System_Aaa_Authentication_State:
       description: |-
         Operational state data for global authentication
         services
       properties:
         authentication-method:
-          items:
-            description: |-
-              Ordered list of authentication methods for users.  This
-              can be either a reference to a server group, or a well-
-              defined designation in the AAA_METHOD_TYPE identity.  If
-              authentication fails with one method, the next defined
-              method is tried -- failure of all methods results in the
-              user being denied access.
-            title: authentication-method
-            type: string
-          title: authentication-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Authentication_State_Authentication-method'
       title: System_Aaa_Authentication_State
       type: object
+    System_Aaa_Authentication_State_Authentication-method:
+      items:
+        description: |-
+          Ordered list of authentication methods for users.  This
+          can be either a reference to a server group, or a well-
+          defined designation in the AAA_METHOD_TYPE identity.  If
+          authentication fails with one method, the next defined
+          method is tried -- failure of all methods results in the
+          user being denied access.
+        title: authentication-method
+        type: string
+      title: authentication-method
+      type: array
     System_Aaa_Authentication_Users:
       description: Enclosing container list of local users
       properties:
@@ -2474,20 +2482,22 @@ components:
         methods
       properties:
         authorization-method:
-          items:
-            description: |-
-              Ordered list of methods for authorizing commands.  The first
-              method that provides a response (positive or negative) should
-              be used.  The list may contain a well-defined method such
-              as the set of all TACACS or RADIUS servers, or the name of
-              a defined AAA server group.  The system must validate
-              that the named server group exists.
-            title: authorization-method
-            type: string
-          title: authorization-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Authorization_Config_Authorization-method'
       title: System_Aaa_Authorization_Config
       type: object
+    System_Aaa_Authorization_Config_Authorization-method:
+      items:
+        description: |-
+          Ordered list of methods for authorizing commands.  The first
+          method that provides a response (positive or negative) should
+          be used.  The list may contain a well-defined method such
+          as the set of all TACACS or RADIUS servers, or the name of
+          a defined AAA server group.  The system must validate
+          that the named server group exists.
+        title: authorization-method
+        type: string
+      title: authorization-method
+      type: array
     System_Aaa_Authorization_Events:
       description: |-
         Enclosing container for the set of events subject
@@ -2550,20 +2560,22 @@ components:
       description: Operational state data for authorization based on AAA
       properties:
         authorization-method:
-          items:
-            description: |-
-              Ordered list of methods for authorizing commands.  The first
-              method that provides a response (positive or negative) should
-              be used.  The list may contain a well-defined method such
-              as the set of all TACACS or RADIUS servers, or the name of
-              a defined AAA server group.  The system must validate
-              that the named server group exists.
-            title: authorization-method
-            type: string
-          title: authorization-method
-          type: array
+          $ref: '#/components/schemas/System_Aaa_Authorization_State_Authorization-method'
       title: System_Aaa_Authorization_State
       type: object
+    System_Aaa_Authorization_State_Authorization-method:
+      items:
+        description: |-
+          Ordered list of methods for authorizing commands.  The first
+          method that provides a response (positive or negative) should
+          be used.  The list may contain a well-defined method such
+          as the set of all TACACS or RADIUS servers, or the name of
+          a defined AAA server group.  The system must validate
+          that the named server group exists.
+        title: authorization-method
+        type: string
+      title: authorization-method
+      type: array
     System_Aaa_Config:
       description: Configuration data for top level AAA services
       title: System_Aaa_Config
@@ -3032,19 +3044,21 @@ components:
       description: Configuration data for the DNS resolver
       properties:
         search:
-          items:
-            description: |-
-              An ordered list of domains to search when resolving
-              a host name.
-            maxLength: 253
-            minLength: 1
-            pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
-            title: search
-            type: string
-          title: search
-          type: array
+          $ref: '#/components/schemas/System_Dns_Config_Search'
       title: System_Dns_Config
       type: object
+    System_Dns_Config_Search:
+      items:
+        description: |-
+          An ordered list of domains to search when resolving
+          a host name.
+        maxLength: 253
+        minLength: 1
+        pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+        title: search
+        type: string
+      title: search
+      type: array
     System_Dns_Host-entries:
       description: Enclosing container for list of static host entries
       properties:
@@ -3074,34 +3088,40 @@ components:
       description: Configuration data for static host entries
       properties:
         alias:
-          items:
-            description: Additional aliases for the hostname
-            title: alias
-            type: string
-          title: alias
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config_Alias'
         hostname:
           description: Hostname for the static DNS entry
           title: hostname
           type: string
         ipv4-address:
-          items:
-            description: List of IPv4 addressses for the host entry
-            pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
-            title: ipv4-address
-            type: string
-          title: ipv4-address
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config_Ipv4-address'
         ipv6-address:
-          items:
-            description: List of IPv6 addresses for the host entry
-            pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
-            title: ipv6-address
-            type: string
-          title: ipv6-address
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config_Ipv6-address'
       title: System_Dns_Host-entries_Host-entry_Config
       type: object
+    System_Dns_Host-entries_Host-entry_Config_Alias:
+      items:
+        description: Additional aliases for the hostname
+        title: alias
+        type: string
+      title: alias
+      type: array
+    System_Dns_Host-entries_Host-entry_Config_Ipv4-address:
+      items:
+        description: List of IPv4 addressses for the host entry
+        pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
+        title: ipv4-address
+        type: string
+      title: ipv4-address
+      type: array
+    System_Dns_Host-entries_Host-entry_Config_Ipv6-address:
+      items:
+        description: List of IPv6 addresses for the host entry
+        pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
+        title: ipv6-address
+        type: string
+      title: ipv6-address
+      type: array
     System_Dns_Host-entries_Host-entry_List:
       description: List of static host entries (list)
       items:
@@ -3115,34 +3135,40 @@ components:
       description: Operational state data for static host entries
       properties:
         alias:
-          items:
-            description: Additional aliases for the hostname
-            title: alias
-            type: string
-          title: alias
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State_Alias'
         hostname:
           description: Hostname for the static DNS entry
           title: hostname
           type: string
         ipv4-address:
-          items:
-            description: List of IPv4 addressses for the host entry
-            pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
-            title: ipv4-address
-            type: string
-          title: ipv4-address
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State_Ipv4-address'
         ipv6-address:
-          items:
-            description: List of IPv6 addresses for the host entry
-            pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
-            title: ipv6-address
-            type: string
-          title: ipv6-address
-          type: array
+          $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State_Ipv6-address'
       title: System_Dns_Host-entries_Host-entry_State
       type: object
+    System_Dns_Host-entries_Host-entry_State_Alias:
+      items:
+        description: Additional aliases for the hostname
+        title: alias
+        type: string
+      title: alias
+      type: array
+    System_Dns_Host-entries_Host-entry_State_Ipv4-address:
+      items:
+        description: List of IPv4 addressses for the host entry
+        pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
+        title: ipv4-address
+        type: string
+      title: ipv4-address
+      type: array
+    System_Dns_Host-entries_Host-entry_State_Ipv6-address:
+      items:
+        description: List of IPv6 addresses for the host entry
+        pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
+        title: ipv6-address
+        type: string
+      title: ipv6-address
+      type: array
     System_Dns_Servers:
       description: Enclosing container for DNS resolver list
       properties:
@@ -3244,19 +3270,21 @@ components:
       description: Operational state data for the DNS resolver
       properties:
         search:
-          items:
-            description: |-
-              An ordered list of domains to search when resolving
-              a host name.
-            maxLength: 253
-            minLength: 1
-            pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
-            title: search
-            type: string
-          title: search
-          type: array
+          $ref: '#/components/schemas/System_Dns_State_Search'
       title: System_Dns_State
       type: object
+    System_Dns_State_Search:
+      items:
+        description: |-
+          An ordered list of domains to search when resolving
+          a host name.
+        maxLength: 253
+        minLength: 1
+        pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+        title: search
+        type: string
+      title: search
+      type: array
     System_Logging:
       description: Top-level container for data related to logging / syslog
       properties:
@@ -4254,7 +4282,7 @@ components:
           type: integer
           x-leafref: ../state/pid
         state:
-          $ref: '#/components/schemas/System_Processes_Process_State'
+          $ref: '#/components/schemas/System_Processes_Process_State_Args'
       required:
       - pid
       title: System_Processes_Process
@@ -4273,18 +4301,7 @@ components:
       description: State parameters related to monitored processes
       properties:
         args:
-          items:
-            description: |-
-              Current process command line arguments.  Arguments with
-              a parameter (e.g., --option 10  or -option=10) should be
-              represented as a single element of the list with the
-              argument name and parameter together.  Flag arguments, i.e.,
-              those without a parameter should also be in their own list
-              element.
-            title: args
-            type: string
-          title: args
-          type: array
+          $ref: '#/components/schemas/System_Processes_Process_State_Args'
         cpu-usage-system:
           description: CPU time consumed by this process in kernel mode.
           format: int64
@@ -4344,6 +4361,19 @@ components:
           type: integer
       title: System_Processes_Process_State
       type: object
+    System_Processes_Process_State_Args:
+      items:
+        description: |-
+          Current process command line arguments.  Arguments with
+          a parameter (e.g., --option 10  or -option=10) should be
+          represented as a single element of the list with the
+          argument name and parameter together.  Flag arguments, i.e.,
+          those without a parameter should also be in their own list
+          element.
+        title: args
+        type: string
+      title: args
+      type: array
     System_Ssh-server:
       description: Top-level container for ssh server
       properties:
