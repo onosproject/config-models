@@ -9,7 +9,7 @@ FROM onosproject/golang-build:v2 as build
 ENV GO111MODULE=on
 
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    go install github.com/openconfig/ygot/generator@v0.22.1
+    go install github.com/openconfig/ygot/generator@v0.24.1
 COPY . /go/src/github.com/onosproject/config-models
 WORKDIR /go/src/github.com/onosproject/config-models
 RUN --mount=type=cache,target=/root/.cache/go-build \
