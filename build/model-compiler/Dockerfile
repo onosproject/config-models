@@ -15,8 +15,8 @@ WORKDIR /go/src/github.com/onosproject/config-models
 RUN --mount=type=cache,target=/root/.cache/go-build \
     go build -v -mod=vendor -o build/_output/model-compiler ./cmd/model-compiler
 
-FROM alpine:3.14
-RUN apk add libc6-compat libc-dev gcc libxml2-dev libxslt-dev python3-dev py3-pip && pip3 install pyang
+FROM alpine:3.16
+RUN apk add libc6-compat libc-dev gcc libxml2-dev libxslt-dev python3-dev py3-wheel py3-pip && pip3 install pyang
 
 COPY --from=build /go/src/github.com/onosproject/config-models/build/_output/model-compiler /usr/local/bin/model-compiler
 COPY --from=build /go/src/github.com/onosproject/config-models/templates /var/model-compiler/templates
