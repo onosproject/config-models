@@ -66,8 +66,8 @@ module onf-switch {
 
     container management {
         leaf address {
-          type inet:ipv4-address-no-zone;
-          description "The management IPv4 address";
+          type inet:domain-name;
+          description "The management IPv4 address or host or service name";
         }
 
         leaf port-number {

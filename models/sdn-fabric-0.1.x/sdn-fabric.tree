@@ -9,7 +9,7 @@ module: onf-switch
      +--rw model-id        -> /sm:switch-model/switch-model-id
      +--rw role            enumeration
      +--rw management
-     |  +--rw address?       inet:ipv4-address-no-zone
+     |  +--rw address?       inet:domain-name
      |  +--rw port-number?   inet:port-number
      +--rw port* [cage-number channel-number]
      |  +--rw cage-number           -> /sm:switch-model/port/cage-number

@@ -78,3 +78,25 @@ func Test_WalkAndValidateMustFailPortCage(t *testing.T) {
 	validateErr := ynn.WalkAndValidateMust()
 	assert.EqualError(t, validateErr, `port cage-number must be present in corresponding switch-model/port. Must statement 'set-contains(/switch-model[@switch-model-id=$this/../../model-id]/port/@cage-number, .)' to true. Container(s): [switch-model-id=super-switch-2100]`)
 }
+
+func Test_WalkAndValidateMustFailPortSpeed(t *testing.T) {
+	sampleConfig, err := ioutil.ReadFile("../examples/full-config-broken-must-port-speed.json")
+	if err != nil {
+		assert.NoError(t, err)
+	}
+	device := new(Device)
+
+	schema, err := Schema()
+	if err := schema.Unmarshal(sampleConfig, device); err != nil {
+		assert.NoError(t, err)
+	}
+	schema.Root = device
+	assert.NotNil(t, device)
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), device, true)
+	assert.NotNil(t, nn)
+
+	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
+	assert.True(t, ynnOk)
+	validateErr := ynn.WalkAndValidateMust()
+	assert.EqualError(t, validateErr, `port speed must be present in corresponding switch-model/port. Must statement 'contains(/switch-model[@switch-model-id=$this/../../model-id]/port/speeds, string($this))' to true. Container(s): [switch-model-id=super-switch-1610]`)
+}
