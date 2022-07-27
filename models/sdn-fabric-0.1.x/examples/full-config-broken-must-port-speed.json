@@ -99,9 +99,9 @@
         },
         {
           "cage-number": 4,
-          "channel-number": 4,
-          "display-name": "Port 4/4",
-          "speed": "speed-10g"
+          "channel-number": 0,
+          "display-name": "Port 4/0",
+          "speed": "speed-100g"
         }
       ]
     }
