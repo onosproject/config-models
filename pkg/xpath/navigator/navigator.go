@@ -392,7 +392,7 @@ func (x *YangNodeNavigator) Value() string {
 			case []int16:
 				return fmt.Sprint(value)
 			default:
-				panic(fmt.Errorf("unhandled leaf list type"))
+				return fmt.Sprintf("%s", value)
 			}
 		}
 	}
