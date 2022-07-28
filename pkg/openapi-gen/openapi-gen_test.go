@@ -503,6 +503,16 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 func Test_walkPath(t *testing.T) {
 
+	//A tree like:
+	// Device
+	//  |- test-grand-parent
+	//      |- test-parent
+	//      |    |- Leaf1   type int16
+	//      |    |- Leaf2   Ref to ../Leaf1
+	//      |- test-uncle
+	//           |- cousin   Ref to /Test:test-grand-parent/Test:test-parent/Test:Leaf1
+	//           |- cousin2   Ref to ../cousin
+	//           |- cousin2   Ref to ../../test-parent/Leaf2
 	testDevice := yang.Entry{
 		Name:   "Device",
 		Config: yang.TSTrue,
@@ -579,6 +589,34 @@ func Test_walkPath(t *testing.T) {
 			Name: "Test",
 		},
 	}
+	testCousin2 := yang.Entry{
+		Name:        "cousin2",
+		Description: "Cousin2 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testUncle,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../cousin",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testCousin3 := yang.Entry{
+		Name:        "cousin3",
+		Description: "Cousin3 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testUncle,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../../test-parent/Leaf2",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
 
 	testDevice.Dir["test-grand-parent"] = &testGrandParent
 
@@ -589,10 +627,18 @@ func Test_walkPath(t *testing.T) {
 	testParent.Dir["Leaf2"] = &testLeaf2
 
 	testUncle.Dir["cousin"] = &testCousin
+	testUncle.Dir["cousin2"] = &testCousin2
+	testUncle.Dir["cousin3"] = &testCousin3
 
 	kindLeaf2 := resolveLeafRefType(&testLeaf2)
 	assert.Equal(t, "int16", kindLeaf2.String())
 
-	kindLeaf1 := resolveLeafRefType(&testCousin)
-	assert.Equal(t, "int16", kindLeaf1.String())
+	kindCousin1 := resolveLeafRefType(&testCousin)
+	assert.Equal(t, "int16", kindCousin1.String())
+
+	kindCousin2 := resolveLeafRefType(&testCousin2)
+	assert.Equal(t, "int16", kindCousin2.String())
+
+	kindCousin3 := resolveLeafRefType(&testCousin3)
+	assert.Equal(t, "int16", kindCousin3.String())
 }

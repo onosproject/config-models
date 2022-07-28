@@ -919,7 +919,19 @@ func resolveLeafRefRoot(entry *yang.Entry) *yang.Entry {
 
 func walkPath(entry *yang.Entry, path string) yang.TypeKind {
 	if path == "" {
-		return entry.Type.Kind
+		if entry.Type.Kind != yang.Yleafref {
+			return entry.Type.Kind
+		} else {
+			// A leaf ref to a leaf ref
+			if strings.HasPrefix(entry.Type.Path, "/") {
+				root := resolveLeafRefRoot(entry)
+				return walkPath(root, entry.Type.Path[1:])
+			} else if strings.HasPrefix(entry.Type.Path, "../") {
+				return walkPath(entry.Parent, entry.Type.Path[3:])
+			}
+			fmt.Printf("Unhandled getting leafref to a leafref type for %s\n", entry.Type.Path)
+			return yang.Ystring
+		}
 	} else if strings.HasPrefix(path, "../") {
 		return walkPath(entry.Parent, path[3:])
 	}
