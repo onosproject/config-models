@@ -1227,6 +1227,10 @@ components:
             has the same read semantics as ifAdminStatus.  Here, it
             reflects the administrative state as set by enabling or
             disabling the interface.
+          enum:
+          - DOWN
+          - TESTING
+          - UP
           title: admin-status
           type: string
         counters:
@@ -1354,6 +1358,14 @@ components:
             The current operational state of the interface.
 
             This leaf has the same semantics as ifOperStatus.
+          enum:
+          - DORMANT
+          - DOWN
+          - LOWER_LAYER_DOWN
+          - NOT_PRESENT
+          - TESTING
+          - UNKNOWN
+          - UP
           title: oper-status
           type: string
         type:
@@ -1732,6 +1744,10 @@ components:
             has the same read semantics as ifAdminStatus.  Here, it
             reflects the administrative state as set by enabling or
             disabling the interface.
+          enum:
+          - DOWN
+          - TESTING
+          - UP
           title: admin-status
           type: string
         counters:
@@ -1826,6 +1842,14 @@ components:
             The current operational state of the interface.
 
             This leaf has the same semantics as ifOperStatus.
+          enum:
+          - DORMANT
+          - DOWN
+          - LOWER_LAYER_DOWN
+          - NOT_PRESENT
+          - TESTING
+          - UNKNOWN
+          - UP
           title: oper-status
           type: string
       required:
@@ -2199,6 +2223,9 @@ components:
           description: |-
             Type of record to send to the accounting server for this
             activity type
+          enum:
+          - START_STOP
+          - STOP
           title: record
           type: string
       title: System_Aaa_Accounting_Events_Event_Config
@@ -2230,6 +2257,9 @@ components:
           description: |-
             Type of record to send to the accounting server for this
             activity type
+          enum:
+          - START_STOP
+          - STOP
           title: record
           type: string
       title: System_Aaa_Accounting_Events_Event_State
@@ -3376,6 +3406,15 @@ components:
           description: |-
             Specifies that only messages of the given severity (or
             greater severity) for the corresonding facility are logged
+          enum:
+          - ALERT
+          - CRITICAL
+          - DEBUG
+          - EMERGENCY
+          - ERROR
+          - INFORMATIONAL
+          - NOTICE
+          - WARNING
           title: severity
           type: string
       title: System_Logging_Console_Selectors_Selector_Config
@@ -3421,6 +3460,15 @@ components:
           description: |-
             Specifies that only messages of the given severity (or
             greater severity) for the corresonding facility are logged
+          enum:
+          - ALERT
+          - CRITICAL
+          - DEBUG
+          - EMERGENCY
+          - ERROR
+          - INFORMATIONAL
+          - NOTICE
+          - WARNING
           title: severity
           type: string
       title: System_Logging_Console_Selectors_Selector_State
@@ -3551,6 +3599,15 @@ components:
           description: |-
             Specifies that only messages of the given severity (or
             greater severity) for the corresonding facility are logged
+          enum:
+          - ALERT
+          - CRITICAL
+          - DEBUG
+          - EMERGENCY
+          - ERROR
+          - INFORMATIONAL
+          - NOTICE
+          - WARNING
           title: severity
           type: string
       title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
@@ -3596,6 +3653,15 @@ components:
           description: |-
             Specifies that only messages of the given severity (or
             greater severity) for the corresonding facility are logged
+          enum:
+          - ALERT
+          - CRITICAL
+          - DEBUG
+          - EMERGENCY
+          - ERROR
+          - INFORMATIONAL
+          - NOTICE
+          - WARNING
           title: severity
           type: string
       title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_State
@@ -3812,6 +3878,10 @@ components:
           type: string
         association-type:
           description: The desired association type for this NTP server.
+          enum:
+          - PEER
+          - POOL
+          - SERVER
           title: association-type
           type: string
         iburst:
@@ -3864,6 +3934,10 @@ components:
           type: string
         association-type:
           description: The desired association type for this NTP server.
+          enum:
+          - PEER
+          - POOL
+          - SERVER
           title: association-type
           type: string
         iburst:
@@ -4009,6 +4083,9 @@ components:
           type: string
         failure-mode:
           description: Failure mode for Openflow.
+          enum:
+          - SECURE
+          - STANDALONE
           title: failure-mode
           type: string
         inactivity-probe:
@@ -4044,6 +4121,9 @@ components:
           type: string
         failure-mode:
           description: Failure mode for Openflow.
+          enum:
+          - SECURE
+          - STANDALONE
           title: failure-mode
           type: string
         inactivity-probe:
@@ -4171,6 +4251,9 @@ components:
           x-leafref: /oc-if:interfaces/oc-if:interface/oc-if:name
         transport:
           description: Controller transport protocol used.
+          enum:
+          - TCP
+          - TLS
           title: transport
           type: string
       title: System_Openflow_Controllers_Controller_Connections_Connection_Config
@@ -4239,6 +4322,9 @@ components:
           x-leafref: /oc-if:interfaces/oc-if:interface/oc-if:name
         transport:
           description: Controller transport protocol used.
+          enum:
+          - TCP
+          - TLS
           title: transport
           type: string
       title: System_Openflow_Controllers_Controller_Connections_Connection_State
@@ -4395,6 +4481,10 @@ components:
           type: boolean
         protocol-version:
           description: Set the protocol version for SSH connections to the system
+          enum:
+          - V1
+          - V1_V2
+          - V2
           title: protocol-version
           type: string
         rate-limit:
@@ -4434,6 +4524,10 @@ components:
           type: boolean
         protocol-version:
           description: Set the protocol version for SSH connections to the system
+          enum:
+          - V1
+          - V1_V2
+          - V2
           title: protocol-version
           type: string
         rate-limit:
