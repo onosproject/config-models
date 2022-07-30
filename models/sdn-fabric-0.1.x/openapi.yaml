@@ -251,6 +251,10 @@ components:
           $ref: '#/components/schemas/Switch_Port_List'
         role:
           description: The role of the switch in the fabric
+          enum:
+          - leaf
+          - spine
+          - undefined
           title: role
           type: string
         state:
@@ -295,6 +299,10 @@ components:
           type: string
         pipeline:
           description: Pipeline configuration - dual or quad
+          enum:
+          - dual
+          - quad
+          - unknown
           title: pipeline
           type: string
         port:
@@ -565,6 +573,10 @@ components:
             has the same read semantics as ifAdminStatus.  Here, it
             reflects the administrative state as set by enabling or
             disabling the interface.
+          enum:
+          - DOWN
+          - TESTING
+          - UP
           title: admin-status
           type: string
         ifindex:
@@ -593,6 +605,14 @@ components:
             The current operational state of the interface.
 
             This leaf has the same semantics as ifOperStatus.
+          enum:
+          - DORMANT
+          - DOWN
+          - LOWER_LAYER_DOWN
+          - NOT_PRESENT
+          - TESTING
+          - UNKNOWN
+          - UP
           title: oper-status
           type: string
       required:
@@ -659,8 +679,7 @@ components:
         cage-number:
           description: 'Port cage number used for connecting to '
           title: cage-number
-          type: string
-          x-go-type: ListKey
+          type: integer
           x-leafref: ../../../sw:port/sw:cage-number
         channel-number:
           description: Port channel number used for Switch A

@@ -164,6 +164,10 @@ components:
           type: string
         chocolate:
           description: For choice snack:late-night
+          enum:
+          - dark
+          - first-available
+          - milk
           title: chocolate
           type: string
         leaf2d3c:
