@@ -222,12 +222,22 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	}
 
 	// Append all YANG files to the command-line arguments
-	files, err := ioutil.ReadDir(filepath.Join(path, "yang"))
+	pathDirs := make([]string, 0)
+	err := filepath.Walk(filepath.Join(path, "yang"), func(p string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			pathDirs = append(pathDirs, p)
+		}
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	for _, file := range files {
-		args = append(args, file.Name())
+	args = append(args, fmt.Sprintf("-path=\"%s\"", strings.Join(pathDirs, ",")))
+	for _, module := range c.metaData.Modules {
+		args = append(args, filepath.Join(path, "yang", module.YangFile))
 	}
 
 	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
