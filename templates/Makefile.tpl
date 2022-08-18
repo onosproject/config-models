@@ -62,6 +62,13 @@ openapi: mod-update # @HELP Generate OpenApi specs
 {{/*	go run gnmi-gen/gnmi-gen.go*/}}
 {{/*	go fmt api/gnmi_client.go*/}}
 
+yang-lint:
+	cd yang; \
+	p="."; \
+	mdy=`grep ".yang" ../metadata.yaml | awk '{print $$2}' | paste -sd ' ' -`; \
+	for dir in */; do p=$$p:$$dir; done; \
+	pyang --lint --lint-ensure-hyphenated-names --ignore-error=XPATH_FUNCTION -p $$p $$mdy
+
 test: mod-update # @HELP Run the unit tests
 	go test ./...
 
