@@ -46,8 +46,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/SeanCondon/xpath v0.0.0-20220628084621-97cfdefbc266 h1:qV0bAUuXmUJn2IstWDqteJz649PhDDA5R5HKpL3ENGA=
-github.com/SeanCondon/xpath v0.0.0-20220628084621-97cfdefbc266/go.mod h1:Eq2Xc+fS1NsmRIB3orQMESBU3JZ1koIwYycgDgtYqZo=
+github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f h1:PPB+mWg7xiRzQpdBEEqdxxX2nPbwwnp5Deqdkv82cXM=
+github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f/go.mod h1:Eq2Xc+fS1NsmRIB3orQMESBU3JZ1koIwYycgDgtYqZo=
 github.com/Shopify/sarama v1.31.1 h1:uxwJ+p4isb52RyV83MCJD8v2wJ/HBxEGMmG/8+sEzG0=
 github.com/Shopify/sarama v1.31.1/go.mod h1:99E1xQ1Ql2bYcuJfwdXY3cE17W8+549Ty8PG/11BDqY=
 github.com/Shopify/toxiproxy/v2 v2.3.0 h1:62YkpiP4bzdhKMH+6uC5E95y608k3zDwdzuBMsnn3uQ=
