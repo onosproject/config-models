@@ -293,12 +293,25 @@ func (x *YangNodeNavigator) WalkAndValidateMust() error {
 }
 
 func (x *YangNodeNavigator) generateMustError(expr string) []string {
+	items := make([]string, 0)
+	gSt, ok := x.this.Annotation["gostruct"]
+	gStStr := ""
+	if ok {
+		gStValue := reflect.ValueOf(gSt)
+		switch gStValue.Type().Kind() {
+		case reflect.Ptr:
+			gStStr = fmt.Sprintf("%v", gStValue.Elem().Interface())
+		default:
+			gStStr = fmt.Sprintf("%v", gStValue.Interface())
+		}
+	}
+	items = append(items, fmt.Sprintf("context: %s=%v", x.this.Name, gStStr))
+
 	currentExpr, currentErr := xpath.Compile(expr)
 	if currentErr != nil {
 		return nil
 	}
 	currentIter := currentExpr.Select(x)
-	items := make([]string, 0)
 	for currentIter.MoveNext() {
 		items = append(items, fmt.Sprintf("%s=%s", currentIter.Current().LocalName(), currentIter.Current().Value()))
 	}
@@ -327,7 +340,7 @@ func (x *YangNodeNavigator) LocalName() string {
 
 // Prefix returns namespace prefix associated with the current node.
 func (x *YangNodeNavigator) Prefix() string {
-	if x.curr.Prefix != nil && !x.ignoreNamespace {
+	if x.curr.Prefix != nil {
 		return x.curr.Prefix.Name
 	}
 	return ""
@@ -530,6 +543,11 @@ func (x *YangNodeNavigator) MarkThis() {
 // MoveToThis sets the curr node to what was stored in this
 func (x *YangNodeNavigator) MoveToThis() {
 	x.curr = x.this
+}
+
+// IgnoringPrefix - is a flag set in the Navigator at creation time
+func (x *YangNodeNavigator) IgnoringPrefix() bool {
+	return x.ignoreNamespace
 }
 
 // MoveTo moves the YangNodeNavigator to the same position as the specified YangNodeNavigator.

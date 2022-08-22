@@ -343,7 +343,8 @@ func Test_generateMustError(t *testing.T) {
 	assert.True(t, movedChild1)
 
 	parts := ynn.generateMustError("*")
-	assert.Equal(t, 2, len(parts))
-	assert.Equal(t, "a=test1", parts[0])
-	assert.Equal(t, "b=10", parts[1])
+	assert.Equal(t, 3, len(parts))
+	assert.Equal(t, "context: testDevice=", parts[0][:20])
+	assert.Equal(t, "a=test1", parts[1])
+	assert.Equal(t, "b=10", parts[2])
 }
