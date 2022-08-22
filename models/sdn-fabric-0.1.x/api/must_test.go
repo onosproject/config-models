@@ -54,7 +54,7 @@ func Test_WalkAndValidateMustFailPortChannel(t *testing.T) {
 	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
 	assert.True(t, ynnOk)
 	validateErr := ynn.WalkAndValidateMust()
-	assert.EqualError(t, validateErr, `port channel-number exceeds max-channel of corresponding switch-model/port. Must statement 'number(.) <= number(/switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/max-channel)' to true. Container(s): [cage-number=4]`)
+	assert.EqualError(t, validateErr, `port channel-number exceeds max-channel of corresponding switch-model/port. Must statement 'number(.) <= number(/switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/max-channel)' to true. Container(s): [context: channel-number=4 cage-number=4]`)
 }
 
 func Test_WalkAndValidateMustFailPortCage(t *testing.T) {
@@ -76,7 +76,7 @@ func Test_WalkAndValidateMustFailPortCage(t *testing.T) {
 	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
 	assert.True(t, ynnOk)
 	validateErr := ynn.WalkAndValidateMust()
-	assert.EqualError(t, validateErr, `port cage-number must be present in corresponding switch-model/port. Must statement 'set-contains(/switch-model[@switch-model-id=$this/../../model-id]/port/@cage-number, .)' to true. Container(s): [switch-model-id=super-switch-2100]`)
+	assert.EqualError(t, validateErr, `port cage-number must be present in corresponding switch-model/port. Must statement 'set-contains(/switch-model[@switch-model-id=$this/../../model-id]/port/@cage-number, .)' to true. Container(s): [context: cage-number=3 switch-model-id=super-switch-2100]`)
 }
 
 func Test_WalkAndValidateMustFailPortSpeed(t *testing.T) {
@@ -98,5 +98,5 @@ func Test_WalkAndValidateMustFailPortSpeed(t *testing.T) {
 	ynn, ynnOk := nn.(*navigator.YangNodeNavigator)
 	assert.True(t, ynnOk)
 	validateErr := ynn.WalkAndValidateMust()
-	assert.EqualError(t, validateErr, `port speed must be present in corresponding switch-model/port. Must statement 'contains(/switch-model[@switch-model-id=$this/../../model-id]/port/speeds, string($this))' to true. Container(s): [switch-model-id=super-switch-1610]`)
+	assert.EqualError(t, validateErr, `port speed must be present in corresponding switch-model/port. Must statement 'contains(/switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/speeds, string($this))' to true. Container(s): [context: speed=speed-100g cage-number=4]`)
 }

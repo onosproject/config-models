@@ -47,8 +47,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/SeanCondon/xpath v0.0.0-20220628084621-97cfdefbc266 h1:qV0bAUuXmUJn2IstWDqteJz649PhDDA5R5HKpL3ENGA=
-github.com/SeanCondon/xpath v0.0.0-20220628084621-97cfdefbc266/go.mod h1:Eq2Xc+fS1NsmRIB3orQMESBU3JZ1koIwYycgDgtYqZo=
+github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f h1:PPB+mWg7xiRzQpdBEEqdxxX2nPbwwnp5Deqdkv82cXM=
+github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f/go.mod h1:Eq2Xc+fS1NsmRIB3orQMESBU3JZ1koIwYycgDgtYqZo=
 github.com/Shopify/sarama v1.31.1 h1:uxwJ+p4isb52RyV83MCJD8v2wJ/HBxEGMmG/8+sEzG0=
 github.com/Shopify/sarama v1.31.1/go.mod h1:99E1xQ1Ql2bYcuJfwdXY3cE17W8+549Ty8PG/11BDqY=
 github.com/Shopify/toxiproxy/v2 v2.3.0 h1:62YkpiP4bzdhKMH+6uC5E95y608k3zDwdzuBMsnn3uQ=
@@ -330,8 +330,8 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
-github.com/onosproject/config-models v0.10.28 h1:zILHqGX9Awch6uYsTvoA5iVQ/fu8h+CpvYmxnKTRCTE=
-github.com/onosproject/config-models v0.10.28/go.mod h1:z2S+j3eKJvzoCuzc+cmV5YE7sN3vQwZu/Yh5+gj0H0Y=
+github.com/onosproject/config-models v0.10.31 h1:P6zFd6q21QUx4ZCv4SHFdVqkIPkjjdI5+Zr85KTurM8=
+github.com/onosproject/config-models v0.10.31/go.mod h1:gmQ1ns6ehgI2I/tG2HjXVqBy4T3yTP/e14PFJMQZe6U=
 github.com/onosproject/onos-api/go v0.9.14 h1:0ig/YuCj9giWz0xcGmcAAfzlQwptAjP1jWHo2q6C1zo=
 github.com/onosproject/onos-api/go v0.9.14/go.mod h1:0hdMkFFN2AyKLHMiJVP3ZE61QgSYfNXHiI4BJ/Ry7UI=
 github.com/onosproject/onos-lib-go v0.8.13 h1:kiGw1fjaeNxgclAuW21wBQwgAQ5NaXkrlg6Cw4g4dZw=

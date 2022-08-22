@@ -52,7 +52,7 @@ submodule onf-switch-port {
       uses st:desc-display-name;
 
       leaf speed {
-        must "contains(/switch-model[@switch-model-id=$this/../../model-id]/port/speeds, string($this))" {
+        must "contains(/switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/speeds, string($this))" {
           error-message "port speed must be present in corresponding switch-model/port";
           description "port speed must be from the corresponding switch-model";
         }
