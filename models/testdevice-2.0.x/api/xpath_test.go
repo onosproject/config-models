@@ -299,17 +299,17 @@ func Test_XPathEvaluate(t *testing.T) {
 		{
 			Name:     "test name()",
 			Path:     "name(/cont1a/cont2a/leaf2a)",
-			Expected: "leaf2a",
+			Expected: "t1:leaf2a",
 		},
 		{
 			Name:     "test concat value with name",
 			Path:     "concat(/cont1a/cont2a/leaf2a, name(/cont1a/cont2a/leaf2a))",
-			Expected: "1leaf2a",
+			Expected: "1t1:leaf2a",
 		},
 		{
 			Name:     "test substring of name",
-			Path:     "substring(name(/cont1a/cont2a/leaf2a), 1, 5)",
-			Expected: "leaf2",
+			Path:     "substring(name(/cont1a/cont2a/leaf2a), 1, 8)",
+			Expected: "t1:leaf2",
 		},
 		{
 			Name:     "test substring after :",
@@ -319,17 +319,17 @@ func Test_XPathEvaluate(t *testing.T) {
 		{
 			Name:     "test string length",
 			Path:     "string-length(name(/cont1a/cont2a/leaf2a))",
-			Expected: float64(6),
+			Expected: float64(9),
 		},
 		{
 			Name:     "test translate",
 			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'af','fa')",
-			Expected: "lefa2f",
+			Expected: "t1:lefa2f",
 		},
 		{
 			Name:     "test translate",
 			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'tleaf','TLEAF')",
-			Expected: "LEAF2A",
+			Expected: "T1:LEAF2A",
 		},
 		{
 			Name:     "test translate",
