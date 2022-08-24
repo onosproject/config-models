@@ -642,3 +642,126 @@ func Test_walkPath(t *testing.T) {
 	kindCousin3 := resolveLeafRefType(&testCousin3)
 	assert.Equal(t, "int16", kindCousin3.String())
 }
+
+func Test_ReadOnly(t *testing.T) {
+	targetParameter = targetParam("targettest")
+
+	// Configurable parent
+	test1Parent := yang.Entry{
+		Name:   "test-parent",
+		Kind:   yang.DirectoryEntry,
+		Config: yang.TSTrue,
+		Parent: &yang.Entry{},
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	// Configurable leaf
+	test1Leaf1 := yang.Entry{
+		Name:        "Leaf1",
+		Description: "Leaf1 Description",
+		Config:      yang.TSTrue,
+		Parent:      &test1Parent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yint16,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	// Unconfigurable leaf
+	test1Leaf2 := yang.Entry{
+		Name:        "Leaf2",
+		Description: "Leaf2 Description",
+		Config:      yang.TSFalse,
+		Parent:      &test1Parent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../Leaf1",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	test1Parent.Dir["Leaf1"] = &test1Leaf1
+	test1Parent.Dir["Leaf2"] = &test1Leaf2
+
+	paths, components, err := buildSchema(&test1Parent, yang.TSUnset, "/test", "targettest")
+	assert.NilError(t, err)
+	assert.Equal(t, len(paths), 0)
+	assert.Equal(t, len(components.Schemas), 2)
+
+	// Assert the leaf list with leaf ref to integer inside a Container
+	s := components.Schemas["Test_Leaf1"]
+	assert.Equal(t, false, s.Value.ReadOnly)
+	s = components.Schemas["Test_Leaf2"]
+	assert.Equal(t, true, s.Value.ReadOnly)
+
+}
+
+func Test_Parent_ReadOnly(t *testing.T) {
+	targetParameter = targetParam("targettest")
+
+	// Unconfigurable parent
+	testParent := yang.Entry{
+		Name:   "test-parent",
+		Kind:   yang.DirectoryEntry,
+		Config: yang.TSFalse,
+		Parent: &yang.Entry{},
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	// Unset Config state
+	testLeaf1 := yang.Entry{
+		Name:        "Leaf1",
+		Description: "Leaf1 Description",
+		Parent:      &testParent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yint16,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	// Unconfigurable leaf
+	testLeaf2 := yang.Entry{
+		Name:        "Leaf2",
+		Description: "Leaf2 Description",
+		Config:      yang.TSFalse,
+		Parent:      &testParent,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Yleafref,
+			Path: "../Leaf1",
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	testParent.Dir["Leaf1"] = &testLeaf1
+	testParent.Dir["Leaf2"] = &testLeaf2
+
+	paths, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest")
+	assert.NilError(t, err)
+	assert.Equal(t, len(paths), 0)
+	assert.Equal(t, len(components.Schemas), 2)
+
+	// Assert the leaf list with leaf ref to integer inside a Container
+	s := components.Schemas["Test_Leaf1"]
+	assert.Equal(t, true, s.Value.ReadOnly)
+	s = components.Schemas["Test_Leaf2"]
+	assert.Equal(t, true, s.Value.ReadOnly)
+
+}
