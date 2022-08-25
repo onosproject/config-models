@@ -127,6 +127,7 @@ components:
           type: number
         leaf2c:
           description: Read only leaf inside Container 2a
+          readOnly: true
           title: leaf2c
           type: string
         leaf2d:
@@ -345,6 +346,7 @@ components:
           description: A state attribute
           maximum: 20000
           minimum: 10000
+          readOnly: true
           title: leaf2d
           type: integer
         list2b:
@@ -358,12 +360,14 @@ components:
           description: The list index
           maximum: 255
           minimum: 0
+          readOnly: true
           title: index
           type: integer
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
           minLength: 1
+          readOnly: true
           title: leaf3c
           type: string
       required:

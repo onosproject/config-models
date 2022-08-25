@@ -835,12 +835,14 @@ components:
       properties:
         configurable:
           description: Indication whether the property is user-configurable
+          readOnly: true
           title: configurable
           type: boolean
         name:
           description: |-
             System-supplied name of the property -- this is typically
             non-configurable
+          readOnly: true
           title: name
           type: string
         value:
@@ -848,6 +850,7 @@ components:
             Property values can take on a variety of types.  Signed and
             unsigned integer types may be provided in smaller sizes,
             e.g., int8, uint16, etc.
+          readOnly: true
           title: value
           type: string
       title: Components_Component_Properties_Property_State
@@ -857,12 +860,14 @@ components:
       properties:
         description:
           description: System-supplied description of the component
+          readOnly: true
           title: description
           type: string
         id:
           description: |-
             Unique identifier assigned by the system for the
             component
+          readOnly: true
           title: id
           type: string
         mfg-name:
@@ -871,12 +876,14 @@ components:
             component.  This data is particularly useful when a
             component manufacturer is different than the overall
             device vendor.
+          readOnly: true
           title: mfg-name
           type: string
         name:
           description: |-
             Device name for the component -- this will not be a
             configurable parameter on many implementations
+          readOnly: true
           title: name
           type: string
         part-no:
@@ -884,22 +891,26 @@ components:
             System-assigned part number for the component.  This should
             be present in particular if the component is also an FRU
             (field replacable unit)
+          readOnly: true
           title: part-no
           type: string
         serial-no:
           description: System-assigned serial number of the component.
+          readOnly: true
           title: serial-no
           type: string
         temperature:
           $ref: '#/components/schemas/Components_Component_State_Temperature'
         type:
           description: Type of component as identified by the system
+          readOnly: true
           title: type
           type: string
         version:
           description: |-
             System-defined version string for a hardware, firmware,
             or software component.
+          readOnly: true
           title: version
           type: string
       title: Components_Component_State
@@ -917,12 +928,14 @@ components:
             sampling period.
           maximum: 922337203685477600
           minimum: -922337203685477600
+          readOnly: true
           title: avg
           type: number
         instant:
           description: The instantaneous value of the statistic.
           maximum: 922337203685477600
           minimum: -922337203685477600
+          readOnly: true
           title: instant
           type: number
         max:
@@ -931,6 +944,7 @@ components:
             period
           maximum: 922337203685477600
           minimum: -922337203685477600
+          readOnly: true
           title: max
           type: number
         min:
@@ -939,6 +953,7 @@ components:
             period
           maximum: 922337203685477600
           minimum: -922337203685477600
+          readOnly: true
           title: min
           type: number
       title: Components_Component_State_Temperature
@@ -992,6 +1007,7 @@ components:
       properties:
         name:
           description: Reference to the name of the subcomponent
+          readOnly: true
           title: name
           type: string
           x-leafref: ../../../../../component/config/name
@@ -1194,6 +1210,7 @@ components:
             i.e., immediate notification.
           format: int32
           minimum: 0
+          readOnly: true
           title: down
           type: integer
         up:
@@ -1203,6 +1220,7 @@ components:
             is turned off, i.e., immediate notification.
           format: int32
           minimum: 0
+          readOnly: true
           title: up
           type: integer
       title: Interfaces_Interface_Hold-time_State
@@ -1231,6 +1249,7 @@ components:
           - DOWN
           - TESTING
           - UP
+          readOnly: true
           title: admin-status
           type: string
         counters:
@@ -1263,6 +1282,7 @@ components:
             If the device does not support ':startup', ifAlias MUST
             be mapped to the 'description' leaf in the 'running'
             datastore.
+          readOnly: true
           title: description
           type: string
         enabled:
@@ -1279,10 +1299,12 @@ components:
             Changes in this leaf in the 'running' datastore are
             reflected in ifAdminStatus, but if ifAdminStatus is
             changed over SNMP, this leaf is not affected.
+          readOnly: true
           title: enabled
           type: boolean
         hardware-port:
           description: References the hardware port in the device inventory
+          readOnly: true
           title: hardware-port
           type: string
           x-leafref: /oc-platform:components/oc-platform:component/oc-platform:name
@@ -1292,6 +1314,7 @@ components:
             ifIndex object in SNMP Interface MIB
           format: int32
           minimum: 0
+          readOnly: true
           title: ifindex
           type: integer
         last-change:
@@ -1305,6 +1328,7 @@ components:
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: last-change
           type: integer
         mtu:
@@ -1315,6 +1339,7 @@ components:
             Ethernet interface.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: mtu
           type: integer
         name:
@@ -1351,6 +1376,7 @@ components:
             When a configured user-controlled interface is created by
             the system, it is instantiated with the same name in the
             /interfaces/interface[name]/state list.
+          readOnly: true
           title: name
           type: string
         oper-status:
@@ -1366,6 +1392,7 @@ components:
           - TESTING
           - UNKNOWN
           - UP
+          readOnly: true
           title: oper-status
           type: string
         type:
@@ -1383,6 +1410,7 @@ components:
             name of the interface, the server MUST reject the request.
             A NETCONF server MUST reply with an rpc-error with the
             error-tag 'invalid-value' in this case.
+          readOnly: true
           title: type
           type: string
       required:
@@ -1401,6 +1429,7 @@ components:
             or the last-clear time, whichever is most recent.
           format: int64
           minimum: 0
+          readOnly: true
           title: carrier-transitions
           type: integer
         in-broadcast-pkts:
@@ -1415,6 +1444,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-broadcast-pkts
           type: integer
         in-discards:
@@ -1431,6 +1461,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-discards
           type: integer
         in-errors:
@@ -1449,6 +1480,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-errors
           type: integer
         in-fcs-errors:
@@ -1461,6 +1493,7 @@ components:
             value of 'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-fcs-errors
           type: integer
         in-multicast-pkts:
@@ -1476,6 +1509,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-multicast-pkts
           type: integer
         in-octets:
@@ -1489,6 +1523,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-octets
           type: integer
         in-unicast-pkts:
@@ -1503,6 +1538,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-unicast-pkts
           type: integer
         in-unknown-protos:
@@ -1523,6 +1559,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-unknown-protos
           type: integer
         last-clear:
@@ -1534,6 +1571,7 @@ components:
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: last-clear
           type: integer
         out-broadcast-pkts:
@@ -1549,6 +1587,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-broadcast-pkts
           type: integer
         out-discards:
@@ -1565,6 +1604,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-discards
           type: integer
         out-errors:
@@ -1581,6 +1621,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-errors
           type: integer
         out-multicast-pkts:
@@ -1598,6 +1639,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-multicast-pkts
           type: integer
         out-octets:
@@ -1611,6 +1653,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-octets
           type: integer
         out-unicast-pkts:
@@ -1626,6 +1669,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-unicast-pkts
           type: integer
       title: Interfaces_Interface_State_Counters
@@ -1748,6 +1792,7 @@ components:
           - DOWN
           - TESTING
           - UP
+          readOnly: true
           title: admin-status
           type: string
         counters:
@@ -1780,6 +1825,7 @@ components:
             If the device does not support ':startup', ifAlias MUST
             be mapped to the 'description' leaf in the 'running'
             datastore.
+          readOnly: true
           title: description
           type: string
         enabled:
@@ -1796,6 +1842,7 @@ components:
             Changes in this leaf in the 'running' datastore are
             reflected in ifAdminStatus, but if ifAdminStatus is
             changed over SNMP, this leaf is not affected.
+          readOnly: true
           title: enabled
           type: boolean
         ifindex:
@@ -1804,6 +1851,7 @@ components:
             ifIndex object in SNMP Interface MIB
           format: int32
           minimum: 0
+          readOnly: true
           title: ifindex
           type: integer
         index:
@@ -1814,6 +1862,7 @@ components:
             default subinterface.
           format: int32
           minimum: 0
+          readOnly: true
           title: index
           type: integer
         last-change:
@@ -1827,6 +1876,7 @@ components:
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: last-change
           type: integer
         name:
@@ -1835,6 +1885,7 @@ components:
             be a combination of the base interface name and the
             subinterface index, or some other convention used by the
             system.
+          readOnly: true
           title: name
           type: string
         oper-status:
@@ -1850,6 +1901,7 @@ components:
           - TESTING
           - UNKNOWN
           - UP
+          readOnly: true
           title: oper-status
           type: string
       required:
@@ -1867,6 +1919,7 @@ components:
             or the last-clear time, whichever is most recent.
           format: int64
           minimum: 0
+          readOnly: true
           title: carrier-transitions
           type: integer
         in-broadcast-pkts:
@@ -1881,6 +1934,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-broadcast-pkts
           type: integer
         in-discards:
@@ -1897,6 +1951,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-discards
           type: integer
         in-errors:
@@ -1915,6 +1970,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-errors
           type: integer
         in-fcs-errors:
@@ -1927,6 +1983,7 @@ components:
             value of 'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-fcs-errors
           type: integer
         in-multicast-pkts:
@@ -1942,6 +1999,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-multicast-pkts
           type: integer
         in-octets:
@@ -1955,6 +2013,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-octets
           type: integer
         in-unicast-pkts:
@@ -1969,6 +2028,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-unicast-pkts
           type: integer
         in-unknown-protos:
@@ -1989,6 +2049,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: in-unknown-protos
           type: integer
         last-clear:
@@ -2000,6 +2061,7 @@ components:
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: last-clear
           type: integer
         out-broadcast-pkts:
@@ -2015,6 +2077,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-broadcast-pkts
           type: integer
         out-discards:
@@ -2031,6 +2094,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-discards
           type: integer
         out-errors:
@@ -2047,6 +2111,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-errors
           type: integer
         out-multicast-pkts:
@@ -2064,6 +2129,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-multicast-pkts
           type: integer
         out-octets:
@@ -2077,6 +2143,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-octets
           type: integer
         out-unicast-pkts:
@@ -2092,6 +2159,7 @@ components:
             'last-clear'.
           format: int64
           minimum: 0
+          readOnly: true
           title: out-unicast-pkts
           type: integer
       title: Interfaces_Interface_Subinterfaces_Subinterface_State_Counters
@@ -2251,6 +2319,7 @@ components:
           - AAA_ACCOUNTING_EVENT_LOGIN
           - AAA_AUTHORIZATION_EVENT_COMMAND
           - AAA_AUTHORIZATION_EVENT_CONFIG
+          readOnly: true
           title: event-type
           type: string
         record:
@@ -2260,6 +2329,7 @@ components:
           enum:
           - START_STOP
           - STOP
+          readOnly: true
           title: record
           type: string
       title: System_Aaa_Accounting_Events_Event_State
@@ -2279,6 +2349,7 @@ components:
           accounting data, which may be specified as the group of
           all TACACS+/RADIUS servers, a defined server group, or
           the local system.
+        readOnly: true
         title: accounting-method
         type: string
       title: accounting-method
@@ -2334,6 +2405,7 @@ components:
             The admin/root password, supplied as a cleartext string.
             The system should hash and only store the password as a
             hashed value.
+          readOnly: true
           title: admin-password
           type: string
         admin-password-hashed:
@@ -2341,12 +2413,14 @@ components:
             The admin/root password, supplied as a hashed value
             using the notation described in the definition of the
             crypt-password-type.
+          readOnly: true
           title: admin-password-hashed
           type: string
         admin-username:
           description: |-
             Name of the administrator user account, e.g., admin, root,
             etc.
+          readOnly: true
           title: admin-username
           type: string
       title: System_Aaa_Authentication_Admin-user_State
@@ -2389,6 +2463,7 @@ components:
           authentication fails with one method, the next defined
           method is tried -- failure of all methods results in the
           user being denied access.
+        readOnly: true
         title: authentication-method
         type: string
       title: authentication-method
@@ -2467,6 +2542,7 @@ components:
           description: |-
             The user password, supplied as cleartext.  The system
             must hash the value and only store the hashed value.
+          readOnly: true
           title: password
           type: string
         password-hashed:
@@ -2474,6 +2550,7 @@ components:
             The user password, supplied as a hashed value
             using the notation described in the definition of the
             crypt-password-type.
+          readOnly: true
           title: password-hashed
           type: string
         role:
@@ -2481,14 +2558,17 @@ components:
             Role assigned to the user.  The role may be supplied
             as a string or a role defined by the SYSTEM_DEFINED_ROLES
             identity.
+          readOnly: true
           title: role
           type: string
         ssh-key:
           description: SSH public key for the user (RSA or DSA)
+          readOnly: true
           title: ssh-key
           type: string
         username:
           description: Assigned username for this user
+          readOnly: true
           title: username
           type: string
       title: System_Aaa_Authentication_Users_User_State
@@ -2582,6 +2662,7 @@ components:
           description: |-
             The type of event to record at the AAA authorization
             server
+          readOnly: true
           title: event-type
           type: string
       title: System_Aaa_Authorization_Events_Event_State
@@ -2602,6 +2683,7 @@ components:
           as the set of all TACACS or RADIUS servers, or the name of
           a defined AAA server group.  The system must validate
           that the named server group exists.
+        readOnly: true
         title: authorization-method
         type: string
       title: authorization-method
@@ -2780,12 +2862,14 @@ components:
           description: Port number for accounting requests
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: acct-port
           type: integer
         auth-port:
           description: Port number for authentication requests
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: auth-port
           type: integer
         counters:
@@ -2796,16 +2880,19 @@ components:
             RADIUS server when it is unresponsive
           maximum: 255
           minimum: 0
+          readOnly: true
           title: retransmit-attempts
           type: integer
         secret-key:
           description: |-
             The unencrypted shared key used between the authentication
             server and the device.
+          readOnly: true
           title: secret-key
           type: string
         source-address:
           description: Source IP address to use in messages to the RADIUS server
+          readOnly: true
           title: source-address
           type: string
       title: System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
@@ -2817,18 +2904,21 @@ components:
           description: Received Access-Accept messages.
           format: int64
           minimum: 0
+          readOnly: true
           title: access-accepts
           type: integer
         access-rejects:
           description: Received Access-Reject messages.
           format: int64
           minimum: 0
+          readOnly: true
           title: access-rejects
           type: integer
         retried-access-requests:
           description: Retransmitted Access-Request messages.
           format: int64
           minimum: 0
+          readOnly: true
           title: retried-access-requests
           type: integer
         timeout-access-requests:
@@ -2837,6 +2927,7 @@ components:
             requiring retransmission.
           format: int64
           minimum: 0
+          readOnly: true
           title: timeout-access-requests
           type: integer
       title: System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters
@@ -2846,6 +2937,7 @@ components:
       properties:
         address:
           description: Address of the authentication server
+          readOnly: true
           title: address
           type: string
         connection-aborts:
@@ -2854,6 +2946,7 @@ components:
             not include connections that are close gracefully.
           format: int64
           minimum: 0
+          readOnly: true
           title: connection-aborts
           type: integer
         connection-closes:
@@ -2862,12 +2955,14 @@ components:
             socket close
           format: int64
           minimum: 0
+          readOnly: true
           title: connection-closes
           type: integer
         connection-failures:
           description: Number of connection failures to the server
           format: int64
           minimum: 0
+          readOnly: true
           title: connection-failures
           type: integer
         connection-opens:
@@ -2876,34 +2971,40 @@ components:
             socket open
           format: int64
           minimum: 0
+          readOnly: true
           title: connection-opens
           type: integer
         connection-timeouts:
           description: Number of connection timeouts to the server
           format: int64
           minimum: 0
+          readOnly: true
           title: connection-timeouts
           type: integer
         errors-received:
           description: Number of error messages received from the server
           format: int64
           minimum: 0
+          readOnly: true
           title: errors-received
           type: integer
         messages-received:
           description: Number of messages received by the server
           format: int64
           minimum: 0
+          readOnly: true
           title: messages-received
           type: integer
         messages-sent:
           description: Number of messages sent to the server
           format: int64
           minimum: 0
+          readOnly: true
           title: messages-sent
           type: integer
         name:
           description: Name assigned to the server
+          readOnly: true
           title: name
           type: string
         timeout:
@@ -2912,6 +3013,7 @@ components:
             server
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: timeout
           type: integer
       title: System_Aaa_Server-groups_Server-group_Servers_Server_State
@@ -2953,16 +3055,19 @@ components:
           description: The port number on which to contact the TACACS server
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: port
           type: integer
         secret-key:
           description: |-
             The unencrypted shared key used between the authentication
             server and the device.
+          readOnly: true
           title: secret-key
           type: string
         source-address:
           description: Source IP address to use in messages to the TACACS server
+          readOnly: true
           title: source-address
           type: string
       title: System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State
@@ -2972,6 +3077,7 @@ components:
       properties:
         name:
           description: Name for the server group
+          readOnly: true
           title: name
           type: string
         type:
@@ -2981,6 +3087,7 @@ components:
           enum:
           - RADIUS
           - TACACS
+          readOnly: true
           title: type
           type: string
       title: System_Aaa_Server-groups_Server-group_State
@@ -3016,6 +3123,7 @@ components:
           description: |-
             The TZ database name to use for the system, such
             as 'Europe/Stockholm'.
+          readOnly: true
           title: timezone-name
           type: string
       title: System_Clock_State
@@ -3168,6 +3276,7 @@ components:
           $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State_Alias'
         hostname:
           description: Hostname for the static DNS entry
+          readOnly: true
           title: hostname
           type: string
         ipv4-address:
@@ -3179,6 +3288,7 @@ components:
     System_Dns_Host-entries_Host-entry_State_Alias:
       items:
         description: Additional aliases for the hostname
+        readOnly: true
         title: alias
         type: string
       title: alias
@@ -3187,6 +3297,7 @@ components:
       items:
         description: List of IPv4 addressses for the host entry
         pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
+        readOnly: true
         title: ipv4-address
         type: string
       title: ipv4-address
@@ -3195,6 +3306,7 @@ components:
       items:
         description: List of IPv6 addresses for the host entry
         pattern: ^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$
+        readOnly: true
         title: ipv6-address
         type: string
       title: ipv6-address
@@ -3286,12 +3398,14 @@ components:
           description: |-
             The address of the DNS server, can be either IPv4
             or IPv6.
+          readOnly: true
           title: address
           type: string
         port:
           description: The port number of the DNS server.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: port
           type: integer
       title: System_Dns_Servers_Server_State
@@ -3311,6 +3425,7 @@ components:
         maxLength: 253
         minLength: 1
         pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+        readOnly: true
         title: search
         type: string
       title: search
@@ -3454,6 +3569,7 @@ components:
           - SYSLOG
           - SYSTEM_DAEMON
           - USER
+          readOnly: true
           title: facility
           type: string
         severity:
@@ -3469,6 +3585,7 @@ components:
           - INFORMATIONAL
           - NOTICE
           - WARNING
+          readOnly: true
           title: severity
           type: string
       title: System_Logging_Console_Selectors_Selector_State
@@ -3647,6 +3764,7 @@ components:
           - SYSLOG
           - SYSTEM_DAEMON
           - USER
+          readOnly: true
           title: facility
           type: string
         severity:
@@ -3662,6 +3780,7 @@ components:
           - INFORMATIONAL
           - NOTICE
           - WARNING
+          readOnly: true
           title: severity
           type: string
       title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_State
@@ -3671,6 +3790,7 @@ components:
       properties:
         host:
           description: IP address or hostname of the remote log server
+          readOnly: true
           title: host
           type: string
         remote-port:
@@ -3679,10 +3799,12 @@ components:
             the server.  The default for syslog is 514.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: remote-port
           type: integer
         source-address:
           description: Source IP address for packets to the log server
+          readOnly: true
           title: source-address
           type: string
       title: System_Logging_Remote-servers_Remote-server_State
@@ -3709,12 +3831,14 @@ components:
             system.
           format: int64
           minimum: 0
+          readOnly: true
           title: physical
           type: integer
         reserved:
           description: Memory reserved for system use
           format: int64
           minimum: 0
+          readOnly: true
           title: reserved
           type: integer
       title: System_Memory_State
@@ -3824,16 +3948,19 @@ components:
             the same key id.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: key-id
           type: integer
         key-type:
           description: Encryption type used for the NTP authentication key
           enum:
           - NTP_AUTH_MD5
+          readOnly: true
           title: key-type
           type: string
         key-value:
           description: NTP authentication key value
+          readOnly: true
           title: key-value
           type: string
       title: System_Ntp_Ntp-keys_Ntp-key_State
@@ -3930,6 +4057,7 @@ components:
       properties:
         address:
           description: The address or hostname of the NTP server.
+          readOnly: true
           title: address
           type: string
         association-type:
@@ -3938,6 +4066,7 @@ components:
           - PEER
           - POOL
           - SERVER
+          readOnly: true
           title: association-type
           type: string
         iburst:
@@ -3945,6 +4074,7 @@ components:
           description: |-
             Indicates whether this server should enable burst
             synchronization or not.
+          readOnly: true
           title: iburst
           type: boolean
         offset:
@@ -3953,18 +4083,21 @@ components:
             the time difference between the local and reference clock.
           format: int64
           minimum: 0
+          readOnly: true
           title: offset
           type: integer
         poll-interval:
           description: Polling interval of the peer
           format: int32
           minimum: 0
+          readOnly: true
           title: poll-interval
           type: integer
         port:
           description: The port number of the NTP server.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: port
           type: integer
         prefer:
@@ -3972,12 +4105,14 @@ components:
           description: |-
             Indicates whether this server should be preferred
             or not.
+          readOnly: true
           title: prefer
           type: boolean
         root-delay:
           description: The round-trip delay to the server, in milliseconds.
           format: int32
           minimum: 0
+          readOnly: true
           title: root-delay
           type: integer
         root-dispersion:
@@ -3986,6 +4121,7 @@ components:
             in the measurement
           format: int64
           minimum: 0
+          readOnly: true
           title: root-dispersion
           type: integer
         stratum:
@@ -4003,12 +4139,14 @@ components:
             | 17-255 | reserved
           maximum: 255
           minimum: 0
+          readOnly: true
           title: stratum
           type: integer
         version:
           description: Version number to put in outgoing NTP packets
           maximum: 4
           minimum: 1
+          readOnly: true
           title: version
           type: integer
       title: System_Ntp_Servers_Server_State
@@ -4022,6 +4160,7 @@ components:
             processed due to authentication mismatch.
           format: int64
           minimum: 0
+          readOnly: true
           title: auth-mismatch
           type: integer
         enable-ntp-auth:
@@ -4030,6 +4169,7 @@ components:
             Enable or disable NTP authentication -- when enabled, the
             system will only use packets containing a trusted
             authentication key to synchronize the time.
+          readOnly: true
           title: enable-ntp-auth
           type: boolean
         enabled:
@@ -4038,10 +4178,12 @@ components:
             Enables the NTP protocol and indicates that the system should
             attempt to synchronize the system clock with an NTP server
             from the servers defined in the 'ntp/server' list.
+          readOnly: true
           title: enabled
           type: boolean
         ntp-source-address:
           description: Source address to use on outgoing NTP packets
+          readOnly: true
           title: ntp-source-address
           type: string
       title: System_Ntp_State
@@ -4109,6 +4251,7 @@ components:
           description: Openflow agent connection backoff interval.
           format: int32
           minimum: 0
+          readOnly: true
           title: backoff-interval
           type: integer
         datapath-id:
@@ -4117,6 +4260,7 @@ components:
             a MAC address, while the upper 16-bits are
             implementer-defined.
           pattern: ^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){7}$
+          readOnly: true
           title: datapath-id
           type: string
         failure-mode:
@@ -4124,18 +4268,21 @@ components:
           enum:
           - SECURE
           - STANDALONE
+          readOnly: true
           title: failure-mode
           type: string
         inactivity-probe:
           description: Openflow agent inactivity probe period.
           format: int32
           minimum: 0
+          readOnly: true
           title: inactivity-probe
           type: integer
         max-backoff:
           description: Openflow agent max backoff time.
           format: int32
           minimum: 0
+          readOnly: true
           title: max-backoff
           type: integer
       title: System_Openflow_Agent_State
@@ -4278,6 +4425,7 @@ components:
       properties:
         address:
           description: The IP address of the controller.
+          readOnly: true
           title: address
           type: string
         aux-id:
@@ -4291,18 +4439,21 @@ components:
             from 0.
           maximum: 15
           minimum: 0
+          readOnly: true
           title: aux-id
           type: integer
         connected:
           description: |-
             When set to true, indicates the connection between the
             switch and controller is established.
+          readOnly: true
           title: connected
           type: boolean
         port:
           description: Controller port to use.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: port
           type: integer
         priority:
@@ -4311,12 +4462,14 @@ components:
             different priorities.
           maximum: 255
           minimum: 0
+          readOnly: true
           title: priority
           type: integer
         source-interface:
           description: |-
             Optionally specify the source interface for the
             controller connection.
+          readOnly: true
           title: source-interface
           type: string
           x-leafref: /oc-if:interfaces/oc-if:interface/oc-if:name
@@ -4325,6 +4478,7 @@ components:
           enum:
           - TCP
           - TLS
+          readOnly: true
           title: transport
           type: string
       title: System_Openflow_Controllers_Controller_Connections_Connection_State
@@ -4347,6 +4501,7 @@ components:
           description: |-
             Name of this Openflow controller. All connections
             for the same controller need to have the same name.
+          readOnly: true
           title: name
           type: string
       title: System_Openflow_Controllers_Controller_State
@@ -4364,6 +4519,7 @@ components:
         pid:
           description: Reference to the process pid key
           format: int64
+          readOnly: true
           title: pid
           type: integer
           x-leafref: ../state/pid
@@ -4392,40 +4548,47 @@ components:
           description: CPU time consumed by this process in kernel mode.
           format: int64
           minimum: 0
+          readOnly: true
           title: cpu-usage-system
           type: integer
         cpu-usage-user:
           description: CPU time consumed by this process in user mode.
           format: int64
           minimum: 0
+          readOnly: true
           title: cpu-usage-user
           type: integer
         cpu-utilization:
           description: The percentage of CPU that is being used by the process.
           maximum: 100
           minimum: 0
+          readOnly: true
           title: cpu-utilization
           type: integer
         memory-usage:
           description: Bytes allocated and still in use by the process
           format: int64
           minimum: 0
+          readOnly: true
           title: memory-usage
           type: integer
         memory-utilization:
           description: The percentage of RAM that is being used by the process.
           maximum: 100
           minimum: 0
+          readOnly: true
           title: memory-utilization
           type: integer
         name:
           description: The process name
+          readOnly: true
           title: name
           type: string
         pid:
           description: The process pid
           format: int64
           minimum: 0
+          readOnly: true
           title: pid
           type: integer
         start-time:
@@ -4437,12 +4600,14 @@ components:
             reported.
           format: int64
           minimum: 0
+          readOnly: true
           title: start-time
           type: integer
         uptime:
           description: Amount of time elapsed since this process started.
           format: int64
           minimum: 0
+          readOnly: true
           title: uptime
           type: integer
       title: System_Processes_Process_State
@@ -4456,6 +4621,7 @@ components:
           argument name and parameter together.  Flag arguments, i.e.,
           those without a parameter should also be in their own list
           element.
+        readOnly: true
         title: args
         type: string
       title: args
@@ -4520,6 +4686,7 @@ components:
           description: |-
             Enables the ssh server.  The ssh server is enabled by
             default.
+          readOnly: true
           title: enable
           type: boolean
         protocol-version:
@@ -4528,6 +4695,7 @@ components:
           - V1
           - V1_V2
           - V2
+          readOnly: true
           title: protocol-version
           type: string
         rate-limit:
@@ -4536,6 +4704,7 @@ components:
             minute to the system for the protocol.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: rate-limit
           type: integer
         session-limit:
@@ -4543,6 +4712,7 @@ components:
             to the system for the protocol (e.g., ssh,\ntelnet, ...) "
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: session-limit
           type: integer
         timeout:
@@ -4551,6 +4721,7 @@ components:
             the system for the protocol.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: timeout
           type: integer
       title: System_Ssh-server_State
@@ -4565,11 +4736,13 @@ components:
             to the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: boot-time
           type: integer
         current-datetime:
           description: The current system date and time.
           pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
+          readOnly: true
           title: current-datetime
           type: string
         domain-name:
@@ -4579,6 +4752,7 @@ components:
           maxLength: 253
           minLength: 1
           pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+          readOnly: true
           title: domain-name
           type: string
         hostname:
@@ -4588,12 +4762,14 @@ components:
           maxLength: 253
           minLength: 1
           pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+          readOnly: true
           title: hostname
           type: string
         login-banner:
           description: |-
             The console login message displayed before the login prompt,
             i.e., before a user logs into the system.
+          readOnly: true
           title: login-banner
           type: string
         motd-banner:
@@ -4602,6 +4778,7 @@ components:
             system.  They system may append additional standard
             information such as the current system date and time, uptime,
             last login timestamp, etc.
+          readOnly: true
           title: motd-banner
           type: string
       title: System_State
@@ -4658,6 +4835,7 @@ components:
           description: |-
             Enables the telnet server.  Telnet is disabled by
             default
+          readOnly: true
           title: enable
           type: boolean
         rate-limit:
@@ -4666,6 +4844,7 @@ components:
             minute to the system for the protocol.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: rate-limit
           type: integer
         session-limit:
@@ -4673,6 +4852,7 @@ components:
             to the system for the protocol (e.g., ssh,\ntelnet, ...) "
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: session-limit
           type: integer
         timeout:
@@ -4681,6 +4861,7 @@ components:
             the system for the protocol.
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: timeout
           type: integer
       title: System_Telnet-server_State
