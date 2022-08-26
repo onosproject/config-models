@@ -76,21 +76,25 @@ components:
       properties:
         id:
           description: eNB id
+          readOnly: true
           title: id
           type: string
           x-go-type: ListKey
         ip:
           description: The IP address of the node
+          readOnly: true
           title: ip
           type: string
         plmn-id:
           description: PLMN id
+          readOnly: true
           title: plmn-id
           type: string
         port:
           description: The port of the node
           maximum: 65535
           minimum: 0
+          readOnly: true
           title: port
           type: integer
       required:

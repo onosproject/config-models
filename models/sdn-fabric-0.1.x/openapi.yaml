@@ -577,6 +577,7 @@ components:
           - DOWN
           - TESTING
           - UP
+          readOnly: true
           title: admin-status
           type: string
         ifindex:
@@ -585,6 +586,7 @@ components:
             ifIndex object in SNMP Interface MIB
           format: int32
           minimum: 0
+          readOnly: true
           title: ifindex
           type: integer
         last-change:
@@ -598,6 +600,7 @@ components:
             the Unix Epoch (Jan 1, 1970 00:00:00 UTC).
           format: int64
           minimum: 0
+          readOnly: true
           title: last-change
           type: integer
         oper-status:
@@ -613,6 +616,7 @@ components:
           - TESTING
           - UNKNOWN
           - UP
+          readOnly: true
           title: oper-status
           type: string
       required:
@@ -645,11 +649,13 @@ components:
       properties:
         connected:
           description: 'status of the port: up|down'
+          readOnly: true
           title: connected
           type: string
         last-connected:
           description: Last known time the switch was connected
           pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
+          readOnly: true
           title: last-connected
           type: string
       title: Switch_State

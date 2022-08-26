@@ -120,6 +120,7 @@ components:
           type: number
         leaf2c:
           description: Read only leaf inside Container 2a
+          readOnly: true
           title: leaf2c
           type: string
         leaf2d:
@@ -234,6 +235,7 @@ components:
           description: A state attribute
           maximum: 20000
           minimum: 10000
+          readOnly: true
           title: leaf2d
           type: integer
         list2b:
@@ -246,12 +248,14 @@ components:
       properties:
         leaf3a:
           description: Another boolean variable
+          readOnly: true
           title: leaf3a
           type: boolean
         leaf3b:
           description: Another string variable
           maxLength: 10
           minLength: 5
+          readOnly: true
           title: leaf3b
           type: string
       title: Cont1b-state_Cont2c
@@ -265,18 +269,21 @@ components:
           description: The list index
           maximum: 255
           minimum: 0
+          readOnly: true
           title: index1
           type: integer
         index2:
           description: The list index
           maximum: 255
           minimum: 0
+          readOnly: true
           title: index2
           type: integer
         leaf3c:
           description: A string attribute in the list
           maxLength: 20
           minLength: 1
+          readOnly: true
           title: leaf3c
           type: string
         leaf3d:
@@ -284,6 +291,7 @@ components:
           enum:
           - IDTYPE1
           - IDTYPE2
+          readOnly: true
           title: leaf3d
           type: string
       required:
