@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: Apache-2.0
 components:
   parameters:
-    target:
+    device-id:
       content:
         text/plain; charset=utf-8:
           schema:
             type: string
-      description: target (target in onos-config)
+      description: device-id (target in onos-config)
       in: path
-      name: target
+      name: device-id
       required: true
   requestBodies:
     RequestBody_Components:
@@ -695,11 +695,11 @@ components:
             $ref: '#/components/schemas/System_Telnet-server_State'
   schemas:
     AdditionalPropertiesUnchTarget:
-      description: both the additional property 'unchanged' and the 'target'
+      description: both the additional property 'unchanged' and the 'device-id'
       properties:
-        target:
-          description: an override of the target (target)
-          title: target
+        device-id:
+          description: an override of the device-id (target)
+          title: device-id
           type: string
         unchanged:
           description: A comma seperated list of unchanged mandatory attribute names
@@ -707,15 +707,15 @@ components:
           type: string
       title: AdditionalPropertiesUnchTarget
       type: object
-    AdditionalPropertyTarget:
-      description: Optionally specify a target other than the default (only on PATCH
-        method)
+    AdditionalPropertyDevice-Id:
+      description: Optionally specify a device-id other than the default (only on
+        PATCH method)
       properties:
-        target:
-          description: an override of the target (target)
-          title: target
+        device-id:
+          description: an override of the device-id (target)
+          title: device-id
           type: string
-      title: AdditionalPropertyTarget
+      title: AdditionalPropertyDevice-Id
       type: object
     AdditionalPropertyUnchanged:
       description: To optionally omit 'required' properties, add them to 'unchanged'
@@ -729,7 +729,7 @@ components:
       type: object
     Components:
       additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyTarget'
+        $ref: '#/components/schemas/AdditionalPropertyDevice-Id'
       description: Enclosing container for the components in the system.
       properties:
         component:
@@ -1015,7 +1015,7 @@ components:
       type: object
     Interfaces:
       additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyTarget'
+        $ref: '#/components/schemas/AdditionalPropertyDevice-Id'
       description: |-
         Top level container for interfaces, including configuration
         and state data.
@@ -2166,7 +2166,7 @@ components:
       type: object
     System:
       additionalProperties:
-        $ref: '#/components/schemas/AdditionalPropertyTarget'
+        $ref: '#/components/schemas/AdditionalPropertyDevice-Id'
       description: |-
         Enclosing container for system-related configuration and
         operational state data
@@ -4876,11 +4876,11 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  title: devicesim-1.0.0
-  version: 1.0.0
+  title: devicesim-1.0.x
+  version: 1.0.x
 openapi: 3.0.0
 paths:
-  /devicesim/v1.0.0/{target}/components:
+  /devicesim/v1.0.x/{device-id}/components:
     delete:
       operationId: deleteComponents
       responses:
@@ -4899,7 +4899,7 @@ paths:
           description: GET OK 200
       summary: GET /components Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postComponents
       requestBody:
@@ -4908,7 +4908,7 @@ paths:
         "201":
           description: created
       summary: POST /components
-  /devicesim/v1.0.0/{target}/components/component:
+  /devicesim/v1.0.x/{device-id}/components/component:
     description: List of components, keyed by component name.
     get:
       operationId: getComponents_Component_List
@@ -4921,8 +4921,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/components/component/{name}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/components/component/{name}:
     delete:
       operationId: deleteComponents_Component
       responses:
@@ -4941,7 +4941,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -4958,7 +4958,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component
-  /devicesim/v1.0.0/{target}/components/component/{name}/config:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/config:
     delete:
       operationId: deleteComponents_Component_Config
       responses:
@@ -4977,7 +4977,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -4994,7 +4994,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/config
-  /devicesim/v1.0.0/{target}/components/component/{name}/properties:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties:
     delete:
       operationId: deleteComponents_Component_Properties
       responses:
@@ -5013,7 +5013,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5030,7 +5030,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties
-  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property:
     description: List of system properties for the component
     get:
       operationId: getComponents_Component_Properties_Property_List
@@ -5043,7 +5043,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5052,7 +5052,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}:
     delete:
       operationId: deleteComponents_Component_Properties_Property
       responses:
@@ -5071,7 +5071,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5096,7 +5096,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property
-  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/config:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/config:
     delete:
       operationId: deleteComponents_Component_Properties_Property_Config
       responses:
@@ -5116,7 +5116,7 @@ paths:
       summary: GET /components/component/{name}/properties/property/{name}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5141,7 +5141,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property/{name}/config
-  /devicesim/v1.0.0/{target}/components/component/{name}/properties/property/{name}/state:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/state:
     description: Operational state data for each property
     get:
       operationId: getComponents_Component_Properties_Property_State
@@ -5154,7 +5154,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5171,7 +5171,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.0/{target}/components/component/{name}/state:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/state:
     description: Operational state data for each component
     get:
       operationId: getComponents_Component_State
@@ -5184,7 +5184,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5193,7 +5193,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/components/component/{name}/state/temperature:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/state/temperature:
     description: |-
       Temperature in degrees Celsius of the component. Values include
       the instantaneous, average, minimum, and maximum statistics. If
@@ -5210,7 +5210,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/state/temperature Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5219,7 +5219,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents:
     delete:
       operationId: deleteComponents_Component_Subcomponents
       responses:
@@ -5238,7 +5238,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5255,7 +5255,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents
-  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent:
     description: List of subcomponent references
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_List
@@ -5268,7 +5268,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5277,7 +5277,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent
       responses:
@@ -5296,7 +5296,7 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5321,7 +5321,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent
-  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/config:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
       responses:
@@ -5341,7 +5341,7 @@ paths:
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5366,7 +5366,7 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent/{name}/config
-  /devicesim/v1.0.0/{target}/components/component/{name}/subcomponents/subcomponent/{name}/state:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state:
     description: 'Operational state data '
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_State
@@ -5380,7 +5380,7 @@ paths:
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5397,7 +5397,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.0/{target}/interfaces:
+  /devicesim/v1.0.x/{device-id}/interfaces:
     delete:
       operationId: deleteInterfaces
       responses:
@@ -5418,7 +5418,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postInterfaces
       requestBody:
@@ -5427,7 +5427,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces
-  /devicesim/v1.0.0/{target}/interfaces/interface:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface:
     description: The list of named interfaces on the device.
     get:
       operationId: getInterfaces_Interface_List
@@ -5440,8 +5440,8 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}:
     delete:
       operationId: deleteInterfaces_Interface
       responses:
@@ -5460,7 +5460,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5477,7 +5477,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/config:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/config:
     delete:
       operationId: deleteInterfaces_Interface_Config
       responses:
@@ -5498,7 +5498,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5515,7 +5515,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/config
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time
       responses:
@@ -5536,7 +5536,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5553,7 +5553,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/config:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time/config:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time_Config
       responses:
@@ -5572,7 +5572,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5589,7 +5589,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time/config
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/hold-time/state:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time/state:
     description: Operational state data for interface hold-time.
     get:
       operationId: getInterfaces_Interface_Hold-time_State
@@ -5602,7 +5602,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5611,7 +5611,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/state:
     description: Operational state data at the global interface level
     get:
       operationId: getInterfaces_Interface_State
@@ -5624,7 +5624,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5633,7 +5633,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/state/counters:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
       operationId: getInterfaces_Interface_State_Counters
@@ -5646,7 +5646,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state/counters Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5655,7 +5655,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces
       responses:
@@ -5676,7 +5676,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5693,7 +5693,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface:
     description: |-
       The list of subinterfaces (logical interfaces) associated
       with a physical interface
@@ -5708,7 +5708,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5717,7 +5717,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface
       responses:
@@ -5738,7 +5738,7 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5763,7 +5763,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config
       responses:
@@ -5783,7 +5783,7 @@ paths:
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5808,7 +5808,7 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
     description: Operational state data for logical interfaces
     get:
       operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State
@@ -5822,7 +5822,7 @@ paths:
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5839,7 +5839,7 @@ paths:
       in: path
       name: index
       required: true
-  /devicesim/v1.0.0/{target}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters:
     description: A collection of interface-related statistics objects.
     get:
       operationId: getInterfaces_Interface_Subinterfaces_Subinterface_State_Counters
@@ -5853,7 +5853,7 @@ paths:
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -5870,7 +5870,7 @@ paths:
       in: path
       name: index
       required: true
-  /devicesim/v1.0.0/{target}/system:
+  /devicesim/v1.0.x/{device-id}/system:
     delete:
       operationId: deleteSystem
       responses:
@@ -5891,7 +5891,7 @@ paths:
           description: GET OK 200
       summary: GET /system Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem
       requestBody:
@@ -5900,7 +5900,7 @@ paths:
         "201":
           description: created
       summary: POST /system
-  /devicesim/v1.0.0/{target}/system/aaa:
+  /devicesim/v1.0.x/{device-id}/system/aaa:
     delete:
       operationId: deleteSystem_Aaa
       responses:
@@ -5919,7 +5919,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa
       requestBody:
@@ -5928,7 +5928,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa
-  /devicesim/v1.0.0/{target}/system/aaa/accounting:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting:
     delete:
       operationId: deleteSystem_Aaa_Accounting
       responses:
@@ -5947,7 +5947,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Accounting
       requestBody:
@@ -5956,7 +5956,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Config
       responses:
@@ -5975,7 +5975,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Accounting_Config
       requestBody:
@@ -5984,7 +5984,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/config
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/events:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events
       responses:
@@ -6005,7 +6005,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Accounting_Events
       requestBody:
@@ -6014,7 +6014,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event:
     description: List of events subject to accounting
     get:
       operationId: getSystem_Aaa_Accounting_Events_Event_List
@@ -6027,8 +6027,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events_Event
       responses:
@@ -6047,7 +6047,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6064,7 +6064,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events_Event_Config
       responses:
@@ -6083,7 +6083,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6100,7 +6100,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event/{event-type}/config
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/events/event/{event-type}/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/state:
     description: Operational state data for accounting events
     get:
       operationId: getSystem_Aaa_Accounting_Events_Event_State
@@ -6113,7 +6113,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6122,7 +6122,7 @@ paths:
       in: path
       name: event-type
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/accounting/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/state:
     description: Operational state data for user accounting.
     get:
       operationId: getSystem_Aaa_Accounting_State
@@ -6135,8 +6135,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/authentication:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication:
     delete:
       operationId: deleteSystem_Aaa_Authentication
       responses:
@@ -6155,7 +6155,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authentication
       requestBody:
@@ -6164,7 +6164,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user
       responses:
@@ -6185,7 +6185,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authentication_Admin-user
       requestBody:
@@ -6194,7 +6194,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user_Config
       responses:
@@ -6213,7 +6213,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authentication_Admin-user_Config
       requestBody:
@@ -6222,7 +6222,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user/config
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/admin-user/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user/state:
     description: Operational state data for the root user account
     get:
       operationId: getSystem_Aaa_Authentication_Admin-user_State
@@ -6235,8 +6235,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/config:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Config
       responses:
@@ -6255,7 +6255,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authentication_Config
       requestBody:
@@ -6264,7 +6264,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/config
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/state:
     description: |-
       Operational state data for global authentication
       services
@@ -6279,8 +6279,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/users:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users
       responses:
@@ -6299,7 +6299,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authentication_Users
       requestBody:
@@ -6308,7 +6308,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user:
     description: List of local users on the system
     get:
       operationId: getSystem_Aaa_Authentication_Users_User_List
@@ -6321,8 +6321,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users_User
       responses:
@@ -6341,7 +6341,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6358,7 +6358,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users_User_Config
       responses:
@@ -6377,7 +6377,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6394,7 +6394,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user/{username}/config
-  /devicesim/v1.0.0/{target}/system/aaa/authentication/users/user/{username}/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/state:
     description: Operational state data for local users
     get:
       operationId: getSystem_Aaa_Authentication_Users_User_State
@@ -6407,7 +6407,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6416,7 +6416,7 @@ paths:
       in: path
       name: username
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/authorization:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization:
     delete:
       operationId: deleteSystem_Aaa_Authorization
       responses:
@@ -6437,7 +6437,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authorization
       requestBody:
@@ -6446,7 +6446,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Config
       responses:
@@ -6467,7 +6467,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authorization_Config
       requestBody:
@@ -6476,7 +6476,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/config
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/events:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events
       responses:
@@ -6497,7 +6497,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Authorization_Events
       requestBody:
@@ -6506,7 +6506,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event:
     description: List of events subject to AAA authorization
     get:
       operationId: getSystem_Aaa_Authorization_Events_Event_List
@@ -6519,8 +6519,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events_Event
       responses:
@@ -6539,7 +6539,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6556,7 +6556,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events_Event_Config
       responses:
@@ -6575,7 +6575,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6592,7 +6592,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event/{event-type}/config
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/events/event/{event-type}/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/state:
     description: Operational state data for each authorized activity
     get:
       operationId: getSystem_Aaa_Authorization_Events_Event_State
@@ -6605,7 +6605,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6614,7 +6614,7 @@ paths:
       in: path
       name: event-type
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/authorization/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/state:
     description: Operational state data for authorization based on AAA
     get:
       operationId: getSystem_Aaa_Authorization_State
@@ -6627,8 +6627,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/config:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/config:
     delete:
       operationId: deleteSystem_Aaa_Config
       responses:
@@ -6647,7 +6647,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Config
       requestBody:
@@ -6656,7 +6656,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/config
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups:
     delete:
       operationId: deleteSystem_Aaa_Server-groups
       responses:
@@ -6675,7 +6675,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Aaa_Server-groups
       requestBody:
@@ -6684,7 +6684,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group:
     description: |-
       List of AAA server groups.  All servers in a group
       must have the same type as indicated by the server
@@ -6700,8 +6700,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group
       responses:
@@ -6723,7 +6723,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6740,7 +6740,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Config
       responses:
@@ -6759,7 +6759,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6776,7 +6776,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/config
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers
       responses:
@@ -6795,7 +6795,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6812,7 +6812,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server:
     description: List of AAA servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_List
@@ -6825,7 +6825,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6834,7 +6834,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server
       responses:
@@ -6853,7 +6853,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6878,7 +6878,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
       responses:
@@ -6898,7 +6898,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6923,7 +6923,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
       responses:
@@ -6943,7 +6943,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -6968,7 +6968,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
       responses:
@@ -6988,7 +6988,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7013,7 +7013,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
     description: Operational state data for RADIUS servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
@@ -7027,7 +7027,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7044,7 +7044,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters:
     description: A collection of RADIUS related state objects.
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_State_Counters
@@ -7058,7 +7058,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7075,7 +7075,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/state:
     description: 'Operational state data '
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_State
@@ -7089,7 +7089,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7106,7 +7106,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
       responses:
@@ -7126,7 +7126,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7151,7 +7151,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
       responses:
@@ -7171,7 +7171,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7196,7 +7196,7 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
     description: Operational state data for TACACS+ server
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_State
@@ -7210,7 +7210,7 @@ paths:
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7227,7 +7227,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/server-groups/server-group/{name}/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/state:
     description: Operational state data for each server group
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_State
@@ -7240,7 +7240,7 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7249,7 +7249,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/system/aaa/state:
+  /devicesim/v1.0.x/{device-id}/system/aaa/state:
     description: 'Operational state data for top level AAA services '
     get:
       operationId: getSystem_Aaa_State
@@ -7262,8 +7262,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/clock:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/clock:
     delete:
       operationId: deleteSystem_Clock
       responses:
@@ -7282,7 +7282,7 @@ paths:
           description: GET OK 200
       summary: GET /system/clock Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Clock
       requestBody:
@@ -7291,7 +7291,7 @@ paths:
         "201":
           description: created
       summary: POST /system/clock
-  /devicesim/v1.0.0/{target}/system/clock/config:
+  /devicesim/v1.0.x/{device-id}/system/clock/config:
     delete:
       operationId: deleteSystem_Clock_Config
       responses:
@@ -7310,7 +7310,7 @@ paths:
           description: GET OK 200
       summary: GET /system/clock/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Clock_Config
       requestBody:
@@ -7319,7 +7319,7 @@ paths:
         "201":
           description: created
       summary: POST /system/clock/config
-  /devicesim/v1.0.0/{target}/system/clock/state:
+  /devicesim/v1.0.x/{device-id}/system/clock/state:
     description: Operational state data for system clock
     get:
       operationId: getSystem_Clock_State
@@ -7332,8 +7332,8 @@ paths:
           description: GET OK 200
       summary: GET /system/clock/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/config:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/config:
     delete:
       operationId: deleteSystem_Config
       responses:
@@ -7352,7 +7352,7 @@ paths:
           description: GET OK 200
       summary: GET /system/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Config
       requestBody:
@@ -7361,7 +7361,7 @@ paths:
         "201":
           description: created
       summary: POST /system/config
-  /devicesim/v1.0.0/{target}/system/dns:
+  /devicesim/v1.0.x/{device-id}/system/dns:
     delete:
       operationId: deleteSystem_Dns
       responses:
@@ -7380,7 +7380,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Dns
       requestBody:
@@ -7389,7 +7389,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns
-  /devicesim/v1.0.0/{target}/system/dns/config:
+  /devicesim/v1.0.x/{device-id}/system/dns/config:
     delete:
       operationId: deleteSystem_Dns_Config
       responses:
@@ -7408,7 +7408,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Dns_Config
       requestBody:
@@ -7417,7 +7417,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/config
-  /devicesim/v1.0.0/{target}/system/dns/host-entries:
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries:
     delete:
       operationId: deleteSystem_Dns_Host-entries
       responses:
@@ -7436,7 +7436,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Dns_Host-entries
       requestBody:
@@ -7445,7 +7445,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries
-  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry:
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry:
     description: List of static host entries
     get:
       operationId: getSystem_Dns_Host-entries_Host-entry_List
@@ -7458,8 +7458,8 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}:
     delete:
       operationId: deleteSystem_Dns_Host-entries_Host-entry
       responses:
@@ -7478,7 +7478,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7495,7 +7495,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry
-  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/config:
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/config:
     delete:
       operationId: deleteSystem_Dns_Host-entries_Host-entry_Config
       responses:
@@ -7514,7 +7514,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7531,7 +7531,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry/{hostname}/config
-  /devicesim/v1.0.0/{target}/system/dns/host-entries/host-entry/{hostname}/state:
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/state:
     description: Operational state data for static host entries
     get:
       operationId: getSystem_Dns_Host-entries_Host-entry_State
@@ -7544,7 +7544,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7553,7 +7553,7 @@ paths:
       in: path
       name: hostname
       required: true
-  /devicesim/v1.0.0/{target}/system/dns/servers:
+  /devicesim/v1.0.x/{device-id}/system/dns/servers:
     delete:
       operationId: deleteSystem_Dns_Servers
       responses:
@@ -7572,7 +7572,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/servers Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Dns_Servers
       requestBody:
@@ -7581,7 +7581,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers
-  /devicesim/v1.0.0/{target}/system/dns/servers/server:
+  /devicesim/v1.0.x/{device-id}/system/dns/servers/server:
     description: |-
       List of the DNS servers that the resolver should query.
 
@@ -7608,8 +7608,8 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/servers/server List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}:
     delete:
       operationId: deleteSystem_Dns_Servers_Server
       responses:
@@ -7642,7 +7642,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/servers/server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7659,7 +7659,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server
-  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/config:
+  /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Dns_Servers_Server_Config
       responses:
@@ -7678,7 +7678,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7695,7 +7695,7 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server/{address}/config
-  /devicesim/v1.0.0/{target}/system/dns/servers/server/{address}/state:
+  /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/state:
     description: Operational state data for each DNS resolver
     get:
       operationId: getSystem_Dns_Servers_Server_State
@@ -7708,7 +7708,7 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7717,7 +7717,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/dns/state:
+  /devicesim/v1.0.x/{device-id}/system/dns/state:
     description: Operational state data for the DNS resolver
     get:
       operationId: getSystem_Dns_State
@@ -7730,8 +7730,8 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/logging:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/logging:
     delete:
       operationId: deleteSystem_Logging
       responses:
@@ -7750,7 +7750,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Logging
       requestBody:
@@ -7759,7 +7759,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging
-  /devicesim/v1.0.0/{target}/system/logging/console:
+  /devicesim/v1.0.x/{device-id}/system/logging/console:
     delete:
       operationId: deleteSystem_Logging_Console
       responses:
@@ -7780,7 +7780,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Logging_Console
       requestBody:
@@ -7789,7 +7789,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console
-  /devicesim/v1.0.0/{target}/system/logging/console/config:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/config:
     delete:
       operationId: deleteSystem_Logging_Console_Config
       responses:
@@ -7808,7 +7808,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Logging_Console_Config
       requestBody:
@@ -7817,7 +7817,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/config
-  /devicesim/v1.0.0/{target}/system/logging/console/selectors:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors
       responses:
@@ -7836,7 +7836,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Logging_Console_Selectors
       requestBody:
@@ -7845,7 +7845,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors
-  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector:
     description: List of selectors for log messages
     get:
       operationId: getSystem_Logging_Console_Selectors_Selector_List
@@ -7858,8 +7858,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors_Selector
       responses:
@@ -7878,7 +7878,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7903,7 +7903,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector
-  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/config:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/config:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors_Selector_Config
       responses:
@@ -7923,7 +7923,7 @@ paths:
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7948,7 +7948,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector/{facility}/{severity}/config
-  /devicesim/v1.0.0/{target}/system/logging/console/selectors/selector/{facility}/{severity}/state:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
       operationId: getSystem_Logging_Console_Selectors_Selector_State
@@ -7962,7 +7962,7 @@ paths:
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -7979,7 +7979,7 @@ paths:
       in: path
       name: severity
       required: true
-  /devicesim/v1.0.0/{target}/system/logging/console/state:
+  /devicesim/v1.0.x/{device-id}/system/logging/console/state:
     description: Operational state data for console logging
     get:
       operationId: getSystem_Logging_Console_State
@@ -7992,8 +7992,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers:
     delete:
       operationId: deleteSystem_Logging_Remote-servers
       responses:
@@ -8012,7 +8012,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Logging_Remote-servers
       requestBody:
@@ -8021,7 +8021,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server:
     description: List of remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_List
@@ -8034,8 +8034,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server
       responses:
@@ -8054,7 +8054,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8071,7 +8071,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/config:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/config:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config
       responses:
@@ -8090,7 +8090,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8107,7 +8107,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors
       responses:
@@ -8126,7 +8126,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8143,7 +8143,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector:
     description: List of selectors for log messages
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_List
@@ -8157,7 +8157,7 @@ paths:
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8166,7 +8166,7 @@ paths:
       in: path
       name: host
       required: true
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
       responses:
@@ -8186,7 +8186,7 @@ paths:
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8219,7 +8219,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
       responses:
@@ -8239,7 +8239,7 @@ paths:
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8272,7 +8272,7 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_State
@@ -8286,7 +8286,7 @@ paths:
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8311,7 +8311,7 @@ paths:
       in: path
       name: severity
       required: true
-  /devicesim/v1.0.0/{target}/system/logging/remote-servers/remote-server/{host}/state:
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/state:
     description: Operational state data for remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_State
@@ -8324,7 +8324,7 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8333,7 +8333,7 @@ paths:
       in: path
       name: host
       required: true
-  /devicesim/v1.0.0/{target}/system/memory:
+  /devicesim/v1.0.x/{device-id}/system/memory:
     delete:
       operationId: deleteSystem_Memory
       responses:
@@ -8352,7 +8352,7 @@ paths:
           description: GET OK 200
       summary: GET /system/memory Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Memory
       requestBody:
@@ -8361,7 +8361,7 @@ paths:
         "201":
           description: created
       summary: POST /system/memory
-  /devicesim/v1.0.0/{target}/system/memory/config:
+  /devicesim/v1.0.x/{device-id}/system/memory/config:
     delete:
       operationId: deleteSystem_Memory_Config
       responses:
@@ -8380,7 +8380,7 @@ paths:
           description: GET OK 200
       summary: GET /system/memory/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Memory_Config
       requestBody:
@@ -8389,7 +8389,7 @@ paths:
         "201":
           description: created
       summary: POST /system/memory/config
-  /devicesim/v1.0.0/{target}/system/memory/state:
+  /devicesim/v1.0.x/{device-id}/system/memory/state:
     description: Operational state data for system memory
     get:
       operationId: getSystem_Memory_State
@@ -8402,8 +8402,8 @@ paths:
           description: GET OK 200
       summary: GET /system/memory/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/ntp:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/ntp:
     delete:
       operationId: deleteSystem_Ntp
       responses:
@@ -8422,7 +8422,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ntp
       requestBody:
@@ -8431,7 +8431,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp
-  /devicesim/v1.0.0/{target}/system/ntp/config:
+  /devicesim/v1.0.x/{device-id}/system/ntp/config:
     delete:
       operationId: deleteSystem_Ntp_Config
       responses:
@@ -8450,7 +8450,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ntp_Config
       requestBody:
@@ -8459,7 +8459,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/config
-  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys:
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys
       responses:
@@ -8478,7 +8478,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ntp_Ntp-keys
       requestBody:
@@ -8487,7 +8487,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys
-  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key:
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key:
     description: List of NTP authentication keys
     get:
       operationId: getSystem_Ntp_Ntp-keys_Ntp-key_List
@@ -8500,8 +8500,8 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key
       responses:
@@ -8520,7 +8520,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8537,7 +8537,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key
-  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config
       responses:
@@ -8556,7 +8556,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8573,7 +8573,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key/{key-id}/config
-  /devicesim/v1.0.0/{target}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
     description: Operational state data for NTP auth keys
     get:
       operationId: getSystem_Ntp_Ntp-keys_Ntp-key_State
@@ -8586,7 +8586,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8595,7 +8595,7 @@ paths:
       in: path
       name: key-id
       required: true
-  /devicesim/v1.0.0/{target}/system/ntp/servers:
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers:
     delete:
       operationId: deleteSystem_Ntp_Servers
       responses:
@@ -8614,7 +8614,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/servers Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ntp_Servers
       requestBody:
@@ -8623,7 +8623,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers
-  /devicesim/v1.0.0/{target}/system/ntp/servers/server:
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers/server:
     description: |-
       List of NTP servers to use for system clock
       synchronization.  If '/system/ntp/enabled'
@@ -8640,8 +8640,8 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/servers/server List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}:
     delete:
       operationId: deleteSystem_Ntp_Servers_Server
       responses:
@@ -8664,7 +8664,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/servers/server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8681,7 +8681,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server
-  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/config:
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Ntp_Servers_Server_Config
       responses:
@@ -8700,7 +8700,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8717,7 +8717,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server/{address}/config
-  /devicesim/v1.0.0/{target}/system/ntp/servers/server/{address}/state:
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/state:
     description: Operational state data for an NTP server.
     get:
       operationId: getSystem_Ntp_Servers_Server_State
@@ -8730,7 +8730,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8739,7 +8739,7 @@ paths:
       in: path
       name: address
       required: true
-  /devicesim/v1.0.0/{target}/system/ntp/state:
+  /devicesim/v1.0.x/{device-id}/system/ntp/state:
     description: Operational state data for NTP services.
     get:
       operationId: getSystem_Ntp_State
@@ -8752,8 +8752,8 @@ paths:
           description: GET OK 200
       summary: GET /system/ntp/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/openflow:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/openflow:
     delete:
       operationId: deleteSystem_Openflow
       responses:
@@ -8772,7 +8772,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Openflow
       requestBody:
@@ -8781,7 +8781,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow
-  /devicesim/v1.0.0/{target}/system/openflow/agent:
+  /devicesim/v1.0.x/{device-id}/system/openflow/agent:
     delete:
       operationId: deleteSystem_Openflow_Agent
       responses:
@@ -8800,7 +8800,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/agent Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Openflow_Agent
       requestBody:
@@ -8809,7 +8809,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent
-  /devicesim/v1.0.0/{target}/system/openflow/agent/config:
+  /devicesim/v1.0.x/{device-id}/system/openflow/agent/config:
     delete:
       operationId: deleteSystem_Openflow_Agent_Config
       responses:
@@ -8828,7 +8828,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/agent/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Openflow_Agent_Config
       requestBody:
@@ -8837,7 +8837,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent/config
-  /devicesim/v1.0.0/{target}/system/openflow/agent/state:
+  /devicesim/v1.0.x/{device-id}/system/openflow/agent/state:
     description: Container for the Openflow agent state.
     get:
       operationId: getSystem_Openflow_Agent_State
@@ -8850,8 +8850,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/agent/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/openflow/controllers:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers:
     delete:
       operationId: deleteSystem_Openflow_Controllers
       responses:
@@ -8870,7 +8870,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Openflow_Controllers
       requestBody:
@@ -8879,7 +8879,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller:
     description: |-
       The Openflow Switch connects to all Openflow controllers
       configured
@@ -8894,8 +8894,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller
       responses:
@@ -8916,7 +8916,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8933,7 +8933,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/config:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Config
       responses:
@@ -8952,7 +8952,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -8969,7 +8969,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/config
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections
       responses:
@@ -8988,7 +8988,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9005,7 +9005,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection:
     description: |-
       List of connections to the OpenFlow controller.
       The Openflow switch always connects to configured Openflow
@@ -9023,7 +9023,7 @@ paths:
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         List
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9032,7 +9032,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection
       responses:
@@ -9056,7 +9056,7 @@ paths:
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9081,7 +9081,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config
       responses:
@@ -9101,7 +9101,7 @@ paths:
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9126,7 +9126,7 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state:
     description: |-
       Operational state data for OpenFlow controller
       connections
@@ -9142,7 +9142,7 @@ paths:
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state
         Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9159,7 +9159,7 @@ paths:
       in: path
       name: aux-id
       required: true
-  /devicesim/v1.0.0/{target}/system/openflow/controllers/controller/{name}/state:
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/state:
     description: Container for the Openflow controller state.
     get:
       operationId: getSystem_Openflow_Controllers_Controller_State
@@ -9172,7 +9172,7 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9181,7 +9181,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.0/{target}/system/processes:
+  /devicesim/v1.0.x/{device-id}/system/processes:
     delete:
       operationId: deleteSystem_Processes
       responses:
@@ -9200,7 +9200,7 @@ paths:
           description: GET OK 200
       summary: GET /system/processes Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Processes
       requestBody:
@@ -9209,7 +9209,7 @@ paths:
         "201":
           description: created
       summary: POST /system/processes
-  /devicesim/v1.0.0/{target}/system/processes/process:
+  /devicesim/v1.0.x/{device-id}/system/processes/process:
     description: List of monitored processes
     get:
       operationId: getSystem_Processes_Process_List
@@ -9222,8 +9222,8 @@ paths:
           description: GET OK 200
       summary: GET /system/processes/process List
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/processes/process/{pid}:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}:
     description: List of monitored processes
     get:
       operationId: getSystem_Processes_Process
@@ -9236,7 +9236,7 @@ paths:
           description: GET OK 200
       summary: GET /system/processes/process Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9245,7 +9245,7 @@ paths:
       in: path
       name: pid
       required: true
-  /devicesim/v1.0.0/{target}/system/processes/process/{pid}/state:
+  /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}/state:
     description: State parameters related to monitored processes
     get:
       operationId: getSystem_Processes_Process_State
@@ -9258,7 +9258,7 @@ paths:
           description: GET OK 200
       summary: GET /system/processes/process/{pid}/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     - content:
         text/plain; charset=utf-8:
           schema:
@@ -9267,7 +9267,7 @@ paths:
       in: path
       name: pid
       required: true
-  /devicesim/v1.0.0/{target}/system/ssh-server:
+  /devicesim/v1.0.x/{device-id}/system/ssh-server:
     delete:
       operationId: deleteSystem_Ssh-server
       responses:
@@ -9286,7 +9286,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ssh-server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ssh-server
       requestBody:
@@ -9295,7 +9295,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server
-  /devicesim/v1.0.0/{target}/system/ssh-server/config:
+  /devicesim/v1.0.x/{device-id}/system/ssh-server/config:
     delete:
       operationId: deleteSystem_Ssh-server_Config
       responses:
@@ -9314,7 +9314,7 @@ paths:
           description: GET OK 200
       summary: GET /system/ssh-server/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Ssh-server_Config
       requestBody:
@@ -9323,7 +9323,7 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server/config
-  /devicesim/v1.0.0/{target}/system/ssh-server/state:
+  /devicesim/v1.0.x/{device-id}/system/ssh-server/state:
     description: Operational state data for the system ssh server
     get:
       operationId: getSystem_Ssh-server_State
@@ -9336,8 +9336,8 @@ paths:
           description: GET OK 200
       summary: GET /system/ssh-server/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/state:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/state:
     description: Global operational state data for the system
     get:
       operationId: getSystem_State
@@ -9350,8 +9350,8 @@ paths:
           description: GET OK 200
       summary: GET /system/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
-  /devicesim/v1.0.0/{target}/system/telnet-server:
+    - $ref: '#/components/parameters/device-id'
+  /devicesim/v1.0.x/{device-id}/system/telnet-server:
     delete:
       operationId: deleteSystem_Telnet-server
       responses:
@@ -9370,7 +9370,7 @@ paths:
           description: GET OK 200
       summary: GET /system/telnet-server Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Telnet-server
       requestBody:
@@ -9379,7 +9379,7 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server
-  /devicesim/v1.0.0/{target}/system/telnet-server/config:
+  /devicesim/v1.0.x/{device-id}/system/telnet-server/config:
     delete:
       operationId: deleteSystem_Telnet-server_Config
       responses:
@@ -9398,7 +9398,7 @@ paths:
           description: GET OK 200
       summary: GET /system/telnet-server/config Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
     post:
       operationId: postSystem_Telnet-server_Config
       requestBody:
@@ -9407,7 +9407,7 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server/config
-  /devicesim/v1.0.0/{target}/system/telnet-server/state:
+  /devicesim/v1.0.x/{device-id}/system/telnet-server/state:
     description: Operational state data for telnet
     get:
       operationId: getSystem_Telnet-server_State
@@ -9420,4 +9420,4 @@ paths:
           description: GET OK 200
       summary: GET /system/telnet-server/state Container
     parameters:
-    - $ref: '#/components/parameters/target'
+    - $ref: '#/components/parameters/device-id'
