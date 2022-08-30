@@ -8,9 +8,9 @@
 SHELL = bash -e -o pipefail
 DOCKER_REPOSITORY ?= onosproject/
 BASE_VERSION ?= $(shell cat ./VERSION)
-VERSION           ?= ${BASE_VERSION}-devicesim-1.0.0
+VERSION           ?= ${BASE_VERSION}-devicesim-1.0.x
 LATEST_VERSION           ?= ${BASE_VERSION}-devicesim-latest
-GO_TAG ?= models/devicesim-1.0.0/v${BASE_VERSION}
+GO_TAG ?= models/devicesim-1.0.x/v${BASE_VERSION}
 KIND_CLUSTER_NAME ?= kind
 PLATFORM ?= --platform linux/x86_64
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
@@ -77,7 +77,7 @@ ifeq ($(IS_RELEASED_VERSION), true)
 	git tag ${GO_TAG}
 	git push origin ${GO_TAG}
 else
-	@echo "devicesim-1.0.0: Not a released version, skip tagging"
+	@echo "devicesim-1.0.x: Not a released version, skip tagging"
 endif
 
 check-tag:
@@ -88,7 +88,7 @@ ifeq ($(IS_RELEASED_VERSION), true)
 		exit 2; \
 	fi
 else
-	@echo "devicesim-1.0.0: Not a released version, skip tag check"
+	@echo "devicesim-1.0.x: Not a released version, skip tag check"
 endif
 
 

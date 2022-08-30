@@ -3,9 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: devicesim
-version: 1.0.0
+version: 1.0.x
 artifactName: devicesim
-goPackage: github.com/onosproject/config-models/models/devicesim
+goPackage: github.com/onosproject/config-models/models/devicesim-1.0.x
+openAPITargetAlias: device-id
 modules:
   - name: openconfig-interfaces
     organization: OpenConfig working group

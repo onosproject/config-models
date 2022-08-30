@@ -9,7 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/ghodss/yaml"
-	"github.com/onosproject/config-models/models/devicesim/api"
+	"github.com/onosproject/config-models/models/devicesim-1.0.x/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
 	"io/ioutil"
 	"os"
@@ -28,9 +28,9 @@ func main() {
 
 	settings := openapi_gen.ApiGenSettings{
 		ModelType:    "devicesim",
-		ModelVersion: "1.0.0",
-		Title:        "devicesim-1.0.0",
-		TargetAlias:  "",
+		ModelVersion: "1.0.x",
+		Title:        "devicesim-1.0.x",
+		TargetAlias:  "device-id",
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)
