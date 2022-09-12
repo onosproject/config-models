@@ -13,11 +13,14 @@ import (
 	"github.com/onosproject/onos-lib-go/pkg/errors"
 	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
+	"os"
 	"sort"
 	"strings"
 )
 
 var log = logging.GetLogger("utils", "pathWithIdx")
+
+const NotPrefixed = "NOTPREFIXED"
 
 var roPaths []*admin.ReadOnlyPath
 var rwPaths []*admin.ReadWritePath
@@ -70,7 +73,7 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				itemPathParts := strings.Split(itemPath, "/")
 				attrName := itemPathParts[len(itemPathParts)-1]
 				for _, k := range keyNames {
-					if strings.EqualFold(attrName, k) {
+					if strings.EqualFold(stripNamespace(attrName), k) {
 						tObj.IsAKey = true
 						break
 					}
@@ -218,6 +221,10 @@ func formatNameAsPath(dirEntry *yang.Entry, parentPath string, subpathPrefix str
 
 func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 	name := dirEntry.Name
+	_, notPrefixed := os.LookupEnv(NotPrefixed)
+	if !notPrefixed && dirEntry.Prefix != nil {
+		name = fmt.Sprintf("%s:%s", dirEntry.Prefix.Name, dirEntry.Name)
+	}
 	if dirEntry.IsList() {
 		//have to ensure index order is consistent where there's more than one
 		keyParts := strings.Split(dirEntry.Key, " ")
@@ -225,6 +232,9 @@ func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 			return keyParts[i] < keyParts[j]
 		})
 		for _, k := range keyParts {
+			if !notPrefixed && dirEntry.Prefix != nil {
+				k = fmt.Sprintf("%s:%s", dirEntry.Prefix.Name, k)
+			}
 			name += fmt.Sprintf("[%s=*]", k)
 		}
 	}

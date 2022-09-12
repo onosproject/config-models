@@ -15,6 +15,20 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	oldValue, oldSet := os.LookupEnv(NotPrefixed)
+	if oldSet {
+		if err := os.Unsetenv(NotPrefixed); err != nil {
+			panic(err)
+		}
+	}
+	defer func() {
+		if oldSet {
+			os.Setenv(NotPrefixed, oldValue)
+		} else {
+			os.Unsetenv(NotPrefixed)
+		}
+	}()
+
 	var err error
 	schemaTree, err := ygot.GzipToSchema(testdevice10XSchema)
 	if err != nil {
@@ -32,6 +46,107 @@ func TestMain(m *testing.M) {
 }
 
 func Test_ExtractPaths(t *testing.T) {
+	assert.Equal(t, 2, len(roPaths))
+	for _, roPath := range roPaths {
+		switch path := roPath.Path; path {
+		case "/t1:cont1a/t1:cont2a/t1:leaf2c":
+			assert.Equal(t, 1, len(roPath.SubPath))
+			sp := roPath.SubPath[0]
+			assert.Equal(t, "leaf2c", sp.AttrName)
+		case "/t1:cont1b-state":
+			assert.Equal(t, 3, len(roPath.SubPath))
+			for _, sp := range roPath.SubPath {
+				switch subPath := sp.SubPath; subPath {
+				case "/t1:leaf2d":
+					assert.Equal(t, "leaf2d", sp.AttrName)
+				case "/t1:list2b[t1:index=*]/t1:index":
+					assert.Equal(t, "index", sp.AttrName)
+				case "/t1:list2b[t1:index=*]/t1:leaf3c":
+					assert.Equal(t, "leaf3c", sp.AttrName)
+				default:
+					t.Fatalf("unexpected subpath %s for RO path %s", subPath, path)
+				}
+			}
+		default:
+			t.Fatalf("unexpected RO path %s", path)
+		}
+	}
+
+	assert.Equal(t, 21, len(rwPaths))
+	for _, rwPath := range rwPaths {
+		switch path := rwPath.Path; path {
+		case "/t1:leafAtTopLevel":
+			assert.Equal(t, "leafAtTopLevel", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2a":
+			assert.Equal(t, "leaf2a", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2b":
+			assert.Equal(t, "leaf2b", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2d":
+			assert.Equal(t, "leaf2d", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2e":
+			assert.Equal(t, "leaf2e", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2f":
+			assert.Equal(t, "leaf2f", rwPath.AttrName)
+		case "/t1:cont1a/t1:cont2a/t1:leaf2g":
+			assert.Equal(t, "leaf2g", rwPath.AttrName)
+		case "/t1:cont1a/t1:leaf1a":
+			assert.Equal(t, "leaf1a", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:id":
+			assert.Equal(t, "id", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:leaf4b":
+			assert.Equal(t, "leaf4b", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:fkey1":
+			assert.Equal(t, "fkey1", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:fkey2":
+			assert.Equal(t, "fkey2", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:displayname":
+			assert.Equal(t, "displayname", rwPath.AttrName)
+		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:name":
+			assert.Equal(t, "name", rwPath.AttrName)
+		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:tx-power":
+			assert.Equal(t, "tx-power", rwPath.AttrName)
+		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:ref2d":
+			assert.Equal(t, "ref2d", rwPath.AttrName)
+		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:range-min":
+			assert.Equal(t, "range-min", rwPath.AttrName)
+		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:range-max":
+			assert.Equal(t, "range-max", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:key1":
+			assert.Equal(t, "key1", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:key2":
+			assert.Equal(t, "key2", rwPath.AttrName)
+		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:leaf5a":
+			assert.Equal(t, "leaf5a", rwPath.AttrName)
+		default:
+			t.Fatalf("unexpected RW path %s", path)
+		}
+	}
+}
+
+func Test_ExtractPaths_NotPrefixed(t *testing.T) {
+	if err := os.Setenv(NotPrefixed, NotPrefixed); err != nil {
+		assert.NoError(t, err)
+	}
+	schemaTree, err := ygot.GzipToSchema(testdevice10XSchema)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+
+	roPaths, rwPaths = ExtractPaths(schemaTree)
+	if err != nil {
+		assert.NoError(t, err)
+	}
+
+	defer func() {
+		if err := os.Unsetenv(NotPrefixed); err != nil {
+			assert.NoError(t, err)
+		}
+		roPaths, rwPaths = ExtractPaths(schemaTree)
+		if err != nil {
+			assert.NoError(t, err)
+		}
+	}()
+
 	assert.Equal(t, 2, len(roPaths))
 	for _, roPath := range roPaths {
 		switch path := roPath.Path; path {
