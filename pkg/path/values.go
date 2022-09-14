@@ -87,7 +87,7 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 			for _, obj := range objs {
 				isIndex := false
 				for i, idxName := range indexNames {
-					if removePathIndices(obj.Path) == fmt.Sprintf("%s/%s", removePathIndices(parentPath), idxName) {
+					if stripNamespace(removePathIndices(obj.Path)) == fmt.Sprintf("%s/%s", removePathIndices(parentPath), idxName) {
 						indices = append(indices, indexValue{name: idxName, value: &obj.Value, order: i})
 						isIndex = true
 						break
@@ -436,9 +436,9 @@ func handleAttributeLeafList(modeltype configapi.ValueType,
 
 func findModelRwPathNoIndices(searchpath string) (*admin.ReadWritePath, string, bool) {
 	searchpath = removeDoubleSlash(searchpath)
-	searchpathNoIndices := removePathIndices(searchpath)
+	searchpathNoIndices := stripNamespace(removePathIndices(searchpath))
 	for _, rwPath := range rwPaths {
-		if removePathIndices(rwPath.Path) == searchpathNoIndices {
+		if stripNamespace(removePathIndices(rwPath.Path)) == searchpathNoIndices {
 			pathWithNumericalIdx, err := insertNumericalIndices(rwPath.Path, searchpath)
 			if err != nil {
 				return nil, fmt.Sprintf("could not replace wildcards in model pathWithIdx with numerical ids %v", err), false
@@ -450,7 +450,7 @@ func findModelRwPathNoIndices(searchpath string) (*admin.ReadWritePath, string, 
 }
 
 func findModelRoPathNoIndices(searchpath string) (*admin.ReadOnlySubPath, string, bool) {
-	searchpathNoIndices := removePathIndices(searchpath)
+	searchpathNoIndices := stripNamespace(removePathIndices(searchpath))
 	for _, roPath := range roPaths {
 		for _, subpathValue := range roPath.SubPath {
 			var fullpath string
@@ -459,7 +459,7 @@ func findModelRoPathNoIndices(searchpath string) (*admin.ReadOnlySubPath, string
 			} else {
 				fullpath = fmt.Sprintf("%s%s", roPath.Path, subpathValue.SubPath)
 			}
-			if removePathIndices(fullpath) == searchpathNoIndices {
+			if stripNamespace(removePathIndices(fullpath)) == searchpathNoIndices {
 				pathWithNumericalIdx, err := insertNumericalIndices(fullpath, searchpath)
 				if err != nil {
 					return nil, fmt.Sprintf("could not replace wildcards in model pathWithIdx with numerical ids %v", err), false
@@ -476,7 +476,7 @@ func indicesOfPath(searchpath string) []string {
 	searchpathNoIndices := removePathIndices(searchpath)
 	// First search through the RW paths
 	for _, p := range roPaths {
-		pathNoIndices := removePathIndices(p.Path)
+		pathNoIndices := stripNamespace(removePathIndices(p.Path))
 		// Find a short pathWithIdx
 		if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
 			idxNames, _ := ExtractIndexNames(p.Path)

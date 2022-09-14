@@ -20,7 +20,22 @@ import (
 var td20xRoPaths []*admin.ReadOnlyPath
 var td20xRwPaths []*admin.ReadWritePath
 
+const Prefixed = "PREFIXED"
+
 func TestMain(m *testing.M) {
+	oldValue, wasPreviouslySet := os.LookupEnv(Prefixed)
+	if !wasPreviouslySet {
+		if err := os.Setenv(Prefixed, Prefixed); err != nil {
+			panic(err)
+		}
+	}
+	defer func() {
+		if wasPreviouslySet {
+			os.Setenv(Prefixed, oldValue)
+		} else {
+			os.Unsetenv(Prefixed)
+		}
+	}()
 	var err error
 	schemaTree, err := ygot.GzipToSchema(testdevice20XSchema)
 	if err != nil {
@@ -40,11 +55,11 @@ func TestMain(m *testing.M) {
 func Test_ExtractPaths(t *testing.T) {
 	for _, roPath := range td20xRoPaths {
 		switch path := roPath.Path; path {
-		case "/cont1a/cont2a/leaf2c":
+		case "/t1:cont1a/cont2a/leaf2c":
 			assert.Equal(t, 1, len(roPath.SubPath))
 			sp := roPath.SubPath[0]
 			assert.Equal(t, "leaf2c", sp.AttrName)
-		case "/cont1b-state":
+		case "/t1:cont1b-state":
 			assert.Equal(t, 7, len(roPath.SubPath))
 			for _, sp := range roPath.SubPath {
 				switch subPath := sp.SubPath; subPath {
@@ -86,40 +101,40 @@ func Test_GetPathValuesConfig(t *testing.T) {
 	for _, pathValue := range pathValues {
 		value := pathValue.GetValue()
 		switch path := pathValue.Path; path {
-		case `/cont1a/cont2a/leaf2a`:
+		case `/t1:cont1a/cont2a/leaf2a`:
 			assert.Equal(t, "1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/cont1a/cont2a/leaf2b":
+		case "/t1:cont1a/cont2a/leaf2b":
 			assert.Equal(t, "0.432", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
-		case "/cont1a/cont2a/leaf2e":
+		case "/t1:cont1a/cont2a/leaf2e":
 			assert.Equal(t, "[5 4 3 2 1] 32", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_LEAFLIST_INT, (&value).Type)
-		case "/cont1a/cont2a/leaf2f":
+		case "/t1:cont1a/cont2a/leaf2f":
 			assert.Equal(t, "dGhpcyBpcyBhIHRlc3QgdGVzdAo=", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_BYTES, (&value).Type)
-		case "/cont1a/cont2a/leaf2g":
+		case "/t1:cont1a/cont2a/leaf2g":
 			assert.Equal(t, "true", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_BOOL, (&value).Type)
-		case "/cont1a/leaf1a":
+		case "/t1:cont1a/leaf1a":
 			assert.Equal(t, "leaf1aval", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/cont1a/list2a[name=0]/name":
+		case "/t1:cont1a/list2a[name=0]/name":
 			assert.Equal(t, "l2a1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/cont1a/list2a[name=0]/tx-power":
+		case "/t1:cont1a/list2a[name=0]/tx-power":
 			assert.Equal(t, "5", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/cont1a/list2a[name=0]/rx-power":
+		case "/t1:cont1a/list2a[name=0]/rx-power":
 			assert.Equal(t, "25", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/cont1a/list2a[name=1]/name":
+		case "/t1:cont1a/list2a[name=1]/name":
 			assert.Equal(t, "l2a2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/cont1a/list2a[name=1]/tx-power":
+		case "/t1:cont1a/list2a[name=1]/tx-power":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/cont1a/list2a[name=1]/rx-power":
+		case "/t1:cont1a/list2a[name=1]/rx-power":
 			assert.Equal(t, "26", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
 		default:
@@ -140,40 +155,40 @@ func Test_GetPathValuesOpstate(t *testing.T) {
 	for _, pathValue := range pathValues {
 		value := pathValue.GetValue()
 		switch path := pathValue.Path; path {
-		case `/cont1a/cont2a/leaf2c`:
+		case `/t1:cont1a/cont2a/leaf2c`:
 			assert.Equal(t, "Mock leaf2c value", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case `/cont1b-state/leaf2d`:
+		case `/t1:cont1b-state/leaf2d`:
 			assert.Equal(t, "10001", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case `/cont1b-state/cont2c/leaf3a`:
+		case `/t1:cont1b-state/cont2c/leaf3a`:
 			assert.Equal(t, "true", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_BOOL, (&value).Type)
-		case `/cont1b-state/cont2c/leaf3b`:
+		case `/t1:cont1b-state/cont2c/leaf3b`:
 			assert.Equal(t, "l3bvalue", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case `/cont1b-state/list2b[index1=0][index2=*]/index1`:
+		case `/t1:cont1b-state/list2b[index1=0][index2=*]/index1`:
 			assert.Equal(t, "101", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case `/cont1b-state/list2b[index1=0][index2=*]/index2`:
+		case `/t1:cont1b-state/list2b[index1=0][index2=*]/index2`:
 			assert.Equal(t, "102", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case `/cont1b-state/list2b[index1=0][index2=*]/leaf3c`:
+		case `/t1:cont1b-state/list2b[index1=0][index2=*]/leaf3c`:
 			assert.Equal(t, "mock Value in JSON", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case `/cont1b-state/list2b[index1=0][index2=*]/leaf3d`:
+		case `/t1:cont1b-state/list2b[index1=0][index2=*]/leaf3d`:
 			assert.Equal(t, "1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case `/cont1b-state/list2b[index1=1][index2=*]/index1`:
+		case `/t1:cont1b-state/list2b[index1=1][index2=*]/index1`:
 			assert.Equal(t, "101", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case `/cont1b-state/list2b[index1=1][index2=*]/index2`:
+		case `/t1:cont1b-state/list2b[index1=1][index2=*]/index2`:
 			assert.Equal(t, "103", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case `/cont1b-state/list2b[index1=1][index2=*]/leaf3c`:
+		case `/t1:cont1b-state/list2b[index1=1][index2=*]/leaf3c`:
 			assert.Equal(t, "Second mock Value", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case `/cont1b-state/list2b[index1=1][index2=*]/leaf3d`:
+		case `/t1:cont1b-state/list2b[index1=1][index2=*]/leaf3d`:
 			assert.Equal(t, "2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
 		default:
