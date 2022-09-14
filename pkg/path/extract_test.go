@@ -15,17 +15,17 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	oldValue, oldSet := os.LookupEnv(NotPrefixed)
-	if oldSet {
-		if err := os.Unsetenv(NotPrefixed); err != nil {
+	oldValue, oldSet := os.LookupEnv(Prefixed)
+	if !oldSet {
+		if err := os.Setenv(Prefixed, Prefixed); err != nil {
 			panic(err)
 		}
 	}
 	defer func() {
 		if oldSet {
-			os.Setenv(NotPrefixed, oldValue)
+			os.Setenv(Prefixed, oldValue)
 		} else {
-			os.Unsetenv(NotPrefixed)
+			os.Unsetenv(Prefixed)
 		}
 	}()
 
@@ -123,8 +123,8 @@ func Test_ExtractPaths(t *testing.T) {
 	}
 }
 
-func Test_ExtractPaths_NotPrefixed(t *testing.T) {
-	if err := os.Setenv(NotPrefixed, NotPrefixed); err != nil {
+func Test_ExtractPaths_Prefixed(t *testing.T) {
+	if err := os.Unsetenv(Prefixed); err != nil {
 		assert.NoError(t, err)
 	}
 	schemaTree, err := ygot.GzipToSchema(testdevice10XSchema)
@@ -138,7 +138,7 @@ func Test_ExtractPaths_NotPrefixed(t *testing.T) {
 	}
 
 	defer func() {
-		if err := os.Unsetenv(NotPrefixed); err != nil {
+		if err := os.Setenv(Prefixed, Prefixed); err != nil {
 			assert.NoError(t, err)
 		}
 		roPaths, rwPaths = ExtractPaths(schemaTree)

@@ -20,7 +20,7 @@ import (
 
 var log = logging.GetLogger("utils", "pathWithIdx")
 
-const NotPrefixed = "NOTPREFIXED"
+const Prefixed = "PREFIXED"
 
 var roPaths []*admin.ReadOnlyPath
 var rwPaths []*admin.ReadWritePath
@@ -221,8 +221,8 @@ func formatNameAsPath(dirEntry *yang.Entry, parentPath string, subpathPrefix str
 
 func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 	name := dirEntry.Name
-	_, notPrefixed := os.LookupEnv(NotPrefixed)
-	if !notPrefixed && dirEntry.Prefix != nil {
+	_, prefixed := os.LookupEnv(Prefixed)
+	if prefixed && dirEntry.Prefix != nil {
 		prefix := dirEntry.Prefix.Name
 		if dirEntry.Parent == nil || dirEntry.Parent.Prefix == nil || dirEntry.Parent.Prefix.Name != prefix {
 			name = fmt.Sprintf("%s:%s", prefix, name)

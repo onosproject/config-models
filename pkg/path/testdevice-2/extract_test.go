@@ -20,7 +20,22 @@ import (
 var td20xRoPaths []*admin.ReadOnlyPath
 var td20xRwPaths []*admin.ReadWritePath
 
+const Prefixed = "PREFIXED"
+
 func TestMain(m *testing.M) {
+	oldValue, oldSet := os.LookupEnv(Prefixed)
+	if !oldSet {
+		if err := os.Setenv(Prefixed, Prefixed); err != nil {
+			panic(err)
+		}
+	}
+	defer func() {
+		if oldSet {
+			os.Setenv(Prefixed, oldValue)
+		} else {
+			os.Unsetenv(Prefixed)
+		}
+	}()
 	var err error
 	schemaTree, err := ygot.GzipToSchema(testdevice20XSchema)
 	if err != nil {
