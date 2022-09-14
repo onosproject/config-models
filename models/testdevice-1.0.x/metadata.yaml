@@ -6,6 +6,11 @@ name: testdevice
 version: 1.0.x
 artifactName: testdevice-1.0.x
 goPackage: github.com/onosproject/config-models/models/testdevice-1.0.x
+contactName: Open Networking Foundation
+contactUrl: https://opennetworking.org
+contactEmail: info@opennetworking.org
+licenseName: Apache-2.0
+licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
 modules:
   - name: onf-test1
     organization: Open Networking Foundation

@@ -37,6 +37,8 @@ type ApiGenSettings struct {
 	Title        string
 	Description  string
 	TargetAlias  string
+	Contact      *openapi3.Contact
+	License      *openapi3.License
 }
 
 type pathType uint8
@@ -132,17 +134,10 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
 		Info: &openapi3.Info{
-			Title:   settings.Title,
-			Version: settings.ModelVersion,
-			Contact: &openapi3.Contact{
-				Name:  "Open Networking Foundation",
-				URL:   "https://opennetworking.org",
-				Email: "info@opennetworking.org",
-			},
-			License: &openapi3.License{
-				Name: "Apache-2.0",
-				URL:  "https://www.apache.org/licenses/LICENSE-2.0",
-			},
+			Title:       settings.Title,
+			Version:     settings.ModelVersion,
+			Contact:     settings.Contact,
+			License:     settings.License,
 			Description: settings.Description,
 		},
 		Paths:      paths,

@@ -53,6 +53,11 @@ type Dictionary struct {
 	ReadOnlyPath       []*api.ReadOnlyPath
 	ReadWritePath      []*api.ReadWritePath
 	OpenAPITargetAlias string
+	ContactName        string
+	ContactUrl         string
+	ContactEmail       string
+	LicenseName        string
+	LicenseUrl         string
 }
 
 // ModelCompiler is a model plugin compiler
@@ -103,6 +108,11 @@ func (c *ModelCompiler) Compile(path string) error {
 		ReadOnlyPath:       c.modelInfo.ReadOnlyPath,
 		ReadWritePath:      c.modelInfo.ReadWritePath,
 		OpenAPITargetAlias: c.metaData.OpenAPITargetAlias,
+		ContactName:        c.metaData.ContactName,
+		ContactUrl:         c.metaData.ContactUrl,
+		ContactEmail:       c.metaData.ContactEmail,
+		LicenseName:        c.metaData.LicenseName,
+		LicenseUrl:         c.metaData.LicenseUrl,
 	}
 
 	// Generate Golang bindings for the YANG files
