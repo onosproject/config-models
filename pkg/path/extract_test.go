@@ -15,14 +15,14 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	oldValue, oldSet := os.LookupEnv(Prefixed)
-	if !oldSet {
+	oldValue, wasPreviouslySet := os.LookupEnv(Prefixed)
+	if !wasPreviouslySet {
 		if err := os.Setenv(Prefixed, Prefixed); err != nil {
 			panic(err)
 		}
 	}
 	defer func() {
-		if oldSet {
+		if wasPreviouslySet {
 			os.Setenv(Prefixed, oldValue)
 		} else {
 			os.Unsetenv(Prefixed)

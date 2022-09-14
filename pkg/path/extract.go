@@ -221,8 +221,8 @@ func formatNameAsPath(dirEntry *yang.Entry, parentPath string, subpathPrefix str
 
 func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 	name := dirEntry.Name
-	_, prefixed := os.LookupEnv(Prefixed)
-	if prefixed && dirEntry.Prefix != nil {
+	_, addPrefixes := os.LookupEnv(Prefixed)
+	if addPrefixes && dirEntry.Prefix != nil {
 		prefix := dirEntry.Prefix.Name
 		if dirEntry.Parent == nil || dirEntry.Parent.Prefix == nil || dirEntry.Parent.Prefix.Name != prefix {
 			name = fmt.Sprintf("%s:%s", prefix, name)

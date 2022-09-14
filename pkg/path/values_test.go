@@ -167,7 +167,7 @@ func Test_findModelRwPathNoIndicesNew(t *testing.T) {
 			pathWithIdx: `/t1:leafAtTopLevel`,
 			found:       true,
 		},
-		`/t1:cont1a/t1e:list4[test1]/t1:leaf4b`: {
+		`/t1:cont1a/t1e:list4[test1]/leaf4b`: {
 			pathObjStr:  `path:"/t1:cont1a/t1e:list4[id=*]/leaf4b" value_type:STRING description:"leaf 4a on list4a elements" length:"1..20" AttrName:"leaf4b" `,
 			pathWithIdx: `/t1:cont1a/t1e:list4[id=test1]/leaf4b`,
 			found:       true,
