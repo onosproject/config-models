@@ -49,7 +49,7 @@ func Test_ExtractPaths(t *testing.T) {
 	assert.Equal(t, 2, len(roPaths))
 	for _, roPath := range roPaths {
 		switch path := roPath.Path; path {
-		case "/t1:cont1a/t1:cont2a/t1:leaf2c":
+		case "/t1:cont1a/cont2a/leaf2c":
 			assert.Equal(t, 1, len(roPath.SubPath))
 			sp := roPath.SubPath[0]
 			assert.Equal(t, "leaf2c", sp.AttrName)
@@ -57,11 +57,11 @@ func Test_ExtractPaths(t *testing.T) {
 			assert.Equal(t, 3, len(roPath.SubPath))
 			for _, sp := range roPath.SubPath {
 				switch subPath := sp.SubPath; subPath {
-				case "/t1:leaf2d":
+				case "/leaf2d":
 					assert.Equal(t, "leaf2d", sp.AttrName)
-				case "/t1:list2b[t1:index=*]/t1:index":
+				case "/list2b[index=*]/index":
 					assert.Equal(t, "index", sp.AttrName)
-				case "/t1:list2b[t1:index=*]/t1:leaf3c":
+				case "/list2b[index=*]/leaf3c":
 					assert.Equal(t, "leaf3c", sp.AttrName)
 				default:
 					t.Fatalf("unexpected subpath %s for RO path %s", subPath, path)
@@ -77,45 +77,45 @@ func Test_ExtractPaths(t *testing.T) {
 		switch path := rwPath.Path; path {
 		case "/t1:leafAtTopLevel":
 			assert.Equal(t, "leafAtTopLevel", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2a":
+		case "/t1:cont1a/cont2a/leaf2a":
 			assert.Equal(t, "leaf2a", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2b":
+		case "/t1:cont1a/cont2a/leaf2b":
 			assert.Equal(t, "leaf2b", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2d":
+		case "/t1:cont1a/cont2a/leaf2d":
 			assert.Equal(t, "leaf2d", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2e":
+		case "/t1:cont1a/cont2a/leaf2e":
 			assert.Equal(t, "leaf2e", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2f":
+		case "/t1:cont1a/cont2a/leaf2f":
 			assert.Equal(t, "leaf2f", rwPath.AttrName)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2g":
+		case "/t1:cont1a/cont2a/leaf2g":
 			assert.Equal(t, "leaf2g", rwPath.AttrName)
-		case "/t1:cont1a/t1:leaf1a":
+		case "/t1:cont1a/leaf1a":
 			assert.Equal(t, "leaf1a", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:id":
+		case "/t1:cont1a/t1e:list4[id=*]/id":
 			assert.Equal(t, "id", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:leaf4b":
+		case "/t1:cont1a/t1e:list4[id=*]/leaf4b":
 			assert.Equal(t, "leaf4b", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:fkey1":
+		case "/t1:cont1a/t1e:list4[id=*]/list4a[fkey1=*][fkey2=*]/fkey1":
 			assert.Equal(t, "fkey1", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:fkey2":
+		case "/t1:cont1a/t1e:list4[id=*]/list4a[fkey1=*][fkey2=*]/fkey2":
 			assert.Equal(t, "fkey2", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:displayname":
+		case "/t1:cont1a/t1e:list4[id=*]/list4a[fkey1=*][fkey2=*]/displayname":
 			assert.Equal(t, "displayname", rwPath.AttrName)
-		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:name":
+		case "/t1:cont1a/list2a[name=*]/name":
 			assert.Equal(t, "name", rwPath.AttrName)
-		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:tx-power":
+		case "/t1:cont1a/list2a[name=*]/tx-power":
 			assert.Equal(t, "tx-power", rwPath.AttrName)
-		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:ref2d":
+		case "/t1:cont1a/list2a[name=*]/ref2d":
 			assert.Equal(t, "ref2d", rwPath.AttrName)
-		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:range-min":
+		case "/t1:cont1a/list2a[name=*]/range-min":
 			assert.Equal(t, "range-min", rwPath.AttrName)
-		case "/t1:cont1a/t1:list2a[t1:name=*]/t1:range-max":
+		case "/t1:cont1a/list2a[name=*]/range-max":
 			assert.Equal(t, "range-max", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:key1":
+		case "/t1:cont1a/t1e:list5[key1=*][key2=*]/key1":
 			assert.Equal(t, "key1", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:key2":
+		case "/t1:cont1a/t1e:list5[key1=*][key2=*]/key2":
 			assert.Equal(t, "key2", rwPath.AttrName)
-		case "/t1:cont1a/t1e:list5[t1e:key1=*][t1e:key2=*]/t1e:leaf5a":
+		case "/t1:cont1a/t1e:list5[key1=*][key2=*]/leaf5a":
 			assert.Equal(t, "leaf5a", rwPath.AttrName)
 		default:
 			t.Fatalf("unexpected RW path %s", path)

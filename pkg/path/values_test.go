@@ -38,109 +38,109 @@ func Test_GetPathValues(t *testing.T) {
 	for _, pathValue := range pathValues {
 		value := pathValue.GetValue()
 		switch path := pathValue.Path; path {
-		case "/t1:cont1a/t1:cont2a/t1:leaf2a":
+		case "/t1:cont1a/cont2a/leaf2a":
 			assert.Equal(t, "1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2b":
+		case "/t1:cont1a/cont2a/leaf2b":
 			assert.Equal(t, "0.432", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2d":
+		case "/t1:cont1a/cont2a/leaf2d":
 			assert.Equal(t, "1.540", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2e":
+		case "/t1:cont1a/cont2a/leaf2e":
 			assert.Equal(t, "[5 4 3 2 1] 32", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_LEAFLIST_INT, (&value).Type)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2f":
+		case "/t1:cont1a/cont2a/leaf2f":
 			assert.Equal(t, "dGhpcyBpcyBhIHRlc3QgdGVzdAo=", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_BYTES, (&value).Type)
-		case "/t1:cont1a/t1:cont2a/t1:leaf2g":
+		case "/t1:cont1a/cont2a/leaf2g":
 			assert.Equal(t, "true", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_BOOL, (&value).Type)
-		case "/t1:cont1a/t1:leaf1a":
+		case "/t1:cont1a/leaf1a":
 			assert.Equal(t, "leaf1aval", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=0]/t1:name":
+		case "/t1:cont1a/list2a[name=0]/name":
 			assert.Equal(t, "l2a1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=0]/t1:ref2d":
+		case "/t1:cont1a/list2a[name=0]/ref2d":
 			assert.Equal(t, "1.54", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=0]/t1:tx-power":
+		case "/t1:cont1a/list2a[name=0]/tx-power":
 			assert.Equal(t, "5", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=0]/t1:range-min":
+		case "/t1:cont1a/list2a[name=0]/range-min":
 			assert.Equal(t, "20", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=0]/t1:range-max":
+		case "/t1:cont1a/list2a[name=0]/range-max":
 			assert.Equal(t, "20", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=1]/t1:name":
+		case "/t1:cont1a/list2a[name=1]/name":
 			assert.Equal(t, "l2a2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=1]/t1:tx-power":
+		case "/t1:cont1a/list2a[name=1]/tx-power":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=1]/t1:range-min":
+		case "/t1:cont1a/list2a[name=1]/range-min":
 			assert.Equal(t, "2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1:list2a[t1:name=1]/t1:range-max":
+		case "/t1:cont1a/list2a[name=1]/range-max":
 			assert.Equal(t, "4", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=0][t1e:key2=*]/t1e:key1":
+		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/key1":
 			assert.Equal(t, "five", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=0][t1e:key2=*]/t1e:key2":
+		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/key2":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=0][t1e:key2=*]/t1e:leaf5a":
+		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/leaf5a":
 			assert.Equal(t, "5a five-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=1][t1e:key2=*]/t1e:key1":
+		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/key1":
 			assert.Equal(t, "five", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=1][t1e:key2=*]/t1e:key2":
+		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/key2":
 			assert.Equal(t, "7", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[t1e:key1=1][t1e:key2=*]/t1e:leaf5a":
+		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/leaf5a":
 			assert.Equal(t, "5a five-7", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:id":
+		case "/t1:cont1a/t1e:list4[id=0]/id":
 			assert.Equal(t, "l2a1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:leaf4b":
+		case "/t1:cont1a/t1e:list4[id=0]/leaf4b":
 			assert.Equal(t, "this is list4-l2a1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=0][t1e:fkey2=*]/t1e:fkey1":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/fkey1":
 			assert.Equal(t, "five", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=0][t1e:fkey2=*]/t1e:fkey2":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/fkey2":
 			assert.Equal(t, "7", (&value).ValueToString()) // TODO should be UINT
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=0][t1e:fkey2=*]/t1e:displayname":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/displayname":
 			assert.Equal(t, "Value l2a1-five-7", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=1][t1e:fkey2=*]/t1e:fkey1":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/fkey1":
 			assert.Equal(t, "five", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=1][t1e:fkey2=*]/t1e:fkey2":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/fkey2":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type) // TODO should be UINT
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=1][t1e:fkey2=*]/t1e:displayname":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/displayname":
 			assert.Equal(t, "Value l2a1-five-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=2][t1e:fkey2=*]/t1e:fkey1":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/fkey1":
 			assert.Equal(t, "six", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=2][t1e:fkey2=*]/t1e:fkey2":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/fkey2":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type) // TODO should be UINT
-		case "/t1:cont1a/t1e:list4[t1e:id=0]/t1e:list4a[t1e:fkey1=2][t1e:fkey2=*]/t1e:displayname":
+		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/displayname":
 			assert.Equal(t, "Value l2a1-six-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=1]/t1e:id":
+		case "/t1:cont1a/t1e:list4[id=1]/id":
 			assert.Equal(t, "l2a2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[t1e:id=1]/t1e:leaf4b":
+		case "/t1:cont1a/t1e:list4[id=1]/leaf4b":
 			assert.Equal(t, "this is list4-l2a2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
 		default:
@@ -153,8 +153,8 @@ func Test_GetPathValues(t *testing.T) {
 func Test_findModelRwPathNoIndicesNew(t *testing.T) {
 	tests := map[string]*findIdxTestRwTest{
 		`/t1:cont1a/leaf1a`: {
-			pathObjStr:  `path:"/t1:cont1a/t1:leaf1a" value_type:STRING description:"Leaf inside Container 1a" length:"5..10" AttrName:"leaf1a" `,
-			pathWithIdx: `/t1:cont1a/t1:leaf1a`,
+			pathObjStr:  `path:"/t1:cont1a/leaf1a" value_type:STRING description:"Leaf inside Container 1a" length:"5..10" AttrName:"leaf1a" `,
+			pathWithIdx: `/t1:cont1a/leaf1a`,
 			found:       true,
 		},
 		`/t1:leafAtTopLevel`: {
@@ -168,14 +168,14 @@ func Test_findModelRwPathNoIndicesNew(t *testing.T) {
 			found:       true,
 		},
 		`/t1:cont1a/t1e:list4[test1]/t1:leaf4b`: {
-			pathObjStr:  `path:"/t1:cont1a/t1e:list4[t1e:id=*]/t1e:leaf4b" value_type:STRING description:"leaf 4a on list4a elements" length:"1..20" AttrName:"leaf4b" `,
-			pathWithIdx: `/t1:cont1a/t1e:list4[t1e:id=test1]/t1e:leaf4b`,
+			pathObjStr:  `path:"/t1:cont1a/t1e:list4[id=*]/leaf4b" value_type:STRING description:"leaf 4a on list4a elements" length:"1..20" AttrName:"leaf4b" `,
+			pathWithIdx: `/t1:cont1a/t1e:list4[id=test1]/leaf4b`,
 			found:       true,
 		},
 		// TODO fix this - does not handle double indices properly
-		//`/t1:cont1a/t1e:list4[test1]/t1e:list4a[k1][k2]/t1e:displayname`: {
-		//	pathObjStr:  `path:"/t1:cont1a/t1e:list4[t1e:id=*]/t1e:list4a[t1e:fkey1=*][t1e:fkey2=*]/t1e:displayname" value_type:STRING description:"an optional display name attribute with 2 different length ranges" length:"1..5" length:"10..20" AttrName:"displayname" `,
-		//	pathWithIdx: `/t1:cont1a/t1e:list4[t1e:id=test1]/t1e:list4a[t1e:fkey1=k1][t1e:fkey2=k2]/t1e:displayname`,
+		//`/t1:cont1a/t1e:list4[test1]/list4a[k1][k2]/displayname`: {
+		//	pathObjStr:  `path:"/t1:cont1a/t1e:list4[id=*]/list4a[fkey1=*][fkey2=*]/displayname" value_type:STRING description:"an optional display name attribute with 2 different length ranges" length:"1..5" length:"10..20" AttrName:"displayname" `,
+		//	pathWithIdx: `/t1:cont1a/t1e:list4[id=test1]/list4a[fkey1=k1][fkey2=k2]/displayname`,
 		//	found:       true,
 		//},
 	}
@@ -190,24 +190,24 @@ func Test_findModelRwPathNoIndicesNew(t *testing.T) {
 
 func Test_findModelRoPathNoIndicesNew(t *testing.T) {
 	tests := map[string]*findIdxTestRwTest{
-		`/t1:cont1a/t1:cont2a/t1:leaf2c`: {
+		`/t1:cont1a/cont2a/leaf2c`: {
 			pathObjStr:  `sub_path:"/" value_type:STRING description:"Read only leaf inside Container 2a" AttrName:"leaf2c" `,
-			pathWithIdx: `/t1:cont1a/t1:cont2a/t1:leaf2c`,
+			pathWithIdx: `/t1:cont1a/cont2a/leaf2c`,
 			found:       true,
 		},
-		`/t1:cont1b-state/t1:leaf2d`: {
-			pathObjStr:  `sub_path:"/t1:leaf2d" value_type:UINT type_opts:16 description:"A state attribute" AttrName:"leaf2d" `,
-			pathWithIdx: `/t1:cont1b-state/t1:leaf2d`,
+		`/t1:cont1b-state/leaf2d`: {
+			pathObjStr:  `sub_path:"/leaf2d" value_type:UINT type_opts:16 description:"A state attribute" AttrName:"leaf2d" `,
+			pathWithIdx: `/t1:cont1b-state/leaf2d`,
 			found:       true,
 		},
-		`/t1:cont1b-state/t1:list2b[5]/t1:index`: {
-			pathObjStr:  `sub_path:"/t1:list2b[t1:index=*]/t1:index" value_type:UINT type_opts:8 description:"The list index" IsAKey:true AttrName:"index" `,
-			pathWithIdx: `/t1:cont1b-state/t1:list2b[t1:index=5]/t1:index`,
+		`/t1:cont1b-state/list2b[5]/index`: {
+			pathObjStr:  `sub_path:"/list2b[index=*]/index" value_type:UINT type_opts:8 description:"The list index" IsAKey:true AttrName:"index" `,
+			pathWithIdx: `/t1:cont1b-state/list2b[index=5]/index`,
 			found:       true,
 		},
-		`/t1:cont1b-state/t1:list2b[5]/t1:leaf3c`: {
-			pathObjStr:  `sub_path:"/t1:list2b[t1:index=*]/t1:leaf3c" value_type:STRING description:"A string attribute in the list" AttrName:"leaf3c" `,
-			pathWithIdx: `/t1:cont1b-state/t1:list2b[t1:index=5]/t1:leaf3c`,
+		`/t1:cont1b-state/list2b[5]/leaf3c`: {
+			pathObjStr:  `sub_path:"/list2b[index=*]/leaf3c" value_type:STRING description:"A string attribute in the list" AttrName:"leaf3c" `,
+			pathWithIdx: `/t1:cont1b-state/list2b[index=5]/leaf3c`,
 			found:       true,
 		},
 	}
@@ -225,30 +225,30 @@ func Test_handleAttribute(t *testing.T) {
 	tests := map[string]handleAttrTest{
 		`/t1:cont1a/leaf1a`: {
 			value:         `test-string`,
-			expectedPath:  `/t1:cont1a/t1:leaf1a`,
+			expectedPath:  `/t1:cont1a/leaf1a`,
 			expectedValue: `test-string`,
 			expectedType:  configapi.ValueType_STRING,
 		},
-		`/t1:cont1a/t1:cont2a/leaf2a`: {
+		`/t1:cont1a/cont2a/leaf2a`: {
 			value:         `1`,
-			expectedPath:  `/t1:cont1a/t1:cont2a/t1:leaf2a`,
+			expectedPath:  `/t1:cont1a/cont2a/leaf2a`,
 			expectedValue: `1`,
 			expectedType:  configapi.ValueType_UINT,
 		},
 		`/t1:cont1a/list2a[2a-1]/tx-power`: {
 			value:         `6`,
-			expectedPath:  `/t1:cont1a/t1:list2a[t1:name=2a-1]/t1:tx-power`,
+			expectedPath:  `/t1:cont1a/list2a[name=2a-1]/tx-power`,
 			expectedValue: `6`,
 			expectedType:  configapi.ValueType_UINT,
 		},
 		`/cont1b-state/list2b[5]/leaf3c`: {
 			value:         `test-string`,
-			expectedPath:  `/t1:cont1b-state/t1:list2b[t1:index=5]/t1:leaf3c`,
+			expectedPath:  `/t1:cont1b-state/list2b[index=5]/leaf3c`,
 			expectedValue: `test-string`,
 			expectedType:  configapi.ValueType_STRING,
 		},
 		`/t1:cont1a/leaf-non-existent`: {
-			errString: `unable to locate /t1:cont1a/t1:leaf-non-existent in model`,
+			errString: `unable to locate /t1:cont1a/leaf-non-existent in model`,
 		},
 	}
 

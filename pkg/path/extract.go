@@ -223,7 +223,10 @@ func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 	name := dirEntry.Name
 	_, notPrefixed := os.LookupEnv(NotPrefixed)
 	if !notPrefixed && dirEntry.Prefix != nil {
-		name = fmt.Sprintf("%s:%s", dirEntry.Prefix.Name, dirEntry.Name)
+		prefix := dirEntry.Prefix.Name
+		if dirEntry.Parent == nil || dirEntry.Parent.Prefix == nil || dirEntry.Parent.Prefix.Name != prefix {
+			name = fmt.Sprintf("%s:%s", prefix, name)
+		}
 	}
 	if dirEntry.IsList() {
 		//have to ensure index order is consistent where there's more than one
@@ -232,9 +235,6 @@ func formatNameOfChildEntry(dirEntry *yang.Entry) string {
 			return keyParts[i] < keyParts[j]
 		})
 		for _, k := range keyParts {
-			if !notPrefixed && dirEntry.Prefix != nil {
-				k = fmt.Sprintf("%s:%s", dirEntry.Prefix.Name, k)
-			}
 			name += fmt.Sprintf("[%s=*]", k)
 		}
 	}
