@@ -7,6 +7,11 @@ version: 1.0.x
 artifactName: devicesim
 goPackage: github.com/onosproject/config-models/models/devicesim-1.0.x
 openAPITargetAlias: device-id
+contactName: Open Networking Foundation
+contactUrl: https://opennetworking.org
+contactEmail: info@opennetworking.org
+licenseName: Apache-2.0
+licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
 modules:
   - name: openconfig-interfaces
     organization: OpenConfig working group

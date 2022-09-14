@@ -6,6 +6,11 @@ name: ric
 version: 1.0.0
 artifactName: ric
 goPackage: github.com/onosproject/config-models/models/ric
+contactName: Open Networking Foundation
+contactUrl: https://opennetworking.org
+contactEmail: info@opennetworking.org
+licenseName: Apache-2.0
+licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
 modules:
   - name: kpimon-xapp
     organization: Open Networking Foundation

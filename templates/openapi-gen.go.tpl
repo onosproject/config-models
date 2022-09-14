@@ -8,6 +8,7 @@ package main
 import (
 	"flag"
 	"fmt"
+    "github.com/getkin/kin-openapi/openapi3"
 	"github.com/ghodss/yaml"
 	"{{ .GoPackage }}/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
@@ -31,6 +32,15 @@ func main() {
 		ModelVersion: "{{ .Version }}",
 		Title:        "{{ .Name }}-{{ .Version }}",
 		TargetAlias:  "{{ .OpenAPITargetAlias }}",
+        Contact: &openapi3.Contact{
+            Name: "{{ .ContactName }}",
+            URL: "{{ .ContactUrl }}",
+            Email: "{{ .ContactEmail }}",
+        },
+        License: &openapi3.License{
+            Name: "{{ .LicenseName }}",
+            URL: "{{ .LicenseUrl }}",
+        },
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)

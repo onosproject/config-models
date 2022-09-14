@@ -20,6 +20,11 @@ type MetaData struct {
 	OpenAPITargetAlias string   `mapstructure:"openAPITargetAlias" yaml:"openAPITargetAlias"`
 	GoPackage          string   `mapstructure:"goPackage" yaml:"goPackage"`
 	ArtifactName       string   `mapstructure:"artifactName" yaml:"artifactName"`
+	ContactName        string   `mapstructure:"contactName" yaml:"contactName"`
+	ContactUrl         string   `mapstructure:"contactUrl" yaml:"contactUrl"`
+	ContactEmail       string   `mapstructure:"contactEmail" yaml:"contactEmail"`
+	LicenseName        string   `mapstructure:"licenseName" yaml:"licenseName"`
+	LicenseUrl         string   `mapstructure:"licenseUrl" yaml:"licenseUrl"`
 }
 
 type Module struct {
@@ -57,6 +62,12 @@ func ValidateMetaData(metaData *MetaData) error {
 	}
 	if metaData.Modules == nil || len(metaData.Modules) == 0 {
 		return fmt.Errorf("no modules are listed")
+	}
+	if metaData.ContactName == "" {
+		return fmt.Errorf("ContactName is mandatory")
+	}
+	if metaData.LicenseName == "" {
+		return fmt.Errorf("licenseName is mandatory")
 	}
 	return nil
 }

@@ -6,6 +6,11 @@ name: e2node
 version: 1.0.0
 artifactName: e2node
 goPackage: github.com/onosproject/config-models/models/e2node
+contactName: Open Networking Foundation
+contactUrl: https://opennetworking.org
+contactEmail: info@opennetworking.org
+licenseName: Apache-2.0
+licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
 modules:
   - name: e2-o-cu-cp
     organization: Open Networking Foundation
