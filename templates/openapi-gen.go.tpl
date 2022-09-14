@@ -8,7 +8,6 @@ package main
 import (
 	"flag"
 	"fmt"
-    "github.com/getkin/kin-openapi/openapi3"
 	"github.com/ghodss/yaml"
 	"{{ .GoPackage }}/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"

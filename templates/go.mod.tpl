@@ -4,7 +4,6 @@ go 1.16
 
 require (
 	github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f
-	github.com/getkin/kin-openapi v0.20.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/onosproject/config-models v0.10.33
