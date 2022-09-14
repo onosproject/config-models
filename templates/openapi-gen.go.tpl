@@ -32,15 +32,6 @@ func main() {
 		ModelVersion: "{{ .Version }}",
 		Title:        "{{ .Name }}-{{ .Version }}",
 		TargetAlias:  "{{ .OpenAPITargetAlias }}",
-        Contact: &openapi3.Contact{
-            Name: "{{ .ContactName }}",
-            URL: "{{ .ContactUrl }}",
-            Email: "{{ .ContactEmail }}",
-        },
-        License: &openapi3.License{
-            Name: "{{ .LicenseName }}",
-            URL: "{{ .LicenseUrl }}",
-        },
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)
