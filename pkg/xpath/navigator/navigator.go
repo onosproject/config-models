@@ -385,14 +385,14 @@ func (x *YangNodeNavigator) Value() string {
 					bytes := valueReflected.Bytes()
 					return base64.StdEncoding.EncodeToString(bytes)
 				case reflect.Int64: // Most likely a YANG Identity
-					ytype := x.curr.Type
-					if ytype != nil {
-						base := ytype.IdentityBase
-						if base != nil && len(base.Values) > 0 {
-							return base.Values[valueReflected.Int()-1].Name
+					strMethod := valueReflected.MethodByName("String")
+					if !strMethod.IsZero() {
+						results := strMethod.Call([]reflect.Value{})
+						if len(results) == 1 {
+							return results[0].String()
 						}
 					}
-					return fmt.Sprint(valueReflected.Int())
+					panic(fmt.Errorf(" String() method not found on %s", valueReflected.String()))
 				default:
 					panic(fmt.Errorf("unhandled value type %s", valueReflected.Kind()))
 				}
