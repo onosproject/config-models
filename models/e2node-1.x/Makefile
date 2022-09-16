@@ -52,15 +52,13 @@ image: mod-update # @HELP Build the docker image (available parameters: DOCKER_R
 	docker build ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}e2node:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}e2node:${VERSION} ${DOCKER_REPOSITORY}e2node:${LATEST_VERSION}
 
+.PHONY: build-openapi
+build-openapi: mod-update # @HELP Generate OpenApi specs
+	go build -o _bin/openapi-gen openapi/openapi-gen.go
+
 .PHONY: openapi
-openapi: mod-update # @HELP Generate OpenApi specs
-	go run openapi/openapi-gen.go -o openapi.yaml
-
-
-
-
-
-
+openapi: build-openapi # @HELP Generate OpenApi specs
+	_bin/openapi-gen -o openapi.yaml
 
 yang-lint:
 	cd yang; \
@@ -102,3 +100,7 @@ kind-only: # @HELP Loads the docker image into the kind cluster  (available para
 
 kind: # @HELP build the docker image and loads it into the currently configured kind cluster (available parameters: KIND_CLUSTER_NAME, DOCKER_REPOSITORY, VERSION)
 kind: image kind-only
+
+clean:
+	rm -rf Makefile go.mod go.sum _bin vendor Dockerfile openapi.yaml e2node.tree \
+		openapi/openapi-gen.go plugin/main.go api/model.go api/generated.go

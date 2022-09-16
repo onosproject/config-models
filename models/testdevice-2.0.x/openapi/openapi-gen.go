@@ -8,6 +8,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/ghodss/yaml"
 	"github.com/onosproject/config-models/models/testdevice-2.0.x/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
@@ -31,6 +32,15 @@ func main() {
 		ModelVersion: "2.0.x",
 		Title:        "testdevice-2.0.x",
 		TargetAlias:  "",
+        Contact:      &openapi3.Contact{
+            Name:           "Open Networking Foundation",
+            URL:            "https://opennetworking.org",
+            Email:          "info@opennetworking.org",
+        },
+        License:      &openapi3.License{
+            Name:           "Apache-2.0",
+            URL:            "https://www.apache.org/licenses/LICENSE-2.0",
+        },
 	}
 
 	schema, err := openapi_gen.BuildOpenapi(schemaMap, &settings)
@@ -45,7 +55,8 @@ func main() {
 		os.Exit(-1)
 	}
 
-	license := []byte(`# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
+	license := []byte(`# SPDX-FileCopyrightText: 2022-present Intel Corporation
+# SPDX-FileCopyrightText: 2021-present Open Networking Foundation <info@opennetworking.org>
 #
 # SPDX-License-Identifier: Apache-2.0
 `)

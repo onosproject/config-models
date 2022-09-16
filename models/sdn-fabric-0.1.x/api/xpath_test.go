@@ -42,8 +42,8 @@ func Test_XPathSelect(t *testing.T) {
 			Name: "test ordinary attribute",
 			Path: "/switch-model/pipeline",
 			Expected: []string{
-				"Iter Value: pipeline: 2",
-				"Iter Value: pipeline: 2",
+				"Iter Value: pipeline: dual",
+				"Iter Value: pipeline: dual",
 			},
 		},
 		{

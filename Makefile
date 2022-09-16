@@ -103,4 +103,5 @@ jenkins-publish: docker-login # @HELP Jenkins calls this to publish artifacts
 clean:: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor
 	go clean -testcache github.com/onosproject/config-models/...
+	for model in models/*; do make -C $$model clean; done
 
