@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/getkin/kin-openapi/openapi3"
+	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
 	"golang.org/x/text/cases"
@@ -19,6 +20,8 @@ import (
 	"strings"
 	"unicode"
 )
+
+var log = logging.GetLogger("config-model", "openapi-gen")
 
 const (
 	AdditionalPropertyUnchanged    = "AdditionalPropertyUnchanged"
@@ -47,6 +50,7 @@ const (
 	Undefined pathType = iota
 	pathTypeListMultiple
 	pathTypeContainer
+	pathTypeLeafref
 )
 
 func (pt pathType) string() string {
@@ -55,6 +59,8 @@ func (pt pathType) string() string {
 		return "List"
 	case pathTypeContainer:
 		return "Container"
+	case pathTypeLeafref:
+		return "leafref"
 	default:
 		return "undefined"
 	}
@@ -253,7 +259,18 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				if schemaVal.Extensions == nil {
 					schemaVal.Extensions = make(map[string]interface{})
 				}
+
+				leafrefPath := pathWithPrefix(itemPath)
+				if dirEntry.IsLeafList() {
+					strSplit := strings.Split(dirEntry.Type.Path, ":")
+					listId := strSplit[len(strSplit)-1]
+					leafrefPath = leafrefPath + "/{" + listId + "}/values"
+				} else {
+					leafrefPath = leafrefPath + "/values"
+				}
+
 				schemaVal.Extensions["x-leafref"] = dirEntry.Type.Path
+				schemaVal.Extensions["x-leafrefResolver"] = leafrefPath
 			case yang.Yidentityref, yang.Yenum:
 				schemaVal = openapi3.NewStringSchema()
 				if dirEntry.Type.IdentityBase != nil {

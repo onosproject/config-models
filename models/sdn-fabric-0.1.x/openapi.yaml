@@ -248,6 +248,7 @@ components:
           title: model-id
           type: string
           x-leafref: /sm:switch-model/sm:switch-model-id
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/model-id/values
         port:
           $ref: '#/components/schemas/Switch_Port_List'
         role:
@@ -498,6 +499,7 @@ components:
           title: cage-number
           type: integer
           x-leafref: /sm:switch-model/sm:port/sm:cage-number
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
         channel-number:
           description: |-
             reference to the channel-number of the port in the switch model.
@@ -551,6 +553,7 @@ components:
         title: dhcp-connect-point
         type: string
         x-leafref: /dhcp:dhcp-server/dhcp:dhcp-server-id
+        x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/dhcp-connect-point/{dhcp-server-id}/values
       title: dhcp-connect-point
       type: array
     Switch_Port_List:
@@ -635,6 +638,7 @@ components:
           title: untagged
           type: integer
           x-leafref: ../../../sw:vlan/sw:vlan-id
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values
       title: Switch_Port_Vlans
       type: object
     Switch_Port_Vlans_Tagged:
@@ -643,6 +647,7 @@ components:
         title: tagged
         type: integer
         x-leafref: ../../../sw:vlan/sw:vlan-id
+        x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values
       title: tagged
       type: array
     Switch_State:
@@ -671,6 +676,7 @@ components:
           title: paired-switch
           type: string
           x-leafref: /sw:switch/sw:switch-id
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/paired-switch/values
         pairing-port:
           $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
       title: Switch_Switch-pair
@@ -688,11 +694,13 @@ components:
           title: cage-number
           type: integer
           x-leafref: ../../../sw:port/sw:cage-number
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values
         channel-number:
           description: Port channel number used for Switch A
           title: channel-number
           type: integer
           x-leafref: ../../../sw:port/sw:channel-number
+          x-leafrefResolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/channel-number/values
       required:
       - cage-number
       - channel-number
