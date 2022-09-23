@@ -468,7 +468,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest")
 	assert.NilError(t, err)
-	assert.Equal(t, len(paths), 3)
+	assert.Equal(t, len(paths), 7)
 	assert.Equal(t, len(components.Schemas), 9)
 
 	// Assert the leaf list with leaf ref to integer inside a Container
@@ -694,7 +694,7 @@ func Test_ReadOnly(t *testing.T) {
 
 	paths, components, err := buildSchema(&test1Parent, yang.TSUnset, "/test", "targettest")
 	assert.NilError(t, err)
-	assert.Equal(t, len(paths), 0)
+	assert.Equal(t, len(paths), 1)
 	assert.Equal(t, len(components.Schemas), 2)
 
 	// Assert the leaf list with leaf ref to integer inside a Container
@@ -755,7 +755,7 @@ func Test_Parent_ReadOnly(t *testing.T) {
 
 	paths, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest")
 	assert.NilError(t, err)
-	assert.Equal(t, len(paths), 0)
+	assert.Equal(t, len(paths), 1)
 	assert.Equal(t, len(components.Schemas), 2)
 
 	// Assert the leaf list with leaf ref to integer inside a Container
