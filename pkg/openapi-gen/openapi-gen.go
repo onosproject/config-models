@@ -23,6 +23,7 @@ import (
 const (
 	AdditionalPropertyUnchanged    = "AdditionalPropertyUnchanged"
 	AdditionalPropertiesUnchTarget = "AdditionalPropertiesUnchTarget"
+	LeafRefOptions                 = "LeafRefOptions"
 )
 
 var swagger openapi3.Swagger
@@ -47,6 +48,7 @@ const (
 	Undefined pathType = iota
 	pathTypeListMultiple
 	pathTypeContainer
+	pathTypeLeafref
 )
 
 func (pt pathType) string() string {
@@ -55,6 +57,8 @@ func (pt pathType) string() string {
 		return "List"
 	case pathTypeContainer:
 		return "Container"
+	case pathTypeLeafref:
+		return "Leafref"
 	default:
 		return "undefined"
 	}
@@ -130,6 +134,29 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	schemaValAddBoth.Properties["unchanged"] = schemaValUnchanged.NewRef()
 	schemaValAddBoth.Properties[settings.TargetAlias] = schemaValTarget.NewRef()
 	components.Schemas[AdditionalPropertiesUnchTarget] = schemaValAddBoth.NewRef()
+
+	// leafrefResolver schema
+	schemaValLabel := openapi3.NewObjectSchema()
+	schemaValLabel.Title = "label"
+	schemaValLabel.Type = "string"
+	schemaValLabel.Description = "label of the leafref option"
+
+	schemaValValue := openapi3.NewObjectSchema()
+	schemaValValue.Title = "value"
+	schemaValValue.Type = "string"
+	schemaValValue.Description = "value of the leafref option"
+
+	schemaValLeafRef := openapi3.NewObjectSchema()
+	schemaValLeafRef.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValLeafRef.Description = "single label/value of the leafref option"
+	schemaValLeafRef.Properties["label"] = schemaValLabel.NewRef()
+	schemaValLeafRef.Properties["value"] = schemaValValue.NewRef()
+
+	schemaValLeafRefList := openapi3.NewArraySchema()
+	schemaValLeafRefList.Title = LeafRefOptions
+	schemaValLeafRefList.Items = schemaValLeafRef.NewRef()
+	schemaValLeafRefList.Description = "List of label/value of leafref options"
+	components.Schemas[LeafRefOptions] = schemaValLeafRefList.NewRef()
 
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
@@ -253,7 +280,39 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				if schemaVal.Extensions == nil {
 					schemaVal.Extensions = make(map[string]interface{})
 				}
+
+				leafrefResolverRef := openapi3.NewObjectSchema()
+				leafrefResolverRef.Properties = make(map[string]*openapi3.SchemaRef)
+				leafrefResolverRef.Title = "ref"
+
+				respGet200 := openapi3.NewResponse()
+				respGet200.Description = &respGet200Desc
+				respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+					Ref:   fmt.Sprintf("#/components/schemas/%s", LeafRefOptions),
+					Value: leafrefResolverRef,
+				})
+
+				leafrefPath := itemPath
+				if dirEntry.IsLeafList() {
+					var splitPath []string
+					if strings.Contains(dirEntry.Type.Path, ":") {
+						splitPath = strings.Split(dirEntry.Type.Path, ":")
+					} else {
+						splitPath = strings.Split(dirEntry.Type.Path, "/")
+					}
+					listId := splitPath[len(splitPath)-1]
+					leafrefPath = leafrefPath + "/{" + listId + "}/values"
+				} else {
+					leafrefPath = leafrefPath + "/values"
+				}
+				newPath := newPathItem(dirEntry, leafrefPath, leafrefPath, pathTypeLeafref, targetAlias)
+				newPath.Get.AddResponse(200, respGet200)
+				leafrefPath = pathWithPrefix(leafrefPath)
+				openapiPaths[leafrefPath] = newPath
+
 				schemaVal.Extensions["x-leafref"] = dirEntry.Type.Path
+				schemaVal.Extensions["x-leafref-resolver"] = leafrefPath
+
 			case yang.Yidentityref, yang.Yenum:
 				schemaVal = openapi3.NewStringSchema()
 				if dirEntry.Type.IdentityBase != nil {
@@ -656,6 +715,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	if pathType == pathTypeContainer {
 		getOp.OperationID = fmt.Sprintf("get%s", toUnderScore(itemPath))
 	}
+
 	getOp.Responses = make(openapi3.Responses)
 
 	parameters := make(openapi3.Parameters, 0)
@@ -705,7 +765,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 		newPath.Description = fmt.Sprintf("YANG Choice Case: %s", dirEntry.Name)
 	}
 
-	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse && pathType != pathTypeListMultiple {
+	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse && pathType != pathTypeListMultiple && pathType != pathTypeLeafref {
 		deleteOp := openapi3.NewOperation()
 		deleteOp.Summary = fmt.Sprintf("DELETE %s", itemPath)
 		deleteOp.OperationID = fmt.Sprintf("delete%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
@@ -781,7 +841,7 @@ func pathToSchemaName(itemPath string) string {
 }
 
 func toUnderscoreWithPathType(itemPath string, pathType pathType) string {
-	if pathType == pathTypeListMultiple {
+	if pathType == pathTypeListMultiple || pathType == pathTypeLeafref {
 		return fmt.Sprintf("%s_%s", toUnderScore(itemPath), uppercaseFirstCharacter(pathType.string()))
 	}
 	return toUnderScore(itemPath)
