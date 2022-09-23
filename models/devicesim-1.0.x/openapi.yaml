@@ -748,6 +748,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/name/values
         properties:
           $ref: '#/components/schemas/Components_Component_Properties'
         state:
@@ -797,6 +798,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/name/values
         state:
           $ref: '#/components/schemas/Components_Component_Properties_Property_State'
       required:
@@ -977,6 +979,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/name/values
         state:
           $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
       required:
@@ -992,6 +995,7 @@ components:
           title: name
           type: string
           x-leafref: ../../../../../component/config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config/name/values
       title: Components_Component_Subcomponents_Subcomponent_Config
       type: object
     Components_Component_Subcomponents_Subcomponent_List:
@@ -1012,6 +1016,7 @@ components:
           title: name
           type: string
           x-leafref: ../../../../../component/config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state/name/values
       title: Components_Component_Subcomponents_Subcomponent_State
       type: object
     Interfaces:
@@ -1038,6 +1043,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/name/values
         state:
           $ref: '#/components/schemas/Interfaces_Interface_State'
         subinterfaces:
@@ -1309,6 +1315,7 @@ components:
           title: hardware-port
           type: string
           x-leafref: /oc-platform:components/oc-platform:component/oc-platform:name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/state/hardware-port/values
         ifindex:
           description: |-
             System assigned number for each interface.  Corresponds to
@@ -1699,6 +1706,7 @@ components:
           title: index
           type: integer
           x-leafref: ../config/index
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/index/values
         state:
           $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_State'
       required:
@@ -2165,6 +2173,22 @@ components:
           type: integer
       title: Interfaces_Interface_Subinterfaces_Subinterface_State_Counters
       type: object
+    LeafRefOptions:
+      description: List of label/value of leafref options
+      items:
+        description: single label/value of the leafref option
+        properties:
+          label:
+            description: label of the leafref option
+            title: label
+            type: string
+          value:
+            description: value of the leafref option
+            title: value
+            type: string
+        type: object
+      title: LeafRefOptions
+      type: array
     System:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyDevice-Id'
@@ -2267,6 +2291,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/event-type
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/event-type/values
         state:
           $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
       required:
@@ -2489,6 +2514,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/username
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/username/values
       required:
       - username
       title: System_Aaa_Authentication_Users_User
@@ -2629,6 +2655,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/event-type
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/event-type/values
         state:
           $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
       required:
@@ -2714,6 +2741,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/name/values
         servers:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers'
         state:
@@ -2769,6 +2797,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/address
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/address/values
         config:
           $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_Config'
         radius:
@@ -3216,6 +3245,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/hostname
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/hostname/values
         state:
           $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
       required:
@@ -3342,6 +3372,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/address
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/address/values
         config:
           $ref: '#/components/schemas/System_Dns_Servers_Server_Config'
         state:
@@ -3477,12 +3508,14 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/facility
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/facility/values
         severity:
           description: Reference to severity list key
           title: severity
           type: string
           x-go-type: ListKey
           x-leafref: ../config/severity
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/severity/values
         state:
           $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_State'
       required:
@@ -3613,6 +3646,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/host
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/host/values
         selectors:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors'
         state:
@@ -3672,12 +3706,14 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/facility
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/facility/values
         severity:
           description: Reference to severity list key
           title: severity
           type: string
           x-go-type: ListKey
           x-leafref: ../config/severity
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/severity/values
         state:
           $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector_State'
       required:
@@ -3899,6 +3935,7 @@ components:
           title: key-id
           type: integer
           x-leafref: ../config/key-id
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/key-id/values
         state:
           $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
       required:
@@ -3988,6 +4025,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/address
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/address/values
         config:
           $ref: '#/components/schemas/System_Ntp_Servers_Server_Config'
         state:
@@ -4310,6 +4348,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/name/values
         state:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
       required:
@@ -4347,6 +4386,7 @@ components:
           title: aux-id
           type: integer
           x-leafref: ../config/aux-id
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/aux-id/values
         config:
           $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection_Config'
         state:
@@ -4397,6 +4437,7 @@ components:
           title: source-interface
           type: string
           x-leafref: /oc-if:interfaces/oc-if:interface/oc-if:name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config/source-interface/values
         transport:
           description: Controller transport protocol used.
           enum:
@@ -4474,6 +4515,7 @@ components:
           title: source-interface
           type: string
           x-leafref: /oc-if:interfaces/oc-if:interface/oc-if:name
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state/source-interface/values
         transport:
           description: Controller transport protocol used.
           enum:
@@ -4524,6 +4566,7 @@ components:
           title: pid
           type: integer
           x-leafref: ../state/pid
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}/pid/values
         state:
           $ref: '#/components/schemas/System_Processes_Process_State_Args'
       required:
@@ -4995,6 +5038,28 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/config
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/name/values:
+    description: References the component name
+    get:
+      operationId: getComponents_Component_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /components/component/{name}/name/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.x/{device-id}/components/component/{name}/properties:
     delete:
       operationId: deleteComponents_Component_Properties
@@ -5142,6 +5207,37 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property/{name}/config
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/name/values:
+    description: Reference to the property name.
+    get:
+      operationId: getComponents_Component_Properties_Property_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /components/component/{name}/properties/property/{name}/name/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name_1}
+      in: path
+      name: name_1
+      required: true
   /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/state:
     description: Operational state data for each property
     get:
@@ -5367,6 +5463,68 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent/{name}/config
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config/name/values:
+    description: Reference to the name of the subcomponent
+    get:
+      operationId: getComponents_Component_Subcomponents_Subcomponent_Config_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config/name/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name_1}
+      in: path
+      name: name_1
+      required: true
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/name/values:
+    description: Reference to the name list key
+    get:
+      operationId: getComponents_Component_Subcomponents_Subcomponent_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/name/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name_1}
+      in: path
+      name: name_1
+      required: true
   /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state:
     description: 'Operational state data '
     get:
@@ -5380,6 +5538,37 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
         Container
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name_1}
+      in: path
+      name: name_1
+      required: true
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state/name/values:
+    description: Reference to the name of the subcomponent
+    get:
+      operationId: getComponents_Component_Subcomponents_Subcomponent_State_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state/name/values
+        Leafref
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5612,6 +5801,28 @@ paths:
       in: path
       name: name
       required: true
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/name/values:
+    description: References the configured name of the interface
+    get:
+      operationId: getInterfaces_Interface_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /interfaces/interface/{name}/name/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/state:
     description: Operational state data at the global interface level
     get:
@@ -5646,6 +5857,28 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_State_Counters'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state/counters Container
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/state/hardware-port/values:
+    description: References the hardware port in the device inventory
+    get:
+      operationId: getInterfaces_Interface_State_Hardware-port_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /interfaces/interface/{name}/state/hardware-port/values Leafref
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5809,6 +6042,39 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
+  /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/index/values:
+    description: |-
+      The index number of the subinterface -- used to address
+      the logical interface
+    get:
+      operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Index_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/index/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {index}
+      in: path
+      name: index
+      required: true
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/state:
     description: Operational state data for logical interfaces
     get:
@@ -6101,6 +6367,31 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event/{event-type}/config
+  /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/event-type/values:
+    description: |-
+      Reference to the event-type being logged at the
+      accounting server
+    get:
+      operationId: getSystem_Aaa_Accounting_Events_Event_Event-type_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/aaa/accounting/events/event/{event-type}/event-type/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {event-type}
+      in: path
+      name: event-type
+      required: true
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/state:
     description: Operational state data for accounting events
     get:
@@ -6417,6 +6708,29 @@ paths:
       in: path
       name: username
       required: true
+  /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/username/values:
+    description: References the configured username for the user
+    get:
+      operationId: getSystem_Aaa_Authentication_Users_User_Username_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/aaa/authentication/users/user/{username}/username/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {username}
+      in: path
+      name: username
+      required: true
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization:
     delete:
       operationId: deleteSystem_Aaa_Authorization
@@ -6593,6 +6907,29 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event/{event-type}/config
+  /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/event-type/values:
+    description: Reference to the event-type list key
+    get:
+      operationId: getSystem_Aaa_Authorization_Events_Event_Event-type_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/aaa/authorization/events/event/{event-type}/event-type/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {event-type}
+      in: path
+      name: event-type
+      required: true
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/state:
     description: Operational state data for each authorized activity
     get:
@@ -6777,6 +7114,28 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/config
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/name/values:
+    description: Reference to configured name of the server group
+    get:
+      operationId: getSystem_Aaa_Server-groups_Server-group_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/aaa/server-groups/server-group/{name}/name/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers
@@ -6879,6 +7238,37 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
+  /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/address/values:
+    description: Reference to the configured address of the AAA server
+    get:
+      operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Address_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/address/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {address}
+      in: path
+      name: address
+      required: true
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
@@ -7532,6 +7922,29 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry/{hostname}/config
+  /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/hostname/values:
+    description: Reference to the hostname list key
+    get:
+      operationId: getSystem_Dns_Host-entries_Host-entry_Hostname_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/dns/host-entries/host-entry/{hostname}/hostname/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {hostname}
+      in: path
+      name: hostname
+      required: true
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/state:
     description: Operational state data for static host entries
     get:
@@ -7660,6 +8073,28 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server
+  /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/address/values:
+    description: References the configured address of the DNS server
+    get:
+      operationId: getSystem_Dns_Servers_Server_Address_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/dns/servers/server/{address}/address/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {address}
+      in: path
+      name: address
+      required: true
   /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Dns_Servers_Server_Config
@@ -7949,6 +8384,68 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector/{facility}/{severity}/config
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/facility/values:
+    description: Reference to facility list key
+    get:
+      operationId: getSystem_Logging_Console_Selectors_Selector_Facility_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/facility/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {facility}
+      in: path
+      name: facility
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {severity}
+      in: path
+      name: severity
+      required: true
+  /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/severity/values:
+    description: Reference to severity list key
+    get:
+      operationId: getSystem_Logging_Console_Selectors_Selector_Severity_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/severity/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {facility}
+      in: path
+      name: facility
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {severity}
+      in: path
+      name: severity
+      required: true
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
@@ -8108,6 +8605,29 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
+  /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/host/values:
+    description: Reference to the host list key
+    get:
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Host_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/logging/remote-servers/remote-server/{host}/host/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {host}
+      in: path
+      name: host
+      required: true
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors
@@ -8273,6 +8793,84 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
+  ? /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/facility/values
+  : description: Reference to facility list key
+    get:
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Facility_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/facility/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {host}
+      in: path
+      name: host
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {facility}
+      in: path
+      name: facility
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {severity}
+      in: path
+      name: severity
+      required: true
+  ? /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/severity/values
+  : description: Reference to severity list key
+    get:
+      operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Severity_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/severity/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {host}
+      in: path
+      name: host
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {facility}
+      in: path
+      name: facility
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {severity}
+      in: path
+      name: severity
+      required: true
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state:
     description: 'Operational state data '
     get:
@@ -8574,6 +9172,28 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key/{key-id}/config
+  /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/key-id/values:
+    description: Reference to auth key-id list key
+    get:
+      operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Key-id_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/key-id/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {key-id}
+      in: path
+      name: key-id
+      required: true
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/state:
     description: Operational state data for NTP auth keys
     get:
@@ -8682,6 +9302,30 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server
+  /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/address/values:
+    description: |-
+      References the configured address or hostname of the
+      NTP server.
+    get:
+      operationId: getSystem_Ntp_Servers_Server_Address_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/ntp/servers/server/{address}/address/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {address}
+      in: path
+      name: address
+      required: true
   /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/config:
     delete:
       operationId: deleteSystem_Ntp_Servers_Server_Config
@@ -9082,6 +9726,37 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/aux-id/values:
+    description: Reference to auxiliary id list key
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Aux-id_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/aux-id/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {aux-id}
+      in: path
+      name: aux-id
+      required: true
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections_Connection_Config
@@ -9127,6 +9802,39 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
+  ? /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config/source-interface/values
+  : description: |-
+      Optionally specify the source interface for the
+      controller connection.
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config_Source-interface_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config/source-interface/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {aux-id}
+      in: path
+      name: aux-id
+      required: true
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state:
     description: |-
       Operational state data for OpenFlow controller
@@ -9159,6 +9867,61 @@ paths:
       description: key {aux-id}
       in: path
       name: aux-id
+      required: true
+  ? /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state/source-interface/values
+  : description: |-
+      Optionally specify the source interface for the
+      controller connection.
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_State_Source-interface_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state/source-interface/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {aux-id}
+      in: path
+      name: aux-id
+      required: true
+  /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/name/values:
+    description: The name identifies the controller.
+    get:
+      operationId: getSystem_Openflow_Controllers_Controller_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/openflow/controllers/controller/{name}/name/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
       required: true
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/state:
     description: Container for the Openflow controller state.
@@ -9236,6 +9999,28 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process'
           description: GET OK 200
       summary: GET /system/processes/process Container
+    parameters:
+    - $ref: '#/components/parameters/device-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {pid}
+      in: path
+      name: pid
+      required: true
+  /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}/pid/values:
+    description: Reference to the process pid key
+    get:
+      operationId: getSystem_Processes_Process_Pid_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /system/processes/process/{pid}/pid/values Leafref
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:

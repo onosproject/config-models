@@ -102,6 +102,22 @@ components:
           type: integer
       title: E2node_Intervals
       type: object
+    LeafRefOptions:
+      description: List of label/value of leafref options
+      items:
+        description: single label/value of the leafref option
+        properties:
+          label:
+            description: label of the leafref option
+            title: label
+            type: string
+          value:
+            description: value of the leafref option
+            title: value
+            type: string
+        type: object
+      title: LeafRefOptions
+      type: array
 info:
   contact:
     email: info@opennetworking.org

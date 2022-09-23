@@ -192,6 +192,7 @@ components:
           title: ref2d
           type: string
           x-leafref: /cont1a/cont2a/leaf2d
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/cont1a/list2a/{name}/ref2d/values
         tx-power:
           description: Transmit power
           maximum: 20
@@ -227,6 +228,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: /t1:cont1a/t1:list2a/t1:name
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/cont1a/list4/{id}/id/values
         leaf4b:
           description: leaf 4a on list4a elements
           maxLength: 20
@@ -267,11 +269,13 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: /t1:cont1a/t1e:list5/t1e:key1
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey1/values
         fkey2:
           description: foreign key 2 - ref to list5a/key2
           title: fkey2
           type: integer
           x-leafref: /t1:cont1a/t1e:list5/t1e:key2
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey2/values
       required:
       - fkey1
       - fkey2
@@ -390,6 +394,22 @@ components:
       pattern: '[A-Z]{3}-[0-9]*'
       title: leafAtTopLevel
       type: string
+    LeafRefOptions:
+      description: List of label/value of leafref options
+      items:
+        description: single label/value of the leafref option
+        properties:
+          label:
+            description: label of the leafref option
+            title: label
+            type: string
+          value:
+            description: value of the leafref option
+            title: value
+            type: string
+        type: object
+      title: LeafRefOptions
+      type: array
 info:
   contact:
     email: info@opennetworking.org
@@ -510,6 +530,28 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list2a
+  /testdevice/v1.0.x/{target}/cont1a/list2a/{name}/ref2d/values:
+    description: A reference to leaf2d in the 2a container
+    get:
+      operationId: getCont1a_List2a_Ref2d_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /cont1a/list2a/{name}/ref2d/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {name}
+      in: path
+      name: name
+      required: true
   /testdevice/v1.0.x/{target}/cont1a/list4:
     description: A list with a leafref index
     get:
@@ -560,6 +602,28 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list4
+  /testdevice/v1.0.x/{target}/cont1a/list4/{id}/id/values:
+    description: Link to list2a names
+    get:
+      operationId: getCont1a_List4_Id_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /cont1a/list4/{id}/id/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a:
     description: A list within a list with 2 keys as leaf refs
     get:
@@ -634,6 +698,82 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list4/{id}/list4a
+  /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey1/values:
+    description: foreign key 1 - ref to list5a/key1
+    get:
+      operationId: getCont1a_List4_List4a_Fkey1_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey1/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey1}
+      in: path
+      name: fkey1
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey2}
+      in: path
+      name: fkey2
+      required: true
+  /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey2/values:
+    description: foreign key 2 - ref to list5a/key2
+    get:
+      operationId: getCont1a_List4_List4a_Fkey2_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey2/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey1}
+      in: path
+      name: fkey1
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {fkey2}
+      in: path
+      name: fkey2
+      required: true
   /testdevice/v1.0.x/{target}/cont1a/list5:
     description: A list with 2 keys
     get:
