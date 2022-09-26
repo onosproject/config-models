@@ -16,3 +16,5 @@ require (
 	github.com/stretchr/testify v1.7.1
 	google.golang.org/grpc v1.46.0
 )
+
+replace github.com/onosproject/config-models => /Users/frouzbeh/go/src/github.com/onosproject/config-models
