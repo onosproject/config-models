@@ -24,6 +24,7 @@ const (
 	AdditionalPropertyUnchanged    = "AdditionalPropertyUnchanged"
 	AdditionalPropertiesUnchTarget = "AdditionalPropertiesUnchTarget"
 	LeafRefOptions                 = "LeafRefOptions"
+	LeafRefOption                  = "LeafRefOption"
 )
 
 var swagger openapi3.Swagger
@@ -91,8 +92,9 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	pathPrefix = fmt.Sprintf("/%s/v%s/{%s}", strings.ToLower(settings.ModelType), settings.ModelVersion, settings.TargetAlias)
 	targetParameter = targetParam(settings.TargetAlias)
 
+	var hasLeafref = false
 	topEntry := yangSchema.SchemaTree["Device"]
-	paths, components, err := buildSchema(topEntry, yang.TSFalse, "", settings.TargetAlias)
+	paths, components, err := buildSchema(topEntry, yang.TSFalse, "", settings.TargetAlias, &hasLeafref)
 	if err != nil {
 		return nil, err
 	}
@@ -135,28 +137,9 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	schemaValAddBoth.Properties[settings.TargetAlias] = schemaValTarget.NewRef()
 	components.Schemas[AdditionalPropertiesUnchTarget] = schemaValAddBoth.NewRef()
 
-	// leafrefResolver schema
-	schemaValLabel := openapi3.NewObjectSchema()
-	schemaValLabel.Title = "label"
-	schemaValLabel.Type = "string"
-	schemaValLabel.Description = "label of the leafref option"
-
-	schemaValValue := openapi3.NewObjectSchema()
-	schemaValValue.Title = "value"
-	schemaValValue.Type = "string"
-	schemaValValue.Description = "value of the leafref option"
-
-	schemaValLeafRef := openapi3.NewObjectSchema()
-	schemaValLeafRef.Properties = make(map[string]*openapi3.SchemaRef)
-	schemaValLeafRef.Description = "single label/value of the leafref option"
-	schemaValLeafRef.Properties["label"] = schemaValLabel.NewRef()
-	schemaValLeafRef.Properties["value"] = schemaValValue.NewRef()
-
-	schemaValLeafRefList := openapi3.NewArraySchema()
-	schemaValLeafRefList.Title = LeafRefOptions
-	schemaValLeafRefList.Items = schemaValLeafRef.NewRef()
-	schemaValLeafRefList.Description = "List of label/value of leafref options"
-	components.Schemas[LeafRefOptions] = schemaValLeafRefList.NewRef()
+	if hasLeafref {
+		addLeafRefSchema(components)
+	}
 
 	swagger = openapi3.Swagger{
 		OpenAPI: "3.0.0",
@@ -181,6 +164,35 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 	}
 
 	return &swagger, nil
+}
+
+func addLeafRefSchema(components *openapi3.Components) {
+	// leafrefResolver schema
+	schemaValLabel := openapi3.NewObjectSchema()
+	schemaValLabel.Title = "label"
+	schemaValLabel.Type = "string"
+	schemaValLabel.Description = "label of the leafref option"
+
+	schemaValValue := openapi3.NewObjectSchema()
+	schemaValValue.Title = "value"
+	schemaValValue.Type = "string"
+	schemaValValue.Description = "value of the leafref option"
+
+	schemaValLeafRef := openapi3.NewObjectSchema()
+	schemaValLeafRef.Properties = make(map[string]*openapi3.SchemaRef)
+	schemaValLeafRef.Description = "single label/value of the leafref option"
+	schemaValLeafRef.Properties["label"] = schemaValLabel.NewRef()
+	schemaValLeafRef.Properties["value"] = schemaValValue.NewRef()
+	components.Schemas[LeafRefOption] = schemaValLeafRef.NewRef()
+
+	schemaValLeafRefList := openapi3.NewArraySchema()
+	schemaValLeafRefList.Title = LeafRefOptions
+	schemaValLeafRefList.Items = &openapi3.SchemaRef{
+		Ref:   fmt.Sprintf("#/components/schemas/%s", LeafRefOption),
+		Value: schemaValLeafRef,
+	}
+	schemaValLeafRefList.Description = "List of label/value of leafref options"
+	components.Schemas[LeafRefOptions] = schemaValLeafRefList.NewRef()
 }
 
 func targetParam(targetAlias string) *openapi3.ParameterRef {
@@ -221,7 +233,7 @@ func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
 }
 
 // buildSchema is a recursive function to extract a list of read only paths from a YGOT schema
-func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string, targetAlias string) (openapi3.Paths, *openapi3.Components, error) {
+func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string, targetAlias string, hasLeafref *bool) (openapi3.Paths, *openapi3.Components, error) {
 	openapiPaths := make(openapi3.Paths)
 	openapiComponents := openapi3.Components{
 		Schemas:       make(map[string]*openapi3.SchemaRef),
@@ -262,6 +274,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Default = dirEntry.Type.Default
 				}
 			case yang.Yleafref:
+				*hasLeafref = true
 				// Lookup type of leafref
 				leafRefType := resolveLeafRefType(dirEntry)
 				switch leafRefType {
@@ -422,7 +435,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
 			for name, dir := range dirEntry.Dir {
-				_, components, err := buildSchema(dir, dir.Config, parentPath, targetAlias)
+				_, components, err := buildSchema(dir, dir.Config, parentPath, targetAlias, hasLeafref)
 				if err != nil {
 					return nil, nil, err
 				}
@@ -436,7 +449,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer, targetAlias)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath, targetAlias)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, itemPath, targetAlias, hasLeafref)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -540,7 +553,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			// Add a path for individual items
 			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer, targetAlias)
 
-			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle, targetAlias)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, listItemPathSingle, targetAlias, hasLeafref)
 			if err != nil {
 				return nil, nil, err
 			}
