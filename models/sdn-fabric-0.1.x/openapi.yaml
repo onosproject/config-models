@@ -167,6 +167,22 @@ components:
       x-keys:
       - dhcp-server-id
       x-list-multiple: true
+    LeafRefOptions:
+      description: List of label/value of leafref options
+      items:
+        description: single label/value of the leafref option
+        properties:
+          label:
+            description: label of the leafref option
+            title: label
+            type: string
+          value:
+            description: value of the leafref option
+            title: value
+            type: string
+        type: object
+      title: LeafRefOptions
+      type: array
     Route:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertiesUnchTarget'
@@ -248,6 +264,7 @@ components:
           title: model-id
           type: string
           x-leafref: /sm:switch-model/sm:switch-model-id
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/model-id/values
         port:
           $ref: '#/components/schemas/Switch_Port_List'
         role:
@@ -498,6 +515,7 @@ components:
           title: cage-number
           type: integer
           x-leafref: /sm:switch-model/sm:port/sm:cage-number
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
         channel-number:
           description: |-
             reference to the channel-number of the port in the switch model.
@@ -551,6 +569,7 @@ components:
         title: dhcp-connect-point
         type: string
         x-leafref: /dhcp:dhcp-server/dhcp:dhcp-server-id
+        x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/dhcp-connect-point/{dhcp-server-id}/values
       title: dhcp-connect-point
       type: array
     Switch_Port_List:
@@ -635,6 +654,7 @@ components:
           title: untagged
           type: integer
           x-leafref: ../../../sw:vlan/sw:vlan-id
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values
       title: Switch_Port_Vlans
       type: object
     Switch_Port_Vlans_Tagged:
@@ -643,6 +663,7 @@ components:
         title: tagged
         type: integer
         x-leafref: ../../../sw:vlan/sw:vlan-id
+        x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values
       title: tagged
       type: array
     Switch_State:
@@ -671,6 +692,7 @@ components:
           title: paired-switch
           type: string
           x-leafref: /sw:switch/sw:switch-id
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/paired-switch/values
         pairing-port:
           $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
       title: Switch_Switch-pair
@@ -688,11 +710,13 @@ components:
           title: cage-number
           type: integer
           x-leafref: ../../../sw:port/sw:cage-number
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values
         channel-number:
           description: Port channel number used for Switch A
           title: channel-number
           type: integer
           x-leafref: ../../../sw:port/sw:channel-number
+          x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/channel-number/values
       required:
       - cage-number
       - channel-number
@@ -1206,6 +1230,28 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/management
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/model-id/values:
+    description: link to switch model
+    get:
+      operationId: getSwitch_Model-id_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/model-id/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port:
     description: A port in a switch
     get:
@@ -1280,6 +1326,92 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values:
+    description: reference to the cage-number of the port in the switch model
+    get:
+      operationId: getSwitch_Port_Cage-number_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/dhcp-connect-point/{dhcp-server-id}/values:
+    description: Reference to DHCP connect point
+    get:
+      operationId: getSwitch_Port_Dhcp-connect-point_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/dhcp-connect-point/{dhcp-server-id}/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {dhcp-server-id}
+      in: path
+      name: dhcp-server-id
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/state:
     description: Op state attributes
     get:
@@ -1370,6 +1502,92 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values:
+    description: multiple tagged vlans
+    get:
+      operationId: getSwitch_Port_Vlans_Tagged_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {vlan-id}
+      in: path
+      name: vlan-id
+      required: true
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values:
+    description: vlan for untagged packets
+    get:
+      operationId: getSwitch_Port_Vlans_Untagged_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/state:
     description: Op state attributes
     get:
@@ -1428,6 +1646,30 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/switch-pair
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/paired-switch/values:
+    description: |-
+      Paired switch identifier. A guard rail will require that
+      this field is present when the pairing-port list has at least 1 elements
+    get:
+      operationId: getSwitch_Switch-pair_Paired-switch_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/paired-switch/values Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port:
     description: |-
       The port on the local switch to establish the paired link
@@ -1508,6 +1750,84 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/switch-pair/pairing-port
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values:
+    description: 'Port cage number used for connecting to '
+    get:
+      operationId: getSwitch_Switch-pair_Pairing-port_Cage-number_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/channel-number/values:
+    description: Port channel number used for Switch A
+    get:
+      operationId: getSwitch_Switch-pair_Pairing-port_Channel-number_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/channel-number/values
+        Leafref
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/vlan:
     description: a list of VLANs
     get:
