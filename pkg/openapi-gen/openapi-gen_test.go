@@ -319,7 +319,8 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	testDirEntry.Dir["leaf1"] = &testLeaf1
 	testDirEntry.Dir["leaf2"] = &testLeaf2
 
-	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest")
+	hasLeafref := false
+	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest", &hasLeafref)
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 0)
 	assert.Equal(t, len(components.Schemas), 2)
@@ -466,7 +467,8 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	testDirEntry.Dir["leaf-string"] = &leafString
 	testDirEntry.Dir["list1"] = &testList1
 
-	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest")
+	hasLeafref := false
+	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest", &hasLeafref)
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 7)
 	assert.Equal(t, len(components.Schemas), 9)
@@ -692,7 +694,8 @@ func Test_ReadOnly(t *testing.T) {
 	test1Parent.Dir["Leaf1"] = &test1Leaf1
 	test1Parent.Dir["Leaf2"] = &test1Leaf2
 
-	paths, components, err := buildSchema(&test1Parent, yang.TSUnset, "/test", "targettest")
+	hasLeafref := false
+	paths, components, err := buildSchema(&test1Parent, yang.TSUnset, "/test", "targettest", &hasLeafref)
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 1)
 	assert.Equal(t, len(components.Schemas), 2)
@@ -753,7 +756,8 @@ func Test_Parent_ReadOnly(t *testing.T) {
 	testParent.Dir["Leaf1"] = &testLeaf1
 	testParent.Dir["Leaf2"] = &testLeaf2
 
-	paths, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest")
+	hasLeafref := false
+	paths, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest", &hasLeafref)
 	assert.NilError(t, err)
 	assert.Equal(t, len(paths), 1)
 	assert.Equal(t, len(components.Schemas), 2)
