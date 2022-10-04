@@ -33,7 +33,6 @@ type server struct {
 // gRPC path lists; derived from native path maps
 var roPaths []*admin.ReadOnlyPath
 var rwPaths []*admin.ReadWritePath
-var namespaceMappings []*admin.Namespace
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
@@ -96,15 +95,13 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 	log.Infof("Received model info request: %+v", request)
 	return &admin.ModelInfoResponse{
 		ModelInfo: &admin.ModelInfo{
-			Name:                 "testdevice",
-			Version:              "1.0.x",
-			ModelData:            api.ModelData(),
-			GetStateMode:         0,
-			ReadOnlyPath:         roPaths,
-			ReadWritePath:        rwPaths,
-			SupportedEncodings:   api.Encodings(),
-			NamespaceMappings:    namespaceMappings,
-			SouthboundUsePrefix:  false,
+			Name:               "testdevice",
+			Version:            "1.0.x",
+			ModelData:          api.ModelData(),
+			SupportedEncodings: api.Encodings(),
+			GetStateMode:       0,
+			ReadOnlyPath:       roPaths,
+			ReadWritePath:      rwPaths,
 		},
 	}, nil
 }

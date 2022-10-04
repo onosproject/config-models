@@ -19,6 +19,7 @@ import (
 
 var td20xRoPaths []*admin.ReadOnlyPath
 var td20xRwPaths []*admin.ReadWritePath
+var td20xNamespaces []*admin.Namespace
 
 const Prefixed = "PREFIXED"
 
@@ -42,7 +43,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	td20xRoPaths, td20xRwPaths = path.ExtractPaths(schemaTree)
+	td20xRoPaths, td20xRwPaths, td20xNamespaces = path.ExtractPaths(schemaTree)
 	if err != nil {
 		panic(err)
 	}
@@ -195,6 +196,10 @@ func Test_GetPathValuesOpstate(t *testing.T) {
 			t.Fatalf("unexpected path %s", path)
 		}
 	}
+}
+
+func TestNamespaces(t *testing.T) {
+	assert.Equal(t, 0, len(td20xNamespaces))
 }
 
 var (

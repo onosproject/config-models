@@ -29,7 +29,7 @@ var nsMappings []*admin.Namespace
 // ExtractPaths parse the schema entries out in to flat paths
 func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath, []*admin.Namespace) {
 	var err error
-	namespaceMappings := make(map[string]string, 0)
+	var namespaceMappings map[string]string
 	roPaths, rwPaths, namespaceMappings, err = extractPaths(entries["Device"], yang.TSUnset, "", "")
 	if err != nil {
 		log.Errorf(err.Error())
