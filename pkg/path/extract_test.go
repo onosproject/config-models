@@ -35,7 +35,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	roPaths, rwPaths = ExtractPaths(schemaTree)
+	roPaths, rwPaths, nsMappings = ExtractPaths(schemaTree)
 	if err != nil {
 		panic(err)
 	}
@@ -132,7 +132,7 @@ func Test_ExtractPaths_Prefixed(t *testing.T) {
 		assert.NoError(t, err)
 	}
 
-	roPaths, rwPaths = ExtractPaths(schemaTree)
+	roPaths, rwPaths, nsMappings = ExtractPaths(schemaTree)
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -141,7 +141,7 @@ func Test_ExtractPaths_Prefixed(t *testing.T) {
 		if err := os.Setenv(Prefixed, Prefixed); err != nil {
 			assert.NoError(t, err)
 		}
-		roPaths, rwPaths = ExtractPaths(schemaTree)
+		roPaths, rwPaths, nsMappings = ExtractPaths(schemaTree)
 		if err != nil {
 			assert.NoError(t, err)
 		}

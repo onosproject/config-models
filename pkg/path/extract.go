@@ -24,33 +24,46 @@ const Prefixed = "PREFIXED"
 
 var roPaths []*admin.ReadOnlyPath
 var rwPaths []*admin.ReadWritePath
+var nsMappings []*admin.Namespace
 
 // ExtractPaths parse the schema entries out in to flat paths
-func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath) {
+func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath, []*admin.Namespace) {
 	var err error
-	roPaths, rwPaths, err = extractPaths(entries["Device"], yang.TSUnset, "", "")
+	var namespaceMappings map[string]string
+	roPaths, rwPaths, namespaceMappings, err = extractPaths(entries["Device"], yang.TSUnset, "", "")
 	if err != nil {
 		log.Errorf(err.Error())
 		panic(err)
 	}
-	return roPaths, rwPaths
+	for k, v := range namespaceMappings {
+		nsMappings = append(nsMappings, &admin.Namespace{
+			Module: k,
+			Prefix: v,
+		})
+	}
+	return roPaths, rwPaths, nsMappings
 }
 
 // extractPaths - recursive function that walks the YGOT tree to extract paths
 func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath string,
-	subpathPrefix string) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath, error) {
+	subpathPrefix string) ([]*admin.ReadOnlyPath, []*admin.ReadWritePath, map[string]string, error) {
 
 	readOnlyPaths := make([]*admin.ReadOnlyPath, 0)
 	readWritePaths := make([]*admin.ReadWritePath, 0)
+	namespaceMappings := make(map[string]string, 0)
 
 	for _, dirEntry := range deviceEntry.Dir {
 		itemPath := formatNameAsPath(dirEntry, parentPath, subpathPrefix)
+		modname, pfx := extractNamespace(dirEntry)
+		if modname != "" && pfx != "" {
+			namespaceMappings[modname] = pfx
+		}
 		if dirEntry.IsLeaf() || dirEntry.IsLeafList() {
 			roBase, roSubPath, isReadOnly := earliestRoAncestor(dirEntry)
 			// No need to recurse
 			t, typeOpts, err := toValueType(dirEntry.Type, dirEntry.IsLeafList())
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
 			// Check to see if this attribute is a key in a list
 			tObj := admin.ReadOnlySubPath{
@@ -130,9 +143,9 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				if parentState == yang.TSFalse {
 					subpathPfx = itemPath[len(parentPath):]
 				}
-				roChildrenOfRoContainer, _, err := extractPaths(dirEntry, yang.TSFalse, itemPath, subpathPfx)
+				roChildrenOfRoContainer, _, _, err := extractPaths(dirEntry, yang.TSFalse, itemPath, subpathPfx)
 				if err != nil {
-					return nil, nil, err
+					return nil, nil, nil, err
 				}
 				var currentContainer *admin.ReadOnlyPath
 				for _, ro := range readOnlyPaths {
@@ -151,12 +164,15 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				}
 				continue
 			}
-			readOnlyPathsChildren, readWritePathChildren, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
+			readOnlyPathsChildren, readWritePathChildren, namespaceMappingsChildren, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
 			readOnlyPaths = append(readOnlyPaths, readOnlyPathsChildren...)
 			readWritePaths = append(readWritePaths, readWritePathChildren...)
+			for k, v := range namespaceMappingsChildren {
+				namespaceMappings[k] = v
+			}
 		} else if dirEntry.IsList() {
 			itemPath = formatNameAsPath(dirEntry, parentPath, subpathPrefix)
 			if dirEntry.Config == yang.TSFalse || parentState == yang.TSFalse {
@@ -164,9 +180,9 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				if parentState == yang.TSFalse {
 					subpathPfx = itemPath[len(parentPath):]
 				}
-				readOnlyPathsChildren, _, err := extractPaths(dirEntry, yang.TSFalse, parentPath, subpathPfx)
+				readOnlyPathsChildren, _, _, err := extractPaths(dirEntry, yang.TSFalse, parentPath, subpathPfx)
 				if err != nil {
-					return nil, nil, err
+					return nil, nil, nil, err
 				}
 			next_child:
 				for _, readOnlyPathsChild := range readOnlyPathsChildren {
@@ -184,28 +200,34 @@ func extractPaths(deviceEntry *yang.Entry, parentState yang.TriState, parentPath
 				}
 				continue
 			}
-			readOnlyPathsChildren, readWritePathsChildren, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
+			readOnlyPathsChildren, readWritePathsChildren, namespaceMappingsChildren, err := extractPaths(dirEntry, dirEntry.Config, itemPath, "")
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
 
 			readOnlyPaths = append(readOnlyPaths, readOnlyPathsChildren...)
 			readWritePaths = append(readWritePaths, readWritePathsChildren...)
+			for k, v := range namespaceMappingsChildren {
+				namespaceMappings[k] = v
+			}
 
 		} else if dirEntry.IsChoice() || dirEntry.IsCase() {
 			// Recurse down through Choice and Case
-			readOnlyPathsTemp, readWritePathsTemp, err := extractPaths(dirEntry, dirEntry.Config, parentPath, "")
+			readOnlyPathsTemp, readWritePathsTemp, namespaceMappingsTemp, err := extractPaths(dirEntry, dirEntry.Config, parentPath, "")
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
 			readOnlyPaths = append(readOnlyPaths, readOnlyPathsTemp...)
 			readWritePaths = append(readWritePaths, readWritePathsTemp...)
+			for k, v := range namespaceMappingsTemp {
+				namespaceMappings[k] = v
+			}
 		} else {
 			log.Warnf("Unexpected type of leaf for %s %v", itemPath, dirEntry)
 		}
 	}
 
-	return readOnlyPaths, readWritePaths, nil
+	return readOnlyPaths, readWritePaths, namespaceMappings, nil
 }
 
 func formatNameAsPath(dirEntry *yang.Entry, parentPath string, subpathPrefix string) string {
@@ -329,4 +351,8 @@ func earliestRoAncestor(dirEntry *yang.Entry) ([]string, []string, bool) {
 	}
 	base = append(base, itemName)
 	return base, nil, configFalse
+}
+
+func extractNamespace(e *yang.Entry) (string, string) {
+	return e.Namespace().Name, e.Prefix.Name
 }
