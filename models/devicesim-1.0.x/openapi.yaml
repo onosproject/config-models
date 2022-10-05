@@ -2173,20 +2173,22 @@ components:
           type: integer
       title: Interfaces_Interface_Subinterfaces_Subinterface_State_Counters
       type: object
+    LeafRefOption:
+      description: single label/value of the leafref option
+      properties:
+        label:
+          description: label of the leafref option
+          title: label
+          type: string
+        value:
+          description: value of the leafref option
+          title: value
+          type: string
+      type: object
     LeafRefOptions:
       description: List of label/value of leafref options
       items:
-        description: single label/value of the leafref option
-        properties:
-          label:
-            description: label of the leafref option
-            title: label
-            type: string
-          value:
-            description: value of the leafref option
-            title: value
-            type: string
-        type: object
+        $ref: '#/components/schemas/LeafRefOption'
       title: LeafRefOptions
       type: array
     System:
