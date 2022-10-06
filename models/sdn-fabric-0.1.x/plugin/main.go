@@ -33,6 +33,7 @@ type server struct {
 // gRPC path lists; derived from native path maps
 var roPaths []*admin.ReadOnlyPath
 var rwPaths []*admin.ReadWritePath
+var namespaceMappings []*admin.Namespace
 
 func (p *modelPlugin) Register(gs *grpc.Server) {
 	log.Info("Registering model plugin service")
@@ -59,7 +60,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to extract model schema: %+v", err)
 	}
-	roPaths, rwPaths = path.ExtractPaths(entries)
+	roPaths, rwPaths, namespaceMappings = path.ExtractPaths(entries)
 
 	// Start gRPC server
 	log.Info("Starting model plugin")
@@ -102,6 +103,8 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
 			GetStateMode:       0,
 			ReadOnlyPath:       roPaths,
 			ReadWritePath:      rwPaths,
+            NamespaceMappings:    namespaceMappings,
+            SouthboundUsePrefix:  false,
 		},
 	}, nil
 }
