@@ -93,7 +93,7 @@ func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValu
 func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.PathValue, error) {
 	changes := make([]*configapi.PathValue, 0)
 
-	fmt.Println("--extractValuesWithPaths ===parentPath=%s ----f.type=%v\n", parentPath, f.(type))
+	fmt.Println("--extractValuesWithPaths ===parentPath=%s ----\n", parentPath,)
 	switch value := f.(type) {
 	case map[string]interface{}:
 		mapChanges, err := handleMap(value, parentPath)
