@@ -64,7 +64,7 @@ func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*adm
 
 func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValue, error) {
 	var f interface{}
-	fmt.Println("---in config models ---GetPathValues ===prefixPath =%v \n genericJSON =%v",prefixPath ,genericJSON)
+	fmt.Println("---in config models ---GetPathValues ===prefixPath =%s \n genericJSON =%v",prefixPath ,genericJSON)
 	err := json.Unmarshal(genericJSON, &f)
 	if err != nil {
 		return nil, err
@@ -93,21 +93,27 @@ func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValu
 func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.PathValue, error) {
 	changes := make([]*configapi.PathValue, 0)
 
+	fmt.Println("--extractValuesWithPaths ===parentPath=%s ----f.type=%v\n", parentPath, f.(type))
 	switch value := f.(type) {
 	case map[string]interface{}:
 		mapChanges, err := handleMap(value, parentPath)
 		if err != nil {
 			return nil, err
 		}
+
+	fmt.Println("--extractValuesWithPaths ===mapChanges=%v -\n",mapChanges)
 		changes = append(changes, mapChanges...)
 
+	fmt.Println("--extractValuesWithPaths ===changes=%v -\n",changes)
 	case []interface{}:
 		indexNames := indicesOfPath(parentPath)
 		// Iterate through to look for indexes first
+	fmt.Println("--extractValuesWithPaths ===indexNames=%v -\n",indexNames)
 		for idx, v := range value {
 			indices := make([]indexValue, 0)
 			nonIndexPaths := make([]string, 0)
 			objs, err := extractValuesWithPaths(v, fmt.Sprintf("%s[%d]", parentPath, idx))
+	fmt.Println("--extractValuesWithPaths ===objs=%v -\n",objs)
 			if err != nil {
 				return nil, err
 			}
@@ -115,43 +121,53 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 				isIndex := false
 				for i, idxName := range indexNames {
 					if removePathIndices(obj.Path) == fmt.Sprintf("%s/%s", removePathIndices(parentPath), idxName) {
+					fmt.Println("--extractValuesWithPaths ==removedpathIndices===%v -\n",obj.Path)
 						indices = append(indices, indexValue{name: idxName, value: &obj.Value, order: i})
+					fmt.Println("--extractValuesWithPaths ==indices===%v -\n",indices)
 						isIndex = true
 						break
 					}
 				}
 				if !isIndex {
 					nonIndexPaths = append(nonIndexPaths, obj.Path)
+					fmt.Println("--extractValuesWithPaths ==nonIndexPaths===%v -\n",nonIndexPaths)
+
 				}
 			}
 			sort.Slice(indices, func(i, j int) bool {
 				return indices[i].order < indices[j].order
 			})
 			// Now we have indices, need to go through again
+					fmt.Println("--extractValuesWithPaths ==objs===%v -\n",objs)
 			for _, obj := range objs {
 				for _, nonIdxPath := range nonIndexPaths {
 					if obj.Path == nonIdxPath {
 						suffixLen := prefixLength(obj.Path, parentPath)
 						obj.Path, err = replaceIndices(obj.Path, suffixLen, indices)
+					fmt.Println("--extractValuesWithPaths ==replacedIndices===%v -\n",obj.Path)
 						if err != nil {
 							return nil, fmt.Errorf("error replacing indices in %s %v", obj.Path, err)
 						}
 						changes = append(changes, obj)
+					fmt.Println("--extractValuesWithPaths ==changes===%v -\n",changes)
 					}
 				}
 			}
 		}
 	default:
 		attr, err := handleAttribute(value, parentPath)
+		fmt.Println("--extractValuesWithPaths ==handleAttribute==attr=%v -\n value =%v\nparentPath=%v\n",attr, value , parentPath)
 		if err != nil {
 			return nil, fmt.Errorf("error handling json attribute value %v. Parent %s. #RO:%d #RW:%d %s",
 				value, parentPath, len(roPathMap), len(rwPathMap), err.Error())
 		}
 		if attr != nil {
 			changes = append(changes, attr)
+		fmt.Println("--extractValuesWithPaths ==changes=iafter attr!= nil==%v -\n",changes)
 		}
 	}
 
+	fmt.Println("--extractValuesWithPaths ==changes==ibefore return =%v -\n",changes)
 	return changes, nil
 }
 
