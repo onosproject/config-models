@@ -64,13 +64,18 @@ func ExtractPaths(entries map[string]*yang.Entry) ([]*admin.ReadOnlyPath, []*adm
 
 func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValue, error) {
 	var f interface{}
+	fmt.Println("---in config models ---GetPathValues ===prefixPath =%v \n genericJSON =%v",prefixPath ,genericJSON)
 	err := json.Unmarshal(genericJSON, &f)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("---in config models ---GetPathValues ===f=%v \n", f)
 	if fAsMap, ok := f.(map[string]interface{}); ok {
+	fmt.Println("--- ===fAsMap=%v \n", fAsMap)
 		if fResult, isResult := fAsMap["result"]; isResult {
+		fmt.Println("--- ===fResult=%v \n", fResult)
 			if fResultAsMap, ok := fResult.([]interface{}); ok {
+	fmt.Println("--- ===fResultAsMap=%v \n", fResultAsMap)
 				f = fResultAsMap[0]
 			}
 		}
@@ -79,6 +84,7 @@ func GetPathValues(prefixPath string, genericJSON []byte) ([]*configapi.PathValu
 	if err != nil {
 		return nil, fmt.Errorf("error decomposing JSON %v", err)
 	}
+	fmt.Println("values=%v \n", values)
 	return values, nil
 }
 
