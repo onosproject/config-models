@@ -154,10 +154,10 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 					fmt.Println("--extractValuesWithPaths ==changes===%v -\n",changes)
 					}
 				}
-			}
 			if(changes == nil){
-				changes = append(changes, objs)
+				changes = append(changes, obj)
 				fmt.Println("--extractValuesWithPaths ===jyoti==changes===%v -\n",changes)
+			}
 			}
 		}
 	default:
