@@ -109,6 +109,8 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 		indexNames := indicesOfPath(parentPath)
 		// Iterate through to look for indexes first
 	fmt.Println("--extractValuesWithPaths ===indexNames=%v -\n",indexNames)
+
+	fmt.Println("--extractValuesWithPaths ===value=%v -\n",value)
 		for idx, v := range value {
 			indices := make([]indexValue, 0)
 			nonIndexPaths := make([]string, 0)
@@ -152,6 +154,10 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 					fmt.Println("--extractValuesWithPaths ==changes===%v -\n",changes)
 					}
 				}
+			}
+			if(changes == nil){
+				changes = append(changes, obj)
+				fmt.Println("--extractValuesWithPaths ===jyoti==changes===%v -\n",changes)
 			}
 		}
 	default:
