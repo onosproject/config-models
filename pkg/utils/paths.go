@@ -156,7 +156,7 @@ func extractValuesWithPaths(f interface{}, parentPath string) ([]*configapi.Path
 				}
 			}
 			if(changes == nil){
-				changes = append(changes, obj)
+				changes = append(changes, objs)
 				fmt.Println("--extractValuesWithPaths ===jyoti==changes===%v -\n",changes)
 			}
 		}
