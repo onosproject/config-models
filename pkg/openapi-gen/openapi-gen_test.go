@@ -368,6 +368,16 @@ func Test_buildSchemaLeafList(t *testing.T) {
 		Prefix: &yang.Value{
 			Name: "Test",
 		},
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "st:test-list-extension",
+				HasArgument: true,
+				Argument:    "sample value",
+			},
+			{
+				Keyword: "st:second-list-extension",
+			},
+		},
 	}
 
 	testContainer1 := yang.Entry{
@@ -377,6 +387,13 @@ func Test_buildSchemaLeafList(t *testing.T) {
 		Dir:    make(map[string]*yang.Entry),
 		Prefix: &yang.Value{
 			Name: "Test",
+		},
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "st:test-container-extension",
+				HasArgument: true,
+				Argument:    "sample value",
+			},
 		},
 	}
 
@@ -391,6 +408,13 @@ func Test_buildSchemaLeafList(t *testing.T) {
 		ListAttr: yang.NewDefaultListAttr(),
 		Prefix: &yang.Value{
 			Name: "Test",
+		},
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "st:test-leaf-extension",
+				HasArgument: true,
+				Argument:    "sample value leaf",
+			},
 		},
 	}
 
@@ -474,11 +498,34 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	assert.Equal(t, len(components.Schemas), 9)
 
 	// Assert the leaf list with leaf ref to integer inside a Container
-	s, ok := components.Schemas["Test_List1_Container1_Cont-int-ref-leaf-list"]
+	s, ok := components.Schemas["Test_List1_List"]
+	assert.Assert(t, ok, "expecting Test_List1_List")
+	assert.Equal(t, "", s.Value.Title)
+	assert.Equal(t, "array", s.Value.Type)
+	extValue, ok := s.Value.Extensions["x-st-test-list-extension"]
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "sample value", extValue)
+	extValue, ok = s.Value.Extensions["x-st-second-list-extension"]
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "", extValue)
+
+	s, ok = components.Schemas["Test_List1_Container1"]
+	assert.Assert(t, ok, "expecting Test_List1_Container1")
+	assert.Equal(t, "Test_List1_Container1", s.Value.Title)
+	assert.Equal(t, "object", s.Value.Type)
+	extValue, ok = s.Value.Extensions["x-st-test-container-extension"]
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "sample value", extValue)
+
+	// Assert the leaf list with leaf ref to integer inside a Container
+	s, ok = components.Schemas["Test_List1_Container1_Cont-int-ref-leaf-list"]
 	assert.Assert(t, ok, "expecting Test_List1_Container1_Cont-int-ref-leaf-list")
 	assert.Equal(t, "cont-int-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "integer", s.Value.Items.Value.Type)
+	extValue, ok = s.Value.Items.Value.Extensions["x-st-test-leaf-extension"]
+	assert.Equal(t, true, ok)
+	assert.Equal(t, "sample value leaf", extValue)
 
 	// Assert the leaf list with leaf ref to string inside a Container
 	s, ok = components.Schemas["Test_List1_Container1_Cont-str-ref-leaf-list"]

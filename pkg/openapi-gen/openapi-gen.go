@@ -417,6 +417,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			} else if strings.Contains(dirEntry.Parent.Key, dirEntry.Name) {
 				schemaVal.Required = append(schemaVal.Required, dirEntry.Name)
 			}
+			if len(dirEntry.Exts) > 0 {
+				if schemaVal.Extensions == nil {
+					schemaVal.Extensions = make(map[string]interface{})
+				}
+				for _, extension := range dirEntry.Exts {
+					schemaVal.Extensions[fmt.Sprintf("x-%s",
+						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+				}
+			}
 
 			if dirEntry.IsLeaf() {
 				openapiComponents.Schemas[toUnderScore(itemPath)] = &openapi3.SchemaRef{
@@ -536,6 +545,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			if len(schemaVal.Required) > 0 {
 				addAdditionalProperties(schemaVal, AdditionalPropertyUnchanged)
 			}
+			if len(dirEntry.Exts) > 0 {
+				if schemaVal.Extensions == nil {
+					schemaVal.Extensions = make(map[string]interface{})
+				}
+				for _, extension := range dirEntry.Exts {
+					schemaVal.Extensions[fmt.Sprintf("x-%s",
+						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+				}
+			}
 
 			for k, v := range components.RequestBodies {
 				openapiComponents.RequestBodies[k] = v
@@ -614,7 +632,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 			asMultiple.UniqueItems = true
 			asMultiple.Description = fmt.Sprintf("%s (list)", dirEntry.Description)
-
+			if len(dirEntry.Exts) > 0 {
+				if asMultiple.Extensions == nil {
+					asMultiple.Extensions = make(map[string]interface{})
+				}
+				for _, extension := range dirEntry.Exts {
+					asMultiple.Extensions[fmt.Sprintf("x-%s",
+						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+				}
+			}
 			openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)] = asMultiple.NewRef()
 
 			rbRefSingle := &openapi3.RequestBodyRef{
