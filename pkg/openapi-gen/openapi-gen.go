@@ -423,7 +423,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 				for _, extension := range dirEntry.Exts {
 					schemaVal.Extensions[fmt.Sprintf("x-%s",
-						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])] = extension.Argument
 				}
 			}
 
@@ -551,7 +551,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 				for _, extension := range dirEntry.Exts {
 					schemaVal.Extensions[fmt.Sprintf("x-%s",
-						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])] = extension.Argument
 				}
 			}
 
@@ -638,7 +638,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 				for _, extension := range dirEntry.Exts {
 					asMultiple.Extensions[fmt.Sprintf("x-%s",
-						strings.ReplaceAll(extension.Keyword, ":", "-"))] = extension.Argument
+						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])] = extension.Argument
 				}
 			}
 			openapiComponents.Schemas[toUnderscoreWithPathType(itemPath, pathTypeListMultiple)] = asMultiple.NewRef()

@@ -502,10 +502,10 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	assert.Assert(t, ok, "expecting Test_List1_List")
 	assert.Equal(t, "", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
-	extValue, ok := s.Value.Extensions["x-st-test-list-extension"]
+	extValue, ok := s.Value.Extensions["x-test-list-extension"]
 	assert.Equal(t, true, ok)
 	assert.Equal(t, "sample value", extValue)
-	extValue, ok = s.Value.Extensions["x-st-second-list-extension"]
+	extValue, ok = s.Value.Extensions["x-second-list-extension"]
 	assert.Equal(t, true, ok)
 	assert.Equal(t, "", extValue)
 
@@ -513,7 +513,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	assert.Assert(t, ok, "expecting Test_List1_Container1")
 	assert.Equal(t, "Test_List1_Container1", s.Value.Title)
 	assert.Equal(t, "object", s.Value.Type)
-	extValue, ok = s.Value.Extensions["x-st-test-container-extension"]
+	extValue, ok = s.Value.Extensions["x-test-container-extension"]
 	assert.Equal(t, true, ok)
 	assert.Equal(t, "sample value", extValue)
 
@@ -523,7 +523,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	assert.Equal(t, "cont-int-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "integer", s.Value.Items.Value.Type)
-	extValue, ok = s.Value.Items.Value.Extensions["x-st-test-leaf-extension"]
+	extValue, ok = s.Value.Items.Value.Extensions["x-test-leaf-extension"]
 	assert.Equal(t, true, ok)
 	assert.Equal(t, "sample value leaf", extValue)
 
