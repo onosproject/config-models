@@ -5,6 +5,7 @@
 package navigator
 
 import (
+	"fmt"
 	"github.com/SeanCondon/xpath"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
@@ -347,4 +348,114 @@ func Test_generateMustError(t *testing.T) {
 	assert.Equal(t, "context: testDevice=", parts[0][:20])
 	assert.Equal(t, "a=test1", parts[1])
 	assert.Equal(t, "b=10", parts[2])
+}
+
+func TestYangNodeNavigator_NavigateTo(t *testing.T) {
+	type valueSelectionTest struct {
+		selectionPath string
+		selection     string
+		err           error
+	}
+
+	aValue := "test1"
+	bValue := 10
+	testStruct1 := testDevice_testStruct{
+		A: &aValue,
+		B: &bValue,
+	}
+	td := testDevice{
+		TestStruct: &testStruct1,
+	}
+
+	entry := &yang.Entry{
+		Name: "testDevice",
+		Kind: yang.DirectoryEntry,
+		Dir: map[string]*yang.Entry{
+			"testStruct": {
+				Name: "testStruct",
+				Kind: yang.DirectoryEntry,
+				Dir: map[string]*yang.Entry{
+					"a": {
+						Name: "a",
+						Kind: yang.LeafEntry,
+					},
+					"b": {
+						Name: "b",
+						Kind: yang.LeafEntry,
+					},
+				},
+			},
+		},
+	}
+
+	nn := NewYangNodeNavigator(entry, &td, false)
+	assert.NotNil(t, nn)
+
+	ynn, ok := nn.(*YangNodeNavigator)
+	assert.True(t, ok)
+
+	tests := []valueSelectionTest{
+		{
+			"",
+			"unknown",
+			fmt.Errorf("selection path cannot be empty"),
+		},
+		{
+			"abcd",
+			"unknown",
+			fmt.Errorf("selection path is invalid abcd"),
+		},
+		{
+			" /abcd",
+			"unknown",
+			fmt.Errorf("selection path is invalid  /abcd"),
+		},
+		{
+			" /abcd/",
+			"unknown",
+			fmt.Errorf("selection path is invalid  /abcd/"),
+		},
+		{
+			"/ab_c.d",
+			"unknown",
+			fmt.Errorf("selection path is invalid /ab_c.d"),
+		},
+		{
+			"/testDevice",
+			"value of testDevice",
+			nil,
+		},
+		{
+			"/testDevice/testStruct",
+			"value of testStruct",
+			nil,
+		},
+		{
+			"/testDevice/testStruct/a",
+			"test1",
+			nil,
+		},
+		{
+			"/testDevice/testStruct/b",
+			"10",
+			nil,
+		},
+		{
+			"/a/b[c=1]/d",
+			"value of testDevice",
+			fmt.Errorf("cannot find path a"),
+		},
+	}
+
+	for _, test := range tests {
+		ynn.MoveToRoot()
+		err := ynn.NavigateTo(test.selectionPath)
+		if test.err != nil && assert.Error(t, err, test.selectionPath) {
+			assert.Equal(t, test.err.Error(), err.Error(), fmt.Sprintf("Testing %s", test.selectionPath))
+		} else if test.err != nil {
+			t.Fatalf("Expected an error for %s", test.selectionPath)
+		} else {
+			assert.Equal(t, test.selection, ynn.Value(), test.selectionPath)
+		}
+	}
 }

@@ -12,9 +12,14 @@ import (
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 )
+
+const pathPattern = `^/[a-zA-Z0-9/=\[\]]*$`
+
+var pathRegExp = regexp.MustCompile(pathPattern)
 
 const (
 	goStruct        = "gostruct"
@@ -316,6 +321,62 @@ func (x *YangNodeNavigator) generateMustError(expr string) []string {
 		items = append(items, fmt.Sprintf("%s=%s", currentIter.Current().LocalName(), currentIter.Current().Value()))
 	}
 	return items
+}
+
+// NavigateTo walks a NodeNavigator to a specific branch on the tree
+func (x *YangNodeNavigator) NavigateTo(path string) error {
+	if len(path) == 0 {
+		return fmt.Errorf("selection path cannot be empty")
+	}
+	if ok := pathRegExp.MatchString(path); !ok {
+		return fmt.Errorf("selection path is invalid %s", path)
+	}
+	pathParts := strings.Split(path, "/")
+	return x.navigatePath(pathParts[1:])
+}
+
+func (x *YangNodeNavigator) navigatePath(pathParts []string) error {
+	path0 := pathParts[0]
+	for {
+		if x.LocalName() == path0 {
+			if len(pathParts) == 1 {
+				return nil
+			} else if x.MoveToChild() {
+				return x.navigatePath(pathParts[1:])
+			} else {
+				return fmt.Errorf("cannot find child %s", pathParts[1])
+			}
+		}
+		if !x.MoveToNext() {
+			return fmt.Errorf("cannot find path %s", path0)
+		}
+	}
+
+}
+
+// ValueSelection Selects using the XPath query from "leaf-selection" YANG extension on the NodeNavigator
+func (x *YangNodeNavigator) ValueSelection() ([]string, error) {
+	if len(x.curr.Exts) == 0 {
+		return []string{}, nil
+	}
+	var leafSelectionXpath *xpath.Expr
+	var err error
+	for _, ext := range x.curr.Exts {
+		if ext.Keyword == "leaf-selection" {
+			leafSelectionXpath, err = xpath.Compile(ext.Argument)
+			if err != nil {
+				return nil, err
+			}
+			break
+		}
+	}
+	nodeIter := leafSelectionXpath.Select(x)
+	results := make([]string, 0)
+	for nodeIter.MoveNext() {
+		results = append(results, nodeIter.Current().Value())
+	}
+
+	return results, nil
 }
 
 // NodeType returns the XPathNodeType of the current node.
