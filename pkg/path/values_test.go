@@ -9,7 +9,7 @@ package path
 import (
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -28,7 +28,7 @@ type handleAttrTest struct {
 }
 
 func Test_GetPathValues(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("testdata/sample-testdevice-1-config.json")
 	assert.NoError(t, err)
 
 	pathValues, err := GetPathValues("", sampleConfig)
