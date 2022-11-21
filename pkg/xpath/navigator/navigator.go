@@ -12,9 +12,14 @@ import (
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 )
+
+const pathPattern = `^/[a-zA-Z0-9/=\-\[\]]*$`
+
+var pathRegExp = regexp.MustCompile(pathPattern)
 
 const (
 	goStruct        = "gostruct"
@@ -23,13 +28,13 @@ const (
 
 type XpathSelect struct {
 	Name     string
-	Path     string
+	XPath    string
 	Expected []string
 }
 
 type XpathEvaluate struct {
 	Name     string
-	Path     string
+	XPath    string
 	Expected interface{}
 }
 
@@ -316,6 +321,123 @@ func (x *YangNodeNavigator) generateMustError(expr string) []string {
 		items = append(items, fmt.Sprintf("%s=%s", currentIter.Current().LocalName(), currentIter.Current().Value()))
 	}
 	return items
+}
+
+// NavigateTo walks a NodeNavigator to a specific branch on the tree
+func (x *YangNodeNavigator) NavigateTo(path string) error {
+	if len(path) == 0 {
+		return fmt.Errorf("navigatedValue path cannot be empty")
+	}
+	if ok := pathRegExp.MatchString(path); !ok {
+		return fmt.Errorf("navigatedValue path is invalid %s", path)
+	}
+	pathParts := strings.Split(path, "/")
+	// regexp checked that '/' is the first character, so `pathParts[0]` will be empty string
+	x.MoveToRoot() // Root is always the "/device"
+	if !x.MoveToChild() {
+		return fmt.Errorf("root object '/device' has no children")
+	}
+	return x.navigatePath(pathParts[1:])
+}
+
+func (x *YangNodeNavigator) navigatePath(pathParts []string) error {
+	path0 := pathParts[0]
+	indexOpening := strings.Count(path0, "[")
+	indices := make(map[string]string)
+	if indexOpening > 0 {
+		indexClosing := strings.Count(path0, "=")
+		indexEqual := strings.Count(path0, "]")
+
+		if indexOpening != indexClosing || indexOpening != indexEqual {
+			return fmt.Errorf("path element has %d opening '[' but %d '=' and %d ']'. '%s",
+				indexOpening, indexEqual, indexClosing, path0)
+		} else if strings.LastIndex(path0, "]") != len(path0)-1 {
+			return fmt.Errorf("expected last character to be ']'. '%s", path0)
+		}
+		indexParts := strings.Split(path0, "[")
+		for _, indexPart := range indexParts[1:] {
+			indexSplit := strings.Split(indexPart, "=")
+			if len(indexSplit) != 2 || len(indexSplit[0]) == 0 || len(indexSplit[1]) == 0 {
+				return fmt.Errorf("expected index in the format '[a=b]']'. %s", indexPart)
+			}
+			indices[indexSplit[0]] = indexSplit[1][:len(indexSplit[1])-1]
+		}
+		path0 = indexParts[0]
+	}
+
+	for {
+		if x.LocalName() == path0 {
+			if len(indices) > 0 {
+				idxAnnotation, ok := x.curr.Annotation[path0]
+				if !ok {
+					return fmt.Errorf("cannot find index '%s", path0)
+				}
+				idxAnnotationStr, ok := idxAnnotation.(string)
+				if !ok {
+					return fmt.Errorf("expected index to be string '%v", idxAnnotation)
+				}
+				keys := x.curr.Key
+				keyParts := strings.Split(keys, " ")
+				idxParts := strings.Split(idxAnnotationStr, " ")
+				if len(keyParts) != len(idxParts) {
+					return fmt.Errorf("unexpected space character in list key. %d!=%d %s %s",
+						len(keys), len(idxAnnotationStr), keys, idxAnnotation)
+				}
+				foundIdxParts := 0
+				for idx, kp := range keyParts {
+					idxPartN := strings.TrimSuffix(strings.TrimPrefix(idxParts[idx], "{"), "}")
+					if indices[kp] == idxPartN {
+						foundIdxParts++
+					}
+				}
+				if foundIdxParts != len(keyParts) {
+					if !x.MoveToNext() {
+						return fmt.Errorf("no match for %s %s", path0, idxAnnotationStr)
+					}
+					continue
+				}
+			}
+			if len(pathParts) == 1 {
+				return nil
+			} else if x.MoveToChild() {
+				return x.navigatePath(pathParts[1:])
+			} else {
+				return fmt.Errorf("cannot find child %s", pathParts[1])
+			}
+		}
+		if !x.MoveToNext() {
+			return fmt.Errorf("cannot find path %s", pathParts)
+		}
+	}
+
+}
+
+// LeafSelection Selects using the XPath query from "leaf-selection" YANG extension on the NodeNavigator
+func (x *YangNodeNavigator) LeafSelection() ([]string, error) {
+	if len(x.curr.Exts) == 0 {
+		return []string{}, nil
+	}
+	var leafSelectionXpath *xpath.Expr
+	var err error
+	for _, ext := range x.curr.Exts {
+		if ext.Keyword == "leaf-selection" {
+			leafSelectionXpath, err = xpath.Compile(ext.Argument)
+			if err != nil {
+				return []string{}, err
+			}
+			break
+		}
+	}
+	if leafSelectionXpath == nil {
+		return []string{}, nil
+	}
+	nodeIter := leafSelectionXpath.Select(x)
+	results := make([]string, 0)
+	for nodeIter.MoveNext() {
+		results = append(results, nodeIter.Current().Value())
+	}
+
+	return results, nil
 }
 
 // NodeType returns the XPathNodeType of the current node.

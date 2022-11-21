@@ -12,7 +12,6 @@ import (
 	configapi "github.com/onosproject/onos-api/go/onos/config/v2"
 	"github.com/openconfig/ygot/ygot"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -92,7 +91,7 @@ func Test_ExtractPaths(t *testing.T) {
 }
 
 func Test_GetPathValuesConfig(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice2-config.json")
 	assert.NoError(t, err)
 
 	pathValues, err := path.GetPathValues("", sampleConfig)
@@ -146,7 +145,7 @@ func Test_GetPathValuesConfig(t *testing.T) {
 }
 
 func Test_GetPathValuesOpstate(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice2-opstate.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice2-opstate.json")
 	assert.NoError(t, err)
 
 	pathValues, err := path.GetPathValues("", sampleConfig)
