@@ -359,9 +359,10 @@ func Test_generateMustError(t *testing.T) {
 
 func TestYangNodeNavigator_NavigateTo(t *testing.T) {
 	type valueSelectionTest struct {
-		selectionPath string
-		selection     string
-		err           error
+		navigationPath string
+		navigatedValue string
+		selection      []string
+		err            error
 	}
 
 	aValue := "test1"
@@ -395,7 +396,7 @@ func TestYangNodeNavigator_NavigateTo(t *testing.T) {
 		},
 	}
 
-	deviuceEntry := &yang.Entry{
+	deviceEntry := &yang.Entry{
 		Name: "device",
 		Kind: yang.DirectoryEntry,
 		Dir:  make(map[string]*yang.Entry),
@@ -404,13 +405,23 @@ func TestYangNodeNavigator_NavigateTo(t *testing.T) {
 	testStruct := yang.Entry{
 		Name:   "testStruct",
 		Kind:   yang.DirectoryEntry,
-		Parent: deviuceEntry,
+		Parent: deviceEntry,
 		Dir:    make(map[string]*yang.Entry),
 	}
 	testStruct.Dir["a"] = &yang.Entry{
 		Name:   "a",
 		Kind:   yang.LeafEntry,
 		Parent: &testStruct,
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "leaf-selection",
+				HasArgument: true,
+				Argument:    "/testList/q",
+			},
+			{
+				Keyword: "other-extension",
+			},
+		},
 	}
 	testStruct.Dir["b"] = &yang.Entry{
 		Name:   "b",
@@ -418,12 +429,12 @@ func TestYangNodeNavigator_NavigateTo(t *testing.T) {
 		Parent: &testStruct,
 	}
 
-	deviuceEntry.Dir["testStruct"] = &testStruct
+	deviceEntry.Dir["testStruct"] = &testStruct
 
-	deviuceEntry.Dir["testList"] = &yang.Entry{
+	deviceEntry.Dir["testList"] = &yang.Entry{
 		Name:   "testList",
 		Kind:   yang.DirectoryEntry,
-		Parent: deviuceEntry,
+		Parent: deviceEntry,
 		Key:    "p",
 		ListAttr: &yang.ListAttr{
 			MinElements: 0,
@@ -432,114 +443,147 @@ func TestYangNodeNavigator_NavigateTo(t *testing.T) {
 		},
 		Dir: make(map[string]*yang.Entry),
 	}
-	deviuceEntry.Dir["testList"].Dir["p"] = &yang.Entry{
+	deviceEntry.Dir["testList"].Dir["p"] = &yang.Entry{
 		Name:   "p",
 		Kind:   yang.LeafEntry,
-		Parent: deviuceEntry.Dir["testList"],
+		Parent: deviceEntry.Dir["testList"],
 	}
-	deviuceEntry.Dir["testList"].Dir["q"] = &yang.Entry{
+	deviceEntry.Dir["testList"].Dir["q"] = &yang.Entry{
 		Name:   "q",
 		Kind:   yang.LeafEntry,
-		Parent: deviuceEntry.Dir["testList"],
+		Parent: deviceEntry.Dir["testList"],
+		Exts: []*yang.Statement{
+			{
+				Keyword: "other-extension",
+			},
+		},
 	}
-	deviuceEntry.Dir["testList"].Dir["r"] = &yang.Entry{
+	deviceEntry.Dir["testList"].Dir["r"] = &yang.Entry{
 		Name:   "r",
 		Kind:   yang.LeafEntry,
-		Parent: deviuceEntry.Dir["testList"],
+		Parent: deviceEntry.Dir["testList"],
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "leaf-selection",
+				HasArgument: true,
+				Argument:    "../q",
+			},
+			{
+				Keyword: "other-extension",
+			},
+		},
 	}
 
-	nn := NewYangNodeNavigator(deviuceEntry, &td, false)
+	nn := NewYangNodeNavigator(deviceEntry, &td, false)
 	assert.NotNil(t, nn)
 
 	ynn, ok := nn.(*YangNodeNavigator)
 	assert.True(t, ok)
 
 	tests := []valueSelectionTest{
-		//{
-		//	"",
-		//	"unknown",
-		//	fmt.Errorf("selection path cannot be empty"),
-		//},
-		//{
-		//	"abcd",
-		//	"unknown",
-		//	fmt.Errorf("selection path is invalid abcd"),
-		//},
-		//{
-		//	" /abcd",
-		//	"unknown",
-		//	fmt.Errorf("selection path is invalid  /abcd"),
-		//},
-		//{
-		//	" /abcd/",
-		//	"unknown",
-		//	fmt.Errorf("selection path is invalid  /abcd/"),
-		//},
-		//{
-		//	"/ab_c.d",
-		//	"unknown",
-		//	fmt.Errorf("selection path is invalid /ab_c.d"),
-		//},
-		//{
-		//	"/testStruct",
-		//	"value of testStruct",
-		//	nil,
-		//},
-		//{
-		//	"/testStruct/a",
-		//	"test1",
-		//	nil,
-		//},
-		//{
-		//	"/testStruct/b",
-		//	"10",
-		//	nil,
-		//},
-		//{
-		//	"/testList[p=20]/q",
-		//	"twenty one",
-		//	nil,
-		//},
-		//{
-		//	"/testList[p=10]/r",
-		//	"12",
-		//	nil,
-		//},
-		//{
-		//	"/testList[p==10]/r",
-		//	"",
-		//	fmt.Errorf("path element has 1 opening '[' but 1 '=' and 2 ']'. 'testList[p==10]"),
-		//},
-		//{
-		//	"/test[List[p=10]/r",
-		//	"",
-		//	fmt.Errorf("path element has 2 opening '[' but 1 '=' and 1 ']'. 'test[List[p=10]"),
-		//},
-		//{
-		//	"/testList[p=10]]/r",
-		//	"",
-		//	fmt.Errorf("path element has 1 opening '[' but 2 '=' and 1 ']'. 'testList[p=10]]"),
-		//},
-		//{
-		//	"/testList[p=10]a/r",
-		//	"",
-		//	fmt.Errorf("expected last character to be ']'. 'testList[p=10]a"),
-		//},
+		{
+			"",
+			"unknown",
+			[]string{},
+			fmt.Errorf("navigatedValue path cannot be empty"),
+		},
+		{
+			"abcd",
+			"unknown",
+			[]string{},
+			fmt.Errorf("navigatedValue path is invalid abcd"),
+		},
+		{
+			" /abcd",
+			"unknown",
+			[]string{},
+			fmt.Errorf("navigatedValue path is invalid  /abcd"),
+		},
+		{
+			" /abcd/",
+			"unknown",
+			[]string{},
+			fmt.Errorf("navigatedValue path is invalid  /abcd/"),
+		},
+		{
+			"/ab_c.d",
+			"unknown",
+			[]string{},
+			fmt.Errorf("navigatedValue path is invalid /ab_c.d"),
+		},
+		{
+			"/testStruct",
+			"value of testStruct",
+			[]string{},
+			nil,
+		},
+		{
+			"/testStruct/a",
+			"test1",
+			[]string{"eleven", "twenty one"},
+			nil,
+		},
+		{
+			"/testStruct/b",
+			"10",
+			[]string{},
+			nil,
+		},
+		{
+			"/testList[p=20]/q",
+			"twenty one",
+			[]string{},
+			nil,
+		},
+		{
+			"/testList[p=10]/r",
+			"12",
+			[]string{"eleven"},
+			nil,
+		},
+		{
+			"/testList[p==10]/r",
+			"",
+			[]string{},
+			fmt.Errorf("path element has 1 opening '[' but 1 '=' and 2 ']'. 'testList[p==10]"),
+		},
+		{
+			"/test[List[p=10]/r",
+			"",
+			[]string{},
+			fmt.Errorf("path element has 2 opening '[' but 1 '=' and 1 ']'. 'test[List[p=10]"),
+		},
+		{
+			"/testList[p=10]]/r",
+			"",
+			[]string{},
+			fmt.Errorf("path element has 1 opening '[' but 2 '=' and 1 ']'. 'testList[p=10]]"),
+		},
+		{
+			"/testList[p=10]a/r",
+			"",
+			[]string{},
+			fmt.Errorf("expected last character to be ']'. 'testList[p=10]a"),
+		},
 		{
 			"/testList[p=[q=r]]/r",
 			"",
+			[]string{},
 			fmt.Errorf("expected index in the format '[a=b]']'. p="),
 		},
 	}
 
 	for _, test := range tests {
-		err := ynn.NavigateTo(test.selectionPath)
-		if test.err != nil && assert.Error(t, err, test.selectionPath) {
-			assert.Equal(t, test.err.Error(), err.Error(), fmt.Sprintf("Testing %s", test.selectionPath))
+		err := ynn.NavigateTo(test.navigationPath)
+		if test.err != nil && assert.Error(t, err, test.navigationPath) {
+			assert.Equal(t, test.err.Error(), err.Error(), fmt.Sprintf("Testing %s", test.navigationPath))
 		} else if test.err != nil {
-			t.Fatalf("Expected an error for %s", test.selectionPath)
+			t.Fatalf("Expected an error for %s", test.navigationPath)
 		} else {
-			assert.Equal(t, test.selection, ynn.Value(), test.selectionPath)
+			assert.Equal(t, test.navigatedValue, ynn.Value(), test.navigationPath)
+			selection, err := ynn.LeafSelection()
+			assert.NoError(t, err, test.navigationPath)
+			assert.EqualValues(t, test.selection, selection, test.navigationPath)
 		}
 	}
 }

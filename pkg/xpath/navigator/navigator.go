@@ -326,10 +326,10 @@ func (x *YangNodeNavigator) generateMustError(expr string) []string {
 // NavigateTo walks a NodeNavigator to a specific branch on the tree
 func (x *YangNodeNavigator) NavigateTo(path string) error {
 	if len(path) == 0 {
-		return fmt.Errorf("selection path cannot be empty")
+		return fmt.Errorf("navigatedValue path cannot be empty")
 	}
 	if ok := pathRegExp.MatchString(path); !ok {
-		return fmt.Errorf("selection path is invalid %s", path)
+		return fmt.Errorf("navigatedValue path is invalid %s", path)
 	}
 	pathParts := strings.Split(path, "/")
 	// regexp checked that '/' is the first character, so `pathParts[0]` will be empty string
@@ -412,8 +412,8 @@ func (x *YangNodeNavigator) navigatePath(pathParts []string) error {
 
 }
 
-// ValueSelection Selects using the XPath query from "leaf-selection" YANG extension on the NodeNavigator
-func (x *YangNodeNavigator) ValueSelection() ([]string, error) {
+// LeafSelection Selects using the XPath query from "leaf-selection" YANG extension on the NodeNavigator
+func (x *YangNodeNavigator) LeafSelection() ([]string, error) {
 	if len(x.curr.Exts) == 0 {
 		return []string{}, nil
 	}
@@ -423,10 +423,13 @@ func (x *YangNodeNavigator) ValueSelection() ([]string, error) {
 		if ext.Keyword == "leaf-selection" {
 			leafSelectionXpath, err = xpath.Compile(ext.Argument)
 			if err != nil {
-				return nil, err
+				return []string{}, err
 			}
 			break
 		}
+	}
+	if leafSelectionXpath == nil {
+		return []string{}, nil
 	}
 	nodeIter := leafSelectionXpath.Select(x)
 	results := make([]string, 0)
