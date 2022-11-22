@@ -420,7 +420,7 @@ func (x *YangNodeNavigator) LeafSelection() ([]string, error) {
 	var leafSelectionXpath *xpath.Expr
 	var err error
 	for _, ext := range x.curr.Exts {
-		if ext.Keyword == "leaf-selection" {
+		if strings.HasSuffix(ext.Keyword, "leaf-selection") {
 			leafSelectionXpath, err = xpath.Compile(ext.Argument)
 			if err != nil {
 				return []string{}, err
