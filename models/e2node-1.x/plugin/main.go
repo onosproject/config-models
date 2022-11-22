@@ -135,6 +135,36 @@ func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequ
 	return &admin.PathValuesResponse{PathValues: pathValues}, nil
 }
 
+func (s server) GetValueSelection(ctx context.Context, request *admin.ValueSelectionRequest) (*admin.ValueSelectionResponse, error) {
+	log.Infof("Received validate config request: %s", request.String())
+	device, err := s.unmarshallConfigValues(request.ConfigJson)
+	if err != nil {
+		return nil, errors.Status(err).Err()
+	}
+	schema, err := api.Schema()
+	if err != nil {
+		return nil, errors.NewInvalid("Unable to get schema: %+v", err)
+	}
+
+	nn := navigator.NewYangNodeNavigator(schema.RootSchema(), *device, true)
+	ynn, ok := nn.(*navigator.YangNodeNavigator)
+	if !ok {
+		return nil, errors.NewInvalid("Cannot cast NodeNavigator to YangNodeNavigator")
+	}
+	if err := ynn.NavigateTo(request.SelectionPath); err != nil {
+		return nil, errors.NewInvalid("Unable to navigate to %s", request.SelectionPath)
+	}
+
+	results, err := ynn.LeafSelection()
+	if err != nil {
+		return nil, errors.NewInvalid("error getting leaf-selection", err)
+	}
+
+	return &admin.ValueSelectionResponse{
+		Selection: results,
+	}, nil
+}
+
 func (s server) unmarshallConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
 	device := &api.Device{}
 	vgs := ygot.ValidatedGoStruct(device)

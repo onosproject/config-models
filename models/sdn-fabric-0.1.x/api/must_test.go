@@ -10,11 +10,12 @@ import (
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"os"
 	"testing"
 )
 
 func Test_WalkAndValidateMustSucceed(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../examples/full-config-example-1.json")
+	sampleConfig, err := os.ReadFile("../examples/full-config-example-1.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}

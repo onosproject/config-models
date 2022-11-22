@@ -32,41 +32,41 @@ func Test_XPathSelect(t *testing.T) {
 
 	tests := []navigator.XpathSelect{
 		{
-			Name: "test leaf2a",
-			Path: "/cont1a/cont2a/leaf2a",
+			Name:  "test leaf2a",
+			XPath: "/cont1a/cont2a/leaf2a",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 			},
 		},
 		{
-			Name: "test leaf2b",
-			Path: "/cont1a/cont2a/leaf2b",
+			Name:  "test leaf2b",
+			XPath: "/cont1a/cont2a/leaf2b",
 			Expected: []string{
 				"Iter Value: leaf2b: 0.4321",
 			},
 		},
 		{
 			Name:     "test leaf2c",
-			Path:     "/cont1a/cont2a/leaf2c",
+			XPath:    "/cont1a/cont2a/leaf2c",
 			Expected: []string{}, // No value, so no response
 		},
 		{
-			Name: "test leaf2g",
-			Path: "/cont1a/cont2a/leaf2g",
+			Name:  "test leaf2g",
+			XPath: "/cont1a/cont2a/leaf2g",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
-			Name: "test descendant-or-self", // `//` is short for `descendant-or-self::` axis
-			Path: "/cont1a/descendant-or-self::leaf2g",
+			Name:  "test descendant-or-self", // `//` is short for `descendant-or-self::` axis
+			XPath: "/cont1a/descendant-or-self::leaf2g",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
-			Name: "test leaf2g ancestor(s)",
-			Path: "/cont1a/cont2a/leaf2g/ancestor::node()",
+			Name:  "test leaf2g ancestor(s)",
+			XPath: "/cont1a/cont2a/leaf2g/ancestor::node()",
 			Expected: []string{
 				"Iter Value: cont2a: value of cont2a",
 				"Iter Value: cont1a: value of cont1a",
@@ -74,22 +74,22 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test leaf2g parent",
-			Path: "/cont1a/cont2a/leaf2g/parent::node()",
+			Name:  "test leaf2g parent",
+			XPath: "/cont1a/cont2a/leaf2g/parent::node()",
 			Expected: []string{
 				"Iter Value: cont2a: value of cont2a",
 			},
 		},
 		{
-			Name: "test leaf2g self",
-			Path: "/cont1a/cont2a/leaf2g/self::node()",
+			Name:  "test leaf2g self",
+			XPath: "/cont1a/cont2a/leaf2g/self::node()",
 			Expected: []string{
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
-			Name: "test leaf2g child",
-			Path: "/cont1a/cont2a/child::node()",
+			Name:  "test leaf2g child",
+			XPath: "/cont1a/cont2a/child::node()",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 				"Iter Value: leaf2b: 0.4321",
@@ -99,8 +99,8 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test leaf2g preceding",
-			Path: "/cont1a/cont2a/leaf2g/preceding::node()",
+			Name:  "test leaf2g preceding",
+			XPath: "/cont1a/cont2a/leaf2g/preceding::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2e: [5 4 3 2 1]",
@@ -109,16 +109,16 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test leaf2g following-sibling",
-			Path: "/cont1a/cont2a/leaf2e/following-sibling::node()",
+			Name:  "test leaf2g following-sibling",
+			XPath: "/cont1a/cont2a/leaf2e/following-sibling::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2g: true",
 			},
 		},
 		{
-			Name: "test leaf2g following", // Everything follow - all levels
-			Path: "/cont1a/cont2a/leaf2e/following::node()",
+			Name:  "test leaf2g following", // Everything follow - all levels
+			XPath: "/cont1a/cont2a/leaf2e/following::node()",
 			Expected: []string{
 				"Iter Value: leaf2f: dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
 				"Iter Value: leaf2g: true",
@@ -158,8 +158,8 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test leaf2g descendant",
-			Path: "/cont1a/cont2a/descendant::node()",
+			Name:  "test leaf2g descendant",
+			XPath: "/cont1a/cont2a/descendant::node()",
 			Expected: []string{
 				"Iter Value: leaf2a: 1",
 				"Iter Value: leaf2b: 0.4321",
@@ -169,15 +169,15 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test leaf1a",
-			Path: "/cont1a/leaf1a",
+			Name:  "test leaf1a",
+			XPath: "/cont1a/leaf1a",
 			Expected: []string{
 				"Iter Value: leaf1a: leaf1aval",
 			},
 		},
 		{
-			Name: "test list2a all instances names",
-			Path: "/cont1a/list2a/@name", // List indices are always attributes - referred to with @
+			Name:  "test list2a all instances names",
+			XPath: "/cont1a/list2a/@name", // List indices are always attributes - referred to with @
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
@@ -185,45 +185,45 @@ func Test_XPathSelect(t *testing.T) {
 			},
 		},
 		{
-			Name: "test list2a select 2nd instance rx-power",
-			Path: "/cont1a/list2a[@name='l2a2']/rx-power", // select with []
+			Name:  "test list2a select 2nd instance rx-power",
+			XPath: "/cont1a/list2a[@name='l2a2']/rx-power", // select with []
 			Expected: []string{
 				"Iter Value: rx-power: 26",
 			},
 		},
 		{
-			Name: "test list2a select 1st instance tx-power",
-			Path: "/cont1a/list2a[@name='l2a1']/tx-power", // select with []
+			Name:  "test list2a select 1st instance tx-power",
+			XPath: "/cont1a/list2a[@name='l2a1']/tx-power", // select with []
 			Expected: []string{
 				"Iter Value: tx-power: 5",
 			},
 		},
 		{
-			Name: "test list2a select instance where tx-power < 10",
-			Path: "/cont1a/list2a[tx-power < 8]/@name", // select with []
+			Name:  "test list2a select instance where tx-power < 10",
+			XPath: "/cont1a/list2a[tx-power < 8]/@name", // select with []
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
 			},
 		},
 		{
-			Name: "test list2a select instance where tx-power < rx-power",
-			Path: "/cont1a/list2a[number(tx-power) < number(rx-power) -19]/@name", // select with []
+			Name:  "test list2a select instance where tx-power < rx-power",
+			XPath: "/cont1a/list2a[number(tx-power) < number(rx-power) -19]/@name", // select with []
 			Expected: []string{
 				"Iter Value: name: l2a1",
 				"Iter Value: name: l2a2",
 			},
 		},
 		{
-			Name: "test index 1 filter",
-			Path: "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c",
+			Name:  "test index 1 filter",
+			XPath: "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c",
 			Expected: []string{
 				"Iter Value: leaf3c: 3c 11-20 test",
 			},
 		},
 		{
-			Name: "test index 2 filter",
-			Path: "/cont1b-state/list2b[@index2=20]/@index1",
+			Name:  "test index 2 filter",
+			XPath: "/cont1b-state/list2b[@index2=20]/@index1",
 			Expected: []string{
 				"Iter Value: index1: 10",
 				"Iter Value: index1: 11",
@@ -232,7 +232,7 @@ func Test_XPathSelect(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		expr, err := xpath.Compile(test.Path)
+		expr, err := xpath.Compile(test.XPath)
 		assert.NoError(t, err, test.Name)
 		assert.NotNil(t, expr, test.Name)
 
@@ -268,333 +268,333 @@ func Test_XPathEvaluate(t *testing.T) {
 		//For leaf2a
 		{
 			Name:     "test check present",
-			Path:     "count(/cont1a/cont2a[leaf2a])",
+			XPath:    "count(/cont1a/cont2a[leaf2a])",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test equals leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a = 1",
+			XPath:    "/cont1a/cont2a/leaf2a = 1",
 			Expected: true,
 		},
 		{
 			Name:     "test not equals leaf2a",
-			Path:     "not(/cont1a/cont2a/leaf2a = 1)",
+			XPath:    "not(/cont1a/cont2a/leaf2a = 1)",
 			Expected: false,
 		},
 		{
 			Name:     "test number value",
-			Path:     "number(/cont1a/cont2a/leaf2a)",
+			XPath:    "number(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test string value",
-			Path:     "string(/cont1a/cont2a/leaf2a)",
+			XPath:    "string(/cont1a/cont2a/leaf2a)",
 			Expected: "1",
 		},
 		{
 			Name:     "test boolean value",
-			Path:     "boolean(/cont1a/cont2a/leaf2a)",
+			XPath:    "boolean(/cont1a/cont2a/leaf2a)",
 			Expected: true,
 		},
 		{
 			Name:     "test name()",
-			Path:     "name(/cont1a/cont2a/leaf2a)",
+			XPath:    "name(/cont1a/cont2a/leaf2a)",
 			Expected: "t1:leaf2a",
 		},
 		{
 			Name:     "test concat value with name",
-			Path:     "concat(/cont1a/cont2a/leaf2a, name(/cont1a/cont2a/leaf2a))",
+			XPath:    "concat(/cont1a/cont2a/leaf2a, name(/cont1a/cont2a/leaf2a))",
 			Expected: "1t1:leaf2a",
 		},
 		{
 			Name:     "test substring of name",
-			Path:     "substring(name(/cont1a/cont2a/leaf2a), 1, 8)",
+			XPath:    "substring(name(/cont1a/cont2a/leaf2a), 1, 8)",
 			Expected: "t1:leaf2",
 		},
 		{
 			Name:     "test substring after :",
-			Path:     "substring-after(name(/cont1a/cont2a/leaf2a), 'e')",
+			XPath:    "substring-after(name(/cont1a/cont2a/leaf2a), 'e')",
 			Expected: "af2a",
 		},
 		{
 			Name:     "test string length",
-			Path:     "string-length(name(/cont1a/cont2a/leaf2a))",
+			XPath:    "string-length(name(/cont1a/cont2a/leaf2a))",
 			Expected: float64(9),
 		},
 		{
 			Name:     "test translate",
-			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'af','fa')",
+			XPath:    "translate(name(/cont1a/cont2a/leaf2a), 'af','fa')",
 			Expected: "t1:lefa2f",
 		},
 		{
 			Name:     "test translate",
-			Path:     "translate(name(/cont1a/cont2a/leaf2a), 'tleaf','TLEAF')",
+			XPath:    "translate(name(/cont1a/cont2a/leaf2a), 'tleaf','TLEAF')",
 			Expected: "T1:LEAF2A",
 		},
 		{
 			Name:     "test translate",
-			Path:     "normalize-space('  This is a  test  ')",
+			XPath:    "normalize-space('  This is a  test  ')",
 			Expected: "This is a test",
 		},
 		{
 			Name:     "test lt leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a < 2",
+			XPath:    "/cont1a/cont2a/leaf2a < 2",
 			Expected: true,
 		},
 		{
 			Name:     "test lte leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a <= 1",
+			XPath:    "/cont1a/cont2a/leaf2a <= 1",
 			Expected: true,
 		},
 		{
 			Name:     "test gte leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a >= 1",
+			XPath:    "/cont1a/cont2a/leaf2a >= 1",
 			Expected: true,
 		},
 		{
 			Name:     "test gt leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a > 0",
+			XPath:    "/cont1a/cont2a/leaf2a > 0",
 			Expected: true,
 		},
 		{
 			Name:     "test gt 1 false leaf2a",
-			Path:     "/cont1a/cont2a/leaf2a > 1",
+			XPath:    "/cont1a/cont2a/leaf2a > 1",
 			Expected: false,
 		},
 		{
 			Name:     "test count leaf2a",
-			Path:     "count(/cont1a/cont2a/leaf2a)",
+			XPath:    "count(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test count leaf2a alternate syntax",
-			Path:     "count(/cont1a/cont2a[leaf2a])",
+			XPath:    "count(/cont1a/cont2a[leaf2a])",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test leaf2b",
-			Path:     "number(/cont1a/cont2a/leaf2b)",
+			XPath:    "number(/cont1a/cont2a/leaf2b)",
 			Expected: 0.4321,
 		},
 		//{ // product() not yet supported
 		//	Name:     "test leaf2b product 10",
-		//	Path:     "product(/cont1a/cont2a/leaf2b, 10)",
+		//	XPath:     "product(/cont1a/cont2a/leaf2b, 10)",
 		//	Expected: 4.321,
 		//},
 		{
 			Name:     "test last leaf2g",
-			Path:     "boolean(/cont1a/cont2a[last()])",
+			XPath:    "boolean(/cont1a/cont2a[last()])",
 			Expected: true,
 		},
 		{
 			Name:     "test leaf2g or leaf2a",
-			Path:     "string(/cont1a/cont2a/leaf2g) = 'true' or number(/cont1a/cont2a/leaf2a) < 4",
+			XPath:    "string(/cont1a/cont2a/leaf2g) = 'true' or number(/cont1a/cont2a/leaf2a) < 4",
 			Expected: true,
 		},
 		{
 			Name:     "test sum leaf2a",
-			Path:     "sum(/cont1a/cont2a/leaf2a)",
+			XPath:    "sum(/cont1a/cont2a/leaf2a)",
 			Expected: float64(1),
 		},
 		// For leaf2b
 		{
 			Name:     "test lt leaf2b",
-			Path:     "/cont1a/cont2a/leaf2b < 0.5",
+			XPath:    "/cont1a/cont2a/leaf2b < 0.5",
 			Expected: true,
 		},
 		{
 			Name:     "test eq leaf2b",
-			Path:     "/cont1a/cont2a/leaf2b = 0.4321",
+			XPath:    "/cont1a/cont2a/leaf2b = 0.4321",
 			Expected: true,
 		},
 		{
 			Name:     "test eq false leaf2b",
-			Path:     "/cont1a/cont2a/leaf2b = 0.432",
+			XPath:    "/cont1a/cont2a/leaf2b = 0.432",
 			Expected: false,
 		},
 		{
 			Name:     "test gt leaf2b",
-			Path:     "/cont1a/cont2a/leaf2b > 0.4",
+			XPath:    "/cont1a/cont2a/leaf2b > 0.4",
 			Expected: true,
 		},
 		// For leaf2c - not present
 		{
 			Name:     "test eq leaf2c",
-			Path:     "/cont1a/cont2a/leaf2c = 1",
+			XPath:    "/cont1a/cont2a/leaf2c = 1",
 			Expected: false,
 		},
 		{
 			Name:     "test count leaf2c", // Checking that node is not present
-			Path:     "count(/cont1a/cont2a/leaf2c)",
+			XPath:    "count(/cont1a/cont2a/leaf2c)",
 			Expected: float64(0),
 		},
 		{
 			Name:     "test count leaf2c alt syntax", // Checking that node is not present
-			Path:     "count(/cont1a/cont2a[leaf2c])",
+			XPath:    "count(/cont1a/cont2a[leaf2c])",
 			Expected: float64(0),
 		},
 		// For Leaf1a
 		{
 			Name:     "test eq leaf1a",
-			Path:     "/cont1a/leaf1a = 'leaf1aval'",
+			XPath:    "/cont1a/leaf1a = 'leaf1aval'",
 			Expected: true,
 		},
 		{
 			Name:     "test neq leaf1a",
-			Path:     "/cont1a/leaf1a != 'leaf1aval'",
+			XPath:    "/cont1a/leaf1a != 'leaf1aval'",
 			Expected: false,
 		},
 		{
 			Name:     "test eq leaf1a",
-			Path:     "/cont1a/leaf1a != 'leaf1avalWrong'",
+			XPath:    "/cont1a/leaf1a != 'leaf1avalWrong'",
 			Expected: true,
 		},
 		{
 			Name:     "test count children of cont2a star",
-			Path:     "count(/cont1a/*)",
+			XPath:    "count(/cont1a/*)",
 			Expected: float64(5),
 		},
 		{
 			Name:     "test count children of cont2a child",
-			Path:     "count(/cont1a/cont2a/child::node())",
+			XPath:    "count(/cont1a/cont2a/child::node())",
 			Expected: float64(5),
 		},
 		// For List2a
 		{
 			Name:     "test count list2a",
-			Path:     "count(/cont1a/list2a)",
+			XPath:    "count(/cont1a/list2a)",
 			Expected: float64(3),
 		},
 		{
 			Name:     "test first item list2a",
-			Path:     "string(/cont1a/list2a[1]/@name)",
+			XPath:    "string(/cont1a/list2a[1]/@name)",
 			Expected: "l2a1",
 		},
 		{
 			Name:     "test second item list2a",
-			Path:     "string(/cont1a/list2a[2]/@name)",
+			XPath:    "string(/cont1a/list2a[2]/@name)",
 			Expected: "l2a2",
 		},
 		{
 			Name:     "test last item list2a",
-			Path:     "string(/cont1a/list2a[last()]/@name)",
+			XPath:    "string(/cont1a/list2a[last()]/@name)",
 			Expected: "l2a3",
 		},
 		{
 			Name:     "test sum list2a tx-power",
-			Path:     "sum(/cont1a/list2a/tx-power)",
+			XPath:    "sum(/cont1a/list2a/tx-power)",
 			Expected: float64(19),
 		},
 		{
 			Name:     "test sum list2a rx-power",
-			Path:     "sum(/cont1a/list2a/rx-power)",
+			XPath:    "sum(/cont1a/list2a/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power part a", // Selecting only 1
-			Path:     "sum(/cont1a/list2a[@name='l2a1']/rx-power)",
+			XPath:    "sum(/cont1a/list2a[@name='l2a1']/rx-power)",
 			Expected: float64(25),
 		},
 		{
 			Name:     "test sum list2a rx-power part a or b", // Selecting only 2
-			Path:     "sum(/cont1a/list2a[@name='l2a1' or @name='l2a3']/rx-power)",
+			XPath:    "sum(/cont1a/list2a[@name='l2a1' or @name='l2a3']/rx-power)",
 			Expected: float64(52),
 		},
 		{
 			Name:     "test sum list2a rx-power starts-with", // Selects all 3
-			Path:     "sum(/cont1a/list2a[starts-with(@name,'l2a')]/rx-power)",
+			XPath:    "sum(/cont1a/list2a[starts-with(@name,'l2a')]/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power contains", // Selects all 3
-			Path:     "sum(/cont1a/list2a[contains(@name,'l2')]/rx-power)",
+			XPath:    "sum(/cont1a/list2a[contains(@name,'l2')]/rx-power)",
 			Expected: float64(78),
 		},
 		{
 			Name:     "test sum list2a rx-power ends-with", // Selects all 3
-			Path:     "sum(/cont1a/list2a[ends-with(@name,'a2')]/rx-power)",
+			XPath:    "sum(/cont1a/list2a[ends-with(@name,'a2')]/rx-power)",
 			Expected: float64(26),
 		},
 		{
 			Name:     "test position list2a part b only", // Selecting only 1
-			Path:     "position(/cont1a/list2a[@name='l2a2'])",
+			XPath:    "position(/cont1a/list2a[@name='l2a2'])",
 			Expected: float64(1),
 		},
 		//{ // max not supported
 		//	Name:     "test max list2a rx-power",
-		//	Path:     "max(/cont1a/list2a/tx-power)",
+		//	XPath:     "max(/cont1a/list2a/tx-power)",
 		//	Expected: float64(28),
 		//},
 		{
 			Name:     "test sum list2a tx-power < rx-power",
-			Path:     "sum(/cont1a/list2a/tx-power) < sum(/cont1a/list2a/rx-power)",
+			XPath:    "sum(/cont1a/list2a/tx-power) < sum(/cont1a/list2a/rx-power)",
 			Expected: true,
 		},
 		{ // It will do a string comparison by default - at least 1 side has to be converted to number
 			Name:     "test individual list2a tx-power < rx-power",
-			Path:     "count(/cont1a/list2a[number(tx-power) < number(rx-power)])",
+			XPath:    "count(/cont1a/list2a[number(tx-power) < number(rx-power)])",
 			Expected: float64(3),
 		},
 		// cont1b-state List 2b
 		{
 			Name:     "test count list2b",
-			Path:     "count(/cont1b-state/list2b)",
+			XPath:    "count(/cont1b-state/list2b)",
 			Expected: float64(4),
 		},
 		{
 			Name:     "test count list2b list3c",
-			Path:     "count(/cont1b-state/list2b/leaf3c)",
+			XPath:    "count(/cont1b-state/list2b/leaf3c)",
 			Expected: float64(4),
 		},
 		{
 			Name:     "test count list2b filtered",
-			Path:     "count(/cont1b-state/list2b[@index2=20]/leaf3c)",
+			XPath:    "count(/cont1b-state/list2b[@index2=20]/leaf3c)",
 			Expected: float64(2),
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "count(/cont1b-state/list2b[@index1=10]/leaf3c)",
+			XPath:    "count(/cont1b-state/list2b[@index1=10]/leaf3c)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test count list2b part2 only", // Selecting 11 AND 20
-			Path:     "string(/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c)",
+			XPath:    "string(/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c)",
 			Expected: "3c 11-20 test",
 		},
 		{
 			Name:     "test count list2b part 2 different syntax", // Selecting 11 AND 20
-			Path:     "count(/cont1b-state/list2b[@index1=11][@index2=20]/leaf3c)",
+			XPath:    "count(/cont1b-state/list2b[@index1=11][@index2=20]/leaf3c)",
 			Expected: float64(1),
 		},
 		{
 			Name:     "test value list2b part2 only", // Selecting 11 AND 20
-			Path:     "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c = '3c 11-20 test'",
+			XPath:    "/cont1b-state/list2b[@index1=11 and @index2=20]/leaf3c = '3c 11-20 test'",
 			Expected: true,
 		},
 		//{ // TODO figure out why this gives invalid token
 		//	Name:     "test text list2b part2 only", // Selecting 11 AND 20
-		//	Path:     "text(/cont1b-state/list2b/leaf3c)",
+		//	XPath:     "text(/cont1b-state/list2b/leaf3c)",
 		//	Expected: true,
 		//},
 		{
 			Name:     "test count list2b part1",
-			Path:     "/cont1b-state/list2b[@index1=10]/leaf3c = '3c 10-20 test'",
+			XPath:    "/cont1b-state/list2b[@index1=10]/leaf3c = '3c 10-20 test'",
 			Expected: true,
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "string(/cont1a/list2a/tx-power)",
+			XPath:    "string(/cont1a/list2a/tx-power)",
 			Expected: "5",
 		},
 		{
 			Name:     "test count list2b part1",
-			Path:     "set-contains(/cont1a/list2a/tx-power, '5')",
+			XPath:    "set-contains(/cont1a/list2a/tx-power, '5')",
 			Expected: true,
 		},
 	}
 
 	for _, test := range tests {
-		expr, testErr := xpath.Compile(test.Path)
+		expr, testErr := xpath.Compile(test.XPath)
 		assert.NoError(t, testErr, test.Name)
 		assert.NotNil(t, expr, test.Name)
 

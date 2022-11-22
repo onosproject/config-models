@@ -17,6 +17,15 @@ module onf-sdn-fabric-types {
     reference "RFC 6087";
   }
 
+  extension leaf-selection {
+    argument selection-stmt;
+    description "An Xpath statement that gives a selection criteria for leaf values";
+  }
+
+  extension node-extension {
+    description "an example of a nod extension without any argument";
+  }
+
   typedef vlan {
     type uint16 {
       range 0..4096;

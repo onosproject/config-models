@@ -516,6 +516,7 @@ components:
           description: reference to the cage-number of the port in the switch model
           title: cage-number
           type: integer
+          x-leaf-selection: /switch-model[@switch-model-id=$this/../../model-id]/port/@cage-number
           x-leafref: /sm:switch-model/sm:port/sm:cage-number
           x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
         channel-number:
@@ -554,6 +555,7 @@ components:
           - speed-autoneg
           title: speed
           type: string
+          x-leaf-selection: /switch-model[@switch-model-id=$this/../../model-id]/port[@cage-number=$this/../@cage-number]/speeds
         state:
           $ref: '#/components/schemas/Switch_Port_State'
         vlans:
@@ -584,6 +586,7 @@ components:
       - cage-number
       - channel-number
       x-list-multiple: true
+      x-node-extension: ""
     Switch_Port_State:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'
@@ -659,6 +662,8 @@ components:
           x-leafref-resolver: /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values
       title: Switch_Port_Vlans
       type: object
+      x-leaf-selection: vlans test
+      x-node-extension: ""
     Switch_Port_Vlans_Tagged:
       items:
         description: multiple tagged vlans
