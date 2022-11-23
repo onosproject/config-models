@@ -136,7 +136,7 @@ func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequ
 }
 
 func (s server) GetValueSelection(ctx context.Context, request *admin.ValueSelectionRequest) (*admin.ValueSelectionResponse, error) {
-	log.Infof("Received validate config request: %s", request.String())
+	log.Infof("Received value selection request: %s", request.String())
 	device, err := s.unmarshallConfigValues(request.ConfigJson)
 	if err != nil {
 		return nil, errors.Status(err).Err()
