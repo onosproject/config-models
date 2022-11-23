@@ -2416,6 +2416,7 @@ components:
             hashed value.
           title: admin-password
           type: string
+          x-openconfig-hashed-value: ""
         admin-password-hashed:
           description: |-
             The admin/root password, supplied as a hashed value
@@ -2436,6 +2437,7 @@ components:
           readOnly: true
           title: admin-password
           type: string
+          x-openconfig-hashed-value: ""
         admin-password-hashed:
           description: |-
             The admin/root password, supplied as a hashed value
@@ -2531,6 +2533,7 @@ components:
             must hash the value and only store the hashed value.
           title: password
           type: string
+          x-openconfig-hashed-value: ""
         password-hashed:
           description: |-
             The user password, supplied as a hashed value
@@ -2574,6 +2577,7 @@ components:
           readOnly: true
           title: password
           type: string
+          x-openconfig-hashed-value: ""
         password-hashed:
           description: |-
             The user password, supplied as a hashed value
