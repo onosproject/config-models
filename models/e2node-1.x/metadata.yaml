@@ -11,6 +11,7 @@ contactUrl: https://opennetworking.org
 contactEmail: info@opennetworking.org
 licenseName: Apache-2.0
 licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
+lintModel: false
 modules:
   - name: e2-o-cu-cp
     organization: Open Networking Foundation
