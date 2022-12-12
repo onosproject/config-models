@@ -70,7 +70,7 @@ check-models-tag: # @HELP check that the
 	@make -C models/sdn-fabric-0.1.x check-tag
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: deps mod-update build linters license check-models-tag images models
+jenkins-test: deps mod-update build linters check-models-tag images models #license - commenting out licenses until Jenkins builder is upgraded to Python 3.10
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@cd models && for model in *; do pushd $$model; make test; popd; done
