@@ -1,0 +1,22 @@
+// SPDX-FileCopyrightText: 2022 Intel Corporation
+//
+// SPDX-License-Identifier: Apache-2.0
+
+module onf-extension-types {
+  namespace "http://opennetworking.org/roc/onf-extension-types";
+  prefix xt;
+
+  organization "Intel Corporation";
+  contact "ROC Engineering";
+  description "A set of base extensions.";
+
+  revision "2022-12-12" {
+    description "ROC Extension Base Types";
+    reference "RFC 6087";
+  }
+
+  extension leaf-selection {
+    argument selection-stmt;
+    description "An Xpath statement that gives a selection criteria for leaf values";
+  }
+}

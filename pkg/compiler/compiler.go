@@ -35,6 +35,8 @@ const (
 	//gnmiGenTemplate    = "gnmi-gen.go.tpl"
 )
 
+const yangBaseDirectory = "/var/model-compiler/yang-base"
+
 // NewCompiler creates a new config model compiler
 func NewCompiler() *ModelCompiler {
 	return &ModelCompiler{}
@@ -162,7 +164,7 @@ func (c *ModelCompiler) Compile(path string) error {
 }
 
 func (c *ModelCompiler) loadModelMetaData(path string) error {
-	c.metaData = &MetaData{}
+	c.metaData = &MetaData{LintModel: true, RequireHyphenated: true}
 	if err := LoadMetaData(path, "metadata", c.metaData); err != nil {
 		return err
 	}
@@ -199,15 +201,18 @@ func (c *ModelCompiler) loadPluginVersion(path string) error {
 func (c *ModelCompiler) lintModel(path string) error {
 	log.Infof("Linting YANG files")
 
-	args := []string{"--lint", "--lint-ensure-hyphenated-names", "-W", "error", "--ignore-error=XPATH_FUNCTION"}
-
 	// Append the root YANG files to the command-line arguments
 	yangDir := filepath.Join(path, "yang")
+	yangDirs := []string{yangBaseDirectory, yangDir}
+	args := []string{"--lint", "-W", "error", "--ignore-error=XPATH_FUNCTION", "-p", strings.Join(yangDirs, ":")}
+	if c.metaData.RequireHyphenated {
+		args = append(args, "--lint-ensure-hyphenated-names")
+	}
 	for _, module := range c.metaData.Modules {
 		args = append(args, filepath.Join(yangDir, module.YangFile))
 	}
 
-	log.Infof("Executing %s", path, strings.Join(args, " "))
+	log.Infof("Executing pyang %v", args)
 	cmd := exec.Command("pyang", args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
@@ -223,7 +228,6 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	log.Infof("Generating YANG bindings '%s'", apiFile)
 
 	args := []string{
-		fmt.Sprintf("-path=%s/yang", path),
 		fmt.Sprintf("-output_file=%s", apiFile),
 		"-package_name=api",
 		"-generate_fakeroot",
@@ -231,7 +235,7 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	}
 
 	// Append all YANG files to the command-line arguments
-	pathDirs := make([]string, 0)
+	pathDirs := []string{yangBaseDirectory}
 	err := filepath.Walk(filepath.Join(path, "yang"), func(p string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -244,12 +248,12 @@ func (c *ModelCompiler) generateGolangBindings(path string) error {
 	if err != nil {
 		return err
 	}
-	args = append(args, fmt.Sprintf("-path=\"%s\"", strings.Join(pathDirs, ",")))
+	args = append(args, fmt.Sprintf("-path=%s", strings.Join(pathDirs, ",")))
 	for _, module := range c.metaData.Modules {
 		args = append(args, filepath.Join(path, "yang", module.YangFile))
 	}
 
-	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
+	log.Infof("Executing: generator %v", args)
 	cmd := exec.Command("generator", args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
@@ -279,14 +283,15 @@ func (c *ModelCompiler) generateModelTree(path string) error {
 	log.Infof("Generating YANG tree '%s'", treeFile)
 
 	yangDir := filepath.Join(path, "yang")
-	args := []string{"-f", "tree", "--ignore-error=XPATH_FUNCTION", "-p", yangDir, "-o", treeFile}
+	yangDirs := []string{yangBaseDirectory, yangDir}
+	args := []string{"-f", "tree", "--ignore-error=XPATH_FUNCTION", "-p", strings.Join(yangDirs, ":"), "-o", treeFile}
 
 	// Append the root YANG files to the command-line arguments
 	for _, module := range c.metaData.Modules {
 		args = append(args, filepath.Join(yangDir, module.YangFile))
 	}
 
-	log.Infof("Executing %s", path, strings.Join(args, " "))
+	log.Infof("Executing pyang %v", args)
 	cmd := exec.Command("pyang", args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout

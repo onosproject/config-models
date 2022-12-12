@@ -19,6 +19,8 @@ func TestLoadMetaData(t *testing.T) {
 
 	err := LoadMetaData(path, "not-existing", md)
 	assert.Error(t, err)
+	assert.True(t, md.LintModel)
+	assert.True(t, md.RequireHyphenated)
 }
 
 func TestValidateMetaData(t *testing.T) {
