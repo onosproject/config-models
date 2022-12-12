@@ -6,7 +6,7 @@ package openapi_gen
 
 import (
 	"github.com/openconfig/goyang/pkg/yang"
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
 )
@@ -63,12 +63,12 @@ func Test_yangRangeDouble(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Yuint16)
-	assert.NilError(t, err)
-	assert.Assert(t, min != nil)
+	assert.NoError(t, err)
+	assert.NotNil(t, min)
 	if min != nil {
 		assert.Equal(t, 0.0, *min)
 	}
-	assert.Assert(t, max != nil)
+	assert.NotNil(t, max)
 	if max != nil {
 		assert.Equal(t, 100.0, *max)
 	}
@@ -95,12 +95,12 @@ func Test_yangRangeDoubleUint8(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Yuint16)
-	assert.NilError(t, err)
-	assert.Assert(t, min != nil)
+	assert.NoError(t, err)
+	assert.NotNil(t, min)
 	if min != nil {
 		assert.Equal(t, 0.0, *min)
 	}
-	assert.Assert(t, max != nil)
+	assert.NotNil(t, max)
 	if max != nil {
 		assert.Equal(t, 65535.0, *max)
 	}
@@ -123,12 +123,12 @@ func Test_yangRangeDecimal(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Ydecimal64)
-	assert.NilError(t, err)
-	assert.Assert(t, min != nil)
+	assert.NoError(t, err)
+	assert.NotNil(t, min)
 	if min != nil {
 		assert.Equal(t, -2.0100000000000002, *min)
 	}
-	assert.Assert(t, max != nil)
+	assert.NotNil(t, max)
 	if max != nil {
 		assert.Equal(t, 20.05, *max)
 	}
@@ -151,9 +151,9 @@ func Test_yangRangeMinMaxInt32(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Yint32)
-	assert.NilError(t, err)
-	assert.Assert(t, min == nil)
-	assert.Assert(t, max == nil)
+	assert.NoError(t, err)
+	assert.Nil(t, min)
+	assert.Nil(t, max)
 }
 
 // Test the min and max of int64 - range is not needed
@@ -173,9 +173,9 @@ func Test_yangRangeMinMaxInt64(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Yint64)
-	assert.NilError(t, err)
-	assert.Assert(t, min == nil)
-	assert.Assert(t, max == nil)
+	assert.NoError(t, err)
+	assert.Nil(t, min)
+	assert.Nil(t, max)
 }
 
 // Test the min and max of uint32 - range is needed
@@ -195,12 +195,12 @@ func Test_yangRangeMinMaxUint32(t *testing.T) {
 	})
 
 	min, max, err := yangRange(testRange1, yang.Yuint32)
-	assert.NilError(t, err)
-	assert.Assert(t, min != nil)
+	assert.NoError(t, err)
+	assert.NotNil(t, min)
 	if min != nil {
 		assert.Equal(t, 0.0, *min)
 	}
-	assert.Assert(t, max == nil)
+	assert.Nil(t, max)
 }
 
 func Test_pathToSchemaName(t *testing.T) {
@@ -225,18 +225,18 @@ func Test_newPathItem(t *testing.T) {
 
 	pathItem := newPathItem(&testDirEntry, "/test-1/test-2/{id}/test-3/{id}/test-4",
 		"/parent-1/{parent1-name}/parent-2/{parent2-name}", pathTypeContainer, "targettest")
-	assert.Assert(t, pathItem != nil)
+	assert.True(t, pathItem != nil)
 	if pathItem != nil {
 		g := pathItem.Get
-		assert.Assert(t, g != nil)
+		assert.True(t, g != nil)
 		if g != nil {
 			assert.Equal(t, "GET /test-1/test-2/{id}/test-3/{id}/test-4 Container", g.Summary)
 		}
-		assert.Assert(t, pathItem.Post != nil)
+		assert.True(t, pathItem.Post != nil)
 		assert.Equal(t, "POST /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Post.Summary)
 		assert.Equal(t, "postTest-1_Test-2_Test-3_Test-4", pathItem.Post.OperationID)
 
-		assert.Assert(t, pathItem.Delete != nil)
+		assert.True(t, pathItem.Delete != nil)
 		assert.Equal(t, "DELETE /test-1/test-2/{id}/test-3/{id}/test-4", pathItem.Delete.Summary)
 		assert.Equal(t, "deleteTest-1_Test-2_Test-3_Test-4", pathItem.Delete.OperationID)
 
@@ -321,11 +321,11 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 
 	hasLeafref := false
 	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest", &hasLeafref)
-	assert.NilError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, len(paths), 0)
 	assert.Equal(t, len(components.Schemas), 2)
 	s, ok := components.Schemas["Test_Leaf1"]
-	assert.Assert(t, ok, "expecting Test_Leaf1")
+	assert.True(t, ok, "expecting Test_Leaf1")
 	assert.Equal(t, "Leaf1", s.Value.Title)
 	assert.Equal(t, "Leaf1 Description", s.Value.Description)
 	assert.Equal(t, "integer", s.Value.Type)
@@ -334,7 +334,7 @@ func Test_buildSchemaIntegerLeaf(t *testing.T) {
 	assert.Equal(t, 10.0, *s.Value.Max)
 
 	s, ok = components.Schemas["Test_Leaf2"]
-	assert.Assert(t, ok, "expecting Test_Leaf2")
+	assert.True(t, ok, "expecting Test_Leaf2")
 	assert.Equal(t, "Leaf2", s.Value.Title)
 	assert.Equal(t, "Leaf2 Description", s.Value.Description)
 	assert.Equal(t, "string", s.Value.Type)
@@ -444,6 +444,13 @@ func Test_buildSchemaLeafList(t *testing.T) {
 		Prefix: &yang.Value{
 			Name: "Test",
 		},
+		Exts: []*yang.Statement{
+			{
+				Keyword:     "xt:leaf-selection",
+				HasArgument: true,
+				Argument:    "../../leaf-uint16",
+			},
+		},
 	}
 
 	listStrRefLeafList := yang.Entry{
@@ -493,13 +500,12 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 	hasLeafref := false
 	paths, components, err := buildSchema(&testDirEntry, yang.TSUnset, "/test", "targettest", &hasLeafref)
-	assert.NilError(t, err)
-	assert.Equal(t, len(paths), 7)
+	assert.NoError(t, err)
 	assert.Equal(t, len(components.Schemas), 9)
 
 	// Assert the leaf list with leaf ref to integer inside a Container
 	s, ok := components.Schemas["Test_List1_List"]
-	assert.Assert(t, ok, "expecting Test_List1_List")
+	assert.True(t, ok, "expecting Test_List1_List")
 	assert.Equal(t, "", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	extValue, ok := s.Value.Extensions["x-test-list-extension"]
@@ -510,7 +516,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	assert.Equal(t, "", extValue)
 
 	s, ok = components.Schemas["Test_List1_Container1"]
-	assert.Assert(t, ok, "expecting Test_List1_Container1")
+	assert.True(t, ok, "expecting Test_List1_Container1")
 	assert.Equal(t, "Test_List1_Container1", s.Value.Title)
 	assert.Equal(t, "object", s.Value.Type)
 	extValue, ok = s.Value.Extensions["x-test-container-extension"]
@@ -519,7 +525,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 	// Assert the leaf list with leaf ref to integer inside a Container
 	s, ok = components.Schemas["Test_List1_Container1_Cont-int-ref-leaf-list"]
-	assert.Assert(t, ok, "expecting Test_List1_Container1_Cont-int-ref-leaf-list")
+	assert.True(t, ok, "expecting Test_List1_Container1_Cont-int-ref-leaf-list")
 	assert.Equal(t, "cont-int-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "integer", s.Value.Items.Value.Type)
@@ -529,24 +535,65 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 	// Assert the leaf list with leaf ref to string inside a Container
 	s, ok = components.Schemas["Test_List1_Container1_Cont-str-ref-leaf-list"]
-	assert.Assert(t, ok, "expecting Test_List1_Container1_Cont-str-ref-leaf-list")
+	assert.True(t, ok, "expecting Test_List1_Container1_Cont-str-ref-leaf-list")
 	assert.Equal(t, "cont-str-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "string", s.Value.Items.Value.Type)
 
 	// Assert the leaf list with leaf ref to integer inside a List
 	s, ok = components.Schemas["Test_List1_List-int-ref-leaf-list"]
-	assert.Assert(t, ok, "expecting Test_List1_List-int-ref-leaf-list")
+	assert.True(t, ok, "expecting Test_List1_List-int-ref-leaf-list")
 	assert.Equal(t, "list-int-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "integer", s.Value.Items.Value.Type)
 
 	// Assert the leaf list with leaf ref to string inside a List
 	s, ok = components.Schemas["Test_List1_List-str-ref-leaf-list"]
-	assert.Assert(t, ok, "expecting Test_List1_List-str-ref-leaf-list")
+	assert.True(t, ok, "expecting Test_List1_List-str-ref-leaf-list")
 	assert.Equal(t, "list-str-ref-leaf-list", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	assert.Equal(t, "string", s.Value.Items.Value.Type)
+
+	assert.Equal(t, len(paths), 8)
+	p := paths.Find("/test/list1")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+
+	p = paths.Find("/test/list1/{}")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+	assert.NotNil(t, p.Post)
+	assert.NotNil(t, p.Delete)
+
+	p = paths.Find("/test/list1/{}/list-int-ref-leaf-list/{leaf-uint16}/values")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+	assert.Equal(t, "getTest_List1_List-int-ref-leaf-list_Values_Leafref", p.Get.OperationID)
+
+	p = paths.Find("/test/list1/{}/list-int-ref-leaf-list/values")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+	assert.Equal(t, "getTest_List1_List-int-ref-leaf-list_LeafSelection", p.Get.OperationID)
+	assert.NotNil(t, p.Get.RequestBody)
+	assert.NotNil(t, p.Get.Responses.Get(200))
+
+	p = paths.Find("/test/list1/{}/list-str-ref-leaf-list/{leaf-string}/values")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+
+	p = paths.Find("/test/list1/{}/container1")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+	assert.NotNil(t, p.Post)
+	assert.NotNil(t, p.Delete)
+
+	p = paths.Find("/test/list1/{}/container1/cont-int-ref-leaf-list/{leaf-uint16}/values")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
+
+	p = paths.Find("/test/list1/{}/container1/cont-str-ref-leaf-list/{leaf-string}/values")
+	assert.NotNil(t, p)
+	assert.NotNil(t, p.Get)
 
 }
 
@@ -743,7 +790,7 @@ func Test_ReadOnly(t *testing.T) {
 
 	hasLeafref := false
 	paths, components, err := buildSchema(&test1Parent, yang.TSUnset, "/test", "targettest", &hasLeafref)
-	assert.NilError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, len(paths), 1)
 	assert.Equal(t, len(components.Schemas), 2)
 
@@ -805,8 +852,14 @@ func Test_Parent_ReadOnly(t *testing.T) {
 
 	hasLeafref := false
 	paths, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest", &hasLeafref)
-	assert.NilError(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, len(paths), 1)
+
+	path0 := paths.Find("/test/Leaf2/values")
+	assert.True(t, path0 != nil)
+	assert.Equal(t, 1, len(path0.Get.Tags))
+	assert.Equal(t, "Test_Leaf2", path0.Get.Tags[0])
+
 	assert.Equal(t, len(components.Schemas), 2)
 
 	// Assert the leaf list with leaf ref to integer inside a Container

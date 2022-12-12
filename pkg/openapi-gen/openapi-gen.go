@@ -50,6 +50,7 @@ const (
 	pathTypeListMultiple
 	pathTypeContainer
 	pathTypeLeafref
+	pathTypeLeafSelection
 )
 
 func (pt pathType) string() string {
@@ -60,6 +61,8 @@ func (pt pathType) string() string {
 		return "Container"
 	case pathTypeLeafref:
 		return "Leafref"
+	case pathTypeLeafSelection:
+		return "LeafSelection"
 	default:
 		return "undefined"
 	}
@@ -306,6 +309,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				})
 
 				leafrefPath := itemPath
+				leafParent := itemPath
 				if dirEntry.IsLeafList() {
 					var splitPath []string
 					if strings.Contains(dirEntry.Type.Path, ":") {
@@ -314,11 +318,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						splitPath = strings.Split(dirEntry.Type.Path, "/")
 					}
 					listId := splitPath[len(splitPath)-1]
-					leafrefPath = leafrefPath + "/{" + listId + "}/values"
-				} else {
-					leafrefPath = leafrefPath + "/values"
+					leafParent = leafrefPath + "/{" + listId + "}"
 				}
-				newPath := newPathItem(dirEntry, leafrefPath, leafrefPath, pathTypeLeafref, targetAlias)
+				leafrefPath = leafParent + "/values"
+				newPath := newPathItem(dirEntry, leafrefPath, leafParent, pathTypeLeafref, targetAlias)
 				newPath.Get.AddResponse(200, respGet200)
 				leafrefPath = pathWithPrefix(leafrefPath)
 				openapiPaths[leafrefPath] = newPath
@@ -422,8 +425,37 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Extensions = make(map[string]interface{})
 				}
 				for _, extension := range dirEntry.Exts {
-					schemaVal.Extensions[fmt.Sprintf("x-%s",
-						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])] = extension.Argument
+					keyword := fmt.Sprintf("x-%s",
+						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])
+					schemaVal.Extensions[keyword] = extension.Argument
+					if keyword == "x-leaf-selection" {
+						// Overrides a leafref if exists
+						*hasLeafref = true
+						extPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeLeafSelection, targetAlias)
+						respGet200 := openapi3.NewResponse()
+						respDesc := "Leaf selection response"
+						respGet200.Description = &respDesc
+
+						leafrefResolverRef := openapi3.NewObjectSchema()
+						leafrefResolverRef.Properties = make(map[string]*openapi3.SchemaRef)
+						leafrefResolverRef.Title = "ref"
+
+						respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+							Ref:   fmt.Sprintf("#/components/schemas/%s", LeafRefOptions),
+							Value: leafrefResolverRef,
+						})
+						extPath.Get.AddResponse(200, respGet200)
+						rbRef := &openapi3.RequestBodyRef{
+							Value: openapi3.NewRequestBody().WithContent(
+								openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+									Value: schemaVal,
+									Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(parentPath)),
+								}),
+							),
+						}
+						extPath.Get.RequestBody = rbRef
+						openapiPaths[pathWithPrefix(itemPath)+"/values"] = extPath
+					}
 				}
 			}
 
@@ -756,6 +788,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 	}
 
 	getOp.Responses = make(openapi3.Responses)
+	getOp.Tags = []string{toUnderScore(parentPath)}
 
 	parameters := make(openapi3.Parameters, 0)
 	pathKeys := strings.Split(parentPath, "/")
@@ -804,7 +837,12 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 		newPath.Description = fmt.Sprintf("YANG Choice Case: %s", dirEntry.Name)
 	}
 
-	if dirEntry.Config != yang.TSFalse && dirEntry.Parent.Config != yang.TSFalse && pathType != pathTypeListMultiple && pathType != pathTypeLeafref {
+	if dirEntry.Config != yang.TSFalse &&
+		dirEntry.Parent.Config != yang.TSFalse &&
+		pathType != pathTypeListMultiple &&
+		pathType != pathTypeLeafref &&
+		pathType != pathTypeLeafSelection {
+
 		deleteOp := openapi3.NewOperation()
 		deleteOp.Summary = fmt.Sprintf("DELETE %s", itemPath)
 		deleteOp.OperationID = fmt.Sprintf("delete%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
@@ -818,6 +856,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 		deleteOp.Responses = openapi3.Responses{"200": &openapi3.ResponseRef{
 			Value: deleteResp200,
 		}}
+		deleteOp.Tags = []string{toUnderScore(parentPath)}
 		newPath.Delete = deleteOp
 
 		postOp := openapi3.NewOperation()
@@ -829,6 +868,7 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 			Ref: fmt.Sprintf("#/components/requestBodies/RequestBody_%s", toUnderScore(itemPath)),
 			// Value is filled in later
 		}
+		postOp.Tags = []string{toUnderScore(parentPath)}
 		newPath.Post = postOp
 	}
 
