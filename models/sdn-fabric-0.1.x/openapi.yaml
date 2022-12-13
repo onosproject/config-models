@@ -815,6 +815,8 @@ paths:
                 $ref: '#/components/schemas/Dhcp-server_List'
           description: GET OK 200
       summary: GET /dhcp-server List
+      tags:
+      - Dhcp-server
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/dhcp-server/{dhcp-server-id}:
@@ -824,6 +826,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /dhcp-server
+      tags:
+      - Dhcp-server
     description: A list of DHCP Servers
     get:
       operationId: getDhcp-server
@@ -835,6 +839,8 @@ paths:
                 $ref: '#/components/schemas/Dhcp-server'
           description: GET OK 200
       summary: GET /dhcp-server Container
+      tags:
+      - Dhcp-server
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -853,6 +859,8 @@ paths:
         "201":
           description: created
       summary: POST /dhcp-server
+      tags:
+      - Dhcp-server
   /sdn-fabric/v0.1.x/{fabric-id}/route:
     description: A list of routes
     get:
@@ -865,6 +873,8 @@ paths:
                 $ref: '#/components/schemas/Route_List'
           description: GET OK 200
       summary: GET /route List
+      tags:
+      - Route
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/route/{route-id}:
@@ -874,6 +884,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /route
+      tags:
+      - Route
     description: A list of routes
     get:
       operationId: getRoute
@@ -885,6 +897,8 @@ paths:
                 $ref: '#/components/schemas/Route'
           description: GET OK 200
       summary: GET /route Container
+      tags:
+      - Route
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -903,6 +917,8 @@ paths:
         "201":
           description: created
       summary: POST /route
+      tags:
+      - Route
   /sdn-fabric/v0.1.x/{fabric-id}/switch:
     description: A managed device in the fabric
     get:
@@ -915,6 +931,8 @@ paths:
                 $ref: '#/components/schemas/Switch_List'
           description: GET OK 200
       summary: GET /switch List
+      tags:
+      - Switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model:
@@ -929,6 +947,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model_List'
           description: GET OK 200
       summary: GET /switch-model List
+      tags:
+      - Switch-model
     parameters:
     - $ref: '#/components/parameters/fabric-id'
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model/{switch-model-id}:
@@ -938,6 +958,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch-model
+      tags:
+      - Switch-model
     description: A model of switch
     get:
       operationId: getSwitch-model
@@ -949,6 +971,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model'
           description: GET OK 200
       summary: GET /switch-model Container
+      tags:
+      - Switch-model
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -967,6 +991,8 @@ paths:
         "201":
           description: created
       summary: POST /switch-model
+      tags:
+      - Switch-model
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model/{switch-model-id}/attribute:
     description: 'a map of extra attributes: string-string'
     get:
@@ -979,6 +1005,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Attribute_List'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/attribute List
+      tags:
+      - Switch-model_Attribute
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -996,6 +1024,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch-model/{switch-model-id}/attribute
+      tags:
+      - Switch-model_Attribute
     description: 'a map of extra attributes: string-string'
     get:
       operationId: getSwitch-model_Attribute
@@ -1007,6 +1037,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Attribute'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/attribute Container
+      tags:
+      - Switch-model_Attribute
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1033,6 +1065,8 @@ paths:
         "201":
           description: created
       summary: POST /switch-model/{switch-model-id}/attribute
+      tags:
+      - Switch-model_Attribute
   /sdn-fabric/v0.1.x/{fabric-id}/switch-model/{switch-model-id}/port:
     description: A port in a switch
     get:
@@ -1045,6 +1079,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Port_List'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/port List
+      tags:
+      - Switch-model_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1062,6 +1098,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch-model/{switch-model-id}/port
+      tags:
+      - Switch-model_Port
     description: A port in a switch
     get:
       operationId: getSwitch-model_Port
@@ -1073,6 +1111,8 @@ paths:
                 $ref: '#/components/schemas/Switch-model_Port'
           description: GET OK 200
       summary: GET /switch-model/{switch-model-id}/port Container
+      tags:
+      - Switch-model_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1099,6 +1139,8 @@ paths:
         "201":
           description: created
       summary: POST /switch-model/{switch-model-id}/port
+      tags:
+      - Switch-model_Port
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}:
     delete:
       operationId: deleteSwitch
@@ -1106,6 +1148,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch
+      tags:
+      - Switch
     description: A managed device in the fabric
     get:
       operationId: getSwitch
@@ -1117,6 +1161,8 @@ paths:
                 $ref: '#/components/schemas/Switch'
           description: GET OK 200
       summary: GET /switch Container
+      tags:
+      - Switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1135,6 +1181,8 @@ paths:
         "201":
           description: created
       summary: POST /switch
+      tags:
+      - Switch
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/attribute:
     description: 'a map of extra attributes: string-string'
     get:
@@ -1147,6 +1195,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Attribute_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/attribute List
+      tags:
+      - Switch_Attribute
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1164,6 +1214,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/attribute
+      tags:
+      - Switch_Attribute
     description: 'a map of extra attributes: string-string'
     get:
       operationId: getSwitch_Attribute
@@ -1175,6 +1227,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Attribute'
           description: GET OK 200
       summary: GET /switch/{switch-id}/attribute Container
+      tags:
+      - Switch_Attribute
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1201,6 +1255,8 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/attribute
+      tags:
+      - Switch_Attribute
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/management:
     delete:
       operationId: deleteSwitch_Management
@@ -1208,6 +1264,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/management
+      tags:
+      - Switch
     description: configuration of the management port
     get:
       operationId: getSwitch_Management
@@ -1219,6 +1277,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Management'
           description: GET OK 200
       summary: GET /switch/{switch-id}/management Container
+      tags:
+      - Switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1237,6 +1297,8 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/management
+      tags:
+      - Switch
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/model-id/values:
     description: link to switch model
     get:
@@ -1249,6 +1311,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /switch/{switch-id}/model-id/values Leafref
+      tags:
+      - Switch_Model-id
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1271,6 +1335,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port List
+      tags:
+      - Switch_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1288,6 +1354,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/port
+      tags:
+      - Switch_Port
     description: A port in a switch
     get:
       operationId: getSwitch_Port
@@ -1299,6 +1367,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Port'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port Container
+      tags:
+      - Switch_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1333,19 +1403,28 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port
+      tags:
+      - Switch_Port
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values:
     description: reference to the cage-number of the port in the switch model
     get:
-      operationId: getSwitch_Port_Cage-number_Values_Leafref
+      operationId: getSwitch_Port_Cage-number_LeafSelection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Switch_Port'
       responses:
         "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeafRefOptions'
-          description: GET OK 200
-      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
-        Leafref
+          description: Leaf selection response
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number
+        LeafSelection
+      tags:
+      - Switch_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1385,6 +1464,8 @@ paths:
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/dhcp-connect-point/{dhcp-server-id}/values
         Leafref
+      tags:
+      - Switch_Port_Dhcp-connect-point
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1419,6 +1500,51 @@ paths:
       in: path
       name: dhcp-server-id
       required: true
+  /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/speed/values:
+    description: configured port speed
+    get:
+      operationId: getSwitch_Port_Speed_LeafSelection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Switch_Port'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: Leaf selection response
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/speed LeafSelection
+      tags:
+      - Switch_Port
+    parameters:
+    - $ref: '#/components/parameters/fabric-id'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/state:
     description: Op state attributes
     get:
@@ -1431,6 +1557,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_State'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/state Container
+      tags:
+      - Switch_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1464,6 +1592,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans
+      tags:
+      - Switch_Port
     description: untagged and tagged vlans per port
     get:
       operationId: getSwitch_Port_Vlans
@@ -1475,6 +1605,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Port_Vlans'
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans Container
+      tags:
+      - Switch_Port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1509,6 +1641,8 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans
+      tags:
+      - Switch_Port
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values:
     description: multiple tagged vlans
     get:
@@ -1522,6 +1656,8 @@ paths:
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/tagged/{vlan-id}/values
         Leafref
+      tags:
+      - Switch_Port_Vlans_Tagged
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1569,6 +1705,8 @@ paths:
           description: GET OK 200
       summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/vlans/untagged/values
         Leafref
+      tags:
+      - Switch_Port_Vlans_Untagged
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1607,6 +1745,8 @@ paths:
                 $ref: '#/components/schemas/Switch_State'
           description: GET OK 200
       summary: GET /switch/{switch-id}/state Container
+      tags:
+      - Switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1624,6 +1764,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/switch-pair
+      tags:
+      - Switch
     description: A Switch pairing. A switch can participate on 0-1 pairings
     get:
       operationId: getSwitch_Switch-pair
@@ -1635,6 +1777,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair Container
+      tags:
+      - Switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1653,6 +1797,8 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/switch-pair
+      tags:
+      - Switch
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/paired-switch/values:
     description: |-
       Paired switch identifier. A guard rail will require that
@@ -1667,6 +1813,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/paired-switch/values Leafref
+      tags:
+      - Switch_Switch-pair_Paired-switch
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1692,6 +1840,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port List
+      tags:
+      - Switch_Switch-pair_Pairing-port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1709,6 +1859,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/switch-pair/pairing-port
+      tags:
+      - Switch_Switch-pair_Pairing-port
     description: |-
       The port on the local switch to establish the paired link
       In future there may be more than 1 port to provide redundancy.
@@ -1723,6 +1875,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Switch-pair_Pairing-port'
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port Container
+      tags:
+      - Switch_Switch-pair_Pairing-port
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1757,6 +1911,8 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/switch-pair/pairing-port
+      tags:
+      - Switch_Switch-pair_Pairing-port
   /sdn-fabric/v0.1.x/{fabric-id}/switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values:
     description: 'Port cage number used for connecting to '
     get:
@@ -1770,6 +1926,8 @@ paths:
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/cage-number/values
         Leafref
+      tags:
+      - Switch_Switch-pair_Pairing-port_Cage-number
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1809,6 +1967,8 @@ paths:
           description: GET OK 200
       summary: GET /switch/{switch-id}/switch-pair/pairing-port/{cage-number}/{channel-number}/channel-number/values
         Leafref
+      tags:
+      - Switch_Switch-pair_Pairing-port_Channel-number
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1847,6 +2007,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Vlan_List'
           description: GET OK 200
       summary: GET /switch/{switch-id}/vlan List
+      tags:
+      - Switch_Vlan
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1864,6 +2026,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /switch/{switch-id}/vlan
+      tags:
+      - Switch_Vlan
     description: a list of VLANs
     get:
       operationId: getSwitch_Vlan
@@ -1875,6 +2039,8 @@ paths:
                 $ref: '#/components/schemas/Switch_Vlan'
           description: GET OK 200
       summary: GET /switch/{switch-id}/vlan Container
+      tags:
+      - Switch_Vlan
     parameters:
     - $ref: '#/components/parameters/fabric-id'
     - content:
@@ -1901,3 +2067,5 @@ paths:
         "201":
           description: created
       summary: POST /switch/{switch-id}/vlan
+      tags:
+      - Switch_Vlan

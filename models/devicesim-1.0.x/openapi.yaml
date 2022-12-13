@@ -4937,6 +4937,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components
+      tags:
+      - ""
     description: Enclosing container for the components in the system.
     get:
       operationId: getComponents
@@ -4948,6 +4950,8 @@ paths:
                 $ref: '#/components/schemas/Components'
           description: GET OK 200
       summary: GET /components Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -4958,6 +4962,8 @@ paths:
         "201":
           description: created
       summary: POST /components
+      tags:
+      - ""
   /devicesim/v1.0.x/{device-id}/components/component:
     description: List of components, keyed by component name.
     get:
@@ -4970,6 +4976,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_List'
           description: GET OK 200
       summary: GET /components/component List
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/components/component/{name}:
@@ -4979,6 +4987,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component
+      tags:
+      - Components_Component
     description: List of components, keyed by component name.
     get:
       operationId: getComponents_Component
@@ -4990,6 +5000,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component'
           description: GET OK 200
       summary: GET /components/component Container
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5008,6 +5020,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component
+      tags:
+      - Components_Component
   /devicesim/v1.0.x/{device-id}/components/component/{name}/config:
     delete:
       operationId: deleteComponents_Component_Config
@@ -5015,6 +5029,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/config
+      tags:
+      - Components_Component
     description: Configuration data for each component
     get:
       operationId: getComponents_Component_Config
@@ -5026,6 +5042,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Config'
           description: GET OK 200
       summary: GET /components/component/{name}/config Container
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5044,6 +5062,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/config
+      tags:
+      - Components_Component
   /devicesim/v1.0.x/{device-id}/components/component/{name}/name/values:
     description: References the component name
     get:
@@ -5056,6 +5076,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /components/component/{name}/name/values Leafref
+      tags:
+      - Components_Component_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5073,6 +5095,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties
+      tags:
+      - Components_Component
     description: 'Enclosing container '
     get:
       operationId: getComponents_Component_Properties
@@ -5084,6 +5108,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties'
           description: GET OK 200
       summary: GET /components/component/{name}/properties Container
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5102,6 +5128,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties
+      tags:
+      - Components_Component
   /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property:
     description: List of system properties for the component
     get:
@@ -5114,6 +5142,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_List'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property List
+      tags:
+      - Components_Component_Properties_Property
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5131,6 +5161,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties/property
+      tags:
+      - Components_Component_Properties_Property
     description: List of system properties for the component
     get:
       operationId: getComponents_Component_Properties_Property
@@ -5142,6 +5174,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property Container
+      tags:
+      - Components_Component_Properties_Property
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5168,6 +5202,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property
+      tags:
+      - Components_Component_Properties_Property
   /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/config:
     delete:
       operationId: deleteComponents_Component_Properties_Property_Config
@@ -5175,6 +5211,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/properties/property/{name}/config
+      tags:
+      - Components_Component_Properties_Property
     description: Configuration data for each property
     get:
       operationId: getComponents_Component_Properties_Property_Config
@@ -5187,6 +5225,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/config
         Container
+      tags:
+      - Components_Component_Properties_Property
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5213,6 +5253,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/properties/property/{name}/config
+      tags:
+      - Components_Component_Properties_Property
   /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/name/values:
     description: Reference to the property name.
     get:
@@ -5226,6 +5268,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/name/values
         Leafref
+      tags:
+      - Components_Component_Properties_Property_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5256,6 +5300,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_State'
           description: GET OK 200
       summary: GET /components/component/{name}/properties/property/{name}/state Container
+      tags:
+      - Components_Component_Properties_Property
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5286,6 +5332,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_State'
           description: GET OK 200
       summary: GET /components/component/{name}/state Container
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5312,6 +5360,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_State_Temperature'
           description: GET OK 200
       summary: GET /components/component/{name}/state/temperature Container
+      tags:
+      - Components_Component_State
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5329,6 +5379,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents
+      tags:
+      - Components_Component
     description: Enclosing container for subcomponent references
     get:
       operationId: getComponents_Component_Subcomponents
@@ -5340,6 +5392,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents Container
+      tags:
+      - Components_Component
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5358,6 +5412,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents
+      tags:
+      - Components_Component
   /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent:
     description: List of subcomponent references
     get:
@@ -5370,6 +5426,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_List'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent List
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5387,6 +5445,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents/subcomponent
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     description: List of subcomponent references
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent
@@ -5398,6 +5458,8 @@ paths:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent Container
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5424,6 +5486,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
   /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
@@ -5431,6 +5495,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /components/component/{name}/subcomponents/subcomponent/{name}/config
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     description: 'Configuration data '
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_Config
@@ -5443,6 +5509,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config
         Container
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5469,6 +5537,8 @@ paths:
         "201":
           description: created
       summary: POST /components/component/{name}/subcomponents/subcomponent/{name}/config
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
   /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config/name/values:
     description: Reference to the name of the subcomponent
     get:
@@ -5482,6 +5552,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config/name/values
         Leafref
+      tags:
+      - Components_Component_Subcomponents_Subcomponent_Config_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5513,6 +5585,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/name/values
         Leafref
+      tags:
+      - Components_Component_Subcomponents_Subcomponent_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5544,6 +5618,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
         Container
+      tags:
+      - Components_Component_Subcomponents_Subcomponent
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5575,6 +5651,8 @@ paths:
           description: GET OK 200
       summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state/name/values
         Leafref
+      tags:
+      - Components_Component_Subcomponents_Subcomponent_State_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5600,6 +5678,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces
+      tags:
+      - ""
     description: |-
       Top level container for interfaces, including configuration
       and state data.
@@ -5613,6 +5693,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces'
           description: GET OK 200
       summary: GET /interfaces Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -5623,6 +5705,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces
+      tags:
+      - ""
   /devicesim/v1.0.x/{device-id}/interfaces/interface:
     description: The list of named interfaces on the device.
     get:
@@ -5635,6 +5719,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_List'
           description: GET OK 200
       summary: GET /interfaces/interface List
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}:
@@ -5644,6 +5730,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface
+      tags:
+      - Interfaces_Interface
     description: The list of named interfaces on the device.
     get:
       operationId: getInterfaces_Interface
@@ -5655,6 +5743,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface'
           description: GET OK 200
       summary: GET /interfaces/interface Container
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5673,6 +5763,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface
+      tags:
+      - Interfaces_Interface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/config:
     delete:
       operationId: deleteInterfaces_Interface_Config
@@ -5680,6 +5772,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/config
+      tags:
+      - Interfaces_Interface
     description: |-
       Configurable items at the global, physical interface
       level
@@ -5693,6 +5787,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Config'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/config Container
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5711,6 +5807,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/config
+      tags:
+      - Interfaces_Interface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time
@@ -5718,6 +5816,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/hold-time
+      tags:
+      - Interfaces_Interface
     description: |-
       Top-level container for hold-time settings to enable
       dampening advertisements of interface transitions.
@@ -5731,6 +5831,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time Container
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5749,6 +5851,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time
+      tags:
+      - Interfaces_Interface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time/config:
     delete:
       operationId: deleteInterfaces_Interface_Hold-time_Config
@@ -5756,6 +5860,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/hold-time/config
+      tags:
+      - Interfaces_Interface_Hold-time
     description: Configuration data for interface hold-time settings.
     get:
       operationId: getInterfaces_Interface_Hold-time_Config
@@ -5767,6 +5873,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_Config'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/config Container
+      tags:
+      - Interfaces_Interface_Hold-time
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5785,6 +5893,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/hold-time/config
+      tags:
+      - Interfaces_Interface_Hold-time
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/hold-time/state:
     description: Operational state data for interface hold-time.
     get:
@@ -5797,6 +5907,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Hold-time_State'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/hold-time/state Container
+      tags:
+      - Interfaces_Interface_Hold-time
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5819,6 +5931,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/name/values Leafref
+      tags:
+      - Interfaces_Interface_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5841,6 +5955,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_State'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state Container
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5863,6 +5979,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_State_Counters'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state/counters Container
+      tags:
+      - Interfaces_Interface_State
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5885,6 +6003,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/state/hardware-port/values Leafref
+      tags:
+      - Interfaces_Interface_State_Hardware-port
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5902,6 +6022,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces
+      tags:
+      - Interfaces_Interface
     description: |-
       Enclosing container for the list of subinterfaces associated
       with a physical interface
@@ -5915,6 +6037,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces Container
+      tags:
+      - Interfaces_Interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5933,6 +6057,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces
+      tags:
+      - Interfaces_Interface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface:
     description: |-
       The list of subinterfaces (logical interfaces) associated
@@ -5947,6 +6073,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface_List'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface List
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -5964,6 +6092,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces/subinterface
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     description: |-
       The list of subinterfaces (logical interfaces) associated
       with a physical interface
@@ -5977,6 +6107,8 @@ paths:
                 $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface Container
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6003,6 +6135,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/config:
     delete:
       operationId: deleteInterfaces_Interface_Subinterfaces_Subinterface_Config
@@ -6010,6 +6144,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     description: Configurable items at the subinterface level
     get:
       operationId: getInterfaces_Interface_Subinterfaces_Subinterface_Config
@@ -6022,6 +6158,8 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
         Container
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6048,6 +6186,8 @@ paths:
         "201":
           description: created
       summary: POST /interfaces/interface/{name}/subinterfaces/subinterface/{index}/config
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
   /devicesim/v1.0.x/{device-id}/interfaces/interface/{name}/subinterfaces/subinterface/{index}/index/values:
     description: |-
       The index number of the subinterface -- used to address
@@ -6063,6 +6203,8 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/index/values
         Leafref
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface_Index
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6094,6 +6236,8 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state
         Container
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6125,6 +6269,8 @@ paths:
           description: GET OK 200
       summary: GET /interfaces/interface/{name}/subinterfaces/subinterface/{index}/state/counters
         Container
+      tags:
+      - Interfaces_Interface_Subinterfaces_Subinterface_State
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6150,6 +6296,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system
+      tags:
+      - ""
     description: |-
       Enclosing container for system-related configuration and
       operational state data
@@ -6163,6 +6311,8 @@ paths:
                 $ref: '#/components/schemas/System'
           description: GET OK 200
       summary: GET /system Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6173,6 +6323,8 @@ paths:
         "201":
           description: created
       summary: POST /system
+      tags:
+      - ""
   /devicesim/v1.0.x/{device-id}/system/aaa:
     delete:
       operationId: deleteSystem_Aaa
@@ -6180,6 +6332,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa
+      tags:
+      - System
     description: Top-level container for AAA services
     get:
       operationId: getSystem_Aaa
@@ -6191,6 +6345,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa'
           description: GET OK 200
       summary: GET /system/aaa Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6201,6 +6357,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting:
     delete:
       operationId: deleteSystem_Aaa_Accounting
@@ -6208,6 +6366,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting
+      tags:
+      - System_Aaa
     description: Top-level container for AAA accounting
     get:
       operationId: getSystem_Aaa_Accounting
@@ -6219,6 +6379,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting'
           description: GET OK 200
       summary: GET /system/aaa/accounting Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6229,6 +6391,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting
+      tags:
+      - System_Aaa
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Config
@@ -6236,6 +6400,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/config
+      tags:
+      - System_Aaa_Accounting
     description: Configuration data for user activity accounting.
     get:
       operationId: getSystem_Aaa_Accounting_Config
@@ -6247,6 +6413,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Config'
           description: GET OK 200
       summary: GET /system/aaa/accounting/config Container
+      tags:
+      - System_Aaa_Accounting
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6257,6 +6425,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/config
+      tags:
+      - System_Aaa_Accounting
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events
@@ -6264,6 +6434,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events
+      tags:
+      - System_Aaa_Accounting
     description: |-
       Enclosing container for defining handling of events
       for accounting
@@ -6277,6 +6449,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events Container
+      tags:
+      - System_Aaa_Accounting
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6287,6 +6461,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events
+      tags:
+      - System_Aaa_Accounting
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event:
     description: List of events subject to accounting
     get:
@@ -6299,6 +6475,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event List
+      tags:
+      - System_Aaa_Accounting_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}:
@@ -6308,6 +6486,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events/event
+      tags:
+      - System_Aaa_Accounting_Events_Event
     description: List of events subject to accounting
     get:
       operationId: getSystem_Aaa_Accounting_Events_Event
@@ -6319,6 +6499,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event Container
+      tags:
+      - System_Aaa_Accounting_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6337,6 +6519,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event
+      tags:
+      - System_Aaa_Accounting_Events_Event
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Accounting_Events_Event_Config
@@ -6344,6 +6528,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/accounting/events/event/{event-type}/config
+      tags:
+      - System_Aaa_Accounting_Events_Event
     description: Configuration data for accounting events
     get:
       operationId: getSystem_Aaa_Accounting_Events_Event_Config
@@ -6355,6 +6541,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_Config'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/config Container
+      tags:
+      - System_Aaa_Accounting_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6373,6 +6561,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/accounting/events/event/{event-type}/config
+      tags:
+      - System_Aaa_Accounting_Events_Event
   /devicesim/v1.0.x/{device-id}/system/aaa/accounting/events/event/{event-type}/event-type/values:
     description: |-
       Reference to the event-type being logged at the
@@ -6388,6 +6578,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/event-type/values
         Leafref
+      tags:
+      - System_Aaa_Accounting_Events_Event_Event-type
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6410,6 +6602,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event_State'
           description: GET OK 200
       summary: GET /system/aaa/accounting/events/event/{event-type}/state Container
+      tags:
+      - System_Aaa_Accounting_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6432,6 +6626,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Accounting_State'
           description: GET OK 200
       summary: GET /system/aaa/accounting/state Container
+      tags:
+      - System_Aaa_Accounting
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication:
@@ -6441,6 +6637,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication
+      tags:
+      - System_Aaa
     description: Top-level container for global authentication data
     get:
       operationId: getSystem_Aaa_Authentication
@@ -6452,6 +6650,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication'
           description: GET OK 200
       summary: GET /system/aaa/authentication Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6462,6 +6662,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication
+      tags:
+      - System_Aaa
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user
@@ -6469,6 +6671,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/admin-user
+      tags:
+      - System_Aaa_Authentication
     description: |-
       Top-level container for the system root or admin user
       configuration and operational state
@@ -6482,6 +6686,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user Container
+      tags:
+      - System_Aaa_Authentication
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6492,6 +6698,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user
+      tags:
+      - System_Aaa_Authentication
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Admin-user_Config
@@ -6499,6 +6707,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/admin-user/config
+      tags:
+      - System_Aaa_Authentication_Admin-user
     description: Configuration data for the root user account
     get:
       operationId: getSystem_Aaa_Authentication_Admin-user_Config
@@ -6510,6 +6720,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/config Container
+      tags:
+      - System_Aaa_Authentication_Admin-user
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6520,6 +6732,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/admin-user/config
+      tags:
+      - System_Aaa_Authentication_Admin-user
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/admin-user/state:
     description: Operational state data for the root user account
     get:
@@ -6532,6 +6746,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Admin-user_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/admin-user/state Container
+      tags:
+      - System_Aaa_Authentication_Admin-user
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/config:
@@ -6541,6 +6757,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/config
+      tags:
+      - System_Aaa_Authentication
     description: Configuration data for global authentication services
     get:
       operationId: getSystem_Aaa_Authentication_Config
@@ -6552,6 +6770,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/config Container
+      tags:
+      - System_Aaa_Authentication
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6562,6 +6782,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/config
+      tags:
+      - System_Aaa_Authentication
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/state:
     description: |-
       Operational state data for global authentication
@@ -6576,6 +6798,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/state Container
+      tags:
+      - System_Aaa_Authentication
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users:
@@ -6585,6 +6809,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users
+      tags:
+      - System_Aaa_Authentication
     description: Enclosing container list of local users
     get:
       operationId: getSystem_Aaa_Authentication_Users
@@ -6596,6 +6822,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users Container
+      tags:
+      - System_Aaa_Authentication
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6606,6 +6834,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users
+      tags:
+      - System_Aaa_Authentication
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user:
     description: List of local users on the system
     get:
@@ -6618,6 +6848,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_List'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user List
+      tags:
+      - System_Aaa_Authentication_Users_User
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}:
@@ -6627,6 +6859,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users/user
+      tags:
+      - System_Aaa_Authentication_Users_User
     description: List of local users on the system
     get:
       operationId: getSystem_Aaa_Authentication_Users_User
@@ -6638,6 +6872,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user Container
+      tags:
+      - System_Aaa_Authentication_Users_User
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6656,6 +6892,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user
+      tags:
+      - System_Aaa_Authentication_Users_User
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/config:
     delete:
       operationId: deleteSystem_Aaa_Authentication_Users_User_Config
@@ -6663,6 +6901,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authentication/users/user/{username}/config
+      tags:
+      - System_Aaa_Authentication_Users_User
     description: Configuration data for local users
     get:
       operationId: getSystem_Aaa_Authentication_Users_User_Config
@@ -6674,6 +6914,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_Config'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/config Container
+      tags:
+      - System_Aaa_Authentication_Users_User
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6692,6 +6934,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authentication/users/user/{username}/config
+      tags:
+      - System_Aaa_Authentication_Users_User
   /devicesim/v1.0.x/{device-id}/system/aaa/authentication/users/user/{username}/state:
     description: Operational state data for local users
     get:
@@ -6704,6 +6948,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authentication_Users_User_State'
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/state Container
+      tags:
+      - System_Aaa_Authentication_Users_User
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6727,6 +6973,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authentication/users/user/{username}/username/values
         Leafref
+      tags:
+      - System_Aaa_Authentication_Users_User_Username
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6744,6 +6992,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization
+      tags:
+      - System_Aaa
     description: |-
       Top-level container for AAA authorization configuration
       and operational state data
@@ -6757,6 +7007,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization'
           description: GET OK 200
       summary: GET /system/aaa/authorization Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6767,6 +7019,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization
+      tags:
+      - System_Aaa
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Config
@@ -6774,6 +7028,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/config
+      tags:
+      - System_Aaa_Authorization
     description: |-
       Configuration data for authorization based on AAA
       methods
@@ -6787,6 +7043,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Config'
           description: GET OK 200
       summary: GET /system/aaa/authorization/config Container
+      tags:
+      - System_Aaa_Authorization
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6797,6 +7055,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/config
+      tags:
+      - System_Aaa_Authorization
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events
@@ -6804,6 +7064,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events
+      tags:
+      - System_Aaa_Authorization
     description: |-
       Enclosing container for the set of events subject
       to authorization
@@ -6817,6 +7079,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events Container
+      tags:
+      - System_Aaa_Authorization
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -6827,6 +7091,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events
+      tags:
+      - System_Aaa_Authorization
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event:
     description: List of events subject to AAA authorization
     get:
@@ -6839,6 +7105,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_List'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event List
+      tags:
+      - System_Aaa_Authorization_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}:
@@ -6848,6 +7116,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events/event
+      tags:
+      - System_Aaa_Authorization_Events_Event
     description: List of events subject to AAA authorization
     get:
       operationId: getSystem_Aaa_Authorization_Events_Event
@@ -6859,6 +7129,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event Container
+      tags:
+      - System_Aaa_Authorization_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6877,6 +7149,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event
+      tags:
+      - System_Aaa_Authorization_Events_Event
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/config:
     delete:
       operationId: deleteSystem_Aaa_Authorization_Events_Event_Config
@@ -6884,6 +7158,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/authorization/events/event/{event-type}/config
+      tags:
+      - System_Aaa_Authorization_Events_Event
     description: Configuration data for each authorized event
     get:
       operationId: getSystem_Aaa_Authorization_Events_Event_Config
@@ -6895,6 +7171,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_Config'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/config Container
+      tags:
+      - System_Aaa_Authorization_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6913,6 +7191,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/authorization/events/event/{event-type}/config
+      tags:
+      - System_Aaa_Authorization_Events_Event
   /devicesim/v1.0.x/{device-id}/system/aaa/authorization/events/event/{event-type}/event-type/values:
     description: Reference to the event-type list key
     get:
@@ -6926,6 +7206,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/event-type/values
         Leafref
+      tags:
+      - System_Aaa_Authorization_Events_Event_Event-type
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6948,6 +7230,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event_State'
           description: GET OK 200
       summary: GET /system/aaa/authorization/events/event/{event-type}/state Container
+      tags:
+      - System_Aaa_Authorization_Events_Event
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -6970,6 +7254,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Authorization_State'
           description: GET OK 200
       summary: GET /system/aaa/authorization/state Container
+      tags:
+      - System_Aaa_Authorization
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/config:
@@ -6979,6 +7265,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/config
+      tags:
+      - System_Aaa
     description: Configuration data for top level AAA services
     get:
       operationId: getSystem_Aaa_Config
@@ -6990,6 +7278,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Config'
           description: GET OK 200
       summary: GET /system/aaa/config Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7000,6 +7290,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/config
+      tags:
+      - System_Aaa
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups:
     delete:
       operationId: deleteSystem_Aaa_Server-groups
@@ -7007,6 +7299,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups
+      tags:
+      - System_Aaa
     description: Enclosing container for AAA server groups
     get:
       operationId: getSystem_Aaa_Server-groups
@@ -7018,6 +7312,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups'
           description: GET OK 200
       summary: GET /system/aaa/server-groups Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7028,6 +7324,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups
+      tags:
+      - System_Aaa
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group:
     description: |-
       List of AAA server groups.  All servers in a group
@@ -7043,6 +7341,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group List
+      tags:
+      - System_Aaa_Server-groups_Server-group
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}:
@@ -7052,6 +7352,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group
+      tags:
+      - System_Aaa_Server-groups_Server-group
     description: |-
       List of AAA server groups.  All servers in a group
       must have the same type as indicated by the server
@@ -7066,6 +7368,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group Container
+      tags:
+      - System_Aaa_Server-groups_Server-group
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7084,6 +7388,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group
+      tags:
+      - System_Aaa_Server-groups_Server-group
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Config
@@ -7091,6 +7397,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/config
+      tags:
+      - System_Aaa_Server-groups_Server-group
     description: Configuration data for each server group
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Config
@@ -7102,6 +7410,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Config'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/config Container
+      tags:
+      - System_Aaa_Server-groups_Server-group
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7120,6 +7430,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/config
+      tags:
+      - System_Aaa_Server-groups_Server-group
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/name/values:
     description: Reference to configured name of the server group
     get:
@@ -7132,6 +7444,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/name/values Leafref
+      tags:
+      - System_Aaa_Server-groups_Server-group_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7149,6 +7463,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers
+      tags:
+      - System_Aaa_Server-groups_Server-group
     description: Enclosing container the list of servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers
@@ -7160,6 +7476,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers Container
+      tags:
+      - System_Aaa_Server-groups_Server-group
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7178,6 +7496,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers
+      tags:
+      - System_Aaa_Server-groups_Server-group
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server:
     description: List of AAA servers
     get:
@@ -7190,6 +7510,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server List
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7207,6 +7529,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     description: List of AAA servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server
@@ -7218,6 +7542,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7244,6 +7570,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/address/values:
     description: Reference to the configured address of the AAA server
     get:
@@ -7257,6 +7585,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/address/values
         Leafref
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Address
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7282,6 +7612,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     description: 'Configuration data '
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Config
@@ -7294,6 +7626,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7320,6 +7654,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
@@ -7327,6 +7663,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     description: Top-level container for RADIUS server data
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius
@@ -7339,6 +7677,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7365,6 +7705,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
@@ -7372,6 +7714,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
     description: Configuration data for RADIUS servers
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Radius_Config
@@ -7384,6 +7728,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7410,6 +7756,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state:
     description: Operational state data for RADIUS servers
     get:
@@ -7423,6 +7771,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7454,6 +7804,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/radius/state/counters
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Radius_State
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7485,6 +7837,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/state
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7510,6 +7864,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     description: Top-level container for TACACS+ server data
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
@@ -7522,6 +7878,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7548,6 +7906,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config:
     delete:
       operationId: deleteSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
@@ -7555,6 +7915,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
     description: Configuration data for TACACS+ server
     get:
       operationId: getSystem_Aaa_Server-groups_Server-group_Servers_Server_Tacacs_Config
@@ -7567,6 +7929,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7593,6 +7957,8 @@ paths:
         "201":
           description: created
       summary: POST /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/config
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
   /devicesim/v1.0.x/{device-id}/system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state:
     description: Operational state data for TACACS+ server
     get:
@@ -7606,6 +7972,8 @@ paths:
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/servers/server/{address}/tacacs/state
         Container
+      tags:
+      - System_Aaa_Server-groups_Server-group_Servers_Server_Tacacs
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7636,6 +8004,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_State'
           description: GET OK 200
       summary: GET /system/aaa/server-groups/server-group/{name}/state Container
+      tags:
+      - System_Aaa_Server-groups_Server-group
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7658,6 +8028,8 @@ paths:
                 $ref: '#/components/schemas/System_Aaa_State'
           description: GET OK 200
       summary: GET /system/aaa/state Container
+      tags:
+      - System_Aaa
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/clock:
@@ -7667,6 +8039,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/clock
+      tags:
+      - System
     description: Top-level container for clock configuration data
     get:
       operationId: getSystem_Clock
@@ -7678,6 +8052,8 @@ paths:
                 $ref: '#/components/schemas/System_Clock'
           description: GET OK 200
       summary: GET /system/clock Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7688,6 +8064,8 @@ paths:
         "201":
           description: created
       summary: POST /system/clock
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/clock/config:
     delete:
       operationId: deleteSystem_Clock_Config
@@ -7695,6 +8073,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/clock/config
+      tags:
+      - System_Clock
     description: Configuration data for system clock
     get:
       operationId: getSystem_Clock_Config
@@ -7706,6 +8086,8 @@ paths:
                 $ref: '#/components/schemas/System_Clock_Config'
           description: GET OK 200
       summary: GET /system/clock/config Container
+      tags:
+      - System_Clock
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7716,6 +8098,8 @@ paths:
         "201":
           description: created
       summary: POST /system/clock/config
+      tags:
+      - System_Clock
   /devicesim/v1.0.x/{device-id}/system/clock/state:
     description: Operational state data for system clock
     get:
@@ -7728,6 +8112,8 @@ paths:
                 $ref: '#/components/schemas/System_Clock_State'
           description: GET OK 200
       summary: GET /system/clock/state Container
+      tags:
+      - System_Clock
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/config:
@@ -7737,6 +8123,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/config
+      tags:
+      - System
     description: Global configuration data for the system
     get:
       operationId: getSystem_Config
@@ -7748,6 +8136,8 @@ paths:
                 $ref: '#/components/schemas/System_Config'
           description: GET OK 200
       summary: GET /system/config Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7758,6 +8148,8 @@ paths:
         "201":
           description: created
       summary: POST /system/config
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/dns:
     delete:
       operationId: deleteSystem_Dns
@@ -7765,6 +8157,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns
+      tags:
+      - System
     description: Enclosing container for DNS resolver data
     get:
       operationId: getSystem_Dns
@@ -7776,6 +8170,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns'
           description: GET OK 200
       summary: GET /system/dns Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7786,6 +8182,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/dns/config:
     delete:
       operationId: deleteSystem_Dns_Config
@@ -7793,6 +8191,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/config
+      tags:
+      - System_Dns
     description: Configuration data for the DNS resolver
     get:
       operationId: getSystem_Dns_Config
@@ -7804,6 +8204,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Config'
           description: GET OK 200
       summary: GET /system/dns/config Container
+      tags:
+      - System_Dns
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7814,6 +8216,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/config
+      tags:
+      - System_Dns
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries:
     delete:
       operationId: deleteSystem_Dns_Host-entries
@@ -7821,6 +8225,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries
+      tags:
+      - System_Dns
     description: Enclosing container for list of static host entries
     get:
       operationId: getSystem_Dns_Host-entries
@@ -7832,6 +8238,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries'
           description: GET OK 200
       summary: GET /system/dns/host-entries Container
+      tags:
+      - System_Dns
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -7842,6 +8250,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries
+      tags:
+      - System_Dns
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry:
     description: List of static host entries
     get:
@@ -7854,6 +8264,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_List'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry List
+      tags:
+      - System_Dns_Host-entries_Host-entry
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}:
@@ -7863,6 +8275,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries/host-entry
+      tags:
+      - System_Dns_Host-entries_Host-entry
     description: List of static host entries
     get:
       operationId: getSystem_Dns_Host-entries_Host-entry
@@ -7874,6 +8288,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry Container
+      tags:
+      - System_Dns_Host-entries_Host-entry
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7892,6 +8308,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry
+      tags:
+      - System_Dns_Host-entries_Host-entry
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/config:
     delete:
       operationId: deleteSystem_Dns_Host-entries_Host-entry_Config
@@ -7899,6 +8317,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/host-entries/host-entry/{hostname}/config
+      tags:
+      - System_Dns_Host-entries_Host-entry
     description: Configuration data for static host entries
     get:
       operationId: getSystem_Dns_Host-entries_Host-entry_Config
@@ -7910,6 +8330,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_Config'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/config Container
+      tags:
+      - System_Dns_Host-entries_Host-entry
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7928,6 +8350,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/host-entries/host-entry/{hostname}/config
+      tags:
+      - System_Dns_Host-entries_Host-entry
   /devicesim/v1.0.x/{device-id}/system/dns/host-entries/host-entry/{hostname}/hostname/values:
     description: Reference to the hostname list key
     get:
@@ -7941,6 +8365,8 @@ paths:
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/hostname/values
         Leafref
+      tags:
+      - System_Dns_Host-entries_Host-entry_Hostname
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7963,6 +8389,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry_State'
           description: GET OK 200
       summary: GET /system/dns/host-entries/host-entry/{hostname}/state Container
+      tags:
+      - System_Dns_Host-entries_Host-entry
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -7980,6 +8408,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/servers
+      tags:
+      - System_Dns
     description: Enclosing container for DNS resolver list
     get:
       operationId: getSystem_Dns_Servers
@@ -7991,6 +8421,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers'
           description: GET OK 200
       summary: GET /system/dns/servers Container
+      tags:
+      - System_Dns
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8001,6 +8433,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers
+      tags:
+      - System_Dns
   /devicesim/v1.0.x/{device-id}/system/dns/servers/server:
     description: |-
       List of the DNS servers that the resolver should query.
@@ -8027,6 +8461,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/dns/servers/server List
+      tags:
+      - System_Dns_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}:
@@ -8036,6 +8472,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/servers/server
+      tags:
+      - System_Dns_Servers_Server
     description: |-
       List of the DNS servers that the resolver should query.
 
@@ -8061,6 +8499,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server'
           description: GET OK 200
       summary: GET /system/dns/servers/server Container
+      tags:
+      - System_Dns_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8079,6 +8519,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server
+      tags:
+      - System_Dns_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/address/values:
     description: References the configured address of the DNS server
     get:
@@ -8091,6 +8533,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/address/values Leafref
+      tags:
+      - System_Dns_Servers_Server_Address
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8108,6 +8552,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/dns/servers/server/{address}/config
+      tags:
+      - System_Dns_Servers_Server
     description: Configuration data for each DNS resolver
     get:
       operationId: getSystem_Dns_Servers_Server_Config
@@ -8119,6 +8565,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_Config'
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/config Container
+      tags:
+      - System_Dns_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8137,6 +8585,8 @@ paths:
         "201":
           description: created
       summary: POST /system/dns/servers/server/{address}/config
+      tags:
+      - System_Dns_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/dns/servers/server/{address}/state:
     description: Operational state data for each DNS resolver
     get:
@@ -8149,6 +8599,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_Servers_Server_State'
           description: GET OK 200
       summary: GET /system/dns/servers/server/{address}/state Container
+      tags:
+      - System_Dns_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8171,6 +8623,8 @@ paths:
                 $ref: '#/components/schemas/System_Dns_State'
           description: GET OK 200
       summary: GET /system/dns/state Container
+      tags:
+      - System_Dns
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/logging:
@@ -8180,6 +8634,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging
+      tags:
+      - System
     description: Top-level container for data related to logging / syslog
     get:
       operationId: getSystem_Logging
@@ -8191,6 +8647,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging'
           description: GET OK 200
       summary: GET /system/logging Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8201,6 +8659,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/logging/console:
     delete:
       operationId: deleteSystem_Logging_Console
@@ -8208,6 +8668,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/console
+      tags:
+      - System_Logging
     description: |-
       Top-level container for data related to console-based
       logging
@@ -8221,6 +8683,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console'
           description: GET OK 200
       summary: GET /system/logging/console Container
+      tags:
+      - System_Logging
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8231,6 +8695,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console
+      tags:
+      - System_Logging
   /devicesim/v1.0.x/{device-id}/system/logging/console/config:
     delete:
       operationId: deleteSystem_Logging_Console_Config
@@ -8238,6 +8704,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/console/config
+      tags:
+      - System_Logging_Console
     description: Configuration data for console logging
     get:
       operationId: getSystem_Logging_Console_Config
@@ -8249,6 +8717,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Config'
           description: GET OK 200
       summary: GET /system/logging/console/config Container
+      tags:
+      - System_Logging_Console
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8259,6 +8729,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/config
+      tags:
+      - System_Logging_Console
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors
@@ -8266,6 +8738,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors
+      tags:
+      - System_Logging_Console
     description: 'Enclosing container '
     get:
       operationId: getSystem_Logging_Console_Selectors
@@ -8277,6 +8751,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors'
           description: GET OK 200
       summary: GET /system/logging/console/selectors Container
+      tags:
+      - System_Logging_Console
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8287,6 +8763,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors
+      tags:
+      - System_Logging_Console
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector:
     description: List of selectors for log messages
     get:
@@ -8299,6 +8777,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector_List'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector List
+      tags:
+      - System_Logging_Console_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}:
@@ -8308,6 +8788,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors/selector
+      tags:
+      - System_Logging_Console_Selectors_Selector
     description: List of selectors for log messages
     get:
       operationId: getSystem_Logging_Console_Selectors_Selector
@@ -8319,6 +8801,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector Container
+      tags:
+      - System_Logging_Console_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8345,6 +8829,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector
+      tags:
+      - System_Logging_Console_Selectors_Selector
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/config:
     delete:
       operationId: deleteSystem_Logging_Console_Selectors_Selector_Config
@@ -8352,6 +8838,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/console/selectors/selector/{facility}/{severity}/config
+      tags:
+      - System_Logging_Console_Selectors_Selector
     description: 'Configuration data '
     get:
       operationId: getSystem_Logging_Console_Selectors_Selector_Config
@@ -8364,6 +8852,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/config
         Container
+      tags:
+      - System_Logging_Console_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8390,6 +8880,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/console/selectors/selector/{facility}/{severity}/config
+      tags:
+      - System_Logging_Console_Selectors_Selector
   /devicesim/v1.0.x/{device-id}/system/logging/console/selectors/selector/{facility}/{severity}/facility/values:
     description: Reference to facility list key
     get:
@@ -8403,6 +8895,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/facility/values
         Leafref
+      tags:
+      - System_Logging_Console_Selectors_Selector_Facility
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8434,6 +8928,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/severity/values
         Leafref
+      tags:
+      - System_Logging_Console_Selectors_Selector_Severity
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8465,6 +8961,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/console/selectors/selector/{facility}/{severity}/state
         Container
+      tags:
+      - System_Logging_Console_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8495,6 +8993,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Console_State'
           description: GET OK 200
       summary: GET /system/logging/console/state Container
+      tags:
+      - System_Logging_Console
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers:
@@ -8504,6 +9004,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers
+      tags:
+      - System_Logging
     description: Enclosing container for the list of remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers
@@ -8515,6 +9017,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers'
           description: GET OK 200
       summary: GET /system/logging/remote-servers Container
+      tags:
+      - System_Logging
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8525,6 +9029,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers
+      tags:
+      - System_Logging
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server:
     description: List of remote log servers
     get:
@@ -8537,6 +9043,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_List'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server List
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}:
@@ -8546,6 +9054,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     description: List of remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server
@@ -8557,6 +9067,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8575,6 +9087,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server
+      tags:
+      - System_Logging_Remote-servers_Remote-server
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/config:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Config
@@ -8582,6 +9096,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/config
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     description: Configuration data for remote log servers
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Config
@@ -8593,6 +9109,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Config'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/config Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8611,6 +9129,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/config
+      tags:
+      - System_Logging_Remote-servers_Remote-server
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/host/values:
     description: Reference to the host list key
     get:
@@ -8624,6 +9144,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/host/values
         Leafref
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Host
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8641,6 +9163,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     description: 'Enclosing container '
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors
@@ -8652,6 +9176,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8670,6 +9196,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors
+      tags:
+      - System_Logging_Remote-servers_Remote-server
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector:
     description: List of selectors for log messages
     get:
@@ -8683,6 +9211,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         List
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8700,6 +9230,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     description: List of selectors for log messages
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector
@@ -8712,6 +9244,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector
         Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8746,6 +9280,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
   /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config:
     delete:
       operationId: deleteSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
@@ -8753,6 +9289,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     description: 'Configuration data '
     get:
       operationId: getSystem_Logging_Remote-servers_Remote-server_Selectors_Selector_Config
@@ -8765,6 +9303,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
         Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8799,6 +9339,8 @@ paths:
         "201":
           description: created
       summary: POST /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/config
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
   ? /devicesim/v1.0.x/{device-id}/system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/facility/values
   : description: Reference to facility list key
     get:
@@ -8812,6 +9354,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/facility/values
         Leafref
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector_Facility
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8851,6 +9395,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/severity/values
         Leafref
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector_Severity
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8890,6 +9436,8 @@ paths:
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/selectors/selector/{facility}/{severity}/state
         Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server_Selectors_Selector
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8928,6 +9476,8 @@ paths:
                 $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_State'
           description: GET OK 200
       summary: GET /system/logging/remote-servers/remote-server/{host}/state Container
+      tags:
+      - System_Logging_Remote-servers_Remote-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -8945,6 +9495,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/memory
+      tags:
+      - System
     description: Top-level container for system memory data
     get:
       operationId: getSystem_Memory
@@ -8956,6 +9508,8 @@ paths:
                 $ref: '#/components/schemas/System_Memory'
           description: GET OK 200
       summary: GET /system/memory Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8966,6 +9520,8 @@ paths:
         "201":
           description: created
       summary: POST /system/memory
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/memory/config:
     delete:
       operationId: deleteSystem_Memory_Config
@@ -8973,6 +9529,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/memory/config
+      tags:
+      - System_Memory
     description: Configuration data for system memory
     get:
       operationId: getSystem_Memory_Config
@@ -8984,6 +9542,8 @@ paths:
                 $ref: '#/components/schemas/System_Memory_Config'
           description: GET OK 200
       summary: GET /system/memory/config Container
+      tags:
+      - System_Memory
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -8994,6 +9554,8 @@ paths:
         "201":
           description: created
       summary: POST /system/memory/config
+      tags:
+      - System_Memory
   /devicesim/v1.0.x/{device-id}/system/memory/state:
     description: Operational state data for system memory
     get:
@@ -9006,6 +9568,8 @@ paths:
                 $ref: '#/components/schemas/System_Memory_State'
           description: GET OK 200
       summary: GET /system/memory/state Container
+      tags:
+      - System_Memory
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/ntp:
@@ -9015,6 +9579,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp
+      tags:
+      - System
     description: Top-level container for NTP configuration and state
     get:
       operationId: getSystem_Ntp
@@ -9026,6 +9592,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp'
           description: GET OK 200
       summary: GET /system/ntp Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9036,6 +9604,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/ntp/config:
     delete:
       operationId: deleteSystem_Ntp_Config
@@ -9043,6 +9613,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/config
+      tags:
+      - System_Ntp
     description: Configuration data for NTP client.
     get:
       operationId: getSystem_Ntp_Config
@@ -9054,6 +9626,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Config'
           description: GET OK 200
       summary: GET /system/ntp/config Container
+      tags:
+      - System_Ntp
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9064,6 +9638,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/config
+      tags:
+      - System_Ntp
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys
@@ -9071,6 +9647,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys
+      tags:
+      - System_Ntp
     description: Enclosing container for list of NTP authentication keys
     get:
       operationId: getSystem_Ntp_Ntp-keys
@@ -9082,6 +9660,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys Container
+      tags:
+      - System_Ntp
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9092,6 +9672,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys
+      tags:
+      - System_Ntp
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key:
     description: List of NTP authentication keys
     get:
@@ -9104,6 +9686,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_List'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key List
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}:
@@ -9113,6 +9697,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys/ntp-key
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     description: List of NTP authentication keys
     get:
       operationId: getSystem_Ntp_Ntp-keys_Ntp-key
@@ -9124,6 +9710,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key Container
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9142,6 +9730,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/config:
     delete:
       operationId: deleteSystem_Ntp_Ntp-keys_Ntp-key_Config
@@ -9149,6 +9739,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/ntp-keys/ntp-key/{key-id}/config
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     description: Configuration data for NTP auth keys
     get:
       operationId: getSystem_Ntp_Ntp-keys_Ntp-key_Config
@@ -9160,6 +9752,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_Config'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/config Container
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9178,6 +9772,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/ntp-keys/ntp-key/{key-id}/config
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
   /devicesim/v1.0.x/{device-id}/system/ntp/ntp-keys/ntp-key/{key-id}/key-id/values:
     description: Reference to auth key-id list key
     get:
@@ -9190,6 +9786,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/key-id/values Leafref
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key_Key-id
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9212,6 +9810,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key_State'
           description: GET OK 200
       summary: GET /system/ntp/ntp-keys/ntp-key/{key-id}/state Container
+      tags:
+      - System_Ntp_Ntp-keys_Ntp-key
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9229,6 +9829,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/servers
+      tags:
+      - System_Ntp
     description: Enclosing container for the list of NTP servers
     get:
       operationId: getSystem_Ntp_Servers
@@ -9240,6 +9842,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers'
           description: GET OK 200
       summary: GET /system/ntp/servers Container
+      tags:
+      - System_Ntp
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9250,6 +9854,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers
+      tags:
+      - System_Ntp
   /devicesim/v1.0.x/{device-id}/system/ntp/servers/server:
     description: |-
       List of NTP servers to use for system clock
@@ -9266,6 +9872,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_List'
           description: GET OK 200
       summary: GET /system/ntp/servers/server List
+      tags:
+      - System_Ntp_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}:
@@ -9275,6 +9883,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/servers/server
+      tags:
+      - System_Ntp_Servers_Server
     description: |-
       List of NTP servers to use for system clock
       synchronization.  If '/system/ntp/enabled'
@@ -9290,6 +9900,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server'
           description: GET OK 200
       summary: GET /system/ntp/servers/server Container
+      tags:
+      - System_Ntp_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9308,6 +9920,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server
+      tags:
+      - System_Ntp_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/address/values:
     description: |-
       References the configured address or hostname of the
@@ -9322,6 +9936,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/address/values Leafref
+      tags:
+      - System_Ntp_Servers_Server_Address
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9339,6 +9955,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ntp/servers/server/{address}/config
+      tags:
+      - System_Ntp_Servers_Server
     description: Configuration data for an NTP server.
     get:
       operationId: getSystem_Ntp_Servers_Server_Config
@@ -9350,6 +9968,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_Config'
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/config Container
+      tags:
+      - System_Ntp_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9368,6 +9988,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ntp/servers/server/{address}/config
+      tags:
+      - System_Ntp_Servers_Server
   /devicesim/v1.0.x/{device-id}/system/ntp/servers/server/{address}/state:
     description: Operational state data for an NTP server.
     get:
@@ -9380,6 +10002,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_Servers_Server_State'
           description: GET OK 200
       summary: GET /system/ntp/servers/server/{address}/state Container
+      tags:
+      - System_Ntp_Servers_Server
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9402,6 +10026,8 @@ paths:
                 $ref: '#/components/schemas/System_Ntp_State'
           description: GET OK 200
       summary: GET /system/ntp/state Container
+      tags:
+      - System_Ntp
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/openflow:
@@ -9411,6 +10037,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow
+      tags:
+      - System
     description: Container for Openflow model
     get:
       operationId: getSystem_Openflow
@@ -9422,6 +10050,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow'
           description: GET OK 200
       summary: GET /system/openflow Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9432,6 +10062,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/openflow/agent:
     delete:
       operationId: deleteSystem_Openflow_Agent
@@ -9439,6 +10071,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/agent
+      tags:
+      - System_Openflow
     description: Container for the Openflow agent model.
     get:
       operationId: getSystem_Openflow_Agent
@@ -9450,6 +10084,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent'
           description: GET OK 200
       summary: GET /system/openflow/agent Container
+      tags:
+      - System_Openflow
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9460,6 +10096,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent
+      tags:
+      - System_Openflow
   /devicesim/v1.0.x/{device-id}/system/openflow/agent/config:
     delete:
       operationId: deleteSystem_Openflow_Agent_Config
@@ -9467,6 +10105,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/agent/config
+      tags:
+      - System_Openflow_Agent
     description: Container for the Openflow agent config.
     get:
       operationId: getSystem_Openflow_Agent_Config
@@ -9478,6 +10118,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent_Config'
           description: GET OK 200
       summary: GET /system/openflow/agent/config Container
+      tags:
+      - System_Openflow_Agent
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9488,6 +10130,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/agent/config
+      tags:
+      - System_Openflow_Agent
   /devicesim/v1.0.x/{device-id}/system/openflow/agent/state:
     description: Container for the Openflow agent state.
     get:
@@ -9500,6 +10144,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Agent_State'
           description: GET OK 200
       summary: GET /system/openflow/agent/state Container
+      tags:
+      - System_Openflow_Agent
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers:
@@ -9509,6 +10155,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers
+      tags:
+      - System_Openflow
     description: Container for the Openflow controllers model
     get:
       operationId: getSystem_Openflow_Controllers
@@ -9520,6 +10168,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers'
           description: GET OK 200
       summary: GET /system/openflow/controllers Container
+      tags:
+      - System_Openflow
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9530,6 +10180,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers
+      tags:
+      - System_Openflow
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller:
     description: |-
       The Openflow Switch connects to all Openflow controllers
@@ -9544,6 +10196,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_List'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller List
+      tags:
+      - System_Openflow_Controllers_Controller
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}:
@@ -9553,6 +10207,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller
+      tags:
+      - System_Openflow_Controllers_Controller
     description: |-
       The Openflow Switch connects to all Openflow controllers
       configured
@@ -9566,6 +10222,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller Container
+      tags:
+      - System_Openflow_Controllers_Controller
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9584,6 +10242,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller
+      tags:
+      - System_Openflow_Controllers_Controller
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/config:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Config
@@ -9591,6 +10251,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/config
+      tags:
+      - System_Openflow_Controllers_Controller
     description: Container for the Openflow controller config.
     get:
       operationId: getSystem_Openflow_Controllers_Controller_Config
@@ -9602,6 +10264,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Config'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/config Container
+      tags:
+      - System_Openflow_Controllers_Controller
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9620,6 +10284,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/config
+      tags:
+      - System_Openflow_Controllers_Controller
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections:
     delete:
       operationId: deleteSystem_Openflow_Controllers_Controller_Connections
@@ -9627,6 +10293,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections
+      tags:
+      - System_Openflow_Controllers_Controller
     description: Enclosing container for list of controller connections
     get:
       operationId: getSystem_Openflow_Controllers_Controller_Connections
@@ -9638,6 +10306,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections Container
+      tags:
+      - System_Openflow_Controllers_Controller
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9656,6 +10326,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections
+      tags:
+      - System_Openflow_Controllers_Controller
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection:
     description: |-
       List of connections to the OpenFlow controller.
@@ -9673,6 +10345,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         List
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9690,6 +10364,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections/connection
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     description: |-
       List of connections to the OpenFlow controller.
       The Openflow switch always connects to configured Openflow
@@ -9706,6 +10382,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection
         Container
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9732,6 +10410,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
   /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/aux-id/values:
     description: Reference to auxiliary id list key
     get:
@@ -9745,6 +10425,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/aux-id/values
         Leafref
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection_Aux-id
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9770,6 +10452,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     description: Configuration data for OpenFlow controller connections
     get:
       operationId: getSystem_Openflow_Controllers_Controller_Connections_Connection_Config
@@ -9782,6 +10466,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
         Container
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9808,6 +10494,8 @@ paths:
         "201":
           description: created
       summary: POST /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
   ? /devicesim/v1.0.x/{device-id}/system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config/source-interface/values
   : description: |-
       Optionally specify the source interface for the
@@ -9823,6 +10511,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/config/source-interface/values
         Leafref
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection_Config_Source-interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9856,6 +10546,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state
         Container
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9889,6 +10581,8 @@ paths:
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/connections/connection/{aux-id}/state/source-interface/values
         Leafref
+      tags:
+      - System_Openflow_Controllers_Controller_Connections_Connection_State_Source-interface
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9919,6 +10613,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/name/values Leafref
+      tags:
+      - System_Openflow_Controllers_Controller_Name
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9941,6 +10637,8 @@ paths:
                 $ref: '#/components/schemas/System_Openflow_Controllers_Controller_State'
           description: GET OK 200
       summary: GET /system/openflow/controllers/controller/{name}/state Container
+      tags:
+      - System_Openflow_Controllers_Controller
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -9958,6 +10656,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/processes
+      tags:
+      - System
     description: Parameters related to all monitored processes
     get:
       operationId: getSystem_Processes
@@ -9969,6 +10669,8 @@ paths:
                 $ref: '#/components/schemas/System_Processes'
           description: GET OK 200
       summary: GET /system/processes Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -9979,6 +10681,8 @@ paths:
         "201":
           description: created
       summary: POST /system/processes
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/processes/process:
     description: List of monitored processes
     get:
@@ -9991,6 +10695,8 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process_List'
           description: GET OK 200
       summary: GET /system/processes/process List
+      tags:
+      - System_Processes_Process
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}:
@@ -10005,6 +10711,8 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process'
           description: GET OK 200
       summary: GET /system/processes/process Container
+      tags:
+      - System_Processes_Process
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -10027,6 +10735,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /system/processes/process/{pid}/pid/values Leafref
+      tags:
+      - System_Processes_Process_Pid
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -10049,6 +10759,8 @@ paths:
                 $ref: '#/components/schemas/System_Processes_Process_State'
           description: GET OK 200
       summary: GET /system/processes/process/{pid}/state Container
+      tags:
+      - System_Processes_Process
     parameters:
     - $ref: '#/components/parameters/device-id'
     - content:
@@ -10066,6 +10778,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ssh-server
+      tags:
+      - System
     description: Top-level container for ssh server
     get:
       operationId: getSystem_Ssh-server
@@ -10077,6 +10791,8 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server'
           description: GET OK 200
       summary: GET /system/ssh-server Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -10087,6 +10803,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/ssh-server/config:
     delete:
       operationId: deleteSystem_Ssh-server_Config
@@ -10094,6 +10812,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/ssh-server/config
+      tags:
+      - System_Ssh-server
     description: Configuration data for the system ssh server
     get:
       operationId: getSystem_Ssh-server_Config
@@ -10105,6 +10825,8 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server_Config'
           description: GET OK 200
       summary: GET /system/ssh-server/config Container
+      tags:
+      - System_Ssh-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -10115,6 +10837,8 @@ paths:
         "201":
           description: created
       summary: POST /system/ssh-server/config
+      tags:
+      - System_Ssh-server
   /devicesim/v1.0.x/{device-id}/system/ssh-server/state:
     description: Operational state data for the system ssh server
     get:
@@ -10127,6 +10851,8 @@ paths:
                 $ref: '#/components/schemas/System_Ssh-server_State'
           description: GET OK 200
       summary: GET /system/ssh-server/state Container
+      tags:
+      - System_Ssh-server
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/state:
@@ -10141,6 +10867,8 @@ paths:
                 $ref: '#/components/schemas/System_State'
           description: GET OK 200
       summary: GET /system/state Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
   /devicesim/v1.0.x/{device-id}/system/telnet-server:
@@ -10150,6 +10878,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/telnet-server
+      tags:
+      - System
     description: Top-level container for telnet terminal servers
     get:
       operationId: getSystem_Telnet-server
@@ -10161,6 +10891,8 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server'
           description: GET OK 200
       summary: GET /system/telnet-server Container
+      tags:
+      - System
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -10171,6 +10903,8 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server
+      tags:
+      - System
   /devicesim/v1.0.x/{device-id}/system/telnet-server/config:
     delete:
       operationId: deleteSystem_Telnet-server_Config
@@ -10178,6 +10912,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /system/telnet-server/config
+      tags:
+      - System_Telnet-server
     description: Configuration data for telnet
     get:
       operationId: getSystem_Telnet-server_Config
@@ -10189,6 +10925,8 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server_Config'
           description: GET OK 200
       summary: GET /system/telnet-server/config Container
+      tags:
+      - System_Telnet-server
     parameters:
     - $ref: '#/components/parameters/device-id'
     post:
@@ -10199,6 +10937,8 @@ paths:
         "201":
           description: created
       summary: POST /system/telnet-server/config
+      tags:
+      - System_Telnet-server
   /devicesim/v1.0.x/{device-id}/system/telnet-server/state:
     description: Operational state data for telnet
     get:
@@ -10211,5 +10951,7 @@ paths:
                 $ref: '#/components/schemas/System_Telnet-server_State'
           description: GET OK 200
       summary: GET /system/telnet-server/state Container
+      tags:
+      - System_Telnet-server
     parameters:
     - $ref: '#/components/parameters/device-id'
