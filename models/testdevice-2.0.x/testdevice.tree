@@ -21,7 +21,7 @@ module: onf-test1
   |        |  +--rw t1a:beer?        empty
   |        +--:(t1a:late-night)
   |           +--rw t1a:chocolate?   enumeration
-  +--rw leafAtTopLevel?   string
+  +--rw leaf-at-top-level?   string
   +--ro cont1b-state
      +--ro list2b* [index1 index2]
      |  +--ro index1    uint8

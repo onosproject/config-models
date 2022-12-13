@@ -150,6 +150,8 @@ paths:
                 $ref: '#/components/schemas/Nodes'
           description: GET OK 200
       summary: GET /nodes Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/target'
   /ric/v1.0.0/{target}/nodes/node:
@@ -164,6 +166,8 @@ paths:
                 $ref: '#/components/schemas/Nodes_Node_List'
           description: GET OK 200
       summary: GET /nodes/node List
+      tags:
+      - Nodes_Node
     parameters:
     - $ref: '#/components/parameters/target'
   /ric/v1.0.0/{target}/nodes/node/{id}:
@@ -178,6 +182,8 @@ paths:
                 $ref: '#/components/schemas/Nodes_Node'
           description: GET OK 200
       summary: GET /nodes/node Container
+      tags:
+      - Nodes_Node
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -195,6 +201,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /report_period
+      tags:
+      - ""
     description: The kpimon-xapp report period container
     get:
       operationId: getReport_period
@@ -206,6 +214,8 @@ paths:
                 $ref: '#/components/schemas/Report_period'
           description: GET OK 200
       summary: GET /report_period Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -216,3 +226,5 @@ paths:
         "201":
           description: created
       summary: POST /report_period
+      tags:
+      - ""

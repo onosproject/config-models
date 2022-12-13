@@ -26,7 +26,7 @@ module: onf-test1
   |     +--rw t1e:key1      string
   |     +--rw t1e:key2      uint8
   |     +--rw t1e:leaf5a?   string
-  +--rw leafAtTopLevel?   string
+  +--rw leaf-at-top-level?   string
   +--ro cont1b-state
      +--ro list2b* [index]
      |  +--ro index     uint8

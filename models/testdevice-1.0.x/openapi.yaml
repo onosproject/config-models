@@ -389,10 +389,10 @@ components:
       x-keys:
       - index
       x-list-multiple: true
-    LeafAtTopLevel:
+    Leaf-at-top-level:
       description: A leaf at the top level (not recommended but must be supported)
       pattern: '[A-Z]{3}-[0-9]*'
-      title: leafAtTopLevel
+      title: leaf-at-top-level
       type: string
     LeafRefOption:
       description: single label/value of the leafref option
@@ -433,6 +433,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a
+      tags:
+      - ""
     description: The top level container
     get:
       operationId: getCont1a
@@ -444,6 +446,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a'
           description: GET OK 200
       summary: GET /cont1a Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -454,6 +458,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a
+      tags:
+      - ""
   /testdevice/v1.0.x/{target}/cont1a/cont2a:
     delete:
       operationId: deleteCont1a_Cont2a
@@ -461,6 +467,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a/cont2a
+      tags:
+      - Cont1a
     description: The 2nd level container
     get:
       operationId: getCont1a_Cont2a
@@ -472,6 +480,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_Cont2a'
           description: GET OK 200
       summary: GET /cont1a/cont2a Container
+      tags:
+      - Cont1a
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -482,6 +492,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/cont2a
+      tags:
+      - Cont1a
   /testdevice/v1.0.x/{target}/cont1a/list2a:
     description: A simple list of configuration items
     get:
@@ -494,6 +506,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a_List'
           description: GET OK 200
       summary: GET /cont1a/list2a List
+      tags:
+      - Cont1a_List2a
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list2a/{name}:
@@ -503,6 +517,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a/list2a
+      tags:
+      - Cont1a_List2a
     description: A simple list of configuration items
     get:
       operationId: getCont1a_List2a
@@ -514,6 +530,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List2a'
           description: GET OK 200
       summary: GET /cont1a/list2a Container
+      tags:
+      - Cont1a_List2a
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -532,6 +550,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list2a
+      tags:
+      - Cont1a_List2a
   /testdevice/v1.0.x/{target}/cont1a/list2a/{name}/ref2d/values:
     description: A reference to leaf2d in the 2a container
     get:
@@ -544,6 +564,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /cont1a/list2a/{name}/ref2d/values Leafref
+      tags:
+      - Cont1a_List2a_Ref2d
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -566,6 +588,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List'
           description: GET OK 200
       summary: GET /cont1a/list4 List
+      tags:
+      - Cont1a_List4
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}:
@@ -575,6 +599,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a/list4
+      tags:
+      - Cont1a_List4
     description: A list with a leafref index
     get:
       operationId: getCont1a_List4
@@ -586,6 +612,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4'
           description: GET OK 200
       summary: GET /cont1a/list4 Container
+      tags:
+      - Cont1a_List4
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -604,6 +632,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list4
+      tags:
+      - Cont1a_List4
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}/id/values:
     description: Link to list2a names
     get:
@@ -616,6 +646,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/id/values Leafref
+      tags:
+      - Cont1a_List4_Id
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -638,6 +670,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List4a_List'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a List
+      tags:
+      - Cont1a_List4_List4a
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -655,6 +689,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a/list4/{id}/list4a
+      tags:
+      - Cont1a_List4_List4a
     description: A list within a list with 2 keys as leaf refs
     get:
       operationId: getCont1a_List4_List4a
@@ -666,6 +702,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List4_List4a'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a Container
+      tags:
+      - Cont1a_List4_List4a
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -700,6 +738,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list4/{id}/list4a
+      tags:
+      - Cont1a_List4_List4a
   /testdevice/v1.0.x/{target}/cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey1/values:
     description: foreign key 1 - ref to list5a/key1
     get:
@@ -712,6 +752,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey1/values Leafref
+      tags:
+      - Cont1a_List4_List4a_Fkey1
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -750,6 +792,8 @@ paths:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
       summary: GET /cont1a/list4/{id}/list4a/{fkey1}/{fkey2}/fkey2/values Leafref
+      tags:
+      - Cont1a_List4_List4a_Fkey2
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -788,6 +832,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List5_List'
           description: GET OK 200
       summary: GET /cont1a/list5 List
+      tags:
+      - Cont1a_List5
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1a/list5/{key1}/{key2}:
@@ -797,6 +843,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /cont1a/list5
+      tags:
+      - Cont1a_List5
     description: A list with 2 keys
     get:
       operationId: getCont1a_List5
@@ -808,6 +856,8 @@ paths:
                 $ref: '#/components/schemas/Cont1a_List5'
           description: GET OK 200
       summary: GET /cont1a/list5 Container
+      tags:
+      - Cont1a_List5
     parameters:
     - $ref: '#/components/parameters/target'
     - content:
@@ -834,6 +884,8 @@ paths:
         "201":
           description: created
       summary: POST /cont1a/list5
+      tags:
+      - Cont1a_List5
   /testdevice/v1.0.x/{target}/cont1b-state:
     description: A second top level container - this one for state attributes. Edit
       symbol should not be visible
@@ -847,6 +899,8 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state'
           description: GET OK 200
       summary: GET /cont1b-state Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1b-state/list2b:
@@ -861,6 +915,8 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b_List'
           description: GET OK 200
       summary: GET /cont1b-state/list2b List
+      tags:
+      - Cont1b-state_List2b
     parameters:
     - $ref: '#/components/parameters/target'
   /testdevice/v1.0.x/{target}/cont1b-state/list2b/{index}:
@@ -875,6 +931,8 @@ paths:
                 $ref: '#/components/schemas/Cont1b-state_List2b'
           description: GET OK 200
       summary: GET /cont1b-state/list2b Container
+      tags:
+      - Cont1b-state_List2b
     parameters:
     - $ref: '#/components/parameters/target'
     - content:

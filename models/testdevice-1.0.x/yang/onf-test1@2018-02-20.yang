@@ -125,7 +125,7 @@ module onf-test1 {
     }
   }
 
-  leaf leafAtTopLevel {
+  leaf leaf-at-top-level {
     type string {
       pattern "[A-Z]{3}-[0-9]*";
     }

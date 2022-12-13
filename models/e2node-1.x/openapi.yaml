@@ -123,6 +123,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /e2node
+      tags:
+      - ""
     description: The top level container
     get:
       operationId: getE2node
@@ -134,6 +136,8 @@ paths:
                 $ref: '#/components/schemas/E2node'
           description: GET OK 200
       summary: GET /e2node Container
+      tags:
+      - ""
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -144,6 +148,8 @@ paths:
         "201":
           description: created
       summary: POST /e2node
+      tags:
+      - ""
   /e2node/v1.0.0/{target}/e2node/intervals:
     delete:
       operationId: deleteE2node_Intervals
@@ -151,6 +157,8 @@ paths:
         "200":
           description: DELETE 200 OK
       summary: DELETE /e2node/intervals
+      tags:
+      - E2node
     description: Intervals for E2 services
     get:
       operationId: getE2node_Intervals
@@ -162,6 +170,8 @@ paths:
                 $ref: '#/components/schemas/E2node_Intervals'
           description: GET OK 200
       summary: GET /e2node/intervals Container
+      tags:
+      - E2node
     parameters:
     - $ref: '#/components/parameters/target'
     post:
@@ -172,3 +182,5 @@ paths:
         "201":
           description: created
       summary: POST /e2node/intervals
+      tags:
+      - E2node
