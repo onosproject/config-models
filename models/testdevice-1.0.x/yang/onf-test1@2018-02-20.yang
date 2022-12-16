@@ -13,6 +13,23 @@ module onf-test1 {
     reference "RFC 6087";
   }
 
+  list list1a {
+    key "list-id";
+    description "A list at the top level";
+
+    leaf "list-id" {
+      type string;
+      description "unique identifier for the list1a";
+    }
+
+    leaf "name" {
+      type leafref {
+         path "/cont1a/list2a/name";
+      }
+      description "reference to the name entry in list2a";
+    }
+
+  }
   container cont1a {
     must "not(list2a[set-contains(following-sibling::list2a/tx-power, tx-power)])" {
         error-message "tx-power must not be repeated in list2a";
@@ -35,9 +52,8 @@ module onf-test1 {
         reference "RFC 6040";
       }
       leaf leaf2b {
-        type decimal64 {
-          fraction-digits 3;
-          range 0.001..2.000;
+        type uint8 {
+          range 0..2;
         }
         units mV;
         mandatory true;
@@ -49,11 +65,10 @@ module onf-test1 {
         description "Read only leaf inside Container 2a";
       }
       leaf leaf2d {
-        type decimal64 {
-          fraction-digits 3;
-          range 0.001..2.000;
+        type uint8 {
+          range 0..2;
         }
-        description "Another decimal inside Container 2a";
+        description "Another integer inside Container 2a";
       }
       leaf-list leaf2e {
         type int16 {

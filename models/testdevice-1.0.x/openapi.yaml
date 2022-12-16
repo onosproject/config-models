@@ -54,6 +54,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Cont1b-state_List2b'
+    RequestBody_List1a:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/List1a'
   schemas:
     AdditionalPropertiesUnchTarget:
       description: both the additional property 'unchanged' and the 'target'
@@ -123,20 +128,20 @@ components:
         leaf2b:
           description: Voltage leaf inside Container 2a
           maximum: 2
-          minimum: 0.001
+          minimum: 0
           title: leaf2b
-          type: number
+          type: integer
         leaf2c:
           description: Read only leaf inside Container 2a
           readOnly: true
           title: leaf2c
           type: string
         leaf2d:
-          description: Another decimal inside Container 2a
+          description: Another integer inside Container 2a
           maximum: 2
-          minimum: 0.001
+          minimum: 0
           title: leaf2d
-          type: number
+          type: integer
         leaf2e:
           $ref: '#/components/schemas/Cont1a_Cont2a_Leaf2e'
         leaf2f:
@@ -190,7 +195,7 @@ components:
         ref2d:
           description: A reference to leaf2d in the 2a container
           title: ref2d
-          type: string
+          type: integer
           x-leafref: /cont1a/cont2a/leaf2d
           x-leafref-resolver: /testdevice/v1.0.x/{target}/cont1a/list2a/{name}/ref2d/values
         tx-power:
@@ -412,6 +417,36 @@ components:
         $ref: '#/components/schemas/LeafRefOption'
       title: LeafRefOptions
       type: array
+    List1a:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: A list at the top level (single)
+      properties:
+        list-id:
+          description: unique identifier for the list1a
+          title: list-id
+          type: string
+          x-go-type: ListKey
+        name:
+          description: reference to the name entry in list2a
+          title: name
+          type: string
+          x-leafref: /cont1a/list2a/name
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/list1a/{list-id}/name/values
+      required:
+      - list-id
+      title: List1a
+      type: object
+      x-list-multiple: true
+    List1a_List:
+      description: A list at the top level (list)
+      items:
+        $ref: '#/components/schemas/List1a'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - list-id
+      x-list-multiple: true
 info:
   contact:
     email: info@opennetworking.org
@@ -942,4 +977,86 @@ paths:
       description: key {index}
       in: path
       name: index
+      required: true
+  /testdevice/v1.0.x/{target}/list1a:
+    description: A list at the top level
+    get:
+      operationId: getList1a_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List1a_List'
+          description: GET OK 200
+      summary: GET /list1a List
+      tags:
+      - List1a
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice/v1.0.x/{target}/list1a/{list-id}:
+    delete:
+      operationId: deleteList1a
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /list1a
+      tags:
+      - List1a
+    description: A list at the top level
+    get:
+      operationId: getList1a
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List1a'
+          description: GET OK 200
+      summary: GET /list1a Container
+      tags:
+      - List1a
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {list-id}
+      in: path
+      name: list-id
+      required: true
+    post:
+      operationId: postList1a
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_List1a'
+      responses:
+        "201":
+          description: created
+      summary: POST /list1a
+      tags:
+      - List1a
+  /testdevice/v1.0.x/{target}/list1a/{list-id}/name/values:
+    description: reference to the name entry in list2a
+    get:
+      operationId: getList1a_Name_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /list1a/{list-id}/name/values Leafref
+      tags:
+      - List1a_Name
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {list-id}
+      in: path
+      name: list-id
       required: true
