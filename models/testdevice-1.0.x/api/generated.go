@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ygot"
+	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/openconfig/ygot/ytypes"
 )
 
@@ -45,7 +45,7 @@ func init() {
 	var err error
 	initΛEnumTypes()
 	if SchemaTree, err = UnzipSchema(); err != nil {
-		panic("schema error: " + err.Error())
+		panic("schema error: " +  err.Error())
 	}
 }
 
@@ -57,9 +57,9 @@ func Schema() (*ytypes.Schema, error) {
 	}
 
 	return &ytypes.Schema{
-		Root:       &Device{},
+		Root: &Device{},
 		SchemaTree: uzp,
-		Unmarshal:  Unmarshal,
+		Unmarshal: Unmarshal,
 	}, nil
 }
 
@@ -84,7 +84,7 @@ func Unmarshal(data []byte, destStruct ygot.GoStruct, opts ...ytypes.UnmarshalOp
 	tn := reflect.TypeOf(destStruct).Elem().Name()
 	schema, ok := SchemaTree[tn]
 	if !ok {
-		return fmt.Errorf("could not find schema for type %s", tn)
+		return fmt.Errorf("could not find schema for type %s", tn )
 	}
 	var jsonTree interface{}
 	if err := json.Unmarshal([]byte(data), &jsonTree); err != nil {
@@ -95,10 +95,10 @@ func Unmarshal(data []byte, destStruct ygot.GoStruct, opts ...ytypes.UnmarshalOp
 
 // Device represents the /device YANG schema element.
 type Device struct {
-	Cont1A         *OnfTest1_Cont1A            `path:"cont1a" module:"onf-test1"`
-	Cont1BState    *OnfTest1_Cont1BState       `path:"cont1b-state" module:"onf-test1"`
-	LeafAtTopLevel *string                     `path:"leaf-at-top-level" module:"onf-test1"`
-	List1A         map[string]*OnfTest1_List1A `path:"list1a" module:"onf-test1"`
+	Cont1A	*OnfTest1_Cont1A	`path:"cont1a" module:"onf-test1"`
+	Cont1BState	*OnfTest1_Cont1BState	`path:"cont1b-state" module:"onf-test1"`
+	LeafAtTopLevel	*string	`path:"leaf-at-top-level" module:"onf-test1"`
+	List1A	map[string]*OnfTest1_List1A	`path:"list1a" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that Device implements the yang.GoStruct
@@ -109,7 +109,7 @@ func (*Device) IsYANGGoStruct() {}
 // NewList1A creates a new entry in the List1A list of the
 // Device struct. The keys of the list are populated from the input
 // arguments.
-func (t *Device) NewList1A(ListId string) (*OnfTest1_List1A, error) {
+func (t *Device) NewList1A(ListId string) (*OnfTest1_List1A, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -156,13 +156,14 @@ func (*Device) ΛBelongingModule() string {
 	return ""
 }
 
+
 // OnfTest1_Cont1A represents the /onf-test1/cont1a YANG schema element.
 type OnfTest1_Cont1A struct {
-	Cont2A *OnfTest1_Cont1A_Cont2A                              `path:"cont2a" module:"onf-test1"`
-	Leaf1A *string                                              `path:"leaf1a" module:"onf-test1"`
-	List2A map[string]*OnfTest1_Cont1A_List2A                   `path:"list2a" module:"onf-test1"`
-	List4  map[string]*OnfTest1_Cont1A_List4                    `path:"list4" module:"onf-test1-extra"`
-	List5  map[OnfTest1_Cont1A_List5_Key]*OnfTest1_Cont1A_List5 `path:"list5" module:"onf-test1-extra"`
+	Cont2A	*OnfTest1_Cont1A_Cont2A	`path:"cont2a" module:"onf-test1"`
+	Leaf1A	*string	`path:"leaf1a" module:"onf-test1"`
+	List2A	map[string]*OnfTest1_Cont1A_List2A	`path:"list2a" module:"onf-test1"`
+	List4	map[string]*OnfTest1_Cont1A_List4	`path:"list4" module:"onf-test1-extra"`
+	List5	map[OnfTest1_Cont1A_List5_Key]*OnfTest1_Cont1A_List5	`path:"list5" module:"onf-test1-extra"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A implements the yang.GoStruct
@@ -172,14 +173,14 @@ func (*OnfTest1_Cont1A) IsYANGGoStruct() {}
 
 // OnfTest1_Cont1A_List5_Key represents the key for list List5 of element /onf-test1/cont1a.
 type OnfTest1_Cont1A_List5_Key struct {
-	Key1 string `path:"key1"`
-	Key2 uint8  `path:"key2"`
+	Key1	string	`path:"key1"`
+	Key2	uint8	`path:"key2"`
 }
 
 // NewList2A creates a new entry in the List2A list of the
 // OnfTest1_Cont1A struct. The keys of the list are populated from the input
 // arguments.
-func (t *OnfTest1_Cont1A) NewList2A(Name string) (*OnfTest1_Cont1A_List2A, error) {
+func (t *OnfTest1_Cont1A) NewList2A(Name string) (*OnfTest1_Cont1A_List2A, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -206,7 +207,7 @@ func (t *OnfTest1_Cont1A) NewList2A(Name string) (*OnfTest1_Cont1A_List2A, error
 // NewList4 creates a new entry in the List4 list of the
 // OnfTest1_Cont1A struct. The keys of the list are populated from the input
 // arguments.
-func (t *OnfTest1_Cont1A) NewList4(Id string) (*OnfTest1_Cont1A_List4, error) {
+func (t *OnfTest1_Cont1A) NewList4(Id string) (*OnfTest1_Cont1A_List4, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -233,7 +234,7 @@ func (t *OnfTest1_Cont1A) NewList4(Id string) (*OnfTest1_Cont1A_List4, error) {
 // NewList5 creates a new entry in the List5 list of the
 // OnfTest1_Cont1A struct. The keys of the list are populated from the input
 // arguments.
-func (t *OnfTest1_Cont1A) NewList5(Key1 string, Key2 uint8) (*OnfTest1_Cont1A_List5, error) {
+func (t *OnfTest1_Cont1A) NewList5(Key1 string, Key2 uint8) (*OnfTest1_Cont1A_List5, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -284,15 +285,16 @@ func (*OnfTest1_Cont1A) ΛBelongingModule() string {
 	return "onf-test1"
 }
 
+
 // OnfTest1_Cont1A_Cont2A represents the /onf-test1/cont1a/cont2a YANG schema element.
 type OnfTest1_Cont1A_Cont2A struct {
-	Leaf2A *uint8  `path:"leaf2a" module:"onf-test1"`
-	Leaf2B *uint8  `path:"leaf2b" module:"onf-test1"`
-	Leaf2C *string `path:"leaf2c" module:"onf-test1"`
-	Leaf2D *uint8  `path:"leaf2d" module:"onf-test1"`
-	Leaf2E []int16 `path:"leaf2e" module:"onf-test1"`
-	Leaf2F Binary  `path:"leaf2f" module:"onf-test1"`
-	Leaf2G *bool   `path:"leaf2g" module:"onf-test1"`
+	Leaf2A	*uint8	`path:"leaf2a" module:"onf-test1"`
+	Leaf2B	*uint8	`path:"leaf2b" module:"onf-test1"`
+	Leaf2C	*string	`path:"leaf2c" module:"onf-test1"`
+	Leaf2D	*uint8	`path:"leaf2d" module:"onf-test1"`
+	Leaf2E	[]int16	`path:"leaf2e" module:"onf-test1"`
+	Leaf2F	Binary	`path:"leaf2f" module:"onf-test1"`
+	Leaf2G	*bool	`path:"leaf2g" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A_Cont2A implements the yang.GoStruct
@@ -323,13 +325,14 @@ func (*OnfTest1_Cont1A_Cont2A) ΛBelongingModule() string {
 	return "onf-test1"
 }
 
+
 // OnfTest1_Cont1A_List2A represents the /onf-test1/cont1a/list2a YANG schema element.
 type OnfTest1_Cont1A_List2A struct {
-	Name     *string `path:"name" module:"onf-test1"`
-	RangeMax *uint8  `path:"range-max" module:"onf-test1"`
-	RangeMin *uint8  `path:"range-min" module:"onf-test1"`
-	Ref2D    *uint8  `path:"ref2d" module:"onf-test1"`
-	TxPower  *uint16 `path:"tx-power" module:"onf-test1"`
+	Name	*string	`path:"name" module:"onf-test1"`
+	RangeMax	*uint8	`path:"range-max" module:"onf-test1"`
+	RangeMin	*uint8	`path:"range-min" module:"onf-test1"`
+	Ref2D	*uint8	`path:"ref2d" module:"onf-test1"`
+	TxPower	*uint16	`path:"tx-power" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A_List2A implements the yang.GoStruct
@@ -371,11 +374,12 @@ func (*OnfTest1_Cont1A_List2A) ΛBelongingModule() string {
 	return "onf-test1"
 }
 
+
 // OnfTest1_Cont1A_List4 represents the /onf-test1/cont1a/list4 YANG schema element.
 type OnfTest1_Cont1A_List4 struct {
-	Id     *string                                                            `path:"id" module:"onf-test1-extra"`
-	Leaf4B *string                                                            `path:"leaf4b" module:"onf-test1-extra"`
-	List4A map[OnfTest1_Cont1A_List4_List4A_Key]*OnfTest1_Cont1A_List4_List4A `path:"list4a" module:"onf-test1-extra"`
+	Id	*string	`path:"id" module:"onf-test1-extra"`
+	Leaf4B	*string	`path:"leaf4b" module:"onf-test1-extra"`
+	List4A	map[OnfTest1_Cont1A_List4_List4A_Key]*OnfTest1_Cont1A_List4_List4A	`path:"list4a" module:"onf-test1-extra"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A_List4 implements the yang.GoStruct
@@ -385,14 +389,14 @@ func (*OnfTest1_Cont1A_List4) IsYANGGoStruct() {}
 
 // OnfTest1_Cont1A_List4_List4A_Key represents the key for list List4A of element /onf-test1/cont1a/list4.
 type OnfTest1_Cont1A_List4_List4A_Key struct {
-	Fkey1 string `path:"fkey1"`
-	Fkey2 uint8  `path:"fkey2"`
+	Fkey1	string	`path:"fkey1"`
+	Fkey2	uint8	`path:"fkey2"`
 }
 
 // NewList4A creates a new entry in the List4A list of the
 // OnfTest1_Cont1A_List4 struct. The keys of the list are populated from the input
 // arguments.
-func (t *OnfTest1_Cont1A_List4) NewList4A(Fkey1 string, Fkey2 uint8) (*OnfTest1_Cont1A_List4_List4A, error) {
+func (t *OnfTest1_Cont1A_List4) NewList4A(Fkey1 string, Fkey2 uint8) (*OnfTest1_Cont1A_List4_List4A, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -454,11 +458,12 @@ func (*OnfTest1_Cont1A_List4) ΛBelongingModule() string {
 	return "onf-test1-extra"
 }
 
+
 // OnfTest1_Cont1A_List4_List4A represents the /onf-test1/cont1a/list4/list4a YANG schema element.
 type OnfTest1_Cont1A_List4_List4A struct {
-	Displayname *string `path:"displayname" module:"onf-test1-extra"`
-	Fkey1       *string `path:"fkey1" module:"onf-test1-extra"`
-	Fkey2       *uint8  `path:"fkey2" module:"onf-test1-extra"`
+	Displayname	*string	`path:"displayname" module:"onf-test1-extra"`
+	Fkey1	*string	`path:"fkey1" module:"onf-test1-extra"`
+	Fkey2	*uint8	`path:"fkey2" module:"onf-test1-extra"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A_List4_List4A implements the yang.GoStruct
@@ -505,11 +510,12 @@ func (*OnfTest1_Cont1A_List4_List4A) ΛBelongingModule() string {
 	return "onf-test1-extra"
 }
 
+
 // OnfTest1_Cont1A_List5 represents the /onf-test1/cont1a/list5 YANG schema element.
 type OnfTest1_Cont1A_List5 struct {
-	Key1   *string `path:"key1" module:"onf-test1-extra"`
-	Key2   *uint8  `path:"key2" module:"onf-test1-extra"`
-	Leaf5A *string `path:"leaf5a" module:"onf-test1-extra"`
+	Key1	*string	`path:"key1" module:"onf-test1-extra"`
+	Key2	*uint8	`path:"key2" module:"onf-test1-extra"`
+	Leaf5A	*string	`path:"leaf5a" module:"onf-test1-extra"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1A_List5 implements the yang.GoStruct
@@ -556,10 +562,11 @@ func (*OnfTest1_Cont1A_List5) ΛBelongingModule() string {
 	return "onf-test1-extra"
 }
 
+
 // OnfTest1_Cont1BState represents the /onf-test1/cont1b-state YANG schema element.
 type OnfTest1_Cont1BState struct {
-	Leaf2D *uint16                                `path:"leaf2d" module:"onf-test1"`
-	List2B map[uint8]*OnfTest1_Cont1BState_List2B `path:"list2b" module:"onf-test1"`
+	Leaf2D	*uint16	`path:"leaf2d" module:"onf-test1"`
+	List2B	map[uint8]*OnfTest1_Cont1BState_List2B	`path:"list2b" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1BState implements the yang.GoStruct
@@ -570,7 +577,7 @@ func (*OnfTest1_Cont1BState) IsYANGGoStruct() {}
 // NewList2B creates a new entry in the List2B list of the
 // OnfTest1_Cont1BState struct. The keys of the list are populated from the input
 // arguments.
-func (t *OnfTest1_Cont1BState) NewList2B(Index uint8) (*OnfTest1_Cont1BState_List2B, error) {
+func (t *OnfTest1_Cont1BState) NewList2B(Index uint8) (*OnfTest1_Cont1BState_List2B, error){
 
 	// Initialise the list within the receiver struct if it has not already been
 	// created.
@@ -617,10 +624,11 @@ func (*OnfTest1_Cont1BState) ΛBelongingModule() string {
 	return "onf-test1"
 }
 
+
 // OnfTest1_Cont1BState_List2B represents the /onf-test1/cont1b-state/list2b YANG schema element.
 type OnfTest1_Cont1BState_List2B struct {
-	Index  *uint8  `path:"index" module:"onf-test1"`
-	Leaf3C *string `path:"leaf3c" module:"onf-test1"`
+	Index	*uint8	`path:"index" module:"onf-test1"`
+	Leaf3C	*string	`path:"leaf3c" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_Cont1BState_List2B implements the yang.GoStruct
@@ -662,10 +670,11 @@ func (*OnfTest1_Cont1BState_List2B) ΛBelongingModule() string {
 	return "onf-test1"
 }
 
+
 // OnfTest1_List1A represents the /onf-test1/list1a YANG schema element.
 type OnfTest1_List1A struct {
-	ListId *string `path:"list-id" module:"onf-test1"`
-	Name   *string `path:"name" module:"onf-test1"`
+	ListId	*string	`path:"list-id" module:"onf-test1"`
+	Name	*string	`path:"name" module:"onf-test1"`
 }
 
 // IsYANGGoStruct ensures that OnfTest1_List1A implements the yang.GoStruct
@@ -706,6 +715,8 @@ func (t *OnfTest1_List1A) ΛEnumTypeMap() map[string][]reflect.Type { return ΛE
 func (*OnfTest1_List1A) ΛBelongingModule() string {
 	return "onf-test1"
 }
+
+
 
 var (
 	// ySchema is a byte slice contain a gzip compressed representation of the
@@ -928,9 +939,12 @@ var (
 	}
 )
 
+
 // ΛEnumTypes is a map, keyed by a YANG schema path, of the enumerated types that
 // correspond with the leaf. The type is represented as a reflect.Type. The naming
 // of the map ensures that there are no clashes with valid YANG identifiers.
-func initΛEnumTypes() {
-	ΛEnumTypes = map[string][]reflect.Type{}
+func initΛEnumTypes(){
+  ΛEnumTypes = map[string][]reflect.Type{
+  }
 }
+

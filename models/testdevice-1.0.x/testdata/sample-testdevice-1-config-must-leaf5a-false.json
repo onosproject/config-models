@@ -2,8 +2,8 @@
   "cont1a": {
     "cont2a": {
       "leaf2a": 1,
-      "leaf2b": "0.4321",
-      "leaf2d": "1.54",
+      "leaf2b": 2,
+      "leaf2d": 0,
       "leaf2e": [
         5,
         4,

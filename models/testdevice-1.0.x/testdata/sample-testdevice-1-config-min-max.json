@@ -2,8 +2,8 @@
   "cont1a": {
     "cont2a": {
       "leaf2a": 1,
-      "leaf2b": "0.4321",
-      "leaf2d": "1.54",
+      "leaf2b": 1,
+      "leaf2d": 0,
       "leaf2e": [
         5,
         4,
@@ -19,7 +19,7 @@
       {
         "name": "l2a1",
         "tx-power": 5,
-        "ref2d": "1.54",
+        "ref2d": 0,
         "range-min": 11,
         "range-max": 10
       },
