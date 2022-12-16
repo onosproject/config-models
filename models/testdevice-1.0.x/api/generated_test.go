@@ -9,12 +9,14 @@ import (
 )
 
 func Test_generated(t *testing.T) {
-	assert.Equal(t, 9, len(SchemaTree))
+	assert.Equal(t, 10, len(SchemaTree))
 
 	for k, v := range SchemaTree {
 		switch k {
 		case "Device":
 			assert.Equal(t, "", v.Description)
+		case "OnfTest1_List1A":
+			assert.Equal(t, "A list at the top level", v.Description)
 		case "OnfTest1_Cont1A":
 			assert.Equal(t, "The top level container", v.Description)
 		case "OnfTest1_Cont1A_Cont2A":

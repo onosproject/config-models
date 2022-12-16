@@ -1,10 +1,13 @@
 module: onf-test1
+  +--rw list1a* [list-id]
+  |  +--rw list-id    string
+  |  +--rw name?      -> /cont1a/list2a/name
   +--rw cont1a!
   |  +--rw cont2a
   |  |  +--rw leaf2a?   uint8
-  |  |  +--rw leaf2b    decimal64
+  |  |  +--rw leaf2b    uint8
   |  |  +--ro leaf2c?   string
-  |  |  +--rw leaf2d?   decimal64
+  |  |  +--rw leaf2d?   uint8
   |  |  +--rw leaf2e*   int16
   |  |  +--rw leaf2f?   binary
   |  |  +--rw leaf2g?   boolean

@@ -1,27 +1,24 @@
+
 {
   "cont1a": {
     "cont2a": {
-      "leaf2a": 1,
       "leaf2b": 2,
-      "leaf2d": 2,
+      "leaf2a": 2,
+      "leaf2d": 1,
       "leaf2e": [
-        5,
-        4,
-        3,
-        2,
-        1
+        16,
+        -53
       ],
-      "leaf2f": "dGhpcyBpcyBhIHRlc3QgdGVzdAo=",
       "leaf2g": true
     },
-    "leaf1a": "leaf1aval",
+    "leaf1a": "leaf1a",
     "list2a": [
       {
         "name": "l2a1",
         "tx-power": 5,
-        "ref2d": 2,
-        "range-min": 20,
-        "range-max": 20
+        "ref2d": 1,
+        "range-min": 11,
+        "range-max": 15
       },
       {
         "name": "l2a2",
@@ -37,18 +34,6 @@
       },
       {
         "name": "l2a4",
-        "range-min": 20,
-        "range-max": 21
-      },
-      {
-        "name": "l2a5",
-        "tx-power": 11,
-        "range-min": 20,
-        "range-max": 21
-      },
-      {
-        "name": "l2a6",
-        "tx-power": 12,
         "range-min": 20,
         "range-max": 21
       }
@@ -71,8 +56,8 @@
       },
       {
         "key1": "two",
-        "key2": 1,
-        "leaf5a": "5a two-1"
+        "key2": 3,
+        "leaf5a": "5a two-3"
       }
     ],
     "list4": [
@@ -88,12 +73,12 @@
           {
             "fkey1": "five",
             "fkey2": 6,
-            "displayname": "Value l2a1-five-9"
+            "displayname": "Value l2a1-five-6"
           },
           {
-            "fkey1": "six",
-            "fkey2": 6,
-            "displayname": "Value l2a1-six-6"
+            "fkey1": "eight",
+            "fkey2": 8,
+            "displayname": "Value l2a1-eight-8"
           }
         ]
       },
@@ -102,5 +87,15 @@
         "leaf4b": "this is list4-l2a2"
       }
     ]
-  }
+  },
+  "list1a": [
+    {
+      "list-id": "list1a-id1",
+      "name": "l2a1"
+    },
+    {
+      "list-id": "list1a-id2",
+      "name": "l2a4"
+    }
+  ]
 }
