@@ -3,7 +3,7 @@ module github.com/onosproject/config-models
 go 1.16
 
 require (
-	github.com/SeanCondon/xpath v0.0.0-20220821123841-6149b14eb04f
+	github.com/SeanCondon/xpath v0.0.0-20221217195644-773fbeaef469
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/google/uuid v1.3.0 // indirect
