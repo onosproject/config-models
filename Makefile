@@ -32,7 +32,7 @@ test: mod-update build linters license gofmt images models models-version-check
 .PHONY: models
 models: # @HELP make demo and test device models
 models:
-	@for model in models/*; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:${MODEL_COMPILER_VERSION}; chmod 644 $$model/*.tree; done
+	@for model in models/*; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:${MODEL_COMPILER_VERSION}; done
 
 models-openapi: # @HELP generates the openapi specs for the models
 	@for model in models/*; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
