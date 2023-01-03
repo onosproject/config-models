@@ -7,13 +7,20 @@
 
 FROM onosproject/golang-build:v1.3.0 as build
 
+ARG http_proxy=""
+ARG https_proxy=""
+ARG no_proxy=""
+
 ENV GO111MODULE=on
 COPY go.mod go.sum /models/{{ .Name }}/
 COPY api /models/{{ .Name }}/api
 COPY plugin /models/{{ .Name }}/plugin
 RUN cd /models/{{ .Name }} && go build -o _bin/{{ .Name }} ./plugin
 
-FROM alpine:3.16
+FROM alpine:3.17
+ARG http_proxy=""
+ARG https_proxy=""
+ARG no_proxy=""
 RUN apk add libc6-compat
 
 # Label image

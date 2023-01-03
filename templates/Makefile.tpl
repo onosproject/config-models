@@ -26,7 +26,10 @@ DOCKER_BUILD_ARGS = \
 	--build-arg org_label_schema_vcs_ref="${DOCKER_LABEL_VCS_REF}" \
 	--build-arg org_label_schema_build_date="${DOCKER_LABEL_BUILD_DATE}" \
 	--build-arg org_opencord_vcs_commit_date="${DOCKER_LABEL_COMMIT_DATE}" \
-	--build-arg org_opencord_vcs_dirty="${DOCKER_LABEL_VCS_DIRTY}"
+	--build-arg org_opencord_vcs_dirty="${DOCKER_LABEL_VCS_DIRTY}" \
+	--build-arg http_proxy=${http_proxy} \
+	--build-arg https_proxy=${https_proxy} \
+	--build-arg no_proxy=${no_proxy}
 
 export CGO_ENABLED=0
 export GO111MODULE=on
