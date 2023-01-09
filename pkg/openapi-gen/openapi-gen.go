@@ -505,6 +505,20 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			if len(strings.Split(itemPath, "/")) <= 2 {
 				addAdditionalProperties(schemaVal, additionalPropertyTarget(targetAlias))
 			}
+			if dirEntry.Extra != nil {
+				if presence, ok := dirEntry.Extra["presence"]; ok {
+					if len(presence) == 1 {
+						if presenceMap, conversionOk := presence[0].(map[string]interface{}); conversionOk {
+							if name, nameok := presenceMap["Name"]; nameok {
+								if schemaVal.Extensions == nil {
+									schemaVal.Extensions = make(map[string]interface{})
+								}
+								schemaVal.Extensions["x-presence"] = name
+							}
+						}
+					}
+				}
+			}
 			openapiComponents.Schemas[toUnderScore(itemPath)] = schemaVal.NewRef()
 
 			rbRef := &openapi3.RequestBodyRef{
