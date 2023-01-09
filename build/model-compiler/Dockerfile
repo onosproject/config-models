@@ -16,7 +16,9 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     go build -v -mod=vendor -o build/_output/model-compiler ./cmd/model-compiler
 
 FROM alpine:3.17
-RUN apk add libc6-compat libc-dev gcc libxml2-dev libxslt-dev python3-dev py3-wheel py3-pip && pip3 install pyang
+RUN apk add --no-cache libc6-compat=1.2.3-r4 libc-dev=0.7.2-r3 gcc=12.2.1_git20220924-r4 libxml2-dev=2.10.3-r1 \
+    libxslt-dev=1.1.37-r0 python3-dev=3.10.9-r1 py3-wheel=0.38.4-r0 py3-pip=22.3.1-r1 && \
+    pip3 install --no-cache-dir pyang==2.5.3
 
 COPY --from=build /go/src/github.com/onosproject/config-models/build/_output/model-compiler /usr/local/bin/model-compiler
 COPY --from=build /go/src/github.com/onosproject/config-models/templates /var/model-compiler/templates

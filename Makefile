@@ -10,7 +10,7 @@ export GO111MODULE=on
 
 KIND_CLUSTER_NAME   ?= kind
 MODEL_COMPILER_VERSION ?= latest
-PLATFORM ?= --platform linux/x86_64
+PLATFORM ?= linux/x86_64
 
 mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
@@ -59,27 +59,26 @@ endif
 endif
 
 kind-models:
-	@cd models && for model in *; do pushd $$model; make kind; popd; done
+	@for model in models/*; do make -C $$model kind; done
 
 check-models-tag: # @HELP check that the
-	@make -C models/ric-1.x check-tag
-	@make -C models/e2node-1.x check-tag
-	@make -C models/devicesim-1.0.x check-tag
-	@make -C models/testdevice-1.0.x check-tag
-	@make -C models/testdevice-2.0.x check-tag
-	@make -C models/sdn-fabric-0.1.x check-tag
+	@for model in models/*; do make -C $$model check-tag; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 jenkins-test: deps mod-update build linters check-models-tag images models license
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
-	@cd models && for model in *; do pushd $$model; make test; popd; done
+	@for model in models/*; do make -C $$model test; done
 
 all: # @HELP build all libraries
 all: build
 
-model-compiler-docker: mod-update # @HELP build model-compiler Docker image
-	DOCKER_BUILDKIT=1 docker build ${PLATFORM} . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
+hadolint: #Lint the Dockerfile
+	@hadolint --version || (mkdir -p $$HOME/.local/bin && curl -L -o $$HOME/.local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-$(shell uname -s)-$(shell uname -m) && chmod +x $$HOME/.local/bin/hadolint)
+	hadolint build/model-compiler/Dockerfile
+
+model-compiler-docker: hadolint mod-update # @HELP build model-compiler Docker image
+	DOCKER_BUILDKIT=1 docker image build --platform ${PLATFORM} . -t onosproject/model-compiler:${MODEL_COMPILER_VERSION} -f build/model-compiler/Dockerfile
 
 images: model-compiler-docker
 
@@ -92,12 +91,7 @@ publish: # @HELP publish version on github (called by release-merge-commit)
 	./build/build-tools/publish-version ${VERSION} onosproject/model-compiler
 
 jenkins-publish: docker-login # @HELP Jenkins calls this to publish artifacts
-	make -C models/ric-1.x publish
-	make -C models/e2node-1.x publish
-	make -C models/devicesim-1.0.x publish
-	make -C models/testdevice-1.0.x publish
-	make -C models/testdevice-2.0.x publish
-	make -C models/sdn-fabric-0.1.x publish
+	for model in models/*; do make -C $$model publish; done
 	./build/build-tools/release-merge-commit
 
 clean:: # @HELP remove all the build artifacts
