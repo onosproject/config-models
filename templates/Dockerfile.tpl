@@ -15,13 +15,14 @@ ENV GO111MODULE=on
 COPY go.mod go.sum /models/{{ .Name }}/
 COPY api /models/{{ .Name }}/api
 COPY plugin /models/{{ .Name }}/plugin
-RUN cd /models/{{ .Name }} && go build -o _bin/{{ .Name }} ./plugin
+WORKDIR /models/{{ .Name }}
+RUN go build -o _bin/{{ .Name }} ./plugin
 
 FROM alpine:3.17
 ARG http_proxy=""
 ARG https_proxy=""
 ARG no_proxy=""
-RUN apk add libc6-compat
+RUN apk --no-cache add libc6-compat=1.2.3-r4 && rm -rf /var/cache/apk/*
 
 # Label image
 ARG org_label_schema_version=unknown

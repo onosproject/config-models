@@ -114,6 +114,7 @@ components:
           $ref: '#/components/schemas/Cont1a_List5_List'
       title: Cont1a
       type: object
+      x-presence: Top level is present
     Cont1a_Cont2a:
       additionalProperties:
         $ref: '#/components/schemas/AdditionalPropertyUnchanged'

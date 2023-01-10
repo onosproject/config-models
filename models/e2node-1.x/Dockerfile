@@ -7,14 +7,22 @@
 
 FROM onosproject/golang-build:v1.3.0 as build
 
+ARG http_proxy=""
+ARG https_proxy=""
+ARG no_proxy=""
+
 ENV GO111MODULE=on
 COPY go.mod go.sum /models/e2node/
 COPY api /models/e2node/api
 COPY plugin /models/e2node/plugin
-RUN cd /models/e2node && go build -o _bin/e2node ./plugin
+WORKDIR /models/e2node
+RUN go build -o _bin/e2node ./plugin
 
-FROM alpine:3.16
-RUN apk add libc6-compat
+FROM alpine:3.17
+ARG http_proxy=""
+ARG https_proxy=""
+ARG no_proxy=""
+RUN apk --no-cache add libc6-compat=1.2.3-r4 && rm -rf /var/cache/apk/*
 
 # Label image
 ARG org_label_schema_version=unknown
