@@ -11,6 +11,7 @@ export GO111MODULE=on
 KIND_CLUSTER_NAME   ?= kind
 MODEL_COMPILER_VERSION ?= latest
 PLATFORM ?= linux/x86_64
+LOCAL_BIN ?= .local/bin
 
 mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
@@ -73,8 +74,11 @@ jenkins-test: deps mod-update build linters check-models-tag images models licen
 all: # @HELP build all libraries
 all: build
 
-hadolint: #Lint the Dockerfile
-	@hadolint --version || (mkdir -p $$HOME/.local/bin && curl -L -o $$HOME/.local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-$(shell uname -s)-$(shell uname -m) && chmod +x $$HOME/.local/bin/hadolint)
+hadolint: #Lint the Dockerfile. Install hadolint if not present - on macos it is recommended install tool in advance with "brew install hadolint"
+	@hadolint --version || (mkdir -p $$HOME/${LOCAL_BIN} && \
+	    curl -L -o $$HOME/${LOCAL_BIN}/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-$(shell uname -s)-$(shell uname -m) && \
+	    chmod +x $$HOME/${LOCAL_BIN}/hadolint && \
+	    echo "hadolint downloaded to $$HOME/${LOCAL_BIN} - ensure this dir is in PATH")
 	hadolint build/model-compiler/Dockerfile
 
 model-compiler-docker: hadolint mod-update # @HELP build model-compiler Docker image

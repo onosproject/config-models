@@ -51,7 +51,10 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod tidy
 	go mod vendor
 
-image: mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+hadolint: #lint the Dockerfile
+	hadolint Dockerfile
+
+image: hadolint mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${VERSION} ${DOCKER_REPOSITORY}{{ .ArtifactName }}:${LATEST_VERSION}
 
