@@ -12,7 +12,8 @@ VERSION           ?= ${BASE_VERSION}-testdevice-2.0.x
 LATEST_VERSION           ?= ${BASE_VERSION}-testdevice-latest
 GO_TAG ?= models/testdevice-2.0.x/v${BASE_VERSION}
 KIND_CLUSTER_NAME ?= kind
-PLATFORM ?= --platform linux/x86_64
+PLATFORM ?= linux/x86_64
+LOCAL_BIN ?= .local/bin
 IS_RELEASED_VERSION=$(shell MY_STRING="${BASE_VERSION}"; MY_REGEX='^([0-9]+)\.([0-9]+)\.([0-9]+)$$'; if [[ $$MY_STRING =~ $$MY_REGEX ]]; then echo true; else echo false; fi)
 
 ## Docker labels. Only set ref and commit date if committed
@@ -59,7 +60,7 @@ hadolint: #lint the Dockerfile
 	hadolint Dockerfile
 
 image: hadolint mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
-	docker build ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION} .
+	docker build --platform ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}testdevice-2.0.x:${VERSION} ${DOCKER_REPOSITORY}testdevice-2.0.x:${LATEST_VERSION}
 
 .PHONY: build-openapi
