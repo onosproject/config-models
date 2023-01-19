@@ -52,6 +52,10 @@ mod-update: # @HELP Download the dependencies to the vendor folder
 	go mod vendor
 
 hadolint: #lint the Dockerfile
+	@hadolint --version || (mkdir -p $$HOME/${LOCAL_BIN} && \
+	    curl -L -o $$HOME/${LOCAL_BIN}/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-$(shell uname -s)-$(shell uname -m) && \
+	    chmod +x $$HOME/${LOCAL_BIN}/hadolint && \
+	    echo "hadolint downloaded to $$HOME/${LOCAL_BIN} - ensure this dir is in PATH")
 	hadolint Dockerfile
 
 image: hadolint mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
