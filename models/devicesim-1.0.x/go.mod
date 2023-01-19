@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/getkin/kin-openapi v0.20.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/onosproject/config-models v0.10.48
+	github.com/onosproject/config-models v0.10.49
 	github.com/onosproject/onos-api/go v0.10.4
 	github.com/onosproject/onos-lib-go v0.9.5
 	github.com/openconfig/gnmi v0.0.0-20220617175856-41246b1b3507
