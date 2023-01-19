@@ -3,6 +3,7 @@ module onf-test1-extra {
     prefix t1e;
 
     import onf-test1 { prefix t1; }
+    import onf-extension-types { prefix xt; }
 
     organization "Open Networking Foundation.";
     contact "Sean Condon";
@@ -64,6 +65,7 @@ module onf-test1-extra {
         }
 
         list list5 {
+            xt:group-tag "demonstrates group-tag";
             must "concat('5a ', string(./@key1), '-', string(./@key2)) = string(./leaf5a)" {
               error-message "leaf5a must be formatted string like '5a <key1>-<key2>'";
               error-app-tag "leaf5a format";

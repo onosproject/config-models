@@ -11,6 +11,9 @@ module: onf-test1
   |  |  +--rw leaf2e*   int16
   |  |  +--rw leaf2f?   binary
   |  |  +--rw leaf2g?   boolean
+  |  |  +--rw leaf2h?   yt:uuid
+  |  |  +--rw leaf2i?   yt:date-and-time
+  |  |  +--rw leaf2j?   yt:yang-identifier
   |  +--rw leaf1a?      string
   |  +--rw list2a* [name]
   |  |  +--rw name         string

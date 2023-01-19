@@ -114,6 +114,7 @@ components:
           $ref: '#/components/schemas/Cont1a_List5_List'
       title: Cont1a
       type: object
+      x-group-tag: demonstrates group-tag
       x-presence: Top level is present
     Cont1a_Cont2a:
       additionalProperties:
@@ -156,6 +157,25 @@ components:
           description: Boolean leaf inside Container 2a
           title: leaf2g
           type: boolean
+        leaf2h:
+          description: UUID leaf inside Container 2a
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          title: leaf2h
+          type: string
+          x-yang-type: uuid
+        leaf2i:
+          description: Date and Time leaf inside Container 2a
+          pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
+          title: leaf2i
+          type: string
+          x-yang-type: date-and-time
+        leaf2j:
+          description: yang-identifier leaf inside Container 2a
+          minLength: 1
+          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+          title: leaf2j
+          type: string
+          x-yang-type: yang-identifier
       required:
       - leaf2b
       title: Cont1a_Cont2a
@@ -343,6 +363,7 @@ components:
         $ref: '#/components/schemas/Cont1a_List5'
       type: array
       uniqueItems: true
+      x-group-tag: demonstrates group-tag
       x-keys:
       - key1
       - key2
@@ -400,6 +421,7 @@ components:
       pattern: '[A-Z]{3}-[0-9]*'
       title: leaf-at-top-level
       type: string
+      x-group-tag: demonstrates group-tag
     LeafRefOption:
       description: single label/value of the leafref option
       properties:
