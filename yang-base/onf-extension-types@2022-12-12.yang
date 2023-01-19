@@ -19,4 +19,9 @@ module onf-extension-types {
     argument selection-stmt;
     description "An Xpath statement that gives a selection criteria for leaf values";
   }
+
+  extension group-tag {
+    argument tag;
+    description "An optional tag for grouping related concepts. Will become x-group-tag in OpenAPI";
+  }
 }

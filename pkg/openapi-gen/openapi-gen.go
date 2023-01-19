@@ -271,6 +271,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				if dirEntry.Type.Default != "" {
 					schemaVal.Default = dirEntry.Type.Default
 				}
+				if dirEntry.Type.Name != "string" {
+					schemaVal.Extensions = map[string]interface{}{
+						"x-yang-type": dirEntry.Type.Name,
+					}
+				}
 			case yang.Yunion:
 				schemaVal = openapi3.NewStringSchema()
 				if dirEntry.Type.Default != "" {
