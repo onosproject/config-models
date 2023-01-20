@@ -45,11 +45,9 @@ func NewCompiler() *ModelCompiler {
 type Dictionary struct {
 	Name               string
 	Version            string
-	PluginVersion      string
 	ArtifactName       string
 	GoPackage          string
 	ModelData          []*gnmi.ModelData
-	Module             string
 	GetStateMode       uint32
 	ReadOnlyPath       []*api.ReadOnlyPath
 	ReadWritePath      []*api.ReadWritePath
@@ -63,10 +61,9 @@ type Dictionary struct {
 
 // ModelCompiler is a model plugin compiler
 type ModelCompiler struct {
-	pluginVersion string
-	metaData      *MetaData
-	modelInfo     *api.ModelInfo
-	dictionary    Dictionary
+	metaData   *MetaData
+	modelInfo  *api.ModelInfo
+	dictionary Dictionary
 }
 
 // Compile compiles the config model
@@ -82,11 +79,6 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
-	err = c.loadPluginVersion(path)
-	if err != nil {
-		log.Errorf("Unable to load model plugin version; defaulting to %s: %+v", c.pluginVersion, err)
-	}
-
 	// Lint YANG files if the model requests lint validation
 	if c.metaData.LintModel {
 		err = c.lintModel(path)
@@ -96,15 +88,22 @@ func (c *ModelCompiler) Compile(path string) error {
 		}
 	}
 
+	// Format YANG files if the model requests formatting
+	if c.metaData.FormatYang {
+		err = c.formatYang(path)
+		if err != nil {
+			log.Errorf("YANG file formatting failed: %+v", err)
+			return err
+		}
+	}
+
 	// Create dictionary from metadata and model info
 	c.dictionary = Dictionary{
 		Name:               c.modelInfo.Name,
 		Version:            c.modelInfo.Version,
-		PluginVersion:      c.pluginVersion,
 		ArtifactName:       c.metaData.ArtifactName,
 		GoPackage:          c.metaData.GoPackage,
 		ModelData:          c.modelInfo.ModelData,
-		Module:             c.modelInfo.Module,
 		GetStateMode:       c.modelInfo.GetStateMode,
 		ReadOnlyPath:       c.modelInfo.ReadOnlyPath,
 		ReadWritePath:      c.modelInfo.ReadWritePath,
@@ -144,27 +143,11 @@ func (c *ModelCompiler) Compile(path string) error {
 		return err
 	}
 
-	// the gNMI client generator is on hold at the moment,
-	// disabling it for the moment
-	//Generate gNMI Client Generator
-	//err = c.generateGnmiClientGenerator(path)
-	//if err != nil {
-	//	log.Errorf("Unable to generate gNMI Client Generator: %+v", err)
-	//	return err
-	//}
-
-	// Now generate the gNMI client itself
-	//err = c.generateGnmiClient(path)
-	//if err != nil {
-	//	log.Errorf("Unable to generate gNMI Client: %+v", err)
-	//	return err
-	//}
-
 	return nil
 }
 
 func (c *ModelCompiler) loadModelMetaData(path string) error {
-	c.metaData = &MetaData{LintModel: true, RequireHyphenated: true}
+	c.metaData = &MetaData{LintModel: true, RequireHyphenated: true, FormatYang: true}
 	if err := LoadMetaData(path, "metadata", c.metaData); err != nil {
 		return err
 	}
@@ -188,16 +171,6 @@ func (c *ModelCompiler) loadModelMetaData(path string) error {
 	return nil
 }
 
-func (c *ModelCompiler) loadPluginVersion(path string) error {
-	data, err := os.ReadFile(filepath.Join(path, versionFile))
-	if err != nil {
-		c.pluginVersion = "1.0.0"
-	}
-	v := string(data)
-	c.pluginVersion = strings.Split(strings.ReplaceAll(v, "\r\n", "\n"), "\n")[0]
-	return err
-}
-
 func (c *ModelCompiler) lintModel(path string) error {
 	log.Infof("Linting YANG files")
 
@@ -218,6 +191,50 @@ func (c *ModelCompiler) lintModel(path string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+func (c *ModelCompiler) formatYang(path string) error {
+	log.Infof("Formatting YANG files")
+
+	// Append the root YANG files to the command-line arguments
+	yangDir := filepath.Join(path, "yang")
+	yangDirs := []string{yangBaseDirectory, yangDir}
+
+	tempFile := fmt.Sprintf("%s/temp-formatted.yang", os.TempDir())
+	err := filepath.Walk(yangDir,
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() || !strings.HasSuffix(info.Name(), ".yang") {
+				return nil
+			}
+
+			args := []string{"-f", "yang", "--ignore-error=XPATH_FUNCTION", "-p", strings.Join(yangDirs, ":"), path,
+				"-o", tempFile}
+			log.Infof("Formatting YANG with: pyang %v", args)
+			cmd := exec.Command("pyang", args...)
+			cmd.Env = os.Environ()
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			if err := cmd.Run(); err != nil {
+				return err
+			}
+			input, err := os.ReadFile(tempFile)
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(path, input, 0644)
+			if err != nil {
+				return err
+			}
+			return nil
+		})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *ModelCompiler) generateGolangBindings(path string) error {
@@ -371,35 +388,3 @@ func (c *ModelCompiler) generateOpenApi(path string) error {
 	log.Infof("Generating plugin OpenApi Gen file '%s'", openapiGenFile)
 	return c.applyTemplate(openapiGenTemplate, c.getTemplatePath(openapiGenTemplate), openapiGenFile)
 }
-
-//func (c *ModelCompiler) generateGnmiClientGenerator(path string) error {
-//	// the Schema we need to import is generated at runtime, so we need to generate the tool
-//	// to import such schema and generate the OpenApi specs
-//	dir := filepath.Join(path, "gnmi-gen")
-//	gnmiGen := filepath.Join(dir, "gnmi-gen.go")
-//	c.createDir(dir)
-//
-//	log.Infof("Generating plugin GnmiGen file '%s'", gnmiGen)
-//	return c.applyTemplate(gnmiGenTemplate, c.getTemplatePath(gnmiGenTemplate), gnmiGen)
-//}
-
-//func (c *ModelCompiler) generateGnmiClient(path string) error {
-//	generatorPath := filepath.Join(path, "gnmi-gen/gnmi-gen.go")
-//
-//	args := []string{
-//		"run",
-//		generatorPath,
-//		"--debug",
-//	}
-//
-//	log.Infof("Executing: generator %s", path, strings.Join(args, " "))
-//	cmd := exec.Command("go", args...)
-//	cmd.Env = os.Environ()
-//	cmd.Stdout = os.Stdout
-//	cmd.Stderr = os.Stderr
-//	err := cmd.Run()
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
