@@ -32,7 +32,9 @@ const (
 	makefileTemplate   = "Makefile.tpl"
 	dockerfileTemplate = "Dockerfile.tpl"
 	openapiGenTemplate = "openapi-gen.go.tpl"
-	//gnmiGenTemplate    = "gnmi-gen.go.tpl"
+	yang               = "yang"
+	dotYang            = ".yang"
+	pyang              = "pyang"
 )
 
 const yangBaseDirectory = "/var/model-compiler/yang-base"
@@ -186,7 +188,7 @@ func (c *ModelCompiler) lintModel(path string) error {
 	}
 
 	log.Infof("Executing pyang %v", args)
-	cmd := exec.Command("pyang", args...)
+	cmd := exec.Command(pyang, args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -197,7 +199,7 @@ func (c *ModelCompiler) formatYang(path string) error {
 	log.Infof("Formatting YANG files")
 
 	// Append the root YANG files to the command-line arguments
-	yangDir := filepath.Join(path, "yang")
+	yangDir := filepath.Join(path, yang)
 	yangDirs := []string{yangBaseDirectory, yangDir}
 
 	tempFile := fmt.Sprintf("%s/temp-formatted.yang", os.TempDir())
@@ -206,14 +208,14 @@ func (c *ModelCompiler) formatYang(path string) error {
 			if err != nil {
 				return err
 			}
-			if info.IsDir() || !strings.HasSuffix(info.Name(), ".yang") {
+			if info.IsDir() || !strings.HasSuffix(info.Name(), dotYang) {
 				return nil
 			}
 
-			args := []string{"-f", "yang", "--ignore-error=XPATH_FUNCTION", "-p", strings.Join(yangDirs, ":"), path,
+			args := []string{"-f", yang, "--ignore-error=XPATH_FUNCTION", "-p", strings.Join(yangDirs, ":"), path,
 				"-o", tempFile}
 			log.Infof("Formatting YANG with: pyang %v", args)
-			cmd := exec.Command("pyang", args...)
+			cmd := exec.Command(pyang, args...)
 			cmd.Env = os.Environ()
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
@@ -309,7 +311,7 @@ func (c *ModelCompiler) generateModelTree(path string) error {
 	}
 
 	log.Infof("Executing pyang %v", args)
-	cmd := exec.Command("pyang", args...)
+	cmd := exec.Command(pyang, args...)
 	cmd.Env = os.Environ()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
