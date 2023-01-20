@@ -17,6 +17,7 @@ type MetaData struct {
 	GetStateMode       uint32   `mapstructure:"getStateMode" yaml:"getStateMode"`
 	LintModel          bool     `mapstructure:"lintModel" yaml:"lintModel"`
 	RequireHyphenated  bool     `mapstructure:"requireHyphenated" yaml:"requireHyphenated"`
+	FormatYang         bool     `mapstructure:"formatYang" yaml:"formatYang"`
 	GenOpenAPI         bool     `mapstructure:"genOpenAPI" yaml:"genOpenAPI"`
 	OpenAPITargetAlias string   `mapstructure:"openAPITargetAlias" yaml:"openAPITargetAlias"`
 	GoPackage          string   `mapstructure:"goPackage" yaml:"goPackage"`

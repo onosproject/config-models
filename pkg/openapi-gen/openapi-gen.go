@@ -271,7 +271,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				if dirEntry.Type.Default != "" {
 					schemaVal.Default = dirEntry.Type.Default
 				}
-				if dirEntry.Type.Name != "string" {
+
+				if dirEntry.Type.Name == "date-and-time" {
+					schemaVal.Format = "date-time"
+				} else if dirEntry.Type.Name != "string" {
 					schemaVal.Extensions = map[string]interface{}{
 						"x-yang-type": dirEntry.Type.Name,
 					}

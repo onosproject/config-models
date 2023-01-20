@@ -2,198 +2,220 @@ module onf-test1 {
   namespace "http://opennetworking.org/devicesim/test1";
   prefix t1;
 
-  import ietf-yang-types { prefix yt; }
-  import onf-extension-types { prefix xt; }
+  import ietf-yang-types {
+    prefix yt;
+  }
+  import onf-extension-types {
+    prefix xt;
+  }
 
-  organization "Open Networking Foundation.";
-  contact "Sean Condon";
-  description "To generate JSON from this use command
-    pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
-    Copied from YangUIComponents project";
+  organization
+    "Open Networking Foundation.";
+  contact
+    "Sean Condon";
+  description
+    "To generate JSON from this use command
+     pyang -f jtoxx test1.yang | python3 -m json.tool > test1.json
+     Copied from YangUIComponents project";
 
-  revision "2018-02-20" {
-    description "Used for testing different data node types";
-    reference "RFC 6087";
+  revision 2018-02-20 {
+    description
+      "Used for testing different data node types";
+    reference
+      "RFC 6087";
   }
 
   list list1a {
     key "list-id";
-    description "A list at the top level";
-
-    leaf "list-id" {
+    description
+      "A list at the top level";
+    leaf list-id {
       type string;
-      description "unique identifier for the list1a";
+      description
+        "unique identifier for the list1a";
     }
-
-    leaf "name" {
+    leaf name {
       type leafref {
-         path "/cont1a/list2a/name";
+        path "/cont1a/list2a/name";
       }
-      description "reference to the name entry in list2a";
+      description
+        "reference to the name entry in list2a";
     }
-
   }
   container cont1a {
     xt:group-tag "demonstrates group-tag";
-    must "not(list2a[set-contains(following-sibling::list2a/tx-power, tx-power)])" {
-        error-message "tx-power must not be repeated in list2a";
-        error-app-tag "list2a must";
-        description "validation fails if tx-power is not unique within list2a";
+    must 'not(list2a[set-contains(following-sibling::list2a/tx-power, tx-power)])' {
+      error-message "tx-power must not be repeated in list2a";
+      error-app-tag "list2a must";
+      description
+        "validation fails if tx-power is not unique within list2a";
     }
     presence "Top level is present";
-    description "The top level container";
-
+    description
+      "The top level container";
     container cont2a {
-      description "The 2nd level container";
-
+      description
+        "The 2nd level container";
       leaf leaf2a {
         type uint8 {
           range "1..3|11..13";
         }
-        units dB;
-        default 2;
-        description "Numeric leaf inside Container 2a";
-        reference "RFC 6040";
+        units "dB";
+        default "2";
+        description
+          "Numeric leaf inside Container 2a";
+        reference
+          "RFC 6040";
       }
       leaf leaf2b {
         type uint8 {
-          range 0..2;
+          range "0..2";
         }
-        units mV;
+        units "mV";
         mandatory true;
-        description "Voltage leaf inside Container 2a";
+        description
+          "Voltage leaf inside Container 2a";
       }
       leaf leaf2c {
         type string;
         config false;
-        description "Read only leaf inside Container 2a";
+        description
+          "Read only leaf inside Container 2a";
       }
       leaf leaf2d {
         type uint8 {
-          range 0..2;
+          range "0..2";
         }
-        description "Another integer inside Container 2a";
+        description
+          "Another integer inside Container 2a";
       }
       leaf-list leaf2e {
         type int16 {
-          range -100..200;
+          range "-100..200";
         }
-        description "leaf list inside Container 2a";
+        description
+          "leaf list inside Container 2a";
       }
       leaf leaf2f {
         type binary {
-          length 20;
+          length "20";
         }
-        description "binary leaf inside container 2a";
+        description
+          "binary leaf inside container 2a";
       }
       leaf leaf2g {
         type boolean;
-        description "Boolean leaf inside Container 2a";
+        description
+          "Boolean leaf inside Container 2a";
       }
       leaf leaf2h {
         type yt:uuid;
-        description "UUID leaf inside Container 2a";
+        description
+          "UUID leaf inside Container 2a";
       }
       leaf leaf2i {
         type yt:date-and-time;
-        description "Date and Time leaf inside Container 2a";
+        description
+          "Date and Time leaf inside Container 2a";
       }
       leaf leaf2j {
         type yt:yang-identifier;
-        description "yang-identifier leaf inside Container 2a";
+        description
+          "yang-identifier leaf inside Container 2a";
       }
     }
-
     leaf leaf1a {
       type string {
-        length 5..10;
+        length "5..10";
       }
-      description "Leaf inside Container 1a";
+      description
+        "Leaf inside Container 1a";
     }
-
     list list2a {
-      must "number(./range-min) <= number(./range-max)" {
+      must 'number(./range-min) <= number(./range-max)' {
         error-message "range-min must be less than or equal to range-max";
         error-app-tag "range must";
-        description "this is a must statement";
+        description
+          "this is a must statement";
       }
-      key name;
+      key "name";
       max-elements 4;
-      description "A simple list of configuration items";
-
+      description
+        "A simple list of configuration items";
       leaf name {
         type string {
-          length 4..8;
+          length "4..8";
         }
-        description "The list is keyed by name";
+        description
+          "The list is keyed by name";
       }
-
       leaf tx-power {
         type uint16 {
-          range 1..20;
+          range "1..20";
         }
-        units mW;
-        description "Transmit power";
+        units "mW";
+        description
+          "Transmit power";
       }
-
       leaf ref2d {
         type leafref {
-            path /cont1a/cont2a/leaf2d;
+          path "/cont1a/cont2a/leaf2d";
         }
-        description "A reference to leaf2d in the 2a container";
+        description
+          "A reference to leaf2d in the 2a container";
       }
-
       leaf range-min {
         type uint8;
         mandatory true;
-        description "A simple range to test rules in YANG. Min must be <= max";
+        description
+          "A simple range to test rules in YANG. Min must be <= max";
       }
       leaf range-max {
         type uint8;
-        description "A max value for the range";
+        description
+          "A max value for the range";
       }
-
     }
   }
-
   leaf leaf-at-top-level {
     xt:group-tag "demonstrates group-tag";
     type string {
-      pattern "[A-Z]{3}-[0-9]*";
+      pattern '[A-Z]{3}-[0-9]*';
     }
-    description "A leaf at the top level (not recommended but must be supported)";
+    description
+      "A leaf at the top level (not recommended but must be supported)";
   }
-
   container cont1b-state {
     config false;
-    description "A second top level container - this one for state attributes. Edit symbol should not be visible";
-
+    description
+      "A second top level container - this one for state attributes. Edit symbol should not be visible";
     list list2b {
-      key index;
+      key "index";
       config false;
-      description "A simple list of state items";
-
+      description
+        "A simple list of state items";
       leaf index {
         type uint8;
-        description "The list index";
+        description
+          "The list index";
       }
-
       leaf leaf3c {
         type string {
-          length 1..20;
+          length "1..20";
         }
         config false;
-        description "A string attribute in the list";
+        description
+          "A string attribute in the list";
       }
     }
-
     leaf leaf2d {
       type uint16 {
-        range 10000..20000;
+        range "10000..20000";
       }
-      units mm;
+      units "mm";
       config false;
-      description "A state attribute";
+      description
+        "A state attribute";
     }
   }
 }
