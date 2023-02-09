@@ -20,6 +20,11 @@ module onf-extension-types {
     description "An Xpath statement that gives a selection criteria for leaf values";
   }
 
+  extension leaf-selection-default {
+    argument default-value;
+    description "To be used where ever leaf-selection is present, to give a default value to be used in roc-gui";
+  }
+
   extension group-tag {
     argument tag;
     description "An optional tag for grouping related concepts. Will become x-group-tag in OpenAPI";
