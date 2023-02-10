@@ -572,10 +572,10 @@ func Test_buildSchemaLeafList(t *testing.T) {
 
 	p = paths.Find("/test/list1/{}/list-int-ref-leaf-list/values")
 	assert.NotNil(t, p)
-	assert.NotNil(t, p.Get)
-	assert.Equal(t, "getTest_List1_List-int-ref-leaf-list_LeafSelection", p.Get.OperationID)
-	assert.NotNil(t, p.Get.RequestBody)
-	assert.NotNil(t, p.Get.Responses.Get(200))
+	assert.NotNil(t, p.Post)
+	assert.Equal(t, "getTest_List1_List-int-ref-leaf-list_LeafSelection", p.Post.OperationID)
+	assert.NotNil(t, p.Post.RequestBody)
+	assert.NotNil(t, p.Post.Responses.Get(200))
 
 	p = paths.Find("/test/list1/{}/list-str-ref-leaf-list/{leaf-string}/values")
 	assert.NotNil(t, p)

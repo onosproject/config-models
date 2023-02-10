@@ -440,19 +440,19 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						// Overrides a leafref if exists
 						*hasLeafref = true
 						extPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeLeafSelection, targetAlias)
-						respGet200 := openapi3.NewResponse()
+						respPost200 := openapi3.NewResponse()
 						respDesc := "Leaf selection response"
-						respGet200.Description = &respDesc
+						respPost200.Description = &respDesc
 
 						leafrefResolverRef := openapi3.NewObjectSchema()
 						leafrefResolverRef.Properties = make(map[string]*openapi3.SchemaRef)
 						leafrefResolverRef.Title = "ref"
 
-						respGet200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
+						respPost200.Content = openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", LeafRefOptions),
 							Value: leafrefResolverRef,
 						})
-						extPath.Get.AddResponse(200, respGet200)
+						extPath.Post.AddResponse(200, respPost200)
 						rbRef := &openapi3.RequestBodyRef{
 							Value: openapi3.NewRequestBody().WithContent(
 								openapi3.NewContentWithJSONSchemaRef(&openapi3.SchemaRef{
@@ -461,7 +461,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 								}),
 							),
 						}
-						extPath.Get.RequestBody = rbRef
+						extPath.Post.RequestBody = rbRef
 						openapiPaths[pathWithPrefix(itemPath)+"/values"] = extPath
 					}
 				}
@@ -892,6 +892,18 @@ func newPathItem(dirEntry *yang.Entry, itemPath string, parentPath string, pathT
 		}
 		postOp.Tags = []string{toUnderScore(parentPath)}
 		newPath.Post = postOp
+	} else if pathType == pathTypeLeafSelection {
+		postOp := openapi3.NewOperation()
+		postOp.Summary = fmt.Sprintf("GET %s %s", itemPath, pathType.string())
+		postOp.OperationID = fmt.Sprintf("get%s_%s", toUnderScore(itemPath), toUnderScore(pathType.string()))
+		postOp.Responses = make(openapi3.Responses)
+		postOp.RequestBody = &openapi3.RequestBodyRef{
+			Ref: fmt.Sprintf("#/components/schemas/%s", toUnderScore(parentPath)),
+			// Value is filled in later
+		}
+		postOp.Tags = []string{toUnderScore(parentPath)}
+		newPath.Post = postOp
+		newPath.Get = nil
 	}
 
 	return &newPath
