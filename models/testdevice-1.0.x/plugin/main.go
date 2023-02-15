@@ -18,6 +18,7 @@ import (
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
+	"io"
 	"os"
 	"strconv"
 )
@@ -107,6 +108,37 @@ func (s server) GetModelInfo(ctx context.Context, request *admin.ModelInfoReques
             SouthboundUsePrefix:  false,
 		},
 	}, nil
+}
+
+func (s server) ValidateConfigChunked(srv admin.ModelPluginService_ValidateConfigChunkedServer) error {
+
+	var response []byte
+	for {
+		c, err := srv.Recv()
+		if err != nil {
+			if err == io.EOF {
+				log.Debugf("Received validate config request: %s", response)
+				log.Debugf("Transfer of %d bytes successful", len(response))
+				gostruct, err := s.unmarshallConfigValues(response)
+				if err != nil {
+					return errors.Status(err).Err()
+				}
+				if err := s.validate(gostruct); err != nil {
+					return errors.Status(err).Err()
+				}
+				if err := s.validateMust(*gostruct); err != nil {
+					return errors.Status(err).Err()
+				}
+				return srv.SendAndClose(&admin.ValidateConfigResponse{
+					Valid: true,
+				})
+			}
+			return err
+		}
+		response = append(response, c.GetJson()...)
+	}
+
+	return nil
 }
 
 func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfigRequest) (*admin.ValidateConfigResponse, error) {
