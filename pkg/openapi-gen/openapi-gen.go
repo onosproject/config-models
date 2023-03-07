@@ -27,7 +27,7 @@ const (
 	LeafRefOption                  = "LeafRefOption"
 )
 
-var swagger openapi3.Swagger
+var swagger openapi3.T
 
 var respGet200Desc = "GET OK 200"
 var pathPrefix string
@@ -89,7 +89,7 @@ func (settings *ApiGenSettings) ApplyDefaults() {
 	}
 }
 
-func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.Swagger, error) {
+func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi3.T, error) {
 	settings.ApplyDefaults()
 
 	pathPrefix = fmt.Sprintf("/%s/v%s/{%s}", strings.ToLower(settings.ModelType), settings.ModelVersion, settings.TargetAlias)
@@ -144,7 +144,7 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 		addLeafRefSchema(components)
 	}
 
-	swagger = openapi3.Swagger{
+	swagger = openapi3.T{
 		OpenAPI: "3.0.0",
 		Info: &openapi3.Info{
 			Title:       settings.Title,
@@ -154,14 +154,14 @@ func BuildOpenapi(yangSchema *ytypes.Schema, settings *ApiGenSettings) (*openapi
 			Description: settings.Description,
 		},
 		Paths:      paths,
-		Components: *components,
+		Components: components,
 	}
 
 	if err := swagger.Validate(context.Background()); err != nil {
 		return nil, err
 	}
 
-	swaggerLdr := openapi3.NewSwaggerLoader()
+	swaggerLdr := openapi3.NewLoader()
 	if err = swaggerLdr.ResolveRefsIn(&swagger, nil); err != nil {
 		fmt.Fprintf(os.Stderr, "error on Resolving Refs %v\n", err)
 	}
@@ -222,15 +222,14 @@ func targetParam(targetAlias string) *openapi3.ParameterRef {
 
 // add AdditionalProperties reference to target to a particular schema
 func addAdditionalProperties(schemaVal *openapi3.Schema, name string) {
-	if schemaVal.AdditionalProperties != nil {
-		name = AdditionalPropertiesUnchTarget
-	}
 	schemaValAdditionalRef := openapi3.NewObjectSchema()
 	schemaValAdditionalRef.Properties = make(map[string]*openapi3.SchemaRef)
 	schemaValAdditionalRef.Title = "ref"
-	schemaVal.AdditionalProperties = &openapi3.SchemaRef{
-		Value: schemaValAdditionalRef,
-		Ref:   fmt.Sprintf("#/components/schemas/%s", name),
+	schemaVal.AdditionalProperties = openapi3.AdditionalProperties{
+		Schema: openapi3.NewSchemaRef(
+			fmt.Sprintf("#/components/schemas/%s", name),
+			schemaValAdditionalRef,
+		),
 	}
 
 }
@@ -483,17 +482,35 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
-			for name, dir := range dirEntry.Dir {
-				_, components, err := buildSchema(dir, dir.Config, parentPath, targetAlias, hasLeafref)
-				if err != nil {
-					return nil, nil, err
-				}
-				for k, v := range components.Schemas {
-					v.Value.Description = fmt.Sprintf("For choice %s:%s", dirEntry.Name, name)
-					openapiComponents.Schemas[toUnderScore(k)] = v
-				}
+			cases := make([]*openapi3.Schema, 0)
+			_, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
+			if err != nil {
+				return nil, nil, err
 			}
-
+			for _, v := range components.Schemas {
+				cases = append(cases, v.Value)
+			}
+			choiceOneOf := openapi3.NewOneOfSchema(cases...)
+			choiceOneOf.Title = fmt.Sprintf("Choice %s", dirEntry.Name)
+			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
+				Value: choiceOneOf,
+			}
+		} else if dirEntry.Kind == yang.CaseEntry {
+			_, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
+			if err != nil {
+				return nil, nil, err
+			}
+			caseSchema := openapi3.NewObjectSchema()
+			caseSchema.Title = dirEntry.Name
+			caseSchema.Description = fmt.Sprintf("Case %s", dirEntry.Name)
+			caseSchema.Properties = make(map[string]*openapi3.SchemaRef, 0)
+			for k, v := range components.Schemas {
+				simpleName := strings.ToLower(strings.TrimPrefix(k, fmt.Sprintf("%s_", toUnderScore(parentPath))))
+				caseSchema.Properties[simpleName] = v
+			}
+			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
+				Value: caseSchema,
+			}
 		} else if dirEntry.IsContainer() {
 			newPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeContainer, targetAlias)
 			openapiPaths[pathWithPrefix(itemPath)] = newPath
@@ -593,7 +610,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						fmt.Sprintf("#/components/schemas/%s", k), v.Value)
 					openapiComponents.Schemas[k] = v
 				default:
-					return nil, nil, fmt.Errorf("unhandled in container %s: %s", k, v.Value.Type)
+					if v.Value.OneOf != nil {
+						schemaVal.OneOf = v.Value.OneOf
+					} else {
+						return nil, nil, fmt.Errorf("unhandled in container %s: %s", k, v.Value.Type)
+					}
 				}
 			}
 			if len(schemaVal.Required) > 0 {
@@ -775,7 +796,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					asSingle.Properties[v.Value.Title] = v
 				default:
-					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
+					if v.Value.OneOf != nil {
+						asSingle.OneOf = v.Value.OneOf
+					} else {
+						return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
+					}
 				}
 				for _, key := range keys {
 					if key == v.Value.Title {
