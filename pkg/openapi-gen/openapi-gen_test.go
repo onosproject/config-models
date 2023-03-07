@@ -869,3 +869,142 @@ func Test_Parent_ReadOnly(t *testing.T) {
 	assert.Equal(t, true, s.Value.ReadOnly)
 
 }
+
+func Test_YANG_Choice(t *testing.T) {
+	targetParameter = targetParam("targettest")
+
+	// Unconfigurable parent
+	testParent := yang.Entry{
+		Name:   "test-parent",
+		Kind:   yang.DirectoryEntry,
+		Config: yang.TSTrue,
+		Parent: &yang.Entry{},
+		Dir:    make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+
+	// a choice entry
+	testChoice := yang.Entry{
+		Name:        "choice-test",
+		Description: "a choice between case 1 and case 2",
+		Parent:      &testParent,
+		Kind:        yang.ChoiceEntry,
+		Dir:         make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testParent.Dir["choice-test"] = &testChoice
+
+	// case 1 entry
+	testCase1 := yang.Entry{
+		Name:        "case-1-test",
+		Description: "case 1",
+		Parent:      &testChoice,
+		Kind:        yang.CaseEntry,
+		Dir:         make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testChoice.Dir["case-1-test"] = &testCase1
+
+	// case 2 entry
+	testCase2 := yang.Entry{
+		Name:        "case-2-test",
+		Description: "case 2",
+		Parent:      &testChoice,
+		Kind:        yang.CaseEntry,
+		Dir:         make(map[string]*yang.Entry),
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testChoice.Dir["case-2-test"] = &testCase2
+
+	// First Leaf in case 1
+	testLeaf1a := yang.Entry{
+		Name:        "Leaf1a",
+		Description: "Leaf A in case 1 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testCase1,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Ystring,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testCase1.Dir["Leaf1a"] = &testLeaf1a
+
+	testLeaf1b := yang.Entry{
+		Name:        "Leaf1b",
+		Description: "Leaf B in case 1 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testCase1,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Ystring,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testCase1.Dir["Leaf1b"] = &testLeaf1b
+
+	testLeaf2a := yang.Entry{
+		Name:        "Leaf2a",
+		Description: "Leaf A in case 2 Description",
+		Config:      yang.TSTrue,
+		Parent:      &testCase2,
+		Mandatory:   yang.TSTrue,
+		Type: &yang.YangType{
+			Kind: yang.Ystring,
+		},
+		Prefix: &yang.Value{
+			Name: "Test",
+		},
+	}
+	testCase2.Dir["Leaf2a"] = &testLeaf2a
+
+	hasLeafref := false
+	_, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest", &hasLeafref)
+	assert.NoError(t, err)
+
+	assert.Equal(t, 1, len(components.Schemas))
+	choice, ok := components.Schemas["Choice-test"]
+	assert.True(t, ok, "expected a 'choice-test' entry in Schemas")
+	assert.NotNil(t, choice.Value)
+	assert.Equal(t, "Choice choice-test", choice.Value.Title)
+	assert.NotNil(t, choice.Value.OneOf)
+	assert.Equal(t, 2, len(choice.Value.OneOf))
+
+	for _, one := range choice.Value.OneOf {
+		switch one.Value.Title {
+		case "case-1-test":
+			assert.Equal(t, 2, len(one.Value.Properties))
+
+			case1PropA, ok := one.Value.Properties["leaf1a"]
+			assert.True(t, ok, "expected leaf 1a")
+			assert.NotNil(t, case1PropA)
+			assert.Equal(t, "Leaf1a", case1PropA.Value.Title)
+
+			case1PropB, ok := one.Value.Properties["leaf1b"]
+			assert.True(t, ok, "expected leaf 1b")
+			assert.NotNil(t, case1PropB)
+			assert.Equal(t, "Leaf1b", case1PropB.Value.Title)
+
+		case "case-2-test":
+			assert.Equal(t, 1, len(one.Value.Properties))
+
+			case2PropA, ok := one.Value.Properties["leaf2a"]
+			assert.True(t, ok, "expected leaf 2a")
+			assert.NotNil(t, case2PropA)
+			assert.Equal(t, "Leaf2a", case2PropA.Value.Title)
+		}
+	}
+
+}

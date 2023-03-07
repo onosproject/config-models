@@ -505,7 +505,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			caseSchema.Description = fmt.Sprintf("Case %s", dirEntry.Name)
 			caseSchema.Properties = make(map[string]*openapi3.SchemaRef, 0)
 			for k, v := range components.Schemas {
-				caseSchema.Properties[toUnderScore(k)] = v
+				simpleName := strings.ToLower(strings.TrimPrefix(k, fmt.Sprintf("%s_", toUnderScore(parentPath))))
+				caseSchema.Properties[simpleName] = v
 			}
 			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
 				Value: caseSchema,
@@ -795,7 +796,11 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					}
 					asSingle.Properties[v.Value.Title] = v
 				default:
-					return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
+					if v.Value.OneOf != nil {
+						asSingle.OneOf = v.Value.OneOf
+					} else {
+						return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
+					}
 				}
 				for _, key := range keys {
 					if key == v.Value.Title {

@@ -6,7 +6,8 @@ package compiler
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
+	"os"
 )
 
 // MetaData plugin meta-data
@@ -38,14 +39,11 @@ type Module struct {
 
 // LoadMetaData loads the metadata.yaml file
 func LoadMetaData(path string, configFile string, metaData *MetaData) error {
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(configFile)
-	viper.AddConfigPath(path)
-
-	if err := viper.ReadInConfig(); err != nil {
+	mdBytes, err := os.ReadFile(fmt.Sprintf("%s/%s.yaml", path, configFile))
+	if err != nil {
 		return err
 	}
-	return viper.Unmarshal(metaData)
+	return yaml.Unmarshal(mdBytes, metaData)
 }
 
 // ValidateMetaData checks that required attributes are set

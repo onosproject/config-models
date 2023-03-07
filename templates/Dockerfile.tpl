@@ -18,7 +18,7 @@ COPY plugin /models/{{ .Name }}/plugin
 WORKDIR /models/{{ .Name }}
 RUN go build -o _bin/{{ .Name }} ./plugin
 
-FROM alpine:3.17
+FROM alpine:3.17.2
 ARG http_proxy=""
 ARG https_proxy=""
 ARG no_proxy=""
