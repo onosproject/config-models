@@ -14,6 +14,9 @@ import (
 var modelData = []*gnmi.ModelData{
 	{Name: "onf-test1", Organization: "Open Networking Foundation", Version: "2018-02-20"},
 	{Name: "onf-test1-extra", Organization: "Open Networking Foundation", Version: "2021-04-01"},
+	{Name: "onf-switch-model", Organization: "Open Networking Foundation", Version: "2023-03-07"},
+	{Name: "onf-switch", Organization: "Open Networking Foundation", Version: "2023-03-07"},
+	{Name: "onf-test1-choice", Organization: "Open Networking Foundation", Version: "2023-03-07"},
 }
 
 var encodings = []gnmi.Encoding{gnmi.Encoding_JSON_IETF}

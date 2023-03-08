@@ -7,13 +7,13 @@ package api
 import (
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 )
 
 func Test_WalkAndValidateMustSucceed(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -35,7 +35,7 @@ func Test_WalkAndValidateMustSucceed(t *testing.T) {
 }
 
 func Test_WalkAndValidateMustMinMaxFailure(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-min-max.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config-min-max.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -58,7 +58,7 @@ func Test_WalkAndValidateMustMinMaxFailure(t *testing.T) {
 }
 
 func Test_WalkAndValidateMustFailureList2a(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-must-list2a-false.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config-must-list2a-false.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -82,7 +82,7 @@ func Test_WalkAndValidateMustFailureList2a(t *testing.T) {
 }
 
 func Test_WalkAndValidateMustFailureLeaf4a(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-must-list4akeys-false.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config-must-list4akeys-false.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -105,7 +105,7 @@ func Test_WalkAndValidateMustFailureLeaf4a(t *testing.T) {
 }
 
 func Test_WalkAndValidateMustFailureLeaf5a(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config-must-leaf5a-false.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config-must-leaf5a-false.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}

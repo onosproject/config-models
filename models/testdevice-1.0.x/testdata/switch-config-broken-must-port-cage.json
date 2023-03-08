@@ -1,0 +1,106 @@
+{
+  "switch-model": [
+    {
+      "switch-model-id": "super-switch-1610",
+      "description": "Super Switch Model 1610 16-port 10Gb on mars fabric",
+      "display-name": "Super Switch 1610",
+      "port": [
+        {
+          "cage-number": 1,
+          "max-channel": 0,
+          "display-name": "Port 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "description": "This is port 2",
+          "display-name": "Port 2 of switch-model 1",
+          "max-channel": 2,
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 3,
+          "display-name": "Port 3 of switch-model 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        },
+        {
+          "cage-number": 4,
+          "max-channel": 2,
+          "display-name": "Port 4 of switch-model 1",
+          "speeds": [
+            "speed-1g",
+            "speed-10g"
+          ]
+        }
+      ]
+    },
+    {
+      "switch-model-id": "super-switch-2100",
+      "description": "Super Switch Model NIC 100 2-port 100Gb",
+      "display-name": "Super NIC 100",
+      "port": [
+        {
+          "cage-number": 1,
+          "display-name": "Port 1 of switch-model 2",
+          "speeds": [
+            "speed-1g",
+            "speed-10g",
+            "speed-100g"
+          ]
+        },
+        {
+          "cage-number": 2,
+          "max-channel": 0,
+          "display-name": "Port 2 of switch-model 2",
+          "speeds": [
+            "speed-1g",
+            "speed-10g",
+            "speed-100g"
+          ]
+        }
+      ]
+    }
+  ],
+  "switch": [
+    {
+      "switch-id": "test-switch-1",
+      "description": "Should not pass the must rule since it has port 4/0 but model has only 3 cages",
+      "model-id": "super-switch-2100",
+      "port": [
+        {
+          "cage-number": 1,
+          "channel-number": 0,
+          "display-name": "Port 1/0",
+          "speed": "speed-1g"
+        },
+        {
+          "cage-number": 2,
+          "channel-number": 0,
+          "display-name": "Port 2/0 on switch 1",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 3,
+          "channel-number": 0,
+          "display-name": "Port 3/0",
+          "speed": "speed-10g"
+        },
+        {
+          "cage-number": 4,
+          "channel-number": 0,
+          "display-name": "Port 4/0",
+          "speed": "speed-10g"
+        }
+      ]
+    }
+  ]
+}

@@ -9,12 +9,12 @@ import (
 	"github.com/SeanCondon/xpath"
 	"github.com/onosproject/config-models/pkg/xpath/navigator"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
 func Test_XPathSelectNamespace(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -138,7 +138,7 @@ func Test_XPathSelectNamespace(t *testing.T) {
 }
 
 func Test_XPathSelect(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -263,7 +263,7 @@ func Test_XPathSelect(t *testing.T) {
 
 // Test_XPathSelectRelativeStart - start each test from cont1a - the thing that contains all the list2a entries
 func Test_XPathSelectRelativeStart(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -335,7 +335,7 @@ func Test_XPathSelectRelativeStart(t *testing.T) {
 }
 
 func Test_XPathEvaluate(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}
@@ -426,7 +426,7 @@ func Test_XPathEvaluate(t *testing.T) {
 
 // Test_XPathEvaluateRelativePath - start each test from cont1a - the thing that contains all the list2a entries
 func Test_XPathEvaluateRelativePath(t *testing.T) {
-	sampleConfig, err := ioutil.ReadFile("../testdata/sample-testdevice-1-config.json")
+	sampleConfig, err := os.ReadFile("../testdata/sample-testdevice-1-config.json")
 	if err != nil {
 		assert.NoError(t, err)
 	}

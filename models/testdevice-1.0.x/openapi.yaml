@@ -59,6 +59,51 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/List1a'
+    RequestBody_Switch:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch'
+    RequestBody_Switch-model:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch-model'
+    RequestBody_Switch-model_Attribute:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch-model_Attribute'
+    RequestBody_Switch-model_Port:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch-model_Port'
+    RequestBody_Switch_Attribute:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Attribute'
+    RequestBody_Switch_Port:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_Port'
+    RequestBody_Switch_State:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Switch_State'
+    RequestBody_Vehicle:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Vehicle'
+    RequestBody_Vehicle_Under-carriage:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Vehicle_Under-carriage'
   schemas:
     AdditionalPropertiesUnchTarget:
       description: both the additional property 'unchanged' and the 'target'
@@ -165,10 +210,10 @@ components:
           x-yang-type: uuid
         leaf2i:
           description: Date and Time leaf inside Container 2a
+          format: date-time
           pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
           title: leaf2i
           type: string
-          x-yang-type: date-and-time
         leaf2j:
           description: yang-identifier leaf inside Container 2a
           minLength: 1
@@ -385,6 +430,7 @@ components:
           $ref: '#/components/schemas/Cont1b-state_List2b_List'
       title: Cont1b-state
       type: object
+      x-group-tag: Demonstrate state
     Cont1b-state_List2b:
       description: A simple list of state items (single)
       properties:
@@ -467,9 +513,603 @@ components:
         $ref: '#/components/schemas/List1a'
       type: array
       uniqueItems: true
+      x-group-tag: Demonstrate Lists
       x-keys:
       - list-id
       x-list-multiple: true
+    Switch:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: |-
+        A managed device in the fabric - this is an example of a top level list with a double keyed sublist (port).
+        For some extra complexity the switch is leaf-reffed to switch-model which restricts the choice of port.
+        Additionally the choice of switch-model and port restrict the port-speed that can be chosen.
+        The leaf refs alone do not give enough restriction on the port selection (as they can't contain
+        predicates) and so an additonal must rule is given that enforces the predicate.
+        As a helper to the ROC-GUI the `leaf-selection` extension is given in this case to select
+        valid options for enumerated values in the context of a predicate (single)
+      properties:
+        attribute:
+          $ref: '#/components/schemas/Switch_Attribute_List'
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        host-local-agent:
+          description: local agent URI
+          title: host-local-agent
+          type: string
+          x-yang-type: uri
+        model-id:
+          description: link to switch model
+          title: model-id
+          type: string
+          x-leafref: /sm:switch-model/sm:switch-model-id
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/switch/{switch-id}/model-id/values
+        port:
+          $ref: '#/components/schemas/Switch_Port_List'
+        state:
+          $ref: '#/components/schemas/Switch_State'
+        switch-id:
+          description: unique identifier for the switch
+          maxLength: 253
+          minLength: 1
+          pattern: ((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)|\.
+          title: switch-id
+          type: string
+          x-go-type: ListKey
+          x-yang-type: domain-name
+      required:
+      - model-id
+      - switch-id
+      title: Switch
+      type: object
+      x-list-multiple: true
+    Switch-model:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: |-
+        A model of switch - here the switch models are like a library of preconfigured switch.
+        They are referred to by the 'switch' instances, and give a template of ports and port speeds
+        that may be used when configuring switches.
+        Here we give it a description and a display-name, and also a map of attributes that
+        may be used to arbitarilily assign values at runtime (single)
+      properties:
+        attribute:
+          $ref: '#/components/schemas/Switch-model_Attribute_List'
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        port:
+          $ref: '#/components/schemas/Switch-model_Port_List'
+        switch-model-id:
+          description: unique identifier for the switch
+          maxLength: 100
+          minLength: 1
+          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+          title: switch-model-id
+          type: string
+          x-go-type: ListKey
+          x-yang-type: yang-identifier
+      required:
+      - switch-model-id
+      title: Switch-model
+      type: object
+      x-list-multiple: true
+    Switch-model_Attribute:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: 'a map of extra attributes: string-string (single)'
+      properties:
+        attribute-key:
+          description: the key in a map of attributes
+          maxLength: 40
+          minLength: 1
+          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+          title: attribute-key
+          type: string
+          x-go-type: ListKey
+          x-yang-type: yang-identifier
+        value:
+          description: the value of attribute-key
+          maxLength: 200
+          minLength: 1
+          title: value
+          type: string
+      required:
+      - attribute-key
+      - value
+      title: Switch-model_Attribute
+      type: object
+      x-list-multiple: true
+    Switch-model_Attribute_List:
+      description: 'a map of extra attributes: string-string (list)'
+      items:
+        $ref: '#/components/schemas/Switch-model_Attribute'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - attribute-key
+      x-list-multiple: true
+    Switch-model_List:
+      description: |-
+        A model of switch - here the switch models are like a library of preconfigured switch.
+        They are referred to by the 'switch' instances, and give a template of ports and port speeds
+        that may be used when configuring switches.
+        Here we give it a description and a display-name, and also a map of attributes that
+        may be used to arbitarilily assign values at runtime (list)
+      items:
+        $ref: '#/components/schemas/Switch-model'
+      type: array
+      uniqueItems: true
+      x-group-tag: Underlay
+      x-keys:
+      - switch-model-id
+      x-list-multiple: true
+    Switch-model_Port:
+      description: |-
+        A port in a switch - this demonstrates a list within a list. Each port has a description
+        and a display-name (single)
+      properties:
+        cage-number:
+          description: identifier of the cage - physical port on switch
+          maximum: 255
+          minimum: 0
+          title: cage-number
+          type: integer
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        max-channel:
+          description: |-
+            A splitter can divide the port in to channels.
+            The default value 0 indicates the port is not channelizable
+          maximum: 16
+          minimum: 0
+          title: max-channel
+          type: integer
+        speeds:
+          $ref: '#/components/schemas/Switch-model_Port_Speeds'
+      required:
+      - cage-number
+      title: Switch-model_Port
+      type: object
+      x-list-multiple: true
+    Switch-model_Port_List:
+      description: |-
+        A port in a switch - this demonstrates a list within a list. Each port has a description
+        and a display-name (list)
+      items:
+        $ref: '#/components/schemas/Switch-model_Port'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - cage-number
+      x-list-multiple: true
+    Switch-model_Port_Speeds:
+      items:
+        description: |-
+          port speed - these are all the supported speeds on this port, and demonstrates a practical
+          use for the leaf-list. Rather than using enum it is using an Identity, and will accept any
+          Identity that is based off the 'speed' identity in onf-switch-types
+        enum:
+        - speed-100g
+        - speed-10g
+        - speed-1g
+        - speed-2-5g
+        - speed-25g
+        - speed-400g
+        - speed-40g
+        - speed-5g
+        - speed-autoneg
+        title: speeds
+        type: string
+      title: speeds
+      type: array
+    Switch_Attribute:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: 'a map of extra attributes: string-string (single)'
+      properties:
+        attribute-key:
+          description: the key in a map of attributes
+          maxLength: 40
+          minLength: 1
+          pattern: '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+          title: attribute-key
+          type: string
+          x-go-type: ListKey
+          x-yang-type: yang-identifier
+        value:
+          description: the value of attribute-key
+          maxLength: 200
+          minLength: 1
+          title: value
+          type: string
+      required:
+      - attribute-key
+      - value
+      title: Switch_Attribute
+      type: object
+      x-list-multiple: true
+    Switch_Attribute_List:
+      description: 'a map of extra attributes: string-string (list)'
+      items:
+        $ref: '#/components/schemas/Switch_Attribute'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - attribute-key
+      x-list-multiple: true
+    Switch_List:
+      description: |-
+        A managed device in the fabric - this is an example of a top level list with a double keyed sublist (port).
+        For some extra complexity the switch is leaf-reffed to switch-model which restricts the choice of port.
+        Additionally the choice of switch-model and port restrict the port-speed that can be chosen.
+        The leaf refs alone do not give enough restriction on the port selection (as they can't contain
+        predicates) and so an additonal must rule is given that enforces the predicate.
+        As a helper to the ROC-GUI the `leaf-selection` extension is given in this case to select
+        valid options for enumerated values in the context of a predicate (list)
+      items:
+        $ref: '#/components/schemas/Switch'
+      type: array
+      uniqueItems: true
+      x-group-tag: Underlay
+      x-keys:
+      - switch-id
+      x-list-multiple: true
+    Switch_Port:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: |-
+        A port in a switch. This demonstrates a lot advanced functionality in the ROC-GUI.
+        First it is a double keyed list, with cage-number being a reference to switch-model-port
+        (by leafref) but qualified further by the chosen switch port (using must rule with a
+        predicate)
+        The second key is a number, but is restricted by the cage-number chosen and the switch model
+        through a must rule. The number cannot exceed the max-channels of the corresponding
+        switch-model-port.
+        The speed is restricted through a leafref, but then more specifically restricted using a must
+        rule - it must be one of the leaf-list values in the corresponding switch-model-port.
+        Because it is a mandadory field, it must be specified at the same time as the port is being
+        created. The GUI needs to retrieve the valid set of speed options before the port exists.
+        This is done through the API which is driven by the leaf-selection extension, and the
+        leaf-selection-default value (used temporarily during the initial probe of what the valid
+        options should be) (single)
+      properties:
+        cage-number:
+          description: reference to the cage-number of the port in the switch model
+          title: cage-number
+          type: integer
+          x-leaf-selection: /sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port/@sm:cage-number
+          x-leaf-selection-default: "0"
+          x-leafref: /sm:switch-model/sm:port/sm:cage-number
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values
+        channel-number:
+          description: |-
+            reference to the channel-number of the port in the switch model.
+            The value cannot exceed the max-channels of the corresponding port in the switch-model
+          maximum: 16
+          minimum: 0
+          title: channel-number
+          type: integer
+        description:
+          description: long description field
+          maxLength: 1024
+          minLength: 1
+          title: description
+          type: string
+        display-name:
+          description: display name to use in GUI or CLI
+          maxLength: 80
+          minLength: 1
+          title: display-name
+          type: string
+        speed:
+          description: |-
+            configured port speed. Valid values must obey the leafref, and then the must rule - which
+            means it can only be one of the values of the corresponding switch-model-port
+          title: speed
+          type: string
+          x-leaf-selection: /sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port[@cage-number=$this/../@cage-number]/sm:speeds
+          x-leaf-selection-default: speed-autoneg
+          x-leafref: /sm:switch-model/sm:port/sm:speeds
+          x-leafref-resolver: /testdevice/v1.0.x/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}/speed/values
+      required:
+      - cage-number
+      - channel-number
+      - speed
+      title: Switch_Port
+      type: object
+      x-list-multiple: true
+    Switch_Port_List:
+      description: |-
+        A port in a switch. This demonstrates a lot advanced functionality in the ROC-GUI.
+        First it is a double keyed list, with cage-number being a reference to switch-model-port
+        (by leafref) but qualified further by the chosen switch port (using must rule with a
+        predicate)
+        The second key is a number, but is restricted by the cage-number chosen and the switch model
+        through a must rule. The number cannot exceed the max-channels of the corresponding
+        switch-model-port.
+        The speed is restricted through a leafref, but then more specifically restricted using a must
+        rule - it must be one of the leaf-list values in the corresponding switch-model-port.
+        Because it is a mandadory field, it must be specified at the same time as the port is being
+        created. The GUI needs to retrieve the valid set of speed options before the port exists.
+        This is done through the API which is driven by the leaf-selection extension, and the
+        leaf-selection-default value (used temporarily during the initial probe of what the valid
+        options should be) (list)
+      items:
+        $ref: '#/components/schemas/Switch_Port'
+      type: array
+      uniqueItems: true
+      x-keys:
+      - cage-number
+      - channel-number
+      x-list-multiple: true
+    Switch_State:
+      description: Op state attributes
+      properties:
+        connected:
+          description: 'status of the port: up|down'
+          readOnly: true
+          title: connected
+          type: string
+        last-connected:
+          description: Last known time the switch was connected
+          format: date-time
+          pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
+          readOnly: true
+          title: last-connected
+          type: string
+      title: Switch_State
+      type: object
+    Vehicle:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyTarget'
+      description: A list of vehicles (single)
+      oneOf:
+      - description: Case electric-case
+        properties:
+          battery:
+            additionalProperties:
+              $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+            description: Battery configuration
+            properties:
+              capacity:
+                description: the battery capacity
+                maximum: 65535
+                minimum: 0
+                title: capacity
+                type: integer
+              material:
+                description: |-
+                  Battery material - here we choose to use an enumeration instead
+                  of a choice with cases as the choice is very simple with no qualifiers
+                enum:
+                - lithium-ion
+                - lithium-polymer
+                - other
+                title: material
+                type: string
+            required:
+            - capacity
+            title: Vehicle_Battery
+            type: object
+          electric-motor:
+            description: Motor configuration - demonstrates a list inside a choice
+              (single)
+            properties:
+              motor-name:
+                description: The name of the motor. Examples are 'main-motor' or 'front'
+                  etc.
+                maxLength: 20
+                minLength: 1
+                title: motor-name
+                type: string
+                x-go-type: ListKey
+              motor-power:
+                description: motor power
+                maximum: 65535
+                minimum: 0
+                title: motor-power
+                type: integer
+            required:
+            - motor-name
+            title: Vehicle_Electric-motor
+            type: object
+            x-list-multiple: true
+          electric-motor_list:
+            description: Motor configuration - demonstrates a list inside a choice
+              (list)
+            items:
+              $ref: '#/components/schemas/Vehicle_Electric-motor'
+            minItems: 1
+            type: array
+            uniqueItems: true
+            x-keys:
+            - motor-name
+            x-list-multiple: true
+        title: electric-case
+        type: object
+      - description: Case ice-case
+        properties:
+          cubic-capacity:
+            description: Engine size
+            maximum: 65535
+            minimum: 0
+            required:
+            - cubic-capacity
+            title: cubic-capacity
+            type: integer
+          engine-position:
+            description: |-
+              Engine position - this demonstrates a leaf alongside a choice.
+              This will appear at the same level as the case enrties in the
+              final output
+            enum:
+            - front
+            - mid
+            - rear
+            title: engine-position
+            type: string
+          fuel-choice:
+            oneOf:
+            - description: Case diesel-case
+              properties:
+                max-bio-diesel-percent:
+                  description: The maximum percent of bio-diesel the engine can accept
+                  maximum: 100
+                  minimum: 0
+                  required:
+                  - max-bio-diesel-percent
+                  title: max-bio-diesel-percent
+                  type: integer
+              title: diesel-case
+              type: object
+            - description: Case gasoline-case
+              properties:
+                max-percent-ethanol:
+                  description: The max percentage ethanol the engine can accept. e.g.
+                    E85 = 85%
+                  maximum: 100
+                  minimum: 0
+                  title: max-percent-ethanol
+                  type: integer
+                octane-min:
+                  description: Minimum AKI Octane Rating
+                  maximum: 94
+                  minimum: 85
+                  required:
+                  - octane-min
+                  title: octane-min
+                  type: integer
+              title: gasoline-case
+              type: object
+            - description: Case other
+              properties:
+                other-fuel-name:
+                  description: |-
+                    Other fuel type e.g. Hydrogen.
+                    It is best practice to give a name that shows the case that's been
+                    chosen. Using a simply 'name' here would not give an intuitive hint
+                    of which case was being selected, since choice and case are omitted
+                    from the output
+                  required:
+                  - other-fuel-name
+                  title: other-fuel-name
+                  type: string
+              title: other
+              type: object
+            title: Choice fuel-choice
+        title: ice-case
+        type: object
+      properties:
+        id:
+          description: |-
+            A unique identifier for the vehicle - the use of UUID here should prompt the UI to have a
+            Generate UUID button
+          pattern: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+          title: id
+          type: string
+          x-go-type: ListKey
+          x-yang-type: uuid
+        under-carriage:
+          $ref: '#/components/schemas/Vehicle_Under-carriage'
+      required:
+      - id
+      title: Vehicle
+      type: object
+      x-list-multiple: true
+    Vehicle_List:
+      description: A list of vehicles (list)
+      items:
+        $ref: '#/components/schemas/Vehicle'
+      type: array
+      uniqueItems: true
+      x-group-tag: Choice examples
+      x-keys:
+      - id
+      x-list-multiple: true
+    Vehicle_Under-carriage:
+      description: Traction details
+      oneOf:
+      - description: Case tracks-case
+        properties:
+          number-tracks:
+            description: number of tracks
+            maximum: 6
+            minimum: 1
+            title: number-tracks
+            type: integer
+          track-type:
+            description: Track material
+            enum:
+            - rubber
+            - steel
+            required:
+            - track-type
+            title: track-type
+            type: string
+        title: tracks-case
+        type: object
+      - description: Case wheels-case
+        properties:
+          number-wheels:
+            description: |-
+              number of wheels - this is mandatory, and so it will be clear which case
+              is selected
+            maximum: 18
+            minimum: 0
+            required:
+            - number-wheels
+            title: number-wheels
+            type: integer
+          wheels-driven:
+            description: |-
+              number of wheels driven - because this has a default it could be omitted.
+              It is good practice to have at least one mandatory field or container
+              in a case, as otherwise it would not be possible to know which case
+              is selected if default values were omitted
+            maximum: 18
+            minimum: 0
+            title: wheels-driven
+            type: integer
+        title: wheels-case
+        type: object
+      properties:
+        articulated:
+          default: false
+          description: Is vehicle articulated?
+          title: articulated
+          type: boolean
+      title: Vehicle_Under-carriage
+      type: object
 info:
   contact:
     email: info@opennetworking.org
@@ -1083,3 +1723,720 @@ paths:
       in: path
       name: list-id
       required: true
+  /testdevice/v1.0.x/{target}/switch:
+    description: |-
+      A managed device in the fabric - this is an example of a top level list with a double keyed sublist (port).
+      For some extra complexity the switch is leaf-reffed to switch-model which restricts the choice of port.
+      Additionally the choice of switch-model and port restrict the port-speed that can be chosen.
+      The leaf refs alone do not give enough restriction on the port selection (as they can't contain
+      predicates) and so an additonal must rule is given that enforces the predicate.
+      As a helper to the ROC-GUI the `leaf-selection` extension is given in this case to select
+      valid options for enumerated values in the context of a predicate
+    get:
+      operationId: getSwitch_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_List'
+          description: GET OK 200
+      summary: GET /switch List
+      tags:
+      - Switch
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice/v1.0.x/{target}/switch-model:
+    description: |-
+      A model of switch - here the switch models are like a library of preconfigured switch.
+      They are referred to by the 'switch' instances, and give a template of ports and port speeds
+      that may be used when configuring switches.
+      Here we give it a description and a display-name, and also a map of attributes that
+      may be used to arbitarilily assign values at runtime
+    get:
+      operationId: getSwitch-model_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model_List'
+          description: GET OK 200
+      summary: GET /switch-model List
+      tags:
+      - Switch-model
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice/v1.0.x/{target}/switch-model/{switch-model-id}:
+    delete:
+      operationId: deleteSwitch-model
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch-model
+      tags:
+      - Switch-model
+    description: |-
+      A model of switch - here the switch models are like a library of preconfigured switch.
+      They are referred to by the 'switch' instances, and give a template of ports and port speeds
+      that may be used when configuring switches.
+      Here we give it a description and a display-name, and also a map of attributes that
+      may be used to arbitarilily assign values at runtime
+    get:
+      operationId: getSwitch-model
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model'
+          description: GET OK 200
+      summary: GET /switch-model Container
+      tags:
+      - Switch-model
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-model-id}
+      in: path
+      name: switch-model-id
+      required: true
+    post:
+      operationId: postSwitch-model
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch-model'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch-model
+      tags:
+      - Switch-model
+  /testdevice/v1.0.x/{target}/switch-model/{switch-model-id}/attribute:
+    description: 'a map of extra attributes: string-string'
+    get:
+      operationId: getSwitch-model_Attribute_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model_Attribute_List'
+          description: GET OK 200
+      summary: GET /switch-model/{switch-model-id}/attribute List
+      tags:
+      - Switch-model_Attribute
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-model-id}
+      in: path
+      name: switch-model-id
+      required: true
+  /testdevice/v1.0.x/{target}/switch-model/{switch-model-id}/attribute/{attribute-key}:
+    delete:
+      operationId: deleteSwitch-model_Attribute
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch-model/{switch-model-id}/attribute
+      tags:
+      - Switch-model_Attribute
+    description: 'a map of extra attributes: string-string'
+    get:
+      operationId: getSwitch-model_Attribute
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model_Attribute'
+          description: GET OK 200
+      summary: GET /switch-model/{switch-model-id}/attribute Container
+      tags:
+      - Switch-model_Attribute
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-model-id}
+      in: path
+      name: switch-model-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {attribute-key}
+      in: path
+      name: attribute-key
+      required: true
+    post:
+      operationId: postSwitch-model_Attribute
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch-model_Attribute'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch-model/{switch-model-id}/attribute
+      tags:
+      - Switch-model_Attribute
+  /testdevice/v1.0.x/{target}/switch-model/{switch-model-id}/port:
+    description: |-
+      A port in a switch - this demonstrates a list within a list. Each port has a description
+      and a display-name
+    get:
+      operationId: getSwitch-model_Port_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model_Port_List'
+          description: GET OK 200
+      summary: GET /switch-model/{switch-model-id}/port List
+      tags:
+      - Switch-model_Port
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-model-id}
+      in: path
+      name: switch-model-id
+      required: true
+  /testdevice/v1.0.x/{target}/switch-model/{switch-model-id}/port/{cage-number}:
+    delete:
+      operationId: deleteSwitch-model_Port
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch-model/{switch-model-id}/port
+      tags:
+      - Switch-model_Port
+    description: |-
+      A port in a switch - this demonstrates a list within a list. Each port has a description
+      and a display-name
+    get:
+      operationId: getSwitch-model_Port
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch-model_Port'
+          description: GET OK 200
+      summary: GET /switch-model/{switch-model-id}/port Container
+      tags:
+      - Switch-model_Port
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-model-id}
+      in: path
+      name: switch-model-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    post:
+      operationId: postSwitch-model_Port
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch-model_Port'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch-model/{switch-model-id}/port
+      tags:
+      - Switch-model_Port
+  /testdevice/v1.0.x/{target}/switch/{switch-id}:
+    delete:
+      operationId: deleteSwitch
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch
+      tags:
+      - Switch
+    description: |-
+      A managed device in the fabric - this is an example of a top level list with a double keyed sublist (port).
+      For some extra complexity the switch is leaf-reffed to switch-model which restricts the choice of port.
+      Additionally the choice of switch-model and port restrict the port-speed that can be chosen.
+      The leaf refs alone do not give enough restriction on the port selection (as they can't contain
+      predicates) and so an additonal must rule is given that enforces the predicate.
+      As a helper to the ROC-GUI the `leaf-selection` extension is given in this case to select
+      valid options for enumerated values in the context of a predicate
+    get:
+      operationId: getSwitch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch'
+          description: GET OK 200
+      summary: GET /switch Container
+      tags:
+      - Switch
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    post:
+      operationId: postSwitch
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch
+      tags:
+      - Switch
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/attribute:
+    description: 'a map of extra attributes: string-string'
+    get:
+      operationId: getSwitch_Attribute_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Attribute_List'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/attribute List
+      tags:
+      - Switch_Attribute
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/attribute/{attribute-key}:
+    delete:
+      operationId: deleteSwitch_Attribute
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch/{switch-id}/attribute
+      tags:
+      - Switch_Attribute
+    description: 'a map of extra attributes: string-string'
+    get:
+      operationId: getSwitch_Attribute
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Attribute'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/attribute Container
+      tags:
+      - Switch_Attribute
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {attribute-key}
+      in: path
+      name: attribute-key
+      required: true
+    post:
+      operationId: postSwitch_Attribute
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch_Attribute'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch/{switch-id}/attribute
+      tags:
+      - Switch_Attribute
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/model-id/values:
+    description: link to switch model
+    get:
+      operationId: getSwitch_Model-id_Values_Leafref
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/model-id/values Leafref
+      tags:
+      - Switch_Model-id
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/port:
+    description: |-
+      A port in a switch. This demonstrates a lot advanced functionality in the ROC-GUI.
+      First it is a double keyed list, with cage-number being a reference to switch-model-port
+      (by leafref) but qualified further by the chosen switch port (using must rule with a
+      predicate)
+      The second key is a number, but is restricted by the cage-number chosen and the switch model
+      through a must rule. The number cannot exceed the max-channels of the corresponding
+      switch-model-port.
+      The speed is restricted through a leafref, but then more specifically restricted using a must
+      rule - it must be one of the leaf-list values in the corresponding switch-model-port.
+      Because it is a mandadory field, it must be specified at the same time as the port is being
+      created. The GUI needs to retrieve the valid set of speed options before the port exists.
+      This is done through the API which is driven by the leaf-selection extension, and the
+      leaf-selection-default value (used temporarily during the initial probe of what the valid
+      options should be)
+    get:
+      operationId: getSwitch_Port_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Port_List'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port List
+      tags:
+      - Switch_Port
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}:
+    delete:
+      operationId: deleteSwitch_Port
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /switch/{switch-id}/port
+      tags:
+      - Switch_Port
+    description: |-
+      A port in a switch. This demonstrates a lot advanced functionality in the ROC-GUI.
+      First it is a double keyed list, with cage-number being a reference to switch-model-port
+      (by leafref) but qualified further by the chosen switch port (using must rule with a
+      predicate)
+      The second key is a number, but is restricted by the cage-number chosen and the switch model
+      through a must rule. The number cannot exceed the max-channels of the corresponding
+      switch-model-port.
+      The speed is restricted through a leafref, but then more specifically restricted using a must
+      rule - it must be one of the leaf-list values in the corresponding switch-model-port.
+      Because it is a mandadory field, it must be specified at the same time as the port is being
+      created. The GUI needs to retrieve the valid set of speed options before the port exists.
+      This is done through the API which is driven by the leaf-selection extension, and the
+      leaf-selection-default value (used temporarily during the initial probe of what the valid
+      options should be)
+    get:
+      operationId: getSwitch_Port
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_Port'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/port Container
+      tags:
+      - Switch_Port
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    post:
+      operationId: postSwitch_Port
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Switch_Port'
+      responses:
+        "201":
+          description: created
+      summary: POST /switch/{switch-id}/port
+      tags:
+      - Switch_Port
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number/values:
+    description: reference to the cage-number of the port in the switch model
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    post:
+      operationId: getSwitch_Port_Cage-number_LeafSelection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Switch_Port'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: Leaf selection response
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/cage-number
+        LeafSelection
+      tags:
+      - Switch_Port
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/port/{cage-number}/{channel-number}/speed/values:
+    description: |-
+      configured port speed. Valid values must obey the leafref, and then the must rule - which
+      means it can only be one of the values of the corresponding switch-model-port
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {cage-number}
+      in: path
+      name: cage-number
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {channel-number}
+      in: path
+      name: channel-number
+      required: true
+    post:
+      operationId: getSwitch_Port_Speed_LeafSelection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Switch_Port'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafRefOptions'
+          description: Leaf selection response
+      summary: GET /switch/{switch-id}/port/{cage-number}/{channel-number}/speed LeafSelection
+      tags:
+      - Switch_Port
+  /testdevice/v1.0.x/{target}/switch/{switch-id}/state:
+    description: Op state attributes
+    get:
+      operationId: getSwitch_State
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Switch_State'
+          description: GET OK 200
+      summary: GET /switch/{switch-id}/state Container
+      tags:
+      - Switch
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {switch-id}
+      in: path
+      name: switch-id
+      required: true
+  /testdevice/v1.0.x/{target}/vehicle:
+    description: A list of vehicles
+    get:
+      operationId: getVehicle_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle_List'
+          description: GET OK 200
+      summary: GET /vehicle List
+      tags:
+      - Vehicle
+    parameters:
+    - $ref: '#/components/parameters/target'
+  /testdevice/v1.0.x/{target}/vehicle/{id}:
+    delete:
+      operationId: deleteVehicle
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /vehicle
+      tags:
+      - Vehicle
+    description: A list of vehicles
+    get:
+      operationId: getVehicle
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+          description: GET OK 200
+      summary: GET /vehicle Container
+      tags:
+      - Vehicle
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    post:
+      operationId: postVehicle
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Vehicle'
+      responses:
+        "201":
+          description: created
+      summary: POST /vehicle
+      tags:
+      - Vehicle
+  /testdevice/v1.0.x/{target}/vehicle/{id}/under-carriage:
+    delete:
+      operationId: deleteVehicle_Under-carriage
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /vehicle/{id}/under-carriage
+      tags:
+      - Vehicle
+    description: Traction details
+    get:
+      operationId: getVehicle_Under-carriage
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle_Under-carriage'
+          description: GET OK 200
+      summary: GET /vehicle/{id}/under-carriage Container
+      tags:
+      - Vehicle
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    post:
+      operationId: postVehicle_Under-carriage
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Vehicle_Under-carriage'
+      responses:
+        "201":
+          description: created
+      summary: POST /vehicle/{id}/under-carriage
+      tags:
+      - Vehicle

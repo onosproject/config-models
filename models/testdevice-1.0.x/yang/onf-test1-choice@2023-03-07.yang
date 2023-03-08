@@ -1,0 +1,258 @@
+module onf-test1-choice {
+  namespace "http://opennetworking.org/devicesim/test1-choice";
+  prefix t1c;
+
+  import onf-extension-types {
+    prefix xt;
+  }
+  import ietf-yang-types {
+    prefix yt;
+  }
+
+  organization
+    "Open Networking Foundation.";
+  contact
+    "ROC Engineering";
+  description
+    "Demonstrate choice keyword";
+
+  revision 2023-03-07 {
+    description
+      "Test the choice keyword";
+    reference
+      "RFC 6087";
+  }
+
+  list vehicle {
+    key "id";
+    description
+      "A list of vehicles";
+    xt:group-tag "Choice examples";
+    leaf id {
+      type yt:uuid;
+      description
+        "A unique identifier for the vehicle - the use of UUID here should prompt the UI to have a
+         Generate UUID button";
+    }
+    container under-carriage {
+      description
+        "Traction details";
+      leaf articulated {
+        type boolean;
+        default "false";
+        description
+          "Is vehicle articulated?";
+      }
+      choice traction-choice {
+        description
+          "choice of traction - this demonstrates choice within a container
+           half-track is omitted for brevity.
+           A choice is use where an enumeration would not provide enough qualifiers.
+           A choice can contain any YANG entity beneath it to any depth - list, container, leaf...
+           It is good practice to name a choice in the format *-choice to make it easier to
+           identify in the output";
+        case wheels-case {
+          description
+            "For the wheels case
+             It is good practice to name a case like *-case to make it easier to identify
+             in the output.
+             Each case can have any number of leafs, containers or lists beneath.
+             The case itself does not appear in the model - but when you start specifying
+             an item belonging to one case, it should exclude items from others.
+             While cases can have some leaf names in common, it is better to distinguish
+             each case by having non-clashing naming for children";
+          leaf number-wheels {
+            type uint8 {
+              range "0..18";
+            }
+            mandatory true;
+            description
+              "number of wheels - this is mandatory, and so it will be clear which case
+               is selected";
+          }
+          leaf wheels-driven {
+            type uint8 {
+              range "0..18";
+            }
+            default "2";
+            description
+              "number of wheels driven - because this has a default it could be omitted.
+               It is good practice to have at least one mandatory field or container
+               in a case, as otherwise it would not be possible to know which case
+               is selected if default values were omitted";
+          }
+        }
+        case tracks-case {
+          description
+            "In case it has tracks";
+          leaf number-tracks {
+            type uint8 {
+              range "1..6";
+            }
+            default "2";
+            description
+              "number of tracks";
+          }
+          leaf track-type {
+            type enumeration {
+              enum steel {
+                description
+                  "Steel tracks";
+              }
+              enum rubber {
+                description
+                  "Rubber tracks";
+              }
+            }
+            mandatory true;
+            description
+              "Track material";
+          }
+        }
+      }
+    }
+    choice power-choice {
+      description
+        "a choice of power types - demonstrates choice inside list";
+      case ice-case {
+        description
+          "Internal Combustion Engine";
+        leaf cubic-capacity {
+          type uint16;
+          units "cc";
+          mandatory true;
+          description
+            "Engine size";
+        }
+        choice fuel-choice {
+          description
+            "Fuel type - demonstrates choice inside a choice";
+          case gasoline-case {
+            description
+              "Gasoline/Petrol case";
+            leaf octane-min {
+              type uint8 {
+                range "85..94";
+              }
+              mandatory true;
+              description
+                "Minimum AKI Octane Rating";
+            }
+            leaf max-percent-ethanol {
+              type uint8 {
+                range "0..100";
+              }
+              description
+                "The max percentage ethanol the engine can accept. e.g. E85 = 85%";
+            }
+          }
+          case diesel-case {
+            description
+              "Diesel case";
+            leaf max-bio-diesel-percent {
+              type uint8 {
+                range "0..100";
+              }
+              mandatory true;
+              description
+                "The maximum percent of bio-diesel the engine can accept";
+            }
+          }
+          case other {
+            description
+              "Other fuel";
+            leaf other-fuel-name {
+              type string;
+              mandatory true;
+              description
+                "Other fuel type e.g. Hydrogen.
+                 It is best practice to give a name that shows the case that's been
+                 chosen. Using a simply 'name' here would not give an intuitive hint
+                 of which case was being selected, since choice and case are omitted
+                 from the output";
+            }
+          }
+        }
+        leaf engine-position {
+          type enumeration {
+            enum front {
+              value 0;
+              description
+                "Front";
+            }
+            enum mid {
+              value 1;
+              description
+                "Mid";
+            }
+            enum rear {
+              value 2;
+              description
+                "Rear";
+            }
+          }
+          description
+            "Engine position - this demonstrates a leaf alongside a choice.
+             This will appear at the same level as the case enrties in the
+             final output";
+        }
+      }
+      case electric-case {
+        description
+          "Electric powered vehicle";
+        list electric-motor {
+          key "motor-name";
+          min-elements 1;
+          description
+            "Motor configuration - demonstrates a list inside a choice";
+          leaf motor-name {
+            type string {
+              length "1..20";
+            }
+            description
+              "The name of the motor. Examples are 'main-motor' or 'front' etc.";
+          }
+          leaf motor-power {
+            type uint16;
+            units "kW";
+            description
+              "motor power";
+          }
+        }
+        container battery {
+          description
+            "Battery configuration";
+          leaf capacity {
+            type uint16;
+            units "kWh";
+            mandatory true;
+            description
+              "the battery capacity";
+          }
+          leaf material {
+            type enumeration {
+              enum other {
+                value 0;
+                description
+                  "Other";
+              }
+              enum lithium-ion {
+                value 1;
+                description
+                  "Lithium Ion";
+              }
+              enum lithium-polymer {
+                value 2;
+                description
+                  "Lithium Polymer";
+              }
+            }
+            description
+              "Battery material - here we choose to use an enumeration instead
+               of a choice with cases as the choice is very simple with no qualifiers";
+          }
+        }
+      }
+    }
+  }
+}

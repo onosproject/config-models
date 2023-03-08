@@ -159,28 +159,40 @@ components:
       type: array
     Cont1a_Cont2d:
       description: Container 2d
+      oneOf:
+      - description: Case late-night
+        properties:
+          chocolate:
+            description: enumerated leaf in case late-night on Container 2d augmented
+              to cont1a
+            enum:
+            - dark
+            - first-available
+            - milk
+            title: chocolate
+            type: string
+        title: late-night
+        type: object
+      - description: Case sports-arena
+        properties:
+          beer:
+            description: 2nd empty leaf in case sports-arena on Container 2d augmented
+              to cont1a
+            maxLength: 0
+            title: beer
+            type: string
+          pretzel:
+            description: empty leaf in case sports-arena on Container 2d augmented
+              to cont1a
+            maxLength: 0
+            title: pretzel
+            type: string
+        title: sports-arena
+        type: object
       properties:
-        beer:
-          description: For choice snack:sports-arena
-          maxLength: 0
-          title: beer
-          type: string
-        chocolate:
-          description: For choice snack:late-night
-          enum:
-          - dark
-          - first-available
-          - milk
-          title: chocolate
-          type: string
         leaf2d3c:
           description: string leaf on Container 2d augmented to cont1a
           title: leaf2d3c
-          type: string
-        pretzel:
-          description: For choice snack:sports-arena
-          maxLength: 0
-          title: pretzel
           type: string
       title: Cont1a_Cont2d
       type: object

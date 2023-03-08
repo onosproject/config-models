@@ -12,7 +12,6 @@ import (
 	"github.com/ghodss/yaml"
 	"{{ .GoPackage }}/api"
 	openapi_gen "github.com/onosproject/config-models/pkg/openapi-gen"
-	"io/ioutil"
 	"os"
 )
 
@@ -64,7 +63,7 @@ func main() {
 	licensedYaml := append(license, yaml...)
 
 	if outputFile != "" {
-		err = ioutil.WriteFile(outputFile, licensedYaml, 0644)
+		err = os.WriteFile(outputFile, licensedYaml, 0644)
 		if err != nil {
 			fmt.Printf("error writing generated code to file: %s\n", err)
 			os.Exit(-1)

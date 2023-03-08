@@ -1,0 +1,84 @@
+module onf-switch {
+  namespace "http://opennetworking.org/devicesim/test-switch";
+  prefix sw;
+
+  import onf-switch-types {
+    prefix st;
+  }
+  import onf-switch-model {
+    prefix sm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import ietf-yang-types {
+    prefix yt;
+  }
+  import onf-extension-types {
+    prefix xt;
+  }
+  include onf-switch-port;
+
+  organization
+    "Open Networking Foundation";
+  contact
+    "ROC Engineering";
+  description
+    "Configuration of switch components";
+
+  revision 2023-03-07 {
+    description
+      "Initial import";
+    reference
+      "inspired by sd-fabric";
+  }
+
+  list switch {
+    xt:group-tag "Underlay";
+    key "switch-id";
+    description
+      "A managed device in the fabric - this is an example of a top level list with a double keyed sublist (port).
+       For some extra complexity the switch is leaf-reffed to switch-model which restricts the choice of port.
+       Additionally the choice of switch-model and port restrict the port-speed that can be chosen.
+       The leaf refs alone do not give enough restriction on the port selection (as they can't contain
+       predicates) and so an additonal must rule is given that enforces the predicate.
+       As a helper to the ROC-GUI the `leaf-selection` extension is given in this case to select
+       valid options for enumerated values in the context of a predicate";
+    leaf switch-id {
+      type inet:domain-name;
+      description
+        "unique identifier for the switch";
+    }
+    uses st:desc-display-name;
+    uses st:map-of-attributes;
+    leaf model-id {
+      type leafref {
+        path "/sm:switch-model/sm:switch-model-id";
+      }
+      mandatory true;
+      description
+        "link to switch model";
+    }
+    leaf host-local-agent {
+      type inet:uri;
+      description
+        "local agent URI";
+    }
+    uses ports-grouping;
+    container state {
+      config false;
+      leaf connected {
+        type string;
+        description
+          "status of the port: up|down";
+      }
+      leaf last-connected {
+        type yt:date-and-time;
+        description
+          "Last known time the switch was connected";
+      }
+      description
+        "Op state attributes";
+    }
+  }
+}

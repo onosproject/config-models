@@ -20,3 +20,15 @@ modules:
     organization: Open Networking Foundation
     revision: 2021-04-01
     file: onf-test1-extra@2021-04-01.yang
+  - name: onf-switch-model
+    organization: Open Networking Foundation
+    revision: 2023-03-07
+    file: switch/onf-switch-model@2023-03-07.yang
+  - name: onf-switch
+    organization: Open Networking Foundation
+    revision: 2023-03-07
+    file: switch/onf-switch@2023-03-07.yang
+  - name: onf-test1-choice
+    organization: Open Networking Foundation
+    revision: 2023-03-07
+    file: onf-test1-choice@2023-03-07.yang

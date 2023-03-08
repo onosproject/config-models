@@ -1,0 +1,138 @@
+module onf-switch-types {
+  namespace "http://opennetworking.org/devicesim/test-types";
+  prefix ft;
+
+  import ietf-yang-types {
+    prefix yt;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  organization
+    "Open Networking Foundation";
+  contact
+    "ROC Engineering";
+  description
+    "A set of base types for switch modeling.";
+
+  revision 2023-03-07 {
+    description
+      "Initial import";
+    reference
+      "inspired by sd-fabric";
+  }
+
+  typedef vlan {
+    type uint16 {
+      range "0..4096";
+    }
+    description
+      "a 12 bit VLAN identifier";
+  }
+
+  grouping desc-display-name {
+    description
+      "reusable leafs for description and display-name";
+    leaf display-name {
+      type string {
+        length "1..80";
+      }
+      description
+        "display name to use in GUI or CLI";
+    }
+    leaf description {
+      type string {
+        length "1..1024";
+      }
+      description
+        "long description field";
+    }
+  }
+
+  grouping map-of-attributes {
+    list attribute {
+      key "attribute-key";
+      leaf attribute-key {
+        type yt:yang-identifier {
+          length "1..40";
+        }
+        description
+          "the key in a map of attributes";
+      }
+      leaf value {
+        type string {
+          length "1..200";
+        }
+        mandatory true;
+        description
+          "the value of attribute-key";
+      }
+      description
+        "a map of extra attributes: string-string";
+    }
+    description
+      "Reusable map of attributes";
+  }
+
+  // Port speeds
+
+  identity speed {
+    description
+      "base identity of port speeds";
+  }
+
+  identity speed-autoneg {
+    base speed;
+    description
+      "Auto-negotiate";
+  }
+
+  identity speed-1g {
+    base speed;
+    description
+      "1 Gbps";
+  }
+
+  identity speed-2-5g {
+    base speed;
+    description
+      "2.5 Gbps";
+  }
+
+  identity speed-5g {
+    base speed;
+    description
+      "5 Gbps";
+  }
+
+  identity speed-10g {
+    base speed;
+    description
+      "10 Gbps";
+  }
+
+  identity speed-25g {
+    base speed;
+    description
+      "25 Gbps";
+  }
+
+  identity speed-40g {
+    base speed;
+    description
+      "40 Gbps";
+  }
+
+  identity speed-100g {
+    base speed;
+    description
+      "100 Gbps";
+  }
+
+  identity speed-400g {
+    base speed;
+    description
+      "400 Gbps";
+  }
+}

@@ -39,3 +39,69 @@ module: onf-test1
      |  +--ro leaf3c?   string
      +--ro leaf2d?   uint16
 
+module: onf-switch-model
+  +--rw switch-model* [switch-model-id]
+     +--rw switch-model-id    yt:yang-identifier
+     +--rw display-name?      string
+     +--rw description?       string
+     +--rw attribute* [attribute-key]
+     |  +--rw attribute-key    yt:yang-identifier
+     |  +--rw value            string
+     +--rw port* [cage-number]
+        +--rw cage-number     uint8
+        +--rw max-channel?    uint8
+        +--rw display-name?   string
+        +--rw description?    string
+        +--rw speeds*         identityref
+
+module: onf-switch
+  +--rw switch* [switch-id]
+     +--rw switch-id           inet:domain-name
+     +--rw display-name?       string
+     +--rw description?        string
+     +--rw attribute* [attribute-key]
+     |  +--rw attribute-key    yt:yang-identifier
+     |  +--rw value            string
+     +--rw model-id            -> /sm:switch-model/switch-model-id
+     +--rw host-local-agent?   inet:uri
+     +--rw port* [cage-number channel-number]
+     |  +--rw cage-number       -> /sm:switch-model/port/cage-number
+     |  +--rw channel-number    uint8
+     |  +--rw display-name?     string
+     |  +--rw description?      string
+     |  +--rw speed             -> /sm:switch-model/port/speeds
+     +--ro state
+        +--ro connected?        string
+        +--ro last-connected?   yt:date-and-time
+
+module: onf-test1-choice
+  +--rw vehicle* [id]
+     +--rw id                                    yt:uuid
+     +--rw under-carriage
+     |  +--rw articulated?           boolean
+     |  +--rw (traction-choice)?
+     |     +--:(wheels-case)
+     |     |  +--rw number-wheels    uint8
+     |     |  +--rw wheels-driven?   uint8
+     |     +--:(tracks-case)
+     |        +--rw number-tracks?   uint8
+     |        +--rw track-type       enumeration
+     +--rw (power-choice)?
+        +--:(ice-case)
+        |  +--rw cubic-capacity                  uint16
+        |  +--rw (fuel-choice)?
+        |  |  +--:(gasoline-case)
+        |  |  |  +--rw octane-min                uint8
+        |  |  |  +--rw max-percent-ethanol?      uint8
+        |  |  +--:(diesel-case)
+        |  |  |  +--rw max-bio-diesel-percent    uint8
+        |  |  +--:(other)
+        |  |     +--rw other-fuel-name           string
+        |  +--rw engine-position?                enumeration
+        +--:(electric-case)
+           +--rw electric-motor* [motor-name]
+           |  +--rw motor-name     string
+           |  +--rw motor-power?   uint16
+           +--rw battery
+              +--rw capacity    uint16
+              +--rw material?   enumeration
