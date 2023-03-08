@@ -26,6 +26,7 @@ module onf-test1 {
   }
 
   list list1a {
+    xt:group-tag "Demonstrate Lists";
     key "list-id";
     description
       "A list at the top level";
@@ -186,6 +187,7 @@ module onf-test1 {
       "A leaf at the top level (not recommended but must be supported)";
   }
   container cont1b-state {
+    xt:group-tag "Demonstrate state";
     config false;
     description
       "A second top level container - this one for state attributes. Edit symbol should not be visible";

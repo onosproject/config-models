@@ -18,7 +18,7 @@ COPY plugin /models/e2node/plugin
 WORKDIR /models/e2node
 RUN go build -o _bin/e2node ./plugin
 
-FROM alpine:3.17
+FROM alpine:3.17.2
 ARG http_proxy=""
 ARG https_proxy=""
 ARG no_proxy=""

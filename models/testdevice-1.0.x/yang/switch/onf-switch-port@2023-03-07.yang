@@ -1,0 +1,96 @@
+submodule onf-switch-port {
+  belongs-to onf-switch {
+    prefix sw;
+  }
+
+  import onf-switch-types {
+    prefix st;
+  }
+  import onf-switch-model {
+    prefix sm;
+  }
+  import onf-extension-types {
+    prefix xt;
+  }
+
+  organization
+    "Open Networking Foundation";
+  contact
+    "ROC Engineering";
+  description
+    "Configuration of port within switch. This also demonstrates the use of submodule";
+
+  revision 2023-03-07 {
+    description
+      "Initial import";
+    reference
+      "inspired by sd-fabric";
+  }
+
+  grouping ports-grouping {
+    list port {
+      key "cage-number channel-number";
+      description
+        "A port in a switch. This demonstrates a lot advanced functionality in the ROC-GUI.
+         First it is a double keyed list, with cage-number being a reference to switch-model-port
+         (by leafref) but qualified further by the chosen switch port (using must rule with a
+         predicate)
+         The second key is a number, but is restricted by the cage-number chosen and the switch model
+         through a must rule. The number cannot exceed the max-channels of the corresponding
+         switch-model-port.
+         The speed is restricted through a leafref, but then more specifically restricted using a must
+         rule - it must be one of the leaf-list values in the corresponding switch-model-port.
+         Because it is a mandadory field, it must be specified at the same time as the port is being
+         created. The GUI needs to retrieve the valid set of speed options before the port exists.
+         This is done through the API which is driven by the leaf-selection extension, and the
+         leaf-selection-default value (used temporarily during the initial probe of what the valid
+         options should be)";
+      leaf cage-number {
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:cage-number";
+        }
+        xt:leaf-selection "/sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port/@sm:cage-number";
+        xt:leaf-selection-default "0";
+        must 'set-contains(/sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port/@sm:cage-number, .)' {
+          error-message "port cage-number must be present in corresponding switch-model/port";
+          description
+            "port cage-number must be from the corresponding switch-model";
+        }
+        description
+          "reference to the cage-number of the port in the switch model";
+      }
+      leaf channel-number {
+        type uint8 {
+          range "0..16";
+        }
+        must 'number(.) <= number(/sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port[@cage-number=$this/../@cage-number]/sm:max-channel)' {
+          error-message "port channel-number exceeds max-channel of corresponding switch-model/port";
+          description
+            "port channel-number must be equal or less than max-channel in corresponding switch-model/port";
+        }
+        description
+          "reference to the channel-number of the port in the switch model.
+           The value cannot exceed the max-channels of the corresponding port in the switch-model";
+      }
+      uses st:desc-display-name;
+      leaf speed {
+        type leafref {
+          path "/sm:switch-model/sm:port/sm:speeds";
+        }
+        xt:leaf-selection "/sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port[@cage-number=$this/../@cage-number]/sm:speeds";
+        xt:leaf-selection-default "speed-autoneg";
+        must 'contains(/sm:switch-model[@sm:switch-model-id=$this/../../model-id]/sm:port[@cage-number=$this/../@cage-number]/sm:speeds, string($this))' {
+          error-message "port speed must be present in corresponding switch-model/port";
+          description
+            "port speed must be from the corresponding switch-model";
+        }
+        mandatory true;
+        description
+          "configured port speed. Valid values must obey the leafref, and then the must rule - which
+           means it can only be one of the values of the corresponding switch-model-port";
+      }
+    }
+    description
+      "ports grouping";
+  }
+}

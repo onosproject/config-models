@@ -18,7 +18,7 @@ COPY plugin /models/ric/plugin
 WORKDIR /models/ric
 RUN go build -o _bin/ric ./plugin
 
-FROM alpine:3.17
+FROM alpine:3.17.2
 ARG http_proxy=""
 ARG https_proxy=""
 ARG no_proxy=""
