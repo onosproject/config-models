@@ -490,6 +490,9 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			for _, v := range components.Schemas {
 				cases = append(cases, v.Value)
 			}
+			sort.Slice(cases, func(i, j int) bool {
+				return cases[i].Title < cases[j].Title
+			})
 			choiceOneOf := openapi3.NewOneOfSchema(cases...)
 			choiceOneOf.Title = fmt.Sprintf("Choice %s", dirEntry.Name)
 			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{

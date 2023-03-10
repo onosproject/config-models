@@ -894,6 +894,69 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyTarget'
       description: A list of vehicles (single)
       oneOf:
+      - description: Case electric-case
+        properties:
+          battery:
+            additionalProperties:
+              $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+            description: Battery configuration
+            properties:
+              capacity:
+                description: the battery capacity
+                maximum: 65535
+                minimum: 0
+                title: capacity
+                type: integer
+              material:
+                description: |-
+                  Battery material - here we choose to use an enumeration instead
+                  of a choice with cases as the choice is very simple with no qualifiers
+                enum:
+                - lithium-ion
+                - lithium-polymer
+                - other
+                title: material
+                type: string
+            required:
+            - capacity
+            title: Vehicle_Battery
+            type: object
+          electric-motor:
+            description: Motor configuration - demonstrates a list inside a choice
+              (single)
+            properties:
+              motor-name:
+                description: The name of the motor. Examples are 'main-motor' or 'front'
+                  etc.
+                maxLength: 20
+                minLength: 1
+                title: motor-name
+                type: string
+                x-go-type: ListKey
+              motor-power:
+                description: motor power
+                maximum: 65535
+                minimum: 0
+                title: motor-power
+                type: integer
+            required:
+            - motor-name
+            title: Vehicle_Electric-motor
+            type: object
+            x-list-multiple: true
+          electric-motor_list:
+            description: Motor configuration - demonstrates a list inside a choice
+              (list)
+            items:
+              $ref: '#/components/schemas/Vehicle_Electric-motor'
+            minItems: 1
+            type: array
+            uniqueItems: true
+            x-keys:
+            - motor-name
+            x-list-multiple: true
+        title: electric-case
+        type: object
       - description: Case ice-case
         properties:
           cubic-capacity:
@@ -965,69 +1028,6 @@ components:
               type: object
             title: Choice fuel-choice
         title: ice-case
-        type: object
-      - description: Case electric-case
-        properties:
-          battery:
-            additionalProperties:
-              $ref: '#/components/schemas/AdditionalPropertyUnchanged'
-            description: Battery configuration
-            properties:
-              capacity:
-                description: the battery capacity
-                maximum: 65535
-                minimum: 0
-                title: capacity
-                type: integer
-              material:
-                description: |-
-                  Battery material - here we choose to use an enumeration instead
-                  of a choice with cases as the choice is very simple with no qualifiers
-                enum:
-                - lithium-ion
-                - lithium-polymer
-                - other
-                title: material
-                type: string
-            required:
-            - capacity
-            title: Vehicle_Battery
-            type: object
-          electric-motor:
-            description: Motor configuration - demonstrates a list inside a choice
-              (single)
-            properties:
-              motor-name:
-                description: The name of the motor. Examples are 'main-motor' or 'front'
-                  etc.
-                maxLength: 20
-                minLength: 1
-                title: motor-name
-                type: string
-                x-go-type: ListKey
-              motor-power:
-                description: motor power
-                maximum: 65535
-                minimum: 0
-                title: motor-power
-                type: integer
-            required:
-            - motor-name
-            title: Vehicle_Electric-motor
-            type: object
-            x-list-multiple: true
-          electric-motor_list:
-            description: Motor configuration - demonstrates a list inside a choice
-              (list)
-            items:
-              $ref: '#/components/schemas/Vehicle_Electric-motor'
-            minItems: 1
-            type: array
-            uniqueItems: true
-            x-keys:
-            - motor-name
-            x-list-multiple: true
-        title: electric-case
         type: object
       properties:
         id:
