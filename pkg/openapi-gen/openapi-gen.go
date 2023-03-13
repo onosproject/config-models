@@ -483,33 +483,57 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
 			cases := make([]*openapi3.Schema, 0)
-			_, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
 			if err != nil {
 				return nil, nil, err
 			}
 			for _, v := range components.Schemas {
-				cases = append(cases, v.Value)
+				if _, ok := v.Value.Extensions["x-case"]; ok {
+					cases = append(cases, v.Value)
+				} else {
+					openapiComponents.Schemas[v.Value.Title] = v
+				}
 			}
 			sort.Slice(cases, func(i, j int) bool {
 				return cases[i].Title < cases[j].Title
 			})
 			choiceOneOf := openapi3.NewOneOfSchema(cases...)
 			choiceOneOf.Title = fmt.Sprintf("Choice %s", dirEntry.Name)
+			choiceOneOf.Description = dirEntry.Description
+			choiceOneOf.Extensions = map[string]interface{}{"x-choice": dirEntry.Name}
 			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
 				Value: choiceOneOf,
 			}
+			for k, v := range paths {
+				openapiPaths[k] = v
+			}
+			for k, v := range components.RequestBodies {
+				openapiComponents.RequestBodies[k] = v
+			}
 		} else if dirEntry.Kind == yang.CaseEntry {
-			_, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
+			paths, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
 			if err != nil {
 				return nil, nil, err
 			}
 			caseSchema := openapi3.NewObjectSchema()
-			caseSchema.Title = dirEntry.Name
-			caseSchema.Description = fmt.Sprintf("Case %s", dirEntry.Name)
+			caseSchema.Title = fmt.Sprintf("Case %s", dirEntry.Name)
+			caseSchema.Description = dirEntry.Description
 			caseSchema.Properties = make(map[string]*openapi3.SchemaRef, 0)
+			caseSchema.Extensions = map[string]interface{}{"x-case": dirEntry.Name}
 			for k, v := range components.Schemas {
 				simpleName := strings.ToLower(strings.TrimPrefix(k, fmt.Sprintf("%s_", toUnderScore(parentPath))))
-				caseSchema.Properties[simpleName] = v
+				switch v.Value.Type {
+				case "object", "array":
+					openapiComponents.Schemas[v.Value.Title] = v
+				default:
+					caseSchema.Properties[simpleName] = v
+				}
+			}
+			for k, v := range paths {
+				openapiPaths[k] = v
+			}
+			for k, v := range components.RequestBodies {
+				openapiComponents.RequestBodies[k] = v
 			}
 			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
 				Value: caseSchema,
@@ -637,15 +661,13 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				openapiComponents.RequestBodies[k] = v
 			}
 		} else if dirEntry.IsList() {
-			keys := strings.Split(dirEntry.Key, " ")
 			listItemPathMultiple := itemPath
-			listItemPathSingle := itemPath
+			//listItemPathSingle := itemPath
 			// Add a path for groups of items
 			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple, targetAlias)
 
-			for _, k := range keys {
-				listItemPathSingle += fmt.Sprintf("/{%s}", k)
-			}
+			keys := strings.Split(dirEntry.Key, " ")
+			listItemPathSingle := constructPath(itemPath, keys)
 			// Add a path for individual items
 			openapiPaths[pathWithPrefix(listItemPathSingle)] = newPathItem(dirEntry, itemPath, listItemPathSingle, pathTypeContainer, targetAlias)
 
@@ -697,6 +719,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			openapiComponents.Schemas[toUnderScore(itemPath)] = asSingle.NewRef()
 
 			asMultiple := openapi3.NewArraySchema()
+			asMultiple.Title = fmt.Sprintf("%s_List", toUnderScore(itemPath))
 			asMultiple.Items = &openapi3.SchemaRef{
 				Ref:   fmt.Sprintf("#/components/schemas/%s", toUnderScore(itemPath)),
 				Value: asSingle,
@@ -801,6 +824,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					if v.Value.OneOf != nil {
 						asSingle.OneOf = v.Value.OneOf
+						asSingle.Title = v.Value.Title
 					} else {
 						return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 					}
@@ -1150,4 +1174,18 @@ func walkPath(entry *yang.Entry, path string) yang.TypeKind {
 		return yang.Ystring
 	}
 	return walkPath(childEntry, strings.Join(pathParts[1:], "/"))
+}
+
+// Construct a path but watch out for repeated parameters
+// When parameters are being added to the Path in openapi3, subsequent
+// params of the same name are suffixed with `_n` and we must match that pattern here
+func constructPath(listItemPathSingle string, keys []string) string {
+	for _, k := range keys {
+		if strings.Contains(listItemPathSingle, fmt.Sprintf("{%s}", k)) {
+			count := strings.Count(listItemPathSingle, fmt.Sprintf("{%s_", k)) + 1
+			k = fmt.Sprintf("%s_%d", k, count)
+		}
+		listItemPathSingle += fmt.Sprintf("/{%s}", k)
+	}
+	return listItemPathSingle
 }
