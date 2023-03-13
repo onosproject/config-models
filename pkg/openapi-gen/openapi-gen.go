@@ -662,7 +662,6 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			}
 		} else if dirEntry.IsList() {
 			listItemPathMultiple := itemPath
-			//listItemPathSingle := itemPath
 			// Add a path for groups of items
 			openapiPaths[pathWithPrefix(listItemPathMultiple)] = newPathItem(dirEntry, itemPath, listItemPathMultiple, pathTypeListMultiple, targetAlias)
 
