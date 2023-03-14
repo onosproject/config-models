@@ -1,0 +1,10 @@
+golang 1.19.4
+golangci-lint 1.51.2
+hadolint 2.12.0
+helm 3.7.2
+helm-docs 1.11.0
+kind 0.17.0
+kubectl 1.23.5
+make 4.4.1
+protoc 22.0
+yq 4.31.2
