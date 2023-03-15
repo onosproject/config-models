@@ -5,6 +5,7 @@
 package openapi_gen
 
 import (
+	"fmt"
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/stretchr/testify/assert"
 	"math"
@@ -506,7 +507,7 @@ func Test_buildSchemaLeafList(t *testing.T) {
 	// Assert the leaf list with leaf ref to integer inside a Container
 	s, ok := components.Schemas["Test_List1_List"]
 	assert.True(t, ok, "expecting Test_List1_List")
-	assert.Equal(t, "", s.Value.Title)
+	assert.Equal(t, "Test_List1_List", s.Value.Title)
 	assert.Equal(t, "array", s.Value.Type)
 	extValue, ok := s.Value.Extensions["x-test-list-extension"]
 	assert.Equal(t, true, ok)
@@ -979,12 +980,23 @@ func Test_YANG_Choice(t *testing.T) {
 	assert.True(t, ok, "expected a 'choice-test' entry in Schemas")
 	assert.NotNil(t, choice.Value)
 	assert.Equal(t, "Choice choice-test", choice.Value.Title)
+	assert.Equal(t, "a choice between case 1 and case 2", choice.Value.Description)
+
+	choiceExtension, hasChoiceExt := choice.Value.Extensions["x-choice"]
+	assert.True(t, hasChoiceExt)
+	assert.Equal(t, "choice-test", choiceExtension)
+
 	assert.NotNil(t, choice.Value.OneOf)
 	assert.Equal(t, 2, len(choice.Value.OneOf))
 
 	for _, one := range choice.Value.OneOf {
+		caseExtension, hasCaseExt := one.Value.Extensions["x-case"]
+		assert.True(t, hasCaseExt)
+		assert.Equal(t, one.Value.Title, fmt.Sprintf("Case %s", caseExtension))
+
 		switch one.Value.Title {
-		case "case-1-test":
+		case "Case case-1-test":
+			assert.Equal(t, "case 1", one.Value.Description)
 			assert.Equal(t, 2, len(one.Value.Properties))
 
 			case1PropA, ok := one.Value.Properties["leaf1a"]
@@ -997,14 +1009,89 @@ func Test_YANG_Choice(t *testing.T) {
 			assert.NotNil(t, case1PropB)
 			assert.Equal(t, "Leaf1b", case1PropB.Value.Title)
 
-		case "case-2-test":
+		case "Case case-2-test":
+			assert.Equal(t, "case 2", one.Value.Description)
 			assert.Equal(t, 1, len(one.Value.Properties))
 
 			case2PropA, ok := one.Value.Properties["leaf2a"]
 			assert.True(t, ok, "expected leaf 2a")
 			assert.NotNil(t, case2PropA)
 			assert.Equal(t, "Leaf2a", case2PropA.Value.Title)
+		default:
+			t.Fatalf("undandled case %s", one.Value.Title)
 		}
+	}
+
+}
+
+func Test_constructPath(t *testing.T) {
+	type TestPath struct {
+		itemPath string
+		keys     []string
+		expected string
+	}
+
+	testItems := []TestPath{
+		{
+			"/a/b/c",
+			[]string{"d"},
+			"/a/b/c/{d}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "e"},
+			"/a/b/c/{d}/{e}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "e", "d"},
+			"/a/b/c/{d}/{e}/{d_1}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "d"},
+			"/a/b/c/{d}/{d_1}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "d", "d"},
+			"/a/b/c/{d}/{d_1}/{d_2}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "d", "b"},
+			"/a/b/c/{d}/{d_1}/{b}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "dd"},
+			"/a/b/c/{d}/{dd}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d", "dd", "d", "dd"},
+			"/a/b/c/{d}/{dd}/{d_1}/{dd_1}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d1", "d1"},
+			"/a/b/c/{d1}/{d1_1}",
+		},
+		{
+			"/a/b/c",
+			[]string{"d_1", "d_1"},
+			"/a/b/c/{d_1}/{d_1_1}",
+		},
+		//{
+		//	"/a/b/c",
+		//	[]string{"d_1", "d_1", "d", "d"},
+		//	"/a/b/c/{d_1}/{d_1_1}/{d}/{d_1}",
+		//},
+	}
+
+	for _, testItem := range testItems {
+		result := constructPath(testItem.itemPath, testItem.keys)
+		assert.Equal(t, testItem.expected, result)
 	}
 
 }

@@ -33,10 +33,17 @@ test: mod-update build linters license gofmt images models models-version-check
 .PHONY: models
 models: # @HELP make demo and test device models
 models:
-	@for model in models/*; do echo "Generating $$model:"; docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:${MODEL_COMPILER_VERSION}; done
+	@for model in models/*; do \
+		echo "Generating $$model:"; \
+		docker run -v $$(pwd)/$$model:/config-model onosproject/model-compiler:${MODEL_COMPILER_VERSION}; \
+	done
 
 models-openapi: # @HELP generates the openapi specs for the models
-	@for model in models/*; do echo -e "Building OpenApi Specs for $$model:\n"; pushd $$model; make openapi; popd; echo -e "\n\n"; done
+	@for model in models/*; do \
+		echo -e "Building OpenApi Specs for $$model:\n"; \
+		make -C $$model openapi; \
+		docker run -v $$(pwd)/$$model:/config-model --entrypoint /usr/bin/openapi-spec-validator onosproject/model-compiler:${MODEL_COMPILER_VERSION} /config-model/openapi.yaml; \
+	done
 
 # the gNMI client generator is on hold at the moment, disabling it for the moment
 #models-gnmi-client: # @HELP generates the gnmi-client for the models
