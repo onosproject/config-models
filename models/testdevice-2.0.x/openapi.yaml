@@ -160,8 +160,7 @@ components:
     Cont1a_Cont2d:
       description: Container 2d
       oneOf:
-      - description: Case late-night
-        properties:
+      - properties:
           chocolate:
             description: enumerated leaf in case late-night on Container 2d augmented
               to cont1a
@@ -171,10 +170,10 @@ components:
             - milk
             title: chocolate
             type: string
-        title: late-night
+        title: Case late-night
         type: object
-      - description: Case sports-arena
-        properties:
+        x-case: late-night
+      - properties:
           beer:
             description: 2nd empty leaf in case sports-arena on Container 2d augmented
               to cont1a
@@ -187,8 +186,9 @@ components:
             maxLength: 0
             title: pretzel
             type: string
-        title: sports-arena
+        title: Case sports-arena
         type: object
+        x-case: sports-arena
       properties:
         leaf2d3c:
           description: string leaf on Container 2d augmented to cont1a
@@ -232,6 +232,7 @@ components:
       items:
         $ref: '#/components/schemas/Cont1a_List2a'
       maxItems: 4
+      title: Cont1a_List2a_List
       type: array
       uniqueItems: true
       x-keys:
@@ -319,6 +320,7 @@ components:
       items:
         $ref: '#/components/schemas/Cont1b-state_List2b'
       maxItems: 8
+      title: Cont1b-state_List2b_List
       type: array
       uniqueItems: true
       x-keys:

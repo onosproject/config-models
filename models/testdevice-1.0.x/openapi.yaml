@@ -99,6 +99,16 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Vehicle'
+    RequestBody_Vehicle_Battery:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Vehicle_Battery'
+    RequestBody_Vehicle_Electric-motor:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Vehicle_Electric-motor'
     RequestBody_Vehicle_Under-carriage:
       content:
         application/json:
@@ -285,6 +295,7 @@ components:
       items:
         $ref: '#/components/schemas/Cont1a_List2a'
       maxItems: 4
+      title: Cont1a_List2a_List
       type: array
       uniqueItems: true
       x-keys:
@@ -317,6 +328,7 @@ components:
       description: A list with a leafref index (list)
       items:
         $ref: '#/components/schemas/Cont1a_List4'
+      title: Cont1a_List4_List
       type: array
       uniqueItems: true
       x-keys:
@@ -362,6 +374,7 @@ components:
       description: A list within a list with 2 keys as leaf refs (list)
       items:
         $ref: '#/components/schemas/Cont1a_List4_List4a'
+      title: Cont1a_List4_List4a_List
       type: array
       uniqueItems: true
       x-keys:
@@ -406,6 +419,7 @@ components:
       description: A list with 2 keys (list)
       items:
         $ref: '#/components/schemas/Cont1a_List5'
+      title: Cont1a_List5_List
       type: array
       uniqueItems: true
       x-group-tag: demonstrates group-tag
@@ -457,6 +471,7 @@ components:
       description: A simple list of state items (list)
       items:
         $ref: '#/components/schemas/Cont1b-state_List2b'
+      title: Cont1b-state_List2b_List
       type: array
       uniqueItems: true
       x-keys:
@@ -511,6 +526,7 @@ components:
       description: A list at the top level (list)
       items:
         $ref: '#/components/schemas/List1a'
+      title: List1a_List
       type: array
       uniqueItems: true
       x-group-tag: Demonstrate Lists
@@ -643,6 +659,7 @@ components:
       description: 'a map of extra attributes: string-string (list)'
       items:
         $ref: '#/components/schemas/Switch-model_Attribute'
+      title: Switch-model_Attribute_List
       type: array
       uniqueItems: true
       x-keys:
@@ -657,6 +674,7 @@ components:
         may be used to arbitarilily assign values at runtime (list)
       items:
         $ref: '#/components/schemas/Switch-model'
+      title: Switch-model_List
       type: array
       uniqueItems: true
       x-group-tag: Underlay
@@ -707,6 +725,7 @@ components:
         and a display-name (list)
       items:
         $ref: '#/components/schemas/Switch-model_Port'
+      title: Switch-model_Port_List
       type: array
       uniqueItems: true
       x-keys:
@@ -762,6 +781,7 @@ components:
       description: 'a map of extra attributes: string-string (list)'
       items:
         $ref: '#/components/schemas/Switch_Attribute'
+      title: Switch_Attribute_List
       type: array
       uniqueItems: true
       x-keys:
@@ -778,6 +798,7 @@ components:
         valid options for enumerated values in the context of a predicate (list)
       items:
         $ref: '#/components/schemas/Switch'
+      title: Switch_List
       type: array
       uniqueItems: true
       x-group-tag: Underlay
@@ -866,6 +887,7 @@ components:
         options should be) (list)
       items:
         $ref: '#/components/schemas/Switch_Port'
+      title: Switch_Port_List
       type: array
       uniqueItems: true
       x-keys:
@@ -894,7 +916,11 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyTarget'
       description: A list of vehicles (single)
       oneOf:
-      - description: Case ice-case
+      - description: Electric powered vehicle
+        title: Case electric-case
+        type: object
+        x-case: electric-case
+      - description: Internal Combustion Engine
         properties:
           cubic-capacity:
             description: Engine size
@@ -916,8 +942,9 @@ components:
             title: engine-position
             type: string
           fuel-choice:
+            description: Fuel type - demonstrates choice inside a choice
             oneOf:
-            - description: Case diesel-case
+            - description: Diesel case
               properties:
                 max-bio-diesel-percent:
                   description: The maximum percent of bio-diesel the engine can accept
@@ -927,9 +954,10 @@ components:
                   - max-bio-diesel-percent
                   title: max-bio-diesel-percent
                   type: integer
-              title: diesel-case
+              title: Case diesel-case
               type: object
-            - description: Case gasoline-case
+              x-case: diesel-case
+            - description: Gasoline/Petrol case
               properties:
                 max-percent-ethanol:
                   description: The max percentage ethanol the engine can accept. e.g.
@@ -946,9 +974,10 @@ components:
                   - octane-min
                   title: octane-min
                   type: integer
-              title: gasoline-case
+              title: Case gasoline-case
               type: object
-            - description: Case other
+              x-case: gasoline-case
+            - description: Other fuel
               properties:
                 other-fuel-name:
                   description: |-
@@ -961,75 +990,19 @@ components:
                   - other-fuel-name
                   title: other-fuel-name
                   type: string
-              title: other
+              title: Case other
               type: object
+              x-case: other
             title: Choice fuel-choice
-        title: ice-case
+            x-choice: fuel-choice
+        title: Case ice-case
         type: object
-      - description: Case electric-case
-        properties:
-          battery:
-            additionalProperties:
-              $ref: '#/components/schemas/AdditionalPropertyUnchanged'
-            description: Battery configuration
-            properties:
-              capacity:
-                description: the battery capacity
-                maximum: 65535
-                minimum: 0
-                title: capacity
-                type: integer
-              material:
-                description: |-
-                  Battery material - here we choose to use an enumeration instead
-                  of a choice with cases as the choice is very simple with no qualifiers
-                enum:
-                - lithium-ion
-                - lithium-polymer
-                - other
-                title: material
-                type: string
-            required:
-            - capacity
-            title: Vehicle_Battery
-            type: object
-          electric-motor:
-            description: Motor configuration - demonstrates a list inside a choice
-              (single)
-            properties:
-              motor-name:
-                description: The name of the motor. Examples are 'main-motor' or 'front'
-                  etc.
-                maxLength: 20
-                minLength: 1
-                title: motor-name
-                type: string
-                x-go-type: ListKey
-              motor-power:
-                description: motor power
-                maximum: 65535
-                minimum: 0
-                title: motor-power
-                type: integer
-            required:
-            - motor-name
-            title: Vehicle_Electric-motor
-            type: object
-            x-list-multiple: true
-          electric-motor_list:
-            description: Motor configuration - demonstrates a list inside a choice
-              (list)
-            items:
-              $ref: '#/components/schemas/Vehicle_Electric-motor'
-            minItems: 1
-            type: array
-            uniqueItems: true
-            x-keys:
-            - motor-name
-            x-list-multiple: true
-        title: electric-case
-        type: object
+        x-case: ice-case
       properties:
+        battery:
+          $ref: '#/components/schemas/Vehicle_Battery'
+        electric-motor:
+          $ref: '#/components/schemas/Vehicle_Electric-motor_List'
         id:
           description: |-
             A unique identifier for the vehicle - the use of UUID here should prompt the UI to have a
@@ -1043,13 +1016,72 @@ components:
           $ref: '#/components/schemas/Vehicle_Under-carriage'
       required:
       - id
-      title: Vehicle
+      title: Choice power-choice
       type: object
+      x-list-multiple: true
+    Vehicle_Battery:
+      additionalProperties:
+        $ref: '#/components/schemas/AdditionalPropertyUnchanged'
+      description: Battery configuration
+      properties:
+        capacity:
+          description: the battery capacity
+          maximum: 65535
+          minimum: 0
+          title: capacity
+          type: integer
+        material:
+          description: |-
+            Battery material - here we choose to use an enumeration instead
+            of a choice with cases as the choice is very simple with no qualifiers
+          enum:
+          - lithium-ion
+          - lithium-polymer
+          - other
+          title: material
+          type: string
+      required:
+      - capacity
+      title: Vehicle_Battery
+      type: object
+    Vehicle_Electric-motor:
+      description: Motor configuration - demonstrates a list inside a choice (single)
+      properties:
+        motor-name:
+          description: The name of the motor. Examples are 'main-motor' or 'front'
+            etc.
+          maxLength: 20
+          minLength: 1
+          title: motor-name
+          type: string
+          x-go-type: ListKey
+        motor-power:
+          description: motor power
+          maximum: 65535
+          minimum: 0
+          title: motor-power
+          type: integer
+      required:
+      - motor-name
+      title: Vehicle_Electric-motor
+      type: object
+      x-list-multiple: true
+    Vehicle_Electric-motor_List:
+      description: Motor configuration - demonstrates a list inside a choice (list)
+      items:
+        $ref: '#/components/schemas/Vehicle_Electric-motor'
+      minItems: 1
+      title: Vehicle_Electric-motor_List
+      type: array
+      uniqueItems: true
+      x-keys:
+      - motor-name
       x-list-multiple: true
     Vehicle_List:
       description: A list of vehicles (list)
       items:
         $ref: '#/components/schemas/Vehicle'
+      title: Vehicle_List
       type: array
       uniqueItems: true
       x-group-tag: Choice examples
@@ -1059,7 +1091,7 @@ components:
     Vehicle_Under-carriage:
       description: Traction details
       oneOf:
-      - description: Case tracks-case
+      - description: In case it has tracks
         properties:
           number-tracks:
             description: number of tracks
@@ -1076,9 +1108,18 @@ components:
             - track-type
             title: track-type
             type: string
-        title: tracks-case
+        title: Case tracks-case
         type: object
-      - description: Case wheels-case
+        x-case: tracks-case
+      - description: |-
+          For the wheels case
+          It is good practice to name a case like *-case to make it easier to identify
+          in the output.
+          Each case can have any number of leafs, containers or lists beneath.
+          The case itself does not appear in the model - but when you start specifying
+          an item belonging to one case, it should exclude items from others.
+          While cases can have some leaf names in common, it is better to distinguish
+          each case by having non-clashing naming for children
         properties:
           number-wheels:
             description: |-
@@ -1100,8 +1141,9 @@ components:
             minimum: 0
             title: wheels-driven
             type: integer
-        title: wheels-case
+        title: Case wheels-case
         type: object
+        x-case: wheels-case
       properties:
         articulated:
           default: false
@@ -2398,6 +2440,122 @@ paths:
       summary: POST /vehicle
       tags:
       - Vehicle
+  /testdevice/v1.0.x/{target}/vehicle/{id}/battery:
+    delete:
+      operationId: deleteVehicle_Battery
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /vehicle/{id}/battery
+      tags:
+      - Vehicle
+    description: Battery configuration
+    get:
+      operationId: getVehicle_Battery
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle_Battery'
+          description: GET OK 200
+      summary: GET /vehicle/{id}/battery Container
+      tags:
+      - Vehicle
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    post:
+      operationId: postVehicle_Battery
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Vehicle_Battery'
+      responses:
+        "201":
+          description: created
+      summary: POST /vehicle/{id}/battery
+      tags:
+      - Vehicle
+  /testdevice/v1.0.x/{target}/vehicle/{id}/electric-motor:
+    description: Motor configuration - demonstrates a list inside a choice
+    get:
+      operationId: getVehicle_Electric-motor_List
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle_Electric-motor_List'
+          description: GET OK 200
+      summary: GET /vehicle/{id}/electric-motor List
+      tags:
+      - Vehicle_Electric-motor
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+  /testdevice/v1.0.x/{target}/vehicle/{id}/electric-motor/{motor-name}:
+    delete:
+      operationId: deleteVehicle_Electric-motor
+      responses:
+        "200":
+          description: DELETE 200 OK
+      summary: DELETE /vehicle/{id}/electric-motor
+      tags:
+      - Vehicle_Electric-motor
+    description: Motor configuration - demonstrates a list inside a choice
+    get:
+      operationId: getVehicle_Electric-motor
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle_Electric-motor'
+          description: GET OK 200
+      summary: GET /vehicle/{id}/electric-motor Container
+      tags:
+      - Vehicle_Electric-motor
+    parameters:
+    - $ref: '#/components/parameters/target'
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {id}
+      in: path
+      name: id
+      required: true
+    - content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+      description: key {motor-name}
+      in: path
+      name: motor-name
+      required: true
+    post:
+      operationId: postVehicle_Electric-motor
+      requestBody:
+        $ref: '#/components/requestBodies/RequestBody_Vehicle_Electric-motor'
+      responses:
+        "201":
+          description: created
+      summary: POST /vehicle/{id}/electric-motor
+      tags:
+      - Vehicle_Electric-motor
   /testdevice/v1.0.x/{target}/vehicle/{id}/under-carriage:
     delete:
       operationId: deleteVehicle_Under-carriage

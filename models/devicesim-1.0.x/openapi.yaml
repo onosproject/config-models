@@ -775,6 +775,7 @@ components:
       description: List of components, keyed by component name. (list)
       items:
         $ref: '#/components/schemas/Components_Component'
+      title: Components_Component_List
       type: array
       uniqueItems: true
       x-keys:
@@ -798,7 +799,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
-          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/name/values
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name_1}/name/values
         state:
           $ref: '#/components/schemas/Components_Component_Properties_Property_State'
       required:
@@ -828,6 +829,7 @@ components:
       description: List of system properties for the component (list)
       items:
         $ref: '#/components/schemas/Components_Component_Properties_Property'
+      title: Components_Component_Properties_Property_List
       type: array
       uniqueItems: true
       x-keys:
@@ -979,7 +981,7 @@ components:
           type: string
           x-go-type: ListKey
           x-leafref: ../config/name
-          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/name/values
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/name/values
         state:
           $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
       required:
@@ -995,13 +997,14 @@ components:
           title: name
           type: string
           x-leafref: ../../../../../component/config/name
-          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config/name/values
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/config/name/values
       title: Components_Component_Subcomponents_Subcomponent_Config
       type: object
     Components_Component_Subcomponents_Subcomponent_List:
       description: List of subcomponent references (list)
       items:
         $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent'
+      title: Components_Component_Subcomponents_Subcomponent_List
       type: array
       uniqueItems: true
       x-keys:
@@ -1016,7 +1019,7 @@ components:
           title: name
           type: string
           x-leafref: ../../../../../component/config/name
-          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state/name/values
+          x-leafref-resolver: /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/state/name/values
       title: Components_Component_Subcomponents_Subcomponent_State
       type: object
     Interfaces:
@@ -1236,6 +1239,7 @@ components:
       description: The list of named interfaces on the device. (list)
       items:
         $ref: '#/components/schemas/Interfaces_Interface'
+      title: Interfaces_Interface_List
       type: array
       uniqueItems: true
       x-keys:
@@ -1781,6 +1785,7 @@ components:
         with a physical interface (list)
       items:
         $ref: '#/components/schemas/Interfaces_Interface_Subinterfaces_Subinterface'
+      title: Interfaces_Interface_Subinterfaces_Subinterface_List
       type: array
       uniqueItems: true
       x-keys:
@@ -2330,6 +2335,7 @@ components:
       description: List of events subject to accounting (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Accounting_Events_Event'
+      title: System_Aaa_Accounting_Events_Event_List
       type: array
       uniqueItems: true
       x-keys:
@@ -2565,6 +2571,7 @@ components:
       description: List of local users on the system (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Authentication_Users_User'
+      title: System_Aaa_Authentication_Users_User_List
       type: array
       uniqueItems: true
       x-keys:
@@ -2688,6 +2695,7 @@ components:
       description: List of events subject to AAA authorization (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Authorization_Events_Event'
+      title: System_Aaa_Authorization_Events_Event_List
       type: array
       uniqueItems: true
       x-keys:
@@ -2786,6 +2794,7 @@ components:
         type. (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group'
+      title: System_Aaa_Server-groups_Server-group_List
       type: array
       uniqueItems: true
       x-keys:
@@ -2846,6 +2855,7 @@ components:
       description: List of AAA servers (list)
       items:
         $ref: '#/components/schemas/System_Aaa_Server-groups_Server-group_Servers_Server'
+      title: System_Aaa_Server-groups_Server-group_Servers_Server_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3316,6 +3326,7 @@ components:
       description: List of static host entries (list)
       items:
         $ref: '#/components/schemas/System_Dns_Host-entries_Host-entry'
+      title: System_Dns_Host-entries_Host-entry_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3441,6 +3452,7 @@ components:
         list. (list)
       items:
         $ref: '#/components/schemas/System_Dns_Servers_Server'
+      title: System_Dns_Servers_Server_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3596,6 +3608,7 @@ components:
       description: List of selectors for log messages (list)
       items:
         $ref: '#/components/schemas/System_Logging_Console_Selectors_Selector'
+      title: System_Logging_Console_Selectors_Selector_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3705,6 +3718,7 @@ components:
       description: List of remote log servers (list)
       items:
         $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server'
+      title: System_Logging_Remote-servers_Remote-server_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3794,6 +3808,7 @@ components:
       description: List of selectors for log messages (list)
       items:
         $ref: '#/components/schemas/System_Logging_Remote-servers_Remote-server_Selectors_Selector'
+      title: System_Logging_Remote-servers_Remote-server_Selectors_Selector_List
       type: array
       uniqueItems: true
       x-keys:
@@ -3995,6 +4010,7 @@ components:
       description: List of NTP authentication keys (list)
       items:
         $ref: '#/components/schemas/System_Ntp_Ntp-keys_Ntp-key'
+      title: System_Ntp_Ntp-keys_Ntp-key_List
       type: array
       uniqueItems: true
       x-keys:
@@ -4110,6 +4126,7 @@ components:
         contact and utilize the specified NTP servers. (list)
       items:
         $ref: '#/components/schemas/System_Ntp_Servers_Server'
+      title: System_Ntp_Servers_Server_List
       type: array
       uniqueItems: true
       x-keys:
@@ -4481,6 +4498,7 @@ components:
         connection, called auxiliary Openflow connections. (list)
       items:
         $ref: '#/components/schemas/System_Openflow_Controllers_Controller_Connections_Connection'
+      title: System_Openflow_Controllers_Controller_Connections_Connection_List
       type: array
       uniqueItems: true
       x-keys:
@@ -4558,6 +4576,7 @@ components:
         configured (list)
       items:
         $ref: '#/components/schemas/System_Openflow_Controllers_Controller'
+      title: System_Openflow_Controllers_Controller_List
       type: array
       uniqueItems: true
       x-keys:
@@ -4604,6 +4623,7 @@ components:
       description: List of monitored processes (list)
       items:
         $ref: '#/components/schemas/System_Processes_Process'
+      title: System_Processes_Process_List
       type: array
       uniqueItems: true
       x-keys:
@@ -4811,11 +4831,11 @@ components:
           type: integer
         current-datetime:
           description: The current system date and time.
+          format: date-time
           pattern: \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})
           readOnly: true
           title: current-datetime
           type: string
-          x-yang-type: date-and-time
         domain-name:
           description: |-
             Specifies the domain name used to form fully qualified name
@@ -5177,7 +5197,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name_1}:
     delete:
       operationId: deleteComponents_Component_Properties_Property
       responses:
@@ -5227,13 +5247,13 @@ paths:
       summary: POST /components/component/{name}/properties/property
       tags:
       - Components_Component_Properties_Property
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/config:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name_1}/config:
     delete:
       operationId: deleteComponents_Component_Properties_Property_Config
       responses:
         "200":
           description: DELETE 200 OK
-      summary: DELETE /components/component/{name}/properties/property/{name}/config
+      summary: DELETE /components/component/{name}/properties/property/{name_1}/config
       tags:
       - Components_Component_Properties_Property
     description: Configuration data for each property
@@ -5246,7 +5266,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_Config'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties/property/{name}/config
+      summary: GET /components/component/{name}/properties/property/{name_1}/config
         Container
       tags:
       - Components_Component_Properties_Property
@@ -5275,10 +5295,10 @@ paths:
       responses:
         "201":
           description: created
-      summary: POST /components/component/{name}/properties/property/{name}/config
+      summary: POST /components/component/{name}/properties/property/{name_1}/config
       tags:
       - Components_Component_Properties_Property
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/name/values:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name_1}/name/values:
     description: Reference to the property name.
     get:
       operationId: getComponents_Component_Properties_Property_Name_Values_Leafref
@@ -5289,7 +5309,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties/property/{name}/name/values
+      summary: GET /components/component/{name}/properties/property/{name_1}/name/values
         Leafref
       tags:
       - Components_Component_Properties_Property_Name
@@ -5311,7 +5331,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name}/state:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/properties/property/{name_1}/state:
     description: Operational state data for each property
     get:
       operationId: getComponents_Component_Properties_Property_State
@@ -5322,7 +5342,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Properties_Property_State'
           description: GET OK 200
-      summary: GET /components/component/{name}/properties/property/{name}/state Container
+      summary: GET /components/component/{name}/properties/property/{name_1}/state
+        Container
       tags:
       - Components_Component_Properties_Property
     parameters:
@@ -5461,7 +5482,7 @@ paths:
       in: path
       name: name
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent
       responses:
@@ -5511,13 +5532,13 @@ paths:
       summary: POST /components/component/{name}/subcomponents/subcomponent
       tags:
       - Components_Component_Subcomponents_Subcomponent
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/config:
     delete:
       operationId: deleteComponents_Component_Subcomponents_Subcomponent_Config
       responses:
         "200":
           description: DELETE 200 OK
-      summary: DELETE /components/component/{name}/subcomponents/subcomponent/{name}/config
+      summary: DELETE /components/component/{name}/subcomponents/subcomponent/{name_1}/config
       tags:
       - Components_Component_Subcomponents_Subcomponent
     description: 'Configuration data '
@@ -5530,7 +5551,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_Config'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name_1}/config
         Container
       tags:
       - Components_Component_Subcomponents_Subcomponent
@@ -5559,10 +5580,10 @@ paths:
       responses:
         "201":
           description: created
-      summary: POST /components/component/{name}/subcomponents/subcomponent/{name}/config
+      summary: POST /components/component/{name}/subcomponents/subcomponent/{name_1}/config
       tags:
       - Components_Component_Subcomponents_Subcomponent
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/config/name/values:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/config/name/values:
     description: Reference to the name of the subcomponent
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_Config_Name_Values_Leafref
@@ -5573,7 +5594,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/config/name/values
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name_1}/config/name/values
         Leafref
       tags:
       - Components_Component_Subcomponents_Subcomponent_Config_Name
@@ -5595,7 +5616,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/name/values:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/name/values:
     description: Reference to the name list key
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_Name_Values_Leafref
@@ -5606,7 +5627,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/name/values
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name_1}/name/values
         Leafref
       tags:
       - Components_Component_Subcomponents_Subcomponent_Name
@@ -5628,7 +5649,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/state:
     description: 'Operational state data '
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_State
@@ -5639,7 +5660,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Components_Component_Subcomponents_Subcomponent_State'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name_1}/state
         Container
       tags:
       - Components_Component_Subcomponents_Subcomponent
@@ -5661,7 +5682,7 @@ paths:
       in: path
       name: name_1
       required: true
-  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name}/state/name/values:
+  /devicesim/v1.0.x/{device-id}/components/component/{name}/subcomponents/subcomponent/{name_1}/state/name/values:
     description: Reference to the name of the subcomponent
     get:
       operationId: getComponents_Component_Subcomponents_Subcomponent_State_Name_Values_Leafref
@@ -5672,7 +5693,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LeafRefOptions'
           description: GET OK 200
-      summary: GET /components/component/{name}/subcomponents/subcomponent/{name}/state/name/values
+      summary: GET /components/component/{name}/subcomponents/subcomponent/{name_1}/state/name/values
         Leafref
       tags:
       - Components_Component_Subcomponents_Subcomponent_State_Name
