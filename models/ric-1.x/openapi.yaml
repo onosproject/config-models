@@ -107,6 +107,7 @@ components:
       description: e2 node (list)
       items:
         $ref: '#/components/schemas/Nodes_Node'
+      title: Nodes_Node_List
       type: array
       uniqueItems: true
       x-keys:
