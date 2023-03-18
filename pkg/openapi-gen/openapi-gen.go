@@ -1072,30 +1072,31 @@ func yangRange(yangRange yang.YangRange, parentType yang.TypeKind) (*float64, *f
 func yangDefault(leaf *yang.Entry) (interface{}, error) {
 	if leaf.Type.Default != "" {
 		switch leaf.Type.Kind {
+		// has to return only int, int32, int64 or float - see github.com/getkin/kin-openapi/openapi3/schema.go
 		case yang.Yint8:
 			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 8)
-			return int8(intValue), err
+			return int(intValue), err
 		case yang.Yuint8:
 			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 8)
-			return uint8(intValue), err
+			return int(intValue), err
 		case yang.Yint16:
 			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 16)
-			return int16(intValue), err
+			return int(intValue), err
 		case yang.Yuint16:
 			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 16)
-			return uint16(intValue), err
+			return int(intValue), err
 		case yang.Yint32:
 			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 32)
-			return int32(intValue), err
+			return int(intValue), err
 		case yang.Yuint32:
 			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 32)
-			return uint32(intValue), err
+			return int(intValue), err
 		case yang.Yint64:
 			intValue, err := strconv.ParseInt(leaf.Type.Default, 10, 64)
-			return int64(intValue), err
+			return intValue, err
 		case yang.Yuint64:
 			intValue, err := strconv.ParseUint(leaf.Type.Default, 10, 64)
-			return uint64(intValue), err
+			return int64(intValue), err
 		case yang.Ydecimal64:
 			return strconv.ParseFloat(leaf.Type.Default, 64)
 		}
