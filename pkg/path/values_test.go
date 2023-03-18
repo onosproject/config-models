@@ -33,7 +33,7 @@ func Test_GetPathValues(t *testing.T) {
 
 	pathValues, err := GetPathValues("", sampleConfig)
 	assert.NoError(t, err)
-	assert.Equal(t, 35, len(pathValues))
+	assert.Equal(t, 22, len(pathValues))
 
 	for _, pathValue := range pathValues {
 		value := pathValue.GetValue()
@@ -44,6 +44,9 @@ func Test_GetPathValues(t *testing.T) {
 		case "/t1:cont1a/cont2a/leaf2b":
 			assert.Equal(t, "0.432", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
+		case "/t1:cont1a/cont2a/leaf2c":
+			assert.Equal(t, "ro-string test", (&value).ValueToString())
+			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
 		case "/t1:cont1a/cont2a/leaf2d":
 			assert.Equal(t, "1.540", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_DECIMAL, (&value).Type)
@@ -59,88 +62,46 @@ func Test_GetPathValues(t *testing.T) {
 		case "/t1:cont1a/leaf1a":
 			assert.Equal(t, "leaf1aval", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/name":
-			assert.Equal(t, "l2a1", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/ref2d":
+		case "/t1:cont1a/list2a[name=l2a1]/ref2d":
 			assert.Equal(t, "1.54", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/tx-power":
+		case "/t1:cont1a/list2a[name=l2a1]/tx-power":
 			assert.Equal(t, "5", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/range-min":
+		case "/t1:cont1a/list2a[name=l2a1]/range-min":
 			assert.Equal(t, "20", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/range-max":
+		case "/t1:cont1a/list2a[name=l2a1]/range-max":
 			assert.Equal(t, "20", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/name":
-			assert.Equal(t, "l2a2", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/tx-power":
+		case "/t1:cont1a/list2a[name=l2a2]/tx-power":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/range-min":
+		case "/t1:cont1a/list2a[name=l2a2]/range-min":
 			assert.Equal(t, "2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/range-max":
+		case "/t1:cont1a/list2a[name=l2a2]/range-max":
 			assert.Equal(t, "4", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/key1":
-			assert.Equal(t, "five", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/key2":
-			assert.Equal(t, "6", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=0][key2=*]/leaf5a":
+		case "/t1:cont1a/t1e:list5[key1=five][key2=6]/leaf5a":
 			assert.Equal(t, "5a five-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/key1":
-			assert.Equal(t, "five", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/key2":
-			assert.Equal(t, "7", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/t1e:list5[key1=1][key2=*]/leaf5a":
+		case "/t1:cont1a/t1e:list5[key1=five][key2=7]/leaf5a":
 			assert.Equal(t, "5a five-7", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/id":
-			assert.Equal(t, "l2a1", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/leaf4b":
+		case "/t1:cont1a/t1e:list4[id=l2a1]/leaf4b":
 			assert.Equal(t, "this is list4-l2a1", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/fkey1":
-			assert.Equal(t, "five", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/fkey2":
-			assert.Equal(t, "7", (&value).ValueToString()) // TODO should be UINT
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=0][fkey2=*]/displayname":
+		case "/t1:cont1a/t1e:list4[id=l2a1]/list4a[fkey1=five][fkey2=7]/displayname":
 			assert.Equal(t, "Value l2a1-five-7", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/fkey1":
-			assert.Equal(t, "five", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/fkey2":
-			assert.Equal(t, "6", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type) // TODO should be UINT
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=1][fkey2=*]/displayname":
+		case "/t1:cont1a/t1e:list4[id=l2a1]/list4a[fkey1=five][fkey2=6]/displayname":
 			assert.Equal(t, "Value l2a1-five-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/fkey1":
-			assert.Equal(t, "six", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/fkey2":
-			assert.Equal(t, "6", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type) // TODO should be UINT
-		case "/t1:cont1a/t1e:list4[id=0]/list4a[fkey1=2][fkey2=*]/displayname":
+		case "/t1:cont1a/t1e:list4[id=l2a1]/list4a[fkey1=six][fkey2=6]/displayname":
 			assert.Equal(t, "Value l2a1-six-6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=1]/id":
-			assert.Equal(t, "l2a2", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/t1e:list4[id=1]/leaf4b":
+		case "/t1:cont1a/t1e:list4[id=l2a2]/leaf4b":
 			assert.Equal(t, "this is list4-l2a2", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
 		default:

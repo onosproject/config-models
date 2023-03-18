@@ -3,6 +3,7 @@
     "cont2a": {
       "leaf2a": 1,
       "leaf2b": "0.4321",
+      "leaf2c": "ro-string test",
       "leaf2d": "1.54",
       "leaf2e": [
         5,

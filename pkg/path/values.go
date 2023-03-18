@@ -475,7 +475,7 @@ func findModelRoPathNoIndices(searchpath string) (*admin.ReadOnlySubPath, string
 func indicesOfPath(searchpath string) []string {
 	searchpathNoIndices := removePathIndices(searchpath)
 	// First search through the RW paths
-	for _, p := range roPaths {
+	for _, p := range rwPaths {
 		pathNoIndices := stripNamespace(removePathIndices(p.Path))
 		// Find a short pathWithIdx
 		if pathNoIndices[:strings.LastIndex(pathNoIndices, slash)] == searchpathNoIndices {
@@ -491,7 +491,7 @@ func indicesOfPath(searchpath string) []string {
 			if subpath.SubPath == "/" {
 				fullpath = value.Path
 			} else {
-				fullpath = fmt.Sprintf("%s%s", value.Path, subpath)
+				fullpath = fmt.Sprintf("%s%s", value.Path, subpath.SubPath)
 			}
 			pathNoIndices := removePathIndices(fullpath)
 			// Find a short pathWithIdx
