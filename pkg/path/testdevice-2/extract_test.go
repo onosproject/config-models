@@ -96,7 +96,7 @@ func Test_GetPathValuesConfig(t *testing.T) {
 
 	pathValues, err := path.GetPathValues("", sampleConfig)
 	assert.NoError(t, err)
-	assert.Equal(t, 12, len(pathValues))
+	assert.Equal(t, 10, len(pathValues))
 
 	for _, pathValue := range pathValues {
 		value := pathValue.GetValue()
@@ -119,22 +119,16 @@ func Test_GetPathValuesConfig(t *testing.T) {
 		case "/t1:cont1a/leaf1a":
 			assert.Equal(t, "leaf1aval", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/name":
-			assert.Equal(t, "l2a1", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/tx-power":
+		case "/t1:cont1a/list2a[name=l2a1]/tx-power":
 			assert.Equal(t, "5", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=0]/rx-power":
+		case "/t1:cont1a/list2a[name=l2a1]/rx-power":
 			assert.Equal(t, "25", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/name":
-			assert.Equal(t, "l2a2", (&value).ValueToString())
-			assert.Equal(t, configapi.ValueType_STRING, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/tx-power":
+		case "/t1:cont1a/list2a[name=l2a2]/tx-power":
 			assert.Equal(t, "6", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
-		case "/t1:cont1a/list2a[name=1]/rx-power":
+		case "/t1:cont1a/list2a[name=l2a2]/rx-power":
 			assert.Equal(t, "26", (&value).ValueToString())
 			assert.Equal(t, configapi.ValueType_UINT, (&value).Type)
 		default:

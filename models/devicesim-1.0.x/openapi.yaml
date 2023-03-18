@@ -4613,7 +4613,7 @@ components:
           x-leafref: ../state/pid
           x-leafref-resolver: /devicesim/v1.0.x/{device-id}/system/processes/process/{pid}/pid/values
         state:
-          $ref: '#/components/schemas/System_Processes_Process_State'
+          $ref: '#/components/schemas/System_Processes_Process_State_Args'
       required:
       - pid
       title: System_Processes_Process

@@ -25,7 +25,7 @@ build-tools:=$(shell if [ ! -d "./build/build-tools" ]; then cd build && git clo
 include ./build/build-tools/make/onf-common.mk
 
 test: # @HELP run go test on projects
-test: mod-update build linters license gofmt images models models-version-check
+test: mod-update build linters license gofmt images models models-openapi models-version-check
 	go test ./pkg/...
 	@bash test/generated.sh
 	@cd models && for model in *; do pushd $$model; make test; popd; done
@@ -73,7 +73,7 @@ check-models-tag: # @HELP check that the
 	@for model in models/*; do make -C $$model check-tag; done
 
 jenkins-test:  # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: deps mod-update build linters check-models-tag images models license
+jenkins-test: deps mod-update build linters check-models-tag images models models-openapi license
 	go test ./pkg/...
 	# TODO add test/generated.sh once the ygot issue is resolved (https://jira.opennetworking.org/browse/SDRAN-1473)
 	@for model in models/*; do make -C $$model test; done
