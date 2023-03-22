@@ -6,7 +6,7 @@ require (
 	github.com/SeanCondon/xpath v0.0.0-20221217195644-773fbeaef469
 	github.com/getkin/kin-openapi v0.114.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/onosproject/config-models v0.11.2
+	github.com/onosproject/config-models v0.11.6
 	github.com/onosproject/onos-api/go v0.10.4
 	github.com/onosproject/onos-lib-go v0.9.5
 	github.com/openconfig/gnmi v0.9.1

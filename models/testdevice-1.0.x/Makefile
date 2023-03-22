@@ -59,7 +59,7 @@ hadolint: #lint the Dockerfile
 	    echo "hadolint downloaded to $$HOME/${LOCAL_BIN} - ensure this dir is in PATH")
 	hadolint Dockerfile
 
-image: hadolint mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
+image: mod-update # @HELP Build the docker image (available parameters: DOCKER_REPOSITORY, VERSION)
 	docker build --platform ${PLATFORM} $(DOCKER_BUILD_ARGS) -t ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION} .
 	docker tag ${DOCKER_REPOSITORY}testdevice-1.0.x:${VERSION} ${DOCKER_REPOSITORY}testdevice-1.0.x:${LATEST_VERSION}
 
