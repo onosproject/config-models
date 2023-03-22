@@ -45,12 +45,13 @@ models-openapi: # @HELP generates the openapi specs for the models
 		docker run -v $$(pwd)/$$model:/config-model --entrypoint /usr/bin/openapi-spec-validator onosproject/model-compiler:${MODEL_COMPILER_VERSION} /config-model/openapi.yaml; \
 	done
 
-# the gNMI client generator is on hold at the moment, disabling it for the moment
-#models-gnmi-client: # @HELP generates the gnmi-client for the models
-#	@for model in models/*; do echo -e "Building gNMI Client for $$model:\n"; pushd $$model; rm -f api/gnmi_client.go; make gnmi-gen; popd; echo -e "\n\n"; done
-
 models-images: models models-openapi # @HELP Build Docker containers for all the models
-	@for model in models/*; do echo -e "Building container for $$model:\n"; pushd $$model; make image; popd; echo -e "\n\n"; done
+	@for model in models/*; do \
+		echo -e "Building container for $$model:\n"; \
+		make -C $$model hadolint; \
+		make -C $$model image; \
+		echo -e "\n\n"; \
+    done
 
 models-version-check:
 	# TODO this fails as the output of the ygot generation has some variablity (see https://jira.opennetworking.org/browse/SDRAN-1473)
