@@ -27,6 +27,22 @@ const (
 	LeafRefOption                  = "LeafRefOption"
 )
 
+const (
+	xCase            = "x-case"
+	xCaseChild       = "x-case-child"
+	xChoice          = "x-choice"
+	xChoiceCase      = "x-choice-case"
+	xGoType          = "x-go-type"
+	xKeys            = "x-keys"
+	xLeafref         = "x-leafref"
+	xLeafrefResolver = "x-leafref-resolver"
+	xLeafSelection   = "x-leaf-selection"
+	xListMultiple    = "x-list-multiple"
+	xMust            = "x-must"
+	xPresence        = "x-presence"
+	xYangType        = "x-yang-type"
+)
+
 var swagger openapi3.T
 
 var respGet200Desc = "GET OK 200"
@@ -275,7 +291,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					schemaVal.Format = "date-time"
 				} else if dirEntry.Type.Name != "string" {
 					schemaVal.Extensions = map[string]interface{}{
-						"x-yang-type": dirEntry.Type.Name,
+						xYangType: dirEntry.Type.Name,
 					}
 				}
 			case yang.Yunion:
@@ -333,8 +349,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				leafrefPath = pathWithPrefix(leafrefPath)
 				openapiPaths[leafrefPath] = newPath
 
-				schemaVal.Extensions["x-leafref"] = dirEntry.Type.Path
-				schemaVal.Extensions["x-leafref-resolver"] = leafrefPath
+				schemaVal.Extensions[xLeafref] = dirEntry.Type.Path
+				schemaVal.Extensions[xLeafrefResolver] = leafrefPath
 
 			case yang.Yidentityref, yang.Yenum:
 				schemaVal = openapi3.NewStringSchema()
@@ -435,7 +451,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					keyword := fmt.Sprintf("x-%s",
 						extension.Keyword[strings.Index(extension.Keyword, ":")+1:])
 					schemaVal.Extensions[keyword] = extension.Argument
-					if keyword == "x-leaf-selection" {
+					if keyword == xLeafSelection {
 						// Overrides a leafref if exists
 						*hasLeafref = true
 						extPath := newPathItem(dirEntry, itemPath, parentPath, pathTypeLeafSelection, targetAlias)
@@ -482,25 +498,39 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				}
 			}
 		} else if dirEntry.Kind == yang.ChoiceEntry {
-			cases := make([]*openapi3.Schema, 0)
+			cases := make([]*openapi3.SchemaRef, 0)
 			paths, components, err := buildSchema(dirEntry, dirEntry.Config, parentPath, targetAlias, hasLeafref)
 			if err != nil {
 				return nil, nil, err
 			}
 			for _, v := range components.Schemas {
-				if _, ok := v.Value.Extensions["x-case"]; ok {
-					cases = append(cases, v.Value)
-				} else {
-					openapiComponents.Schemas[v.Value.Title] = v
+				title := v.Value.Title
+				if caseName, ok := v.Value.Extensions[xCase]; ok {
+					v.Value.Extensions[xChoiceCase] = caseName
+					v.Value.Extensions[xChoice] = dirEntry.Name
+					v.Value.Extensions[xCaseChild] = true
+					delete(v.Value.Extensions, xCase)
+					schemaPath := pathToSchemaName(itemPath)
+					title = toUnderScore(fmt.Sprintf("%s-%s", schemaPath, caseName))
+					v.Value.Title = title
+					caseAsSchemaRef := &openapi3.SchemaRef{
+						Ref:   fmt.Sprintf("#/components/schemas/%v", v.Value.Title),
+						Value: v.Value,
+					}
+					cases = append(cases, caseAsSchemaRef)
 				}
+				openapiComponents.Schemas[title] = v
 			}
 			sort.Slice(cases, func(i, j int) bool {
-				return cases[i].Title < cases[j].Title
+				return cases[i].Value.Title < cases[j].Value.Title
 			})
-			choiceOneOf := openapi3.NewOneOfSchema(cases...)
-			choiceOneOf.Title = fmt.Sprintf("Choice %s", dirEntry.Name)
-			choiceOneOf.Description = dirEntry.Description
-			choiceOneOf.Extensions = map[string]interface{}{"x-choice": dirEntry.Name}
+			choiceOneOf := &openapi3.Schema{
+				OneOf:       cases,
+				Title:       fmt.Sprintf("Choice %s", dirEntry.Name),
+				Description: dirEntry.Description,
+				Extensions:  map[string]interface{}{xChoice: dirEntry.Name},
+			}
+
 			openapiComponents.Schemas[toUnderScore(dirEntry.Name)] = &openapi3.SchemaRef{
 				Value: choiceOneOf,
 			}
@@ -516,16 +546,41 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				return nil, nil, err
 			}
 			caseSchema := openapi3.NewObjectSchema()
-			caseSchema.Title = fmt.Sprintf("Case %s", dirEntry.Name)
+			caseSchema.Title = dirEntry.Name
 			caseSchema.Description = dirEntry.Description
 			caseSchema.Properties = make(map[string]*openapi3.SchemaRef, 0)
-			caseSchema.Extensions = map[string]interface{}{"x-case": dirEntry.Name}
+			caseSchema.Extensions = map[string]interface{}{xCase: dirEntry.Name}
 			for k, v := range components.Schemas {
 				simpleName := strings.ToLower(strings.TrimPrefix(k, fmt.Sprintf("%s_", toUnderScore(parentPath))))
 				switch v.Value.Type {
-				case "object", "array":
+				case "object":
+					if v.Value.Extensions == nil {
+						v.Value.Extensions = make(map[string]interface{})
+					}
+					_, isCaseChild := v.Value.Extensions[xCaseChild]
+					v.Value.Extensions[xCaseChild] = true
+					propName := v.Value.Title
+					if _, listMultiple := v.Value.Extensions[xListMultiple]; listMultiple {
+						propName = fmt.Sprintf("%s_List", v.Value.Title)
+					}
+					if !isCaseChild {
+						caseSchema.Properties[simpleName] = &openapi3.SchemaRef{
+							Ref:   fmt.Sprintf("#/components/schemas/%s", propName),
+							Value: v.Value,
+						}
+					}
+					openapiComponents.Schemas[v.Value.Title] = v
+				case "array":
+					if v.Value.Extensions == nil {
+						v.Value.Extensions = make(map[string]interface{})
+					}
+					v.Value.Extensions[xCaseChild] = true
 					openapiComponents.Schemas[v.Value.Title] = v
 				default:
+					if _, ok := v.Value.Extensions[xChoice]; ok {
+						caseSchema.OneOf = v.Value.OneOf
+						continue
+					}
 					caseSchema.Properties[simpleName] = v
 				}
 			}
@@ -565,7 +620,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 								if schemaVal.Extensions == nil {
 									schemaVal.Extensions = make(map[string]interface{})
 								}
-								schemaVal.Extensions["x-presence"] = name
+								schemaVal.Extensions[xPresence] = name
 							}
 						}
 					}
@@ -600,7 +655,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				case "array": // List as a child of container
 					schemaPath := pathToSchemaName(itemPath)
 					root := k[len(schemaPath) : len(k)-5] // Remove the _List
-					if strings.Count(root, "_") == 0 {
+					_, isCaseChild := v.Value.Extensions[xCaseChild]
+					if strings.Count(root, "_") == 0 && !isCaseChild {
 						schemaVal.Properties[strings.ToLower(root)] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
 							Value: v.Value,
@@ -609,10 +665,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 					openapiComponents.Schemas[k] = v
 
 				case "object": // Container as a child of container
-					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+					if _, ok := v.Value.Extensions[xListMultiple]; !ok {
 						schemaPath := pathToSchemaName(itemPath)
-						root := k[len(schemaPath):]
-						if v.Value.Title != "" && !strings.Contains(root, "_") {
+						root := k
+						if len(k) > len(schemaPath) {
+							root = k[len(schemaPath):]
+						}
+						_, isCase := v.Value.Extensions[xChoiceCase]
+						_, isCaseChild := v.Value.Extensions[xCaseChild]
+						if v.Value.Title != "" && !strings.Contains(root, "_") && !isCase && !isCaseChild {
 							schemaVal.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 								Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 								Value: v.Value,
@@ -682,7 +743,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 			asSingle.Extensions = make(map[string]interface{})
 			asSingle.Title = toUnderScore(itemPath)
 			asSingle.Description = fmt.Sprintf("%s (single)", dirEntry.Description)
-			asSingle.Extensions["x-list-multiple"] = true
+			asSingle.Extensions[xListMultiple] = true
 
 			if dirEntry.Extra != nil {
 				mustArgs := make([]yang.Must, 0)
@@ -712,7 +773,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 						}
 					}
 				}
-				asSingle.Extensions["x-must"] = mustArgs
+				asSingle.Extensions[xMust] = mustArgs
 			}
 
 			openapiComponents.Schemas[toUnderScore(itemPath)] = asSingle.NewRef()
@@ -724,8 +785,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				Value: asSingle,
 			}
 			asMultiple.Extensions = make(map[string]interface{})
-			asMultiple.Extensions["x-list-multiple"] = true
-			asMultiple.Extensions["x-keys"] = keys
+			asMultiple.Extensions[xListMultiple] = true
+			asMultiple.Extensions[xKeys] = keys
 			asMultiple.MinItems = dirEntry.ListAttr.MinElements
 			if dirEntry.ListAttr.MaxElements != math.MaxUint64 {
 				asMultiple.MaxItems = &dirEntry.ListAttr.MaxElements
@@ -784,7 +845,8 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				case "array": // List as a child of list
 					schemaPath := pathToSchemaName(itemPath)
 					root := k[len(schemaPath) : len(k)-5] // Remove the _List
-					if strings.Count(root, "_") == 0 {
+					_, isCaseChild := v.Value.Extensions[xCaseChild]
+					if strings.Count(root, "_") == 0 && !isCaseChild {
 						asSingle.Properties[strings.ToLower(root)] = &openapi3.SchemaRef{
 							Ref:   fmt.Sprintf("#/components/schemas/%s", k),
 							Value: v.Value,
@@ -802,10 +864,15 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 
 					openapiComponents.Schemas[k] = v
 				case "object": // Container as a child of list
-					if _, ok := v.Value.Extensions["x-list-multiple"]; !ok {
+					if _, ok := v.Value.Extensions[xListMultiple]; !ok {
 						schemaPath := pathToSchemaName(itemPath)
-						root := k[len(schemaPath):]
-						if v.Value.Title != "" && !strings.Contains(root, "_") {
+						root := k
+						if len(k) > len(schemaPath) {
+							root = k[len(schemaPath):]
+						}
+						_, isCase := v.Value.Extensions[xChoiceCase]
+						_, isCaseChild := v.Value.Extensions[xCaseChild]
+						if v.Value.Title != "" && !strings.Contains(root, "_") && !isCase && !isCaseChild {
 							asSingle.Properties[strings.ToLower(lastPartOf(k))] = &openapi3.SchemaRef{
 								Ref:   fmt.Sprintf("#/components/schemas/%s", v.Value.Title),
 								Value: v.Value,
@@ -823,7 +890,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					if v.Value.OneOf != nil {
 						asSingle.OneOf = v.Value.OneOf
-						asSingle.Title = v.Value.Title
+						asSingle.Extensions[xChoice] = v.Value.Extensions[xChoice]
 					} else {
 						return nil, nil, fmt.Errorf("unhandled in list %s: %s", k, v.Value.Type)
 					}
@@ -834,7 +901,7 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 							v.Value.Extensions = make(map[string]interface{})
 						}
 						if v.Value.Type == "string" {
-							v.Value.Extensions["x-go-type"] = "ListKey"
+							v.Value.Extensions[xGoType] = "ListKey"
 						}
 					}
 				}
