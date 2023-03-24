@@ -9,6 +9,7 @@ import (
 	"github.com/openconfig/goyang/pkg/yang"
 	"github.com/stretchr/testify/assert"
 	"math"
+	"strings"
 	"testing"
 )
 
@@ -975,27 +976,45 @@ func Test_YANG_Choice(t *testing.T) {
 	_, components, err := buildSchema(&testParent, yang.TSUnset, "/test", "targettest", &hasLeafref)
 	assert.NoError(t, err)
 
-	assert.Equal(t, 1, len(components.Schemas))
+	assert.Equal(t, 3, len(components.Schemas))
 	choice, ok := components.Schemas["Choice-test"]
 	assert.True(t, ok, "expected a 'choice-test' entry in Schemas")
 	assert.NotNil(t, choice.Value)
 	assert.Equal(t, "Choice choice-test", choice.Value.Title)
 	assert.Equal(t, "a choice between case 1 and case 2", choice.Value.Description)
-
 	choiceExtension, hasChoiceExt := choice.Value.Extensions["x-choice"]
 	assert.True(t, hasChoiceExt)
 	assert.Equal(t, "choice-test", choiceExtension)
+
+	choiceCase1, ok := components.Schemas["Test_Choice-test-case-1-test"]
+	assert.True(t, ok, "expected a 'Test_Choice-test-case-1-test' entry in Schemas")
+	assert.NotNil(t, choiceCase1.Value)
+	assert.Equal(t, "Test_Choice-test-case-1-test", choiceCase1.Value.Title)
+	assert.Equal(t, "case 1", choiceCase1.Value.Description)
+
+	choiceCase2, ok := components.Schemas["Test_Choice-test-case-2-test"]
+	assert.True(t, ok, "expected a 'Test_Choice-test-case-2-test' entry in Schemas")
+	assert.NotNil(t, choiceCase2.Value)
+	assert.Equal(t, "Test_Choice-test-case-2-test", choiceCase2.Value.Title)
+	assert.Equal(t, "case 2", choiceCase2.Value.Description)
 
 	assert.NotNil(t, choice.Value.OneOf)
 	assert.Equal(t, 2, len(choice.Value.OneOf))
 
 	for _, one := range choice.Value.OneOf {
-		caseExtension, hasCaseExt := one.Value.Extensions["x-case"]
+		assert.Equal(t, fmt.Sprintf("#/components/schemas/%s", one.Value.Title), one.Ref)
+		caseExtension, hasCaseExt := one.Value.Extensions["x-choice-case"]
 		assert.True(t, hasCaseExt)
-		assert.Equal(t, one.Value.Title, fmt.Sprintf("Case %s", caseExtension))
+		assert.True(t, strings.HasSuffix(one.Value.Title, caseExtension.(string)))
+		chocieExtension, hasChoiceExt := one.Value.Extensions["x-choice"]
+		assert.True(t, hasChoiceExt)
+		assert.Equal(t, "choice-test", chocieExtension.(string))
+		childExt, childExtOk := one.Value.Extensions["x-case-child"]
+		assert.True(t, childExtOk)
+		assert.True(t, childExt.(bool))
 
 		switch one.Value.Title {
-		case "Case case-1-test":
+		case "Test_Choice-test-case-1-test":
 			assert.Equal(t, "case 1", one.Value.Description)
 			assert.Equal(t, 2, len(one.Value.Properties))
 
@@ -1009,7 +1028,7 @@ func Test_YANG_Choice(t *testing.T) {
 			assert.NotNil(t, case1PropB)
 			assert.Equal(t, "Leaf1b", case1PropB.Value.Title)
 
-		case "Case case-2-test":
+		case "Test_Choice-test-case-2-test":
 			assert.Equal(t, "case 2", one.Value.Description)
 			assert.Equal(t, 1, len(one.Value.Properties))
 
