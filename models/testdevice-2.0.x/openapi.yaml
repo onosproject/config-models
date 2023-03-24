@@ -160,35 +160,8 @@ components:
     Cont1a_Cont2d:
       description: Container 2d
       oneOf:
-      - properties:
-          chocolate:
-            description: enumerated leaf in case late-night on Container 2d augmented
-              to cont1a
-            enum:
-            - dark
-            - first-available
-            - milk
-            title: chocolate
-            type: string
-        title: Case late-night
-        type: object
-        x-case: late-night
-      - properties:
-          beer:
-            description: 2nd empty leaf in case sports-arena on Container 2d augmented
-              to cont1a
-            maxLength: 0
-            title: beer
-            type: string
-          pretzel:
-            description: empty leaf in case sports-arena on Container 2d augmented
-              to cont1a
-            maxLength: 0
-            title: pretzel
-            type: string
-        title: Case sports-arena
-        type: object
-        x-case: sports-arena
+      - $ref: '#/components/schemas/Cont1a_Cont2d_Snack-late-night'
+      - $ref: '#/components/schemas/Cont1a_Cont2d_Snack-sports-arena'
       properties:
         leaf2d3c:
           description: string leaf on Container 2d augmented to cont1a
@@ -196,6 +169,41 @@ components:
           type: string
       title: Cont1a_Cont2d
       type: object
+    Cont1a_Cont2d_Snack-late-night:
+      properties:
+        chocolate:
+          description: enumerated leaf in case late-night on Container 2d augmented
+            to cont1a
+          enum:
+          - dark
+          - first-available
+          - milk
+          title: chocolate
+          type: string
+      title: Cont1a_Cont2d_Snack-late-night
+      type: object
+      x-case-child: true
+      x-choice: snack
+      x-choice-case: late-night
+    Cont1a_Cont2d_Snack-sports-arena:
+      properties:
+        beer:
+          description: 2nd empty leaf in case sports-arena on Container 2d augmented
+            to cont1a
+          maxLength: 0
+          title: beer
+          type: string
+        pretzel:
+          description: empty leaf in case sports-arena on Container 2d augmented to
+            cont1a
+          maxLength: 0
+          title: pretzel
+          type: string
+      title: Cont1a_Cont2d_Snack-sports-arena
+      type: object
+      x-case-child: true
+      x-choice: snack
+      x-choice-case: sports-arena
     Cont1a_List2a:
       description: A simple list of configuration items (single)
       properties:
