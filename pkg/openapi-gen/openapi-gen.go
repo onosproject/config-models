@@ -700,6 +700,10 @@ func buildSchema(deviceEntry *yang.Entry, parentState yang.TriState, parentPath 
 				default:
 					if v.Value.OneOf != nil {
 						schemaVal.OneOf = v.Value.OneOf
+						if schemaVal.Extensions == nil {
+							schemaVal.Extensions = make(map[string]interface{})
+						}
+						schemaVal.Extensions[xChoice] = v.Value.Extensions[xChoice]
 					} else {
 						return nil, nil, fmt.Errorf("unhandled in container %s: %s", k, v.Value.Type)
 					}

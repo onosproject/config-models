@@ -916,93 +916,9 @@ components:
         $ref: '#/components/schemas/AdditionalPropertyTarget'
       description: A list of vehicles (single)
       oneOf:
-      - description: Electric powered vehicle
-        title: Case electric-case
-        type: object
-        x-case: electric-case
-      - description: Internal Combustion Engine
-        properties:
-          cubic-capacity:
-            description: Engine size
-            maximum: 65535
-            minimum: 0
-            required:
-            - cubic-capacity
-            title: cubic-capacity
-            type: integer
-          engine-position:
-            description: |-
-              Engine position - this demonstrates a leaf alongside a choice.
-              This will appear at the same level as the case enrties in the
-              final output
-            enum:
-            - front
-            - mid
-            - rear
-            title: engine-position
-            type: string
-          fuel-choice:
-            description: Fuel type - demonstrates choice inside a choice
-            oneOf:
-            - description: Diesel case
-              properties:
-                max-bio-diesel-percent:
-                  description: The maximum percent of bio-diesel the engine can accept
-                  maximum: 100
-                  minimum: 0
-                  required:
-                  - max-bio-diesel-percent
-                  title: max-bio-diesel-percent
-                  type: integer
-              title: Case diesel-case
-              type: object
-              x-case: diesel-case
-            - description: Gasoline/Petrol case
-              properties:
-                max-percent-ethanol:
-                  description: The max percentage ethanol the engine can accept. e.g.
-                    E85 = 85%
-                  maximum: 100
-                  minimum: 0
-                  title: max-percent-ethanol
-                  type: integer
-                octane-min:
-                  description: Minimum AKI Octane Rating
-                  maximum: 94
-                  minimum: 85
-                  required:
-                  - octane-min
-                  title: octane-min
-                  type: integer
-              title: Case gasoline-case
-              type: object
-              x-case: gasoline-case
-            - description: Other fuel
-              properties:
-                other-fuel-name:
-                  description: |-
-                    Other fuel type e.g. Hydrogen.
-                    It is best practice to give a name that shows the case that's been
-                    chosen. Using a simply 'name' here would not give an intuitive hint
-                    of which case was being selected, since choice and case are omitted
-                    from the output
-                  required:
-                  - other-fuel-name
-                  title: other-fuel-name
-                  type: string
-              title: Case other
-              type: object
-              x-case: other
-            title: Choice fuel-choice
-            x-choice: fuel-choice
-        title: Case ice-case
-        type: object
-        x-case: ice-case
+      - $ref: '#/components/schemas/Vehicle_Power-choice-electric-case'
+      - $ref: '#/components/schemas/Vehicle_Power-choice-ice-case'
       properties:
-        battery:
-          $ref: '#/components/schemas/Vehicle_Battery'
-        electric-motor:
-          $ref: '#/components/schemas/Vehicle_Electric-motor_List'
         id:
           description: |-
             A unique identifier for the vehicle - the use of UUID here should prompt the UI to have a
@@ -1016,8 +932,9 @@ components:
           $ref: '#/components/schemas/Vehicle_Under-carriage'
       required:
       - id
-      title: Choice power-choice
+      title: Vehicle
       type: object
+      x-choice: power-choice
       x-list-multiple: true
     Vehicle_Battery:
       additionalProperties:
@@ -1044,6 +961,7 @@ components:
       - capacity
       title: Vehicle_Battery
       type: object
+      x-case-child: true
     Vehicle_Electric-motor:
       description: Motor configuration - demonstrates a list inside a choice (single)
       properties:
@@ -1065,6 +983,7 @@ components:
       - motor-name
       title: Vehicle_Electric-motor
       type: object
+      x-case-child: true
       x-list-multiple: true
     Vehicle_Electric-motor_List:
       description: Motor configuration - demonstrates a list inside a choice (list)
@@ -1074,9 +993,68 @@ components:
       title: Vehicle_Electric-motor_List
       type: array
       uniqueItems: true
+      x-case-child: true
       x-keys:
       - motor-name
       x-list-multiple: true
+    Vehicle_Fuel-choice-diesel-case:
+      description: Diesel case
+      properties:
+        max-bio-diesel-percent:
+          description: The maximum percent of bio-diesel the engine can accept
+          maximum: 100
+          minimum: 0
+          required:
+          - max-bio-diesel-percent
+          title: max-bio-diesel-percent
+          type: integer
+      title: Vehicle_Fuel-choice-diesel-case
+      type: object
+      x-case-child: true
+      x-choice: fuel-choice
+      x-choice-case: diesel-case
+    Vehicle_Fuel-choice-gasoline-case:
+      description: Gasoline/Petrol case
+      properties:
+        max-percent-ethanol:
+          description: The max percentage ethanol the engine can accept. e.g. E85
+            = 85%
+          maximum: 100
+          minimum: 0
+          title: max-percent-ethanol
+          type: integer
+        octane-min:
+          description: Minimum AKI Octane Rating
+          maximum: 94
+          minimum: 85
+          required:
+          - octane-min
+          title: octane-min
+          type: integer
+      title: Vehicle_Fuel-choice-gasoline-case
+      type: object
+      x-case-child: true
+      x-choice: fuel-choice
+      x-choice-case: gasoline-case
+    Vehicle_Fuel-choice-other:
+      description: Other fuel
+      properties:
+        other-fuel-name:
+          description: |-
+            Other fuel type e.g. Hydrogen.
+            It is best practice to give a name that shows the case that's been
+            chosen. Using a simply 'name' here would not give an intuitive hint
+            of which case was being selected, since choice and case are omitted
+            from the output
+          required:
+          - other-fuel-name
+          title: other-fuel-name
+          type: string
+      title: Vehicle_Fuel-choice-other
+      type: object
+      x-case-child: true
+      x-choice: fuel-choice
+      x-choice-case: other
     Vehicle_List:
       description: A list of vehicles (list)
       items:
@@ -1088,62 +1066,54 @@ components:
       x-keys:
       - id
       x-list-multiple: true
+    Vehicle_Power-choice-electric-case:
+      description: Electric powered vehicle
+      properties:
+        battery:
+          $ref: '#/components/schemas/Vehicle_Battery'
+        electric-motor:
+          $ref: '#/components/schemas/Vehicle_Electric-motor_List'
+      title: Vehicle_Power-choice-electric-case
+      type: object
+      x-case-child: true
+      x-choice: power-choice
+      x-choice-case: electric-case
+    Vehicle_Power-choice-ice-case:
+      description: Internal Combustion Engine
+      oneOf:
+      - $ref: '#/components/schemas/Vehicle_Fuel-choice-diesel-case'
+      - $ref: '#/components/schemas/Vehicle_Fuel-choice-gasoline-case'
+      - $ref: '#/components/schemas/Vehicle_Fuel-choice-other'
+      properties:
+        cubic-capacity:
+          description: Engine size
+          maximum: 65535
+          minimum: 0
+          required:
+          - cubic-capacity
+          title: cubic-capacity
+          type: integer
+        engine-position:
+          description: |-
+            Engine position - this demonstrates a leaf alongside a choice.
+            This will appear at the same level as the case enrties in the
+            final output
+          enum:
+          - front
+          - mid
+          - rear
+          title: engine-position
+          type: string
+      title: Vehicle_Power-choice-ice-case
+      type: object
+      x-case-child: true
+      x-choice: power-choice
+      x-choice-case: ice-case
     Vehicle_Under-carriage:
       description: Traction details
       oneOf:
-      - description: In case it has tracks
-        properties:
-          number-tracks:
-            description: number of tracks
-            maximum: 6
-            minimum: 1
-            title: number-tracks
-            type: integer
-          track-type:
-            description: Track material
-            enum:
-            - rubber
-            - steel
-            required:
-            - track-type
-            title: track-type
-            type: string
-        title: Case tracks-case
-        type: object
-        x-case: tracks-case
-      - description: |-
-          For the wheels case
-          It is good practice to name a case like *-case to make it easier to identify
-          in the output.
-          Each case can have any number of leafs, containers or lists beneath.
-          The case itself does not appear in the model - but when you start specifying
-          an item belonging to one case, it should exclude items from others.
-          While cases can have some leaf names in common, it is better to distinguish
-          each case by having non-clashing naming for children
-        properties:
-          number-wheels:
-            description: |-
-              number of wheels - this is mandatory, and so it will be clear which case
-              is selected
-            maximum: 18
-            minimum: 0
-            required:
-            - number-wheels
-            title: number-wheels
-            type: integer
-          wheels-driven:
-            description: |-
-              number of wheels driven - because this has a default it could be omitted.
-              It is good practice to have at least one mandatory field or container
-              in a case, as otherwise it would not be possible to know which case
-              is selected if default values were omitted
-            maximum: 18
-            minimum: 0
-            title: wheels-driven
-            type: integer
-        title: Case wheels-case
-        type: object
-        x-case: wheels-case
+      - $ref: '#/components/schemas/Vehicle_Under-carriage_Traction-choice-tracks-case'
+      - $ref: '#/components/schemas/Vehicle_Under-carriage_Traction-choice-wheels-case'
       properties:
         articulated:
           default: false
@@ -1152,6 +1122,65 @@ components:
           type: boolean
       title: Vehicle_Under-carriage
       type: object
+    Vehicle_Under-carriage_Traction-choice-tracks-case:
+      description: In case it has tracks
+      properties:
+        number-tracks:
+          description: number of tracks
+          maximum: 6
+          minimum: 1
+          title: number-tracks
+          type: integer
+        track-type:
+          description: Track material
+          enum:
+          - rubber
+          - steel
+          required:
+          - track-type
+          title: track-type
+          type: string
+      title: Vehicle_Under-carriage_Traction-choice-tracks-case
+      type: object
+      x-case-child: true
+      x-choice: traction-choice
+      x-choice-case: tracks-case
+    Vehicle_Under-carriage_Traction-choice-wheels-case:
+      description: |-
+        For the wheels case
+        It is good practice to name a case like *-case to make it easier to identify
+        in the output.
+        Each case can have any number of leafs, containers or lists beneath.
+        The case itself does not appear in the model - but when you start specifying
+        an item belonging to one case, it should exclude items from others.
+        While cases can have some leaf names in common, it is better to distinguish
+        each case by having non-clashing naming for children
+      properties:
+        number-wheels:
+          description: |-
+            number of wheels - this is mandatory, and so it will be clear which case
+            is selected
+          maximum: 18
+          minimum: 0
+          required:
+          - number-wheels
+          title: number-wheels
+          type: integer
+        wheels-driven:
+          description: |-
+            number of wheels driven - because this has a default it could be omitted.
+            It is good practice to have at least one mandatory field or container
+            in a case, as otherwise it would not be possible to know which case
+            is selected if default values were omitted
+          maximum: 18
+          minimum: 0
+          title: wheels-driven
+          type: integer
+      title: Vehicle_Under-carriage_Traction-choice-wheels-case
+      type: object
+      x-case-child: true
+      x-choice: traction-choice
+      x-choice-case: wheels-case
 info:
   contact:
     email: info@opennetworking.org
