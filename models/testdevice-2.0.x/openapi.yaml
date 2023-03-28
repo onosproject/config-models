@@ -169,6 +169,7 @@ components:
           type: string
       title: Cont1a_Cont2d
       type: object
+      x-choice: snack
     Cont1a_Cont2d_Snack-late-night:
       properties:
         chocolate:

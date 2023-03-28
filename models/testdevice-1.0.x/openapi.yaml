@@ -1122,6 +1122,7 @@ components:
           type: boolean
       title: Vehicle_Under-carriage
       type: object
+      x-choice: traction-choice
     Vehicle_Under-carriage_Traction-choice-tracks-case:
       description: In case it has tracks
       properties:
