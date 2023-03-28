@@ -1,3 +1,9 @@
+"""
+ SPDX-FileCopyrightText: 2023-present Intel Corporation
+
+ SPDX-License-Identifier: Apache-2.0
+"""
+
 """YANG usage guidelines plugin
 This extends the validation by preventing go keywords to be used as identifiers
 in YANG models.
