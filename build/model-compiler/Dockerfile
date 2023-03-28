@@ -24,6 +24,7 @@ COPY --from=build /go/src/github.com/onosproject/config-models/build/_output/mod
 COPY --from=build /go/src/github.com/onosproject/config-models/templates /var/model-compiler/templates
 COPY --from=build /go/src/github.com/onosproject/config-models/yang-base /var/model-compiler/yang-base
 COPY --from=build /go/bin/generator /usr/local/bin/generator
+COPY pyang/plugins/go.py /usr/lib/python3.10/site-packages/pyang/plugins/
 
 WORKDIR /var/model-compiler
 
