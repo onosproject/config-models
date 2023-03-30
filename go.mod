@@ -6,22 +6,22 @@ require (
 	github.com/SeanCondon/xpath v0.0.0-20221217195644-773fbeaef469
 	github.com/getkin/kin-openapi v0.114.0
 	github.com/gogo/protobuf v1.3.2
-	github.com/onosproject/onos-api/go v0.9.46
-	github.com/onosproject/onos-lib-go v0.9.3
-	github.com/openconfig/gnmi v0.0.0-20220920173703-480bf53a74d2
+	github.com/onosproject/onos-api/go v0.10.31
+	github.com/onosproject/onos-lib-go v0.10.8
+	github.com/openconfig/gnmi v0.9.1
 	github.com/openconfig/goyang v1.2.0
-	github.com/openconfig/ygot v0.26.0
+	github.com/openconfig/ygot v0.26.2
 	github.com/spf13/cobra v1.6.1
-	github.com/stretchr/testify v1.8.1
-	golang.org/x/text v0.7.0
-	google.golang.org/grpc v1.52.0
-	google.golang.org/protobuf v1.28.1
+	github.com/stretchr/testify v1.8.2
+	golang.org/x/text v0.8.0
+	google.golang.org/grpc v1.54.0
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
 	github.com/Shopify/sarama v1.31.1 // indirect
-	github.com/atomix/runtime/sdk v0.3.4 // indirect
+	github.com/atomix/atomix/api v0.8.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
@@ -29,8 +29,8 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/swag v0.19.5 // indirect
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/glog v1.0.0 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -66,9 +66,9 @@ require (
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/net v0.7.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
+	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

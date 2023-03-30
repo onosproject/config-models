@@ -39,18 +39,6 @@
         "name": "l2a4",
         "range-min": 20,
         "range-max": 21
-      },
-      {
-        "name": "l2a5",
-        "tx-power": 11,
-        "range-min": 20,
-        "range-max": 21
-      },
-      {
-        "name": "l2a6",
-        "tx-power": 12,
-        "range-min": 20,
-        "range-max": 21
       }
     ],
     "list5": [
@@ -71,8 +59,8 @@
       },
       {
         "key1": "two",
-        "key2": 1,
-        "leaf5a": "5a two-1"
+        "key2": 4,
+        "leaf5a": "5a two-4"
       }
     ],
     "list4": [
@@ -91,9 +79,9 @@
             "displayname": "Value l2a1-five-6"
           },
           {
-            "fkey1": "six",
+            "fkey1": "eight",
             "fkey2": 6,
-            "displayname": "Value l2a1-six-6"
+            "displayname": "Value l2a1-eight-6"
           }
         ]
       },

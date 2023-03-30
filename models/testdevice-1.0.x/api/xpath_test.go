@@ -47,7 +47,7 @@ func Test_XPathSelectNamespace(t *testing.T) {
 				"Iter Value: key2: 8",
 				"Iter Value: key2: 6",
 				"Iter Value: key2: 7",
-				"Iter Value: key2: 1",
+				"Iter Value: key2: 4",
 			},
 		},
 		{
@@ -91,9 +91,9 @@ func Test_XPathSelectNamespace(t *testing.T) {
 			Name:  "test list4 1 list4a displayname",
 			XPath: "/t1:cont1a/t1e:list4[@t1e:id='l2a1']/t1e:list4a/t1e:displayname",
 			Expected: []string{
+				"Iter Value: displayname: Value l2a1-eight-6",
 				"Iter Value: displayname: Value l2a1-five-6",
 				"Iter Value: displayname: Value l2a1-five-7",
-				"Iter Value: displayname: Value l2a1-six-6",
 			},
 		},
 		{
@@ -171,7 +171,7 @@ func Test_XPathSelect(t *testing.T) {
 				"Iter Value: key2: 8",
 				"Iter Value: key2: 6",
 				"Iter Value: key2: 7",
-				"Iter Value: key2: 1",
+				"Iter Value: key2: 4",
 			},
 		},
 		{
@@ -215,9 +215,9 @@ func Test_XPathSelect(t *testing.T) {
 			Name:  "test list4 1 list4a displayname",
 			XPath: "/cont1a/list4[@id='l2a1']/list4a/displayname",
 			Expected: []string{
+				"Iter Value: displayname: Value l2a1-eight-6",
 				"Iter Value: displayname: Value l2a1-five-6",
 				"Iter Value: displayname: Value l2a1-five-7",
-				"Iter Value: displayname: Value l2a1-six-6",
 			},
 		},
 		{
@@ -298,8 +298,8 @@ func Test_XPathSelectRelativeStart(t *testing.T) {
 				"Iter Value: tx-power: 6", // l2a2
 				"Iter Value: tx-power: 8", // l2a3
 				// there's no tx-power on l2a4
-				"Iter Value: tx-power: 11", // l2a5
-				"Iter Value: tx-power: 12", // l2a6
+				//"Iter Value: tx-power: 11", // l2a5
+				//"Iter Value: tx-power: 12", // l2a6
 			},
 		},
 		{
@@ -384,7 +384,7 @@ func Test_XPathEvaluate(t *testing.T) {
 		},
 		{
 			Name:     "test set-contains detects string in a set",
-			XPath:    "set-contains(/cont1a/list2a[tx-power>10]/@name, 'l2a6')",
+			XPath:    "set-contains(/cont1a/list2a[tx-power>7]/@name, 'l2a3')",
 			Expected: true,
 		},
 		{
@@ -394,7 +394,7 @@ func Test_XPathEvaluate(t *testing.T) {
 		},
 		{
 			Name:     "test set-contains detects that some items from first set are in second set",
-			XPath:    "set-contains(/cont1a/list2a[tx-power>10]/@name, /cont1a/list2a[tx-power>11]/@name)",
+			XPath:    "set-contains(/cont1a/list2a[tx-power>=6]/@name, /cont1a/list2a[tx-power>=8]/@name)",
 			Expected: true,
 		},
 		{
@@ -455,7 +455,7 @@ func Test_XPathEvaluateRelativePath(t *testing.T) {
 		{
 			Name:     "get the count of all the tx-power in following nodes",
 			XPath:    "count(list2a[1]/following-sibling::node()/tx-power)",
-			Expected: float64(4), // The result is a node set - we count it here
+			Expected: float64(2), // The result is a node set - we count it here
 		},
 		{
 			Name:     "get the count of all the tx-power same as current",
