@@ -28,7 +28,9 @@ test: # @HELP run go test on projects
 test: mod-update build linters license gofmt images models models-openapi models-version-check
 	go test ./pkg/...
 	@bash test/generated.sh
-	@cd models && for model in *; do pushd $$model; make test; popd; done
+	@for model in models/*; do \
+		make -C $$model test; \
+	done
 
 .PHONY: models
 models: # @HELP make demo and test device models

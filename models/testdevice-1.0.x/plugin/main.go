@@ -18,6 +18,7 @@ import (
 	"github.com/onosproject/onos-lib-go/pkg/northbound"
 	"github.com/openconfig/ygot/ygot"
 	"google.golang.org/grpc"
+	"io"
 	"os"
 	"strconv"
 )
@@ -126,6 +127,34 @@ func (s server) ValidateConfig(ctx context.Context, request *admin.ValidateConfi
 	return &admin.ValidateConfigResponse{Valid: true}, nil
 }
 
+func (s server) ValidateConfigChunked(srv admin.ModelPluginService_ValidateConfigChunkedServer) error {
+	var response []byte
+	for {
+		c, err := srv.Recv()
+		if err != nil {
+			if err == io.EOF {
+				log.Debugf("Validating JSON config of %d bytes", len(response))
+				gostruct, err := s.unmarshallConfigValues(response)
+				if err != nil {
+					return errors.Status(err).Err()
+				}
+				if err := s.validate(gostruct); err != nil {
+					return errors.Status(err).Err()
+				}
+				if err := s.validateMust(*gostruct); err != nil {
+					return errors.Status(err).Err()
+				}
+				return srv.SendAndClose(&admin.ValidateConfigResponse{
+					Valid: true,
+				})
+			}
+			return err
+		}
+		response = append(response, c.GetJson()...)
+	}
+	return nil
+}
+
 func (s server) GetPathValues(ctx context.Context, request *admin.PathValuesRequest) (*admin.PathValuesResponse, error) {
 	log.Infof("Received path values request: %+v", request)
 	pathValues, err := path.GetPathValues(request.PathPrefix, request.Json)
@@ -163,6 +192,50 @@ func (s server) GetValueSelection(ctx context.Context, request *admin.ValueSelec
 	return &admin.ValueSelectionResponse{
 		Selection: results,
 	}, nil
+}
+
+func (s server) GetValueSelectionChunked(srv admin.ModelPluginService_GetValueSelectionChunkedServer) error {
+	var response []byte
+	var selectionPath string
+	for {
+		c, err := srv.Recv()
+		if err != nil {
+			if err == io.EOF {
+				log.Debugf("Transfer of %d bytes successful", len(response))
+				device, err := s.unmarshallConfigValues(response)
+				if err != nil {
+					return errors.Status(err).Err()
+				}
+				schema, err := api.Schema()
+				if err != nil {
+					return errors.Status(errors.NewInvalid("Unable to get schema: %+v", err)).Err()
+				}
+
+				nn := navigator.NewYangNodeNavigator(schema.RootSchema(), *device, true)
+				ynn, ok := nn.(*navigator.YangNodeNavigator)
+				if !ok {
+					return errors.Status(errors.NewInvalid("Cannot cast NodeNavigator to YangNodeNavigator")).Err()
+				}
+				if err := ynn.NavigateTo(selectionPath); err != nil {
+					return errors.Status(errors.NewInvalid("Unable to navigate to selection. %+v", err)).Err()
+				}
+
+				results, err := ynn.LeafSelection()
+				if err != nil {
+					return errors.Status(errors.NewInvalid("error getting leaf-selection", err)).Err()
+				}
+
+
+				return srv.SendAndClose(&admin.ValueSelectionResponse{
+					Selection: results,
+				})
+			}
+			return err
+		}
+		selectionPath = c.GetSelectionPath() // We
+		response = append(response, c.GetConfigJson()...)
+	}
+	return nil
 }
 
 func (s server) unmarshallConfigValues(jsonTree []byte) (*ygot.ValidatedGoStruct, error) {
