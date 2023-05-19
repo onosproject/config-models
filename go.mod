@@ -7,10 +7,10 @@ require (
 	github.com/getkin/kin-openapi v0.114.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/onosproject/onos-api/go v0.10.31
-	github.com/onosproject/onos-lib-go v0.10.8
+	github.com/onosproject/onos-lib-go v0.10.17
 	github.com/openconfig/gnmi v0.9.1
-	github.com/openconfig/goyang v1.2.0
-	github.com/openconfig/ygot v0.26.2
+	github.com/openconfig/goyang v1.4.0
+	github.com/openconfig/ygot v0.28.3
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/text v0.8.0
