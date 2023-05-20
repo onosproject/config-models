@@ -22,7 +22,7 @@ FROM alpine:3.17.2
 ARG http_proxy=""
 ARG https_proxy=""
 ARG no_proxy=""
-RUN apk --no-cache add libc6-compat=1.2.3-r4 && rm -rf /var/cache/apk/*
+RUN apk --no-cache add libc6-compat=1.2.3-r5 && rm -rf /var/cache/apk/*
 
 # Label image
 ARG org_label_schema_version=unknown
