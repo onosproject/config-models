@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     go build -v -mod=vendor -o build/_output/model-compiler ./cmd/model-compiler
 
 FROM alpine:3.17.2
-RUN apk add --no-cache libc6-compat=1.2.3-r4 libc-dev=0.7.2-r3 gcc=12.2.1_git20220924-r4 libxml2-dev=2.10.4-r0 \
+RUN apk add --no-cache libc6-compat=1.2.3-r5 libc-dev=0.7.2-r3 gcc=12.2.1_git20220924-r4 libxml2-dev=2.10.4-r0 \
     libxslt-dev=1.1.37-r1 python3-dev=3.10.11-r0 py3-wheel=0.38.4-r0 py3-pip=22.3.1-r1 && \
     pip3 install --no-cache-dir pyang==2.5.3 openapi-spec-validator==0.5.5
 
